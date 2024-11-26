@@ -1,13 +1,34 @@
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Typography, TablePagination } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useState } from "react";
-import PatientDrawer from "./PatientDrawer";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  IconButton,
+  Typography,
+  TablePagination,
+  TextField,
+  TableSortLabel,
+  Toolbar,
+} from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility";
+import { DeletePatientModal } from "./DeletePatientModal";
 
-export const PatientTable = ({ patients }) => {
+export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelete }) => {
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [patientToDelete, setPatientToDelete] = useState(null);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortColumn, setSortColumn] = useState("dni");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -18,15 +39,52 @@ export const PatientTable = ({ patients }) => {
     setPage(0);
   };
 
-  const handleViewPatient = (patient) => {
-    setSelectedPatient(patient);
-    setDrawerOpen(true); // Abre el Drawer con la información del paciente seleccionado
+  const handleOpenDeleteModal = (patient) => {
+    setPatientToDelete(patient);
+    setDeleteModalOpen(true);
   };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setPatientToDelete(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (patientToDelete) {
+      onDelete(patientToDelete);
+      handleCloseDeleteModal();
+    }
+  };
+
+  const filteredPatients = patients
+    .filter((patient) =>
+      [patient.dni.toString(), patient.apellido, patient.nombre]
+        .some((field) =>
+          field.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+    )
+    .sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a[sortColumn].toString().localeCompare(b[sortColumn].toString());
+      } else {
+        return b[sortColumn].toString().localeCompare(a[sortColumn].toString());
+      }
+    });
 
   return (
     <Box>
       <Paper sx={{ height: "100%", width: "100%" }}>
-        {patients.length === 0 ? (
+        <Toolbar>
+          <TextField
+            label="Buscar"
+            variant="outlined"
+            size="small"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            sx={{ marginRight: 2 }}
+          />
+        </Toolbar>
+        {filteredPatients.length === 0 ? (
           <Box display="flex" justifyContent="center" alignItems="center" height="100%">
             <Typography variant="h6">No hay pacientes disponibles.</Typography>
           </Box>
@@ -35,38 +93,57 @@ export const PatientTable = ({ patients }) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>DNI</TableCell>
-                  <TableCell>Apellido</TableCell>
-                  <TableCell>Nombre</TableCell>
+                  {["dni", "apellido", "nombre"].map((column) => (
+                    <TableCell key={column}>
+                      <TableSortLabel
+                        active={sortColumn === column}
+                        direction={sortOrder}
+                        onClick={() => {
+                          setSortColumn(column);
+                          setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                        }}
+                      >
+                        {column.charAt(0).toUpperCase() + column.slice(1)}
+                      </TableSortLabel>
+                    </TableCell>
+                  ))}
                   <TableCell>Sexo</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {patients.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((patient) => (
-                  <TableRow key={patient.id}>
-                    <TableCell>{patient.dni}</TableCell>
-                    <TableCell>{patient.apellido}</TableCell>
-                    <TableCell>{patient.nombre}</TableCell>
-                    <TableCell>{patient.sexo === "m" ? "Masculino" : "Femenino"}</TableCell>
-                    <TableCell>{patient.email}</TableCell>
-                    <TableCell>
-                      <IconButton onClick={() => handleViewPatient(patient)} aria-label="ver">
-                        <VisibilityIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {filteredPatients
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((patient) => (
+                    <TableRow key={patient.id}>
+                      <TableCell>{patient.dni}</TableCell>
+                      <TableCell>{patient.apellido}</TableCell>
+                      <TableCell>{patient.nombre}</TableCell>
+                      <TableCell>{patient.sexo === "m" ? "Masculino" : "Femenino"}</TableCell>
+                      <TableCell>{patient.email}</TableCell>
+                      <TableCell>
+                        <IconButton onClick={() => onViewPatient(patient)} aria-label="ver">
+                          <VisibilityIcon />
+                        </IconButton>
+                        <IconButton onClick={() => onViewAnamnesis(patient)} aria-label="ver anamnesis">
+                          <SettingsAccessibilityIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleOpenDeleteModal(patient)} aria-label="eliminar">
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={patients.length}
+              count={filteredPatients.length}
               rowsPerPage={rowsPerPage}
               page={page}
-              labelRowsPerPage="Páginas:"
+              labelRowsPerPage="Filas por página:"
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
@@ -74,11 +151,11 @@ export const PatientTable = ({ patients }) => {
         )}
       </Paper>
 
-      {/* Drawer con los detalles del paciente */}
-      <PatientDrawer
-        drawerOpen={drawerOpen}
-        setDrawerOpen={setDrawerOpen}
-        selectedPatient={selectedPatient}
+      <DeletePatientModal
+        open={deleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        patient={patientToDelete}
+        onConfirm={handleConfirmDelete}
       />
     </Box>
   );

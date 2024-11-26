@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { useTheme } from "@emotion/react";
+import { useTheme } from "@mui/material/styles";
+import { Typography, Box, Button, CircularProgress } from "@mui/material";
 import { DashboardLayout } from "../../dashboard/layout/DashboardLayout";
-import { Typography, Box, Button, Grid, CircularProgress } from "@mui/material";
-import { PatientForm, PatientTable } from "../components";
+import { PatientForm, PatientTable, PatientCard, DeletePatientModal, PatientAnamnesis, PatientDrawer  } from "../components";
 
 export const PatientPage = () => {
   const theme = useTheme();
 
-  // Pacientes de prueba
   const initialPatients = [
     {
       id: 1,
@@ -28,12 +27,57 @@ export const PatientPage = () => {
   ];
 
   const [formOpen, setFormOpen] = useState(false);
-  const [patients, setPatients] = useState(initialPatients); // Estado inicial con los pacientes de prueba
+  const [patients, setPatients] = useState(initialPatients);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showAnamnesis, setShowAnamnesis] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState(null);
 
-  const handleView = (patient) => {
-    console.log("Ver paciente:", patient);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+
+  // Manejo de modal de eliminación
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteReason, setDeleteReason] = useState("");
+  const [patientToDelete, setPatientToDelete] = useState(null);
+
+
+  const handleDelete = (patient) => {
+    setPatientToDelete(patient);
+    setDeleteModalOpen(true);
+  };
+
+  const handleViewPatient = (patient) => {
+    setSelectedPatient(patient);
+    setDrawerOpen(true);
+    setShowAnamnesis(false);
+  };
+
+  const handleViewAnamnesis = (patient) => {
+    setSelectedPatient(patient);
+    setShowAnamnesis(true);
+    setDrawerOpen(false);
+  };
+
+  const handleCloseAnamnesis = () => {
+    setShowAnamnesis(false);
+    setSelectedPatient(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteReason) {
+      console.log(`Eliminando al paciente ${patientToDelete?.nombre} ${patientToDelete?.apellido} por el motivo: ${deleteReason}`);
+      // Llama a tu API o thunk aquí para eliminar el paciente
+      handleCloseDeleteModal();
+    } else {
+      alert("Por favor selecciona un motivo para la eliminación.");
+    }
+  };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setDeleteReason("");
+    setPatientToDelete(null);
   };
 
   return (
@@ -42,19 +86,20 @@ export const PatientPage = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Gestión de Pacientes
         </Typography>
+        <PatientCard patients={patients} />
 
-        <Grid container justifyContent="flex-end" sx={{ marginBottom: "16px" }}>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setFormOpen(true)}
-            >
-              Agregar Paciente
-            </Button>
-          </Grid>
-        </Grid>
+        {/* Botón para agregar pacientes */}
+        <Box sx={{ display: "flex", justifyContent: "flex", marginBottom: "16px" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setFormOpen(true)}
+          >
+            Agregar Paciente
+          </Button>
+        </Box>
 
+        {/* Tabla de pacientes */}
         {isLoading ? (
           <CircularProgress />
         ) : error ? (
@@ -62,9 +107,40 @@ export const PatientPage = () => {
         ) : (
           <>
             <PatientForm open={formOpen} onClose={() => setFormOpen(false)} />
-            <PatientTable patients={patients} onView={handleView} />
+            <PatientTable
+              patients={patients}
+              onViewAnamnesis={handleViewAnamnesis}
+              onViewPatient={handleViewPatient}
+              onDelete={handleDelete}
+              setDrawerOpen={setDrawerOpen}
+              setSelectedPatient={setSelectedPatient}
+            />
+            <DeletePatientModal
+              open={deleteModalOpen}
+              onClose={handleCloseDeleteModal}
+              handleConfirmDelete={handleConfirmDelete}
+              selectedDeleteReason={deleteReason}
+              setSelectedDeleteReason={setDeleteReason}
+              patientToDelete={patientToDelete}
+            />
+            {showAnamnesis && (
+              <PatientAnamnesis patient={selectedPatient} onClose={handleCloseAnamnesis} />
+            )}
+
+            <PatientDrawer
+              drawerOpen={drawerOpen && !showAnamnesis} 
+              setDrawerOpen={setDrawerOpen}
+              selectedPatient={selectedPatient}
+            />
           </>
         )}
+
+        <PatientDrawer
+          drawerOpen={drawerOpen}
+          setDrawerOpen={setDrawerOpen}
+          selectedPatient={selectedPatient}
+        />
+
       </Box>
     </DashboardLayout>
   );

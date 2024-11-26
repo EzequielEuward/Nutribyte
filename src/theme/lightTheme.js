@@ -21,7 +21,7 @@ export const lightTheme = createTheme({
       primary: '#000000',
       secondary: '#333333',
       paper: '#ffffff',
-    }
+    },
   }
 });
 
