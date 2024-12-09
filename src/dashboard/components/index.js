@@ -14,3 +14,5 @@ export * from './PatientAnamnesis';
 export * from './FoodTable';
 
 export * from './profile';
+
+export * from './TurnosTable';

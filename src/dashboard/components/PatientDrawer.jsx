@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Drawer, List, ListItem, ListItemText, Avatar, Divider, Typography, IconButton, TextField, Button } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
-import CloseIcon from '@mui/icons-material/Close'; // Para el icono de cancelar
+import CloseIcon from '@mui/icons-material/Close'; 
 
 export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -10,15 +10,15 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
   useEffect(() => {
     if (selectedPatient) {
       setEditedPatient({ ...selectedPatient });
-      setIsEditing(false); // Volver a modo normal cada vez que se seleccione un paciente
+      setIsEditing(false); 
     }
   }, [selectedPatient]);
 
   const handleEditClick = () => {
     if (isEditing) {
-      setIsEditing(false); // Si estamos editando, al hacer clic en el lápiz volvemos a modo normal
+      setIsEditing(false); 
     } else {
-      setIsEditing(true); // Si estamos en modo normal, entramos en modo edición
+      setIsEditing(true); 
     }
   };
 
@@ -32,7 +32,7 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
 
   const handleSave = () => {
     console.log("Paciente guardado:", editedPatient);
-    setDrawerOpen(false); // Cerrar el drawer tras guardar
+    setDrawerOpen(false); 
   };
 
   const handleCloseDrawer = () => {

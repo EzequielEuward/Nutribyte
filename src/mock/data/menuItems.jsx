@@ -14,7 +14,7 @@ export const menuItems = [
     link: "/home/paciente",
     submenus: [
       { text: "Lista de pacientes", link: "/home/paciente/" },
-      { text: "Diagnósticos", link: "/home/" },
+      { text: "Diagnósticos", link: "/home/diagnostico" },
       { text: "Métricas", link: "/home/" },
     ],
   },
@@ -44,9 +44,5 @@ export const menuItems = [
     icon: <CalendarToday style={iconStyle} />,
     link: "/home/turnos",
   },
-  {
-    text: "Perfil",
-    icon: <Person style={iconStyle} />,
-    link: "/home/perfil",
-  },
+ 
 ];

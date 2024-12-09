@@ -1,18 +1,37 @@
 import { useState } from "react";
 import {
-  AppBar,Toolbar,Typography,Box,IconButton,SwipeableDrawer,List,ListItem,
-  ListItemButton,ListItemIcon,ListItemText,Divider,useTheme, useMediaQuery,} from "@mui/material";
-import {LightModeOutlined,DarkModeOutlined,SettingsOutlined,PersonOutlined} from "@mui/icons-material";
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  IconButton,
+  SwipeableDrawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
+import {
+  LightModeOutlined,
+  DarkModeOutlined,
+  SettingsOutlined,
+  PersonOutlined,
+  LogoutOutlined,
+} from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode } from "../../store/ui/uiSlice";
 import { useNavigate } from "react-router-dom";
 
-export const Navbar = ({ drawerWidth = 280 }) => {
+export const Navbar = ({ drawerWidth = 240 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const isDarkMode = useSelector((state) => state.ui.isDarkMode);
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -24,18 +43,38 @@ export const Navbar = ({ drawerWidth = 280 }) => {
     dispatch(toggleDarkMode());
   };
 
-  // Función para manejar la navegación
   const handleNavigation = (path) => {
-    navigate(path); // Redirige al usuario al path especificado
-    setDrawerOpen(false); // Cierra el drawer después de la navegación
+    navigate(path);
+    setDrawerOpen(false);
   };
 
   const drawerContent = (
     <Box
-      sx={{ width: 250 }}
+      sx={{
+        width: 250,
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      }}
       role="presentation"
       onKeyDown={toggleDrawer(false)}
     >
+      {/* Nombre del perfil */}
+      <Box
+        sx={{
+          backgroundColor: theme.palette.primary.main,
+          color: theme.palette.primary.contrastText,
+          padding: "16px",
+          textAlign: "center",
+        }}
+      >
+        <Typography variant="h6">Nombre del Usuario</Typography>
+        <Typography variant="body2">Rol del Usuario</Typography>
+      </Box>
+
+      <Divider />
+
+      {/* Opciones de navegación */}
       <List>
         <ListItem disablePadding>
           <ListItemButton onClick={() => handleNavigation("/home/perfil")}>
@@ -56,24 +95,11 @@ export const Navbar = ({ drawerWidth = 280 }) => {
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon>
-              <SettingsOutlined sx={{ color: theme.palette.text.primary }} />
+              <LogoutOutlined sx={{ color: theme.palette.text.primary }} />
             </ListItemIcon>
             <ListItemText primary="Salir" />
           </ListItemButton>
         </ListItem>
-      </List>
-      <Divider />
-      <List>
-        {["Ayuda", "Contacto"].map((text) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <PersonOutlined sx={{ color: theme.palette.text.primary }} />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
       </List>
     </Box>
   );
@@ -94,7 +120,7 @@ export const Navbar = ({ drawerWidth = 280 }) => {
           noWrap
           sx={{ flexGrow: 1, color: theme.palette.text.primary }}
         >
-          Displayname
+          SINTACC
         </Typography>
 
         {/* Iconos o drawer responsivo */}
