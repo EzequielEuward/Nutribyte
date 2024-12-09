@@ -3,7 +3,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import DeveloperEzeImage from '../../assets/eze.jpg';
 import DeveloperLeoImage from '../../assets/leo.jpg';
-import DeveloperAlejoImage from '../../assets/Alejo.jpg';
+import DeveloperAlejoImage from '../../assets/alejo.jpg';
 import DeveloperMeliImage from '../../assets/meli.jpg';
 import DeveloperAgusImage from '../../assets/agus.jpg';
 import placeholder from '../../assets/placeholder.png';
