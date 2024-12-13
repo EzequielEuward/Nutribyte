@@ -19,8 +19,8 @@ export const DashboardLayout = ({ children }) => {
             flexGrow: 1,
             width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` },
             marginLeft: { sm: `${drawerWidth}px` },
-            marginTop: { xs: 8, sm: 8 },
-            padding: 2,
+            marginTop: { xs: 8, sm: 8, md:4, lg:2 ,xl:1 },
+            padding: 1,
           }}
         >
           <Toolbar />

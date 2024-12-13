@@ -18,7 +18,8 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 
-import { mockFoodData } from "../../mock/data/mockFoodData"; 
+import {mockFoodData} from '../../../mock/data/mockFoodData';
+
 
 function TablePaginationActions(props) {
   const theme = useTheme();

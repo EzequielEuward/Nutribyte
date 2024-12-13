@@ -26,7 +26,7 @@ export const menuItems = [
       { text: "Tabla de alimentos", link: "/home/alimentos" },
       { text: "Grupo de alimentos", link: "/home/" },
       { text: "Recetas", link: "/home/" },
-      { text: "Planes alimenticios", link: "/home/" },
+      { text: "Planes alimenticios", link: "/home/planes" },
     ],
   },
   {

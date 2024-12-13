@@ -27,4 +27,3 @@ export const mockFoodData = [
       grasas: 0.3,
     },
   ];
-  

@@ -3,15 +3,10 @@ export * from './Sidebar';
 export * from './Navbar';
 
 //Pacientes
-export * from './PatientTable';
-export * from './PatientForm';
-export * from './PatientCard';
-export * from './DeletePatientModal';
-export * from './PatientDrawer';
-export * from './PatientAnamnesis';
+export * from './pacientes';
 
 //Alimentos
-export * from './FoodTable';
+export * from './food';
 
 export * from './profile';
 
