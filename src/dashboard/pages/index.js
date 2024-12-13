@@ -5,6 +5,7 @@ export * from './DiagnosticoPage';
 
 export * from './FoodPage';
 export * from './PlanesPage';
+export * from './RecipePage';
 
 export * from './ProfilePage';
 

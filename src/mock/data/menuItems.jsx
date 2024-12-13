@@ -25,7 +25,7 @@ export const menuItems = [
     submenus: [
       { text: "Tabla de alimentos", link: "/home/alimentos" },
       { text: "Grupo de alimentos", link: "/home/" },
-      { text: "Recetas", link: "/home/" },
+      { text: "Recetas", link: "/home/recetas" },
       { text: "Planes alimenticios", link: "/home/planes" },
     ],
   },

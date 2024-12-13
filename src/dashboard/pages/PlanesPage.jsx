@@ -11,7 +11,7 @@ export const PlanesPage = () => {
 
   return (
     <DashboardLayout>
-      <Box sx={{ textAlign: "left", ml: 3, mt: 4 }}>
+      <Box sx={{ textAlign: "left", ml: 3, mt: 2 }}>
         <Typography variant="h4">Planes nutricionales</Typography>
       </Box>
 
@@ -19,7 +19,7 @@ export const PlanesPage = () => {
         <SelectPlanes setPlanActual={setPlanSeleccionado} />
       </Box>
 
-      <Grid container spacing={4} sx={{ px: { xs: 2, sm: 4 }, py: 2 }}>
+      <Grid container spacing={4} sx={{ px: { xs: 2, sm: 2 }, py: 2 }}>
         <Grid item xs={12} md={8}>
           <InfoPlanes planSeleccionado={planSeleccionado} />
         </Grid>

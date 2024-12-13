@@ -10,3 +10,6 @@ export * from './BuscarPacienteDiagnostico';
 export * from './InformacionPersonalDiagnostico';
 export * from './Diagnostico';
 export * from './NuevoDiagnostico';
+
+export * from './RecipeModal';
+export * from './RecipeCard';

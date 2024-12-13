@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { DashboardPage, PatientPage, FoodPage, ProfilePage,CalendarPage,DiagnosticoPage, PlanesPage } from '../pages/'; 
+import { DashboardPage, PatientPage, FoodPage, ProfilePage,CalendarPage,DiagnosticoPage, PlanesPage, RecipePage } from '../pages/'; 
 
 
 
@@ -18,6 +18,7 @@ export const DashboardRouter = () => {
        <Route path ="turnos" element={<CalendarPage/>} />
        <Route path ="diagnostico" element={<DiagnosticoPage/>} />
        <Route path ="planes" element={<PlanesPage/>} />
+       <Route path ="recetas" element={<RecipePage/>} />
 
       {/* <Route path="settings" element={<SettingsPage />} />  */}
 
