@@ -22,14 +22,18 @@ export const RecipePage = () => {
     setSelectedRecipe(null);
   };
 
-  // Filtrado de recetas
+
   const filteredRecipes = recipesMock.filter((recipe) => {
-    const matchesName = recipe.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const hasValidName = recipe?.name && typeof recipe.name === "string";
+    const matchesName = hasValidName
+      ? recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
+      : false;
     const matchesPlan = selectedPlan ? recipe.plan === selectedPlan : true;
+
     return matchesName && matchesPlan;
   });
 
-  // Obtener todos los planes únicos de las recetas
+
   const plans = [...new Set(recipesMock.map(recipe => recipe.plan))];
 
   return (
@@ -47,7 +51,7 @@ export const RecipePage = () => {
           size="small"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ width: 200 }} // Ancho más pequeño
+          sx={{ width: 200 }} 
         />
         {/* Filtro por plan */}
         <FormControl variant="outlined" size="small" sx={{ width: 200 }}>
@@ -64,7 +68,7 @@ export const RecipePage = () => {
           </Select>
         </FormControl>
       </Box>
-      
+
       {/* Mensaje si no hay recetas que coincidan */}
       {filteredRecipes.length === 0 && (
         <Box sx={{ textAlign: "center", mt: 2 }}>

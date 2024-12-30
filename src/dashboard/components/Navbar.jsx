@@ -85,7 +85,7 @@ export const Navbar = ({ drawerWidth = 240 }) => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={() => handleNavigation("/home/configuracion")}>
             <ListItemIcon>
               <SettingsOutlined sx={{ color: theme.palette.text.primary }} />
             </ListItemIcon>
@@ -123,7 +123,6 @@ export const Navbar = ({ drawerWidth = 240 }) => {
           SINTACC
         </Typography>
 
-        {/* Iconos o drawer responsivo */}
         {isMobile ? (
           <IconButton onClick={toggleDrawer(true)} sx={{ color: theme.palette.text.primary }}>
             <PersonOutlined />
@@ -133,9 +132,7 @@ export const Navbar = ({ drawerWidth = 240 }) => {
             <IconButton onClick={handleThemeToggle} sx={{ color: theme.palette.text.primary }}>
               {isDarkMode ? <LightModeOutlined /> : <DarkModeOutlined />}
             </IconButton>
-            <IconButton sx={{ color: theme.palette.text.primary }}>
-              <SettingsOutlined />
-            </IconButton>
+           
             <IconButton onClick={toggleDrawer(true)} sx={{ color: theme.palette.text.primary }}>
               <PersonOutlined />
             </IconButton>

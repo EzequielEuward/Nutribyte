@@ -1,2 +1,1 @@
-export * from './AppointmentsTable';
-export * from './MiniCalendar';
+export * from './EditProfileForm';

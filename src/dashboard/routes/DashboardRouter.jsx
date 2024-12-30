@@ -1,5 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { DashboardPage, PatientPage, FoodPage, ProfilePage,CalendarPage,DiagnosticoPage, PlanesPage, RecipePage } from '../pages/'; 
+import {
+  DashboardPage, PatientPage, FoodPage, ProfilePage,
+  CalendarPage, DiagnosticoPage, PlanesPage, RecipePage,
+  ConfigPage, HistorialPeso, CaloriasConsumidasPage
+} from '../pages/';
 
 
 
@@ -9,16 +13,26 @@ export const DashboardRouter = () => {
     <Routes>
       {/* Ruta principal del Dashboard */}
       <Route path="/" element={<DashboardPage />} />
-
       {/* Subrutas dentro del dashboard */}
-      
-       <Route path="paciente" element={<PatientPage />} />
-       <Route path="alimentos" element={<FoodPage />} />
-       <Route path="perfil" element={<ProfilePage />} />
-       <Route path ="turnos" element={<CalendarPage/>} />
-       <Route path ="diagnostico" element={<DiagnosticoPage/>} />
-       <Route path ="planes" element={<PlanesPage/>} />
-       <Route path ="recetas" element={<RecipePage/>} />
+
+      {/* Esto esta en Navbar */}
+      <Route path="perfil" element={<ProfilePage />} />
+      <Route path="configuracion" element={<ConfigPage />} />
+
+      {/* Paciente */}
+      <Route path="paciente" element={<PatientPage />} />
+      <Route path="diagnostico" element={<DiagnosticoPage />} />
+
+      {/* Alimentos */}
+      <Route path="alimentos" element={<FoodPage />} />
+      <Route path="recetas" element={<RecipePage />} />
+      <Route path="planes" element={<PlanesPage />} />
+
+      {/* Progreso */}
+      <Route path="progreso/historial-peso" element={<HistorialPeso />} />
+      <Route path="progreso/calorias-consumidas" element={<CaloriasConsumidasPage />} />
+
+      <Route path="turnos" element={<CalendarPage />} />
 
       {/* <Route path="settings" element={<SettingsPage />} />  */}
 
