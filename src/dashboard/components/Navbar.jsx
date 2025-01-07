@@ -25,6 +25,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode } from "../../store/ui/uiSlice";
 import { useNavigate } from "react-router-dom";
+import LogoBlanco from '../../assets/LogoBlanco.png';
+import LogoNegro from '../../assets/LogoNegro.png';
+
 
 export const Navbar = ({ drawerWidth = 240 }) => {
   const theme = useTheme();
@@ -45,6 +48,12 @@ export const Navbar = ({ drawerWidth = 240 }) => {
 
   const handleNavigation = (path) => {
     navigate(path);
+    setDrawerOpen(false);
+  };
+
+  const handleLogout = () => {
+    // Aquí puedes agregar la lógica para cerrar sesión si es necesario (como eliminar tokens o datos de sesión)
+    navigate("/"); // Redirige a la página principal
     setDrawerOpen(false);
   };
 
@@ -93,7 +102,7 @@ export const Navbar = ({ drawerWidth = 240 }) => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={handleLogout}> {/* Llamamos a handleLogout aquí */}
             <ListItemIcon>
               <LogoutOutlined sx={{ color: theme.palette.text.primary }} />
             </ListItemIcon>
@@ -115,29 +124,47 @@ export const Navbar = ({ drawerWidth = 240 }) => {
       }}
     >
       <Toolbar>
-        <Typography
-          variant="h6"
-          noWrap
-          sx={{ flexGrow: 1, color: theme.palette.text.primary }}
+        <Box
+          display="flex"
+          justifyContent={isMobile ? "center" : "space-between"} 
+          alignItems="center"
+          width="100%"
         >
-          SINTACC
-        </Typography>
+          {/* Logo centrado */}
+          <Box>
+            <img
+              src={isDarkMode ? LogoBlanco : LogoNegro}
+              alt="Logo"
+              style={{
+                maxWidth: isMobile ? "150px" : "500px",
+                height: isMobile ? "50px" : "90px",
+                objectFit: "contain",
+                opacity: 0,  // Inicialmente invisible
+                transition: "opacity 0.4s ease-in-out",  
+              }}
+              onLoad={(e) => e.target.style.opacity = 1}  
+            />
+          </Box>
 
-        {isMobile ? (
-          <IconButton onClick={toggleDrawer(true)} sx={{ color: theme.palette.text.primary }}>
-            <PersonOutlined />
-          </IconButton>
-        ) : (
-          <Box display="flex" alignItems="center">
-            <IconButton onClick={handleThemeToggle} sx={{ color: theme.palette.text.primary }}>
-              {isDarkMode ? <LightModeOutlined /> : <DarkModeOutlined />}
-            </IconButton>
-           
+          {/* Botones a la derecha */}
+          {!isMobile && (
+            <Box display="flex" alignItems="center">
+              <IconButton onClick={handleThemeToggle} sx={{ color: theme.palette.text.primary }}>
+                {isDarkMode ? <LightModeOutlined /> : <DarkModeOutlined />}
+              </IconButton>
+
+              <IconButton onClick={toggleDrawer(true)} sx={{ color: theme.palette.text.primary }}>
+                <PersonOutlined />
+              </IconButton>
+            </Box>
+          )}
+
+          {isMobile && (
             <IconButton onClick={toggleDrawer(true)} sx={{ color: theme.palette.text.primary }}>
               <PersonOutlined />
             </IconButton>
-          </Box>
-        )}
+          )}
+        </Box>
       </Toolbar>
 
       <SwipeableDrawer

@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { AppBar, Box, Button, Container, Drawer, IconButton, List, ListItem, ListItemText, Toolbar, Typography, useTheme } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from '../../assets/logo.png';
+import LogoMarroncito from '../../assets/LogoMarroncito.png';
+import LogoVerdeClaro from '../../assets/LogoVerdeClaro.png';
+import LogoVerdeOscuro from '../../assets/LogoVerdeOscuro.png';
+import LogoOficial from '../../assets/LogoOficial.png';
 
-//Icons
 import MenuIcon from '@mui/icons-material/Menu';
 
 export const NavBarHome = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("");  
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleLoginClick = () => {
     navigate('/auth/login');
@@ -22,7 +26,7 @@ export const NavBarHome = () => {
   const menuItems = [
     { text: "Características", link: "#features" },
     { text: "Acerca de", link: "#about" },
-    {text:"Pantallas", link: "#screen"},
+    { text: "Pantallas", link: "#screen" },
     { text: "Contáctanos", link: "#contact" },
     { text: "Planes", link: "#plans" },
   ];
@@ -32,13 +36,13 @@ export const NavBarHome = () => {
   };
 
   const linkStyles = (isSelected) => ({
-    color: isSelected ? theme.palette.primary.main : theme.palette.text.primary, 
+    color: isSelected ? theme.palette.primary.main : theme.palette.text.primary,
     textDecoration: "none",
     fontSize: '1rem',
-    padding: '0.5rem 1rem', 
-    borderRadius: '4px', 
-    backgroundColor: isSelected ? theme.palette.action.selected : 'transparent', 
-    transition: 'background-color 0.3s ease, color 0.3s ease', 
+    padding: '0.5rem 1rem',
+    borderRadius: '4px',
+    backgroundColor: isSelected ? theme.palette.action.selected : 'transparent',
+    transition: 'background-color 0.3s ease, color 0.3s ease',
     '&:hover': {
       backgroundColor: theme.palette.action.hover,
     },
@@ -51,7 +55,15 @@ export const NavBarHome = () => {
           <Box display="flex" mr={4}>
             <Link to="/home" style={{ textDecoration: "none", color: theme.palette.primary.main }}>
               <Typography variant="h6" fontWeight="bold">
-                SINTACC
+                <img
+                  src={LogoOficial}
+                  alt="Logo"
+                  style={{
+                    maxWidth: '500px',
+                    height: '80px',
+                    objectFit: 'contain',
+                  }}
+                />
               </Typography>
             </Link>
           </Box>
@@ -62,8 +74,8 @@ export const NavBarHome = () => {
               <Link
                 key={item.text}
                 to={item.link}
-                onClick={() => handleCategoryClick(item.text)}  
-                style={linkStyles(selectedCategory === item.text)} 
+                onClick={() => handleCategoryClick(item.text)}
+                style={linkStyles(selectedCategory === item.text)}
               >
                 <Typography variant="body1">{item.text}</Typography>
               </Link>
@@ -119,8 +131,8 @@ export const NavBarHome = () => {
                 <ListItem button key={item.text} onClick={handleDrawerToggle}>
                   <Link
                     to={item.link}
-                    onClick={() => handleCategoryClick(item.text)}  
-                    style={linkStyles(selectedCategory === item.text)} 
+                    onClick={() => handleCategoryClick(item.text)}
+                    style={linkStyles(selectedCategory === item.text)}
                   >
                     <ListItemText primary={item.text} />
                   </Link>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Grid, Typography, Link, Divider, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import LogoOficial from '../../assets/LogoVerdeClaro.png';
 
 export const FooterSection = () => {
   const theme = useTheme();
@@ -16,9 +17,17 @@ export const FooterSection = () => {
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <Typography variant="h5" gutterBottom>
-              Sobre S.I.N TACC
-            </Typography>
+            <Box sx={{display: "flex"}}>
+              <Typography variant="h5" gutterBottom>
+                Sobre
+              </Typography>
+              <img src={LogoOficial} alt="Logo"
+                style={{
+                  maxWidth: '500px',
+                  height: '90px',
+                  objectFit: 'contain'
+                }} />
+            </Box>
             <Typography variant="body2">
               Transformando vidas a través de la nutrición personalizada y el bienestar integral.
             </Typography>
@@ -55,7 +64,7 @@ export const FooterSection = () => {
               Teléfono: <Link href="tel:(123) 456-7890" color="inherit">(123) 456-7890</Link>
             </Typography>
           </Grid>
-          
+
         </Grid>
 
         <Divider sx={{ my: 4, backgroundColor: theme.palette.secondary.main }} />

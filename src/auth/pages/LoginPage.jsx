@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { Button, Card, CardContent, CardActions, CardHeader, TextField, IconButton, Typography, Box, Grid } from '@mui/material';
+import { Button, Card, CardContent, CardActions, CardHeader, TextField, IconButton, Typography, Box } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import Logo2 from '../../assets/logo2.png'; 
+import Logo from '../../assets/logo.png';
+import LogoOficial from '../../assets/LogoOficial.png'; 
 
 export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,24 +27,16 @@ export const LoginPage = () => {
       }}
     >
       <Card sx={{ maxWidth: { xs: 340, sm: 400 }, width: '100%', padding: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-          {/* ACA DEBERIA IR LA IMAGEN DEL LOGO */}
-          <Box
-            sx={{
-              width: 60,
-              height: 60,
-              backgroundColor: '#1976d2',
-              borderRadius: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              fontSize: 24,
-              fontWeight: 'bold',
+        <Box sx={{ display: 'flex', justifyContent: 'center', }}>
+          <img
+            src={LogoOficial}
+            alt="Logo"
+            style={{
+              width: '200px', 
+              height: '200px',
+              objectFit: 'contain', 
             }}
-          >
-            Logo
-          </Box>
+          />
         </Box>
         <CardHeader
           title={<Typography variant="h5" component="div" fontWeight="bold">Inicio de Sesión</Typography>}

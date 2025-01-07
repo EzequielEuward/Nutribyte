@@ -8,17 +8,22 @@ import {
   IconButton,
 } from "@mui/material";
 import { AddCircle, ListAlt, Description, Chat } from "@mui/icons-material";
-
-const quickAccessItems = [
-  { icon: AddCircle, label: "Nueva Cita", color: { backgroundColor: "#E3F2FD", color: "#1E88E5" } }, // Blue
-  { icon: ListAlt, label: "Plan Nutricional", color: { backgroundColor: "#E8F5E9", color: "#43A047" } }, // Green
-  { icon: Description, label: "Generar Informe", color: { backgroundColor: "#F3E5F5", color: "#8E24AA" } }, // Purple
-  { icon: Chat, label: "Enviar Recordatorio", color: { backgroundColor: "#FFF8E1", color: "#F9A825" } }, // Yellow
-];
+import { useTheme } from "@emotion/react";
+import { useNavigate } from "react-router-dom"; 
 
 export const QuickAccess = () => {
+  const theme = useTheme();
+  const navigate = useNavigate(); 
+  
+  const quickAccessItems = [
+    { icon: AddCircle, label: "Nueva Cita", color: theme.palette.appointmentTypes.firstConsult, route: "/home/paciente/" }, // Agregar ruta
+    { icon: ListAlt, label: "Plan Nutricional", color: theme.palette.appointmentTypes.followUp, route: "/home/planes" }, // Agregar ruta
+    { icon: Description, label: "Generar Informe", color: theme.palette.appointmentTypes.control, route: "/generar-informe" }, // Agregar ruta
+    { icon: Chat, label: "Enviar Recordatorio", color: theme.palette.appointmentTypes.reminder, route: "/home/turnos" }, // Agregar ruta
+  ];
+
   return (
-    <Card variant="outlined" sx={{marginTop:2}}>
+    <Card variant="outlined" sx={{ marginTop: 2 }}>
       <CardHeader
         title={
           <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
@@ -33,7 +38,8 @@ export const QuickAccess = () => {
               <Button
                 variant="contained"
                 sx={{
-                  ...item.color,
+                  backgroundColor: item.color.background,
+                  color: item.color.text,
                   height: "100px",
                   width: "100%",
                   display: "flex",
@@ -42,12 +48,13 @@ export const QuickAccess = () => {
                   alignItems: "center",
                   borderRadius: 2,
                   "&:hover": {
-                    backgroundColor: item.color.backgroundColor,
+                    backgroundColor: item.color.background,
                     opacity: 0.8,
                   },
                 }}
+                onClick={() => navigate(item.route)} 
               >
-                <IconButton sx={{ color: item.color.color, fontSize: "32px", mb: 1 }}>
+                <IconButton sx={{ color: item.color.text, fontSize: "32px", mb: 1 }}>
                   <item.icon />
                 </IconButton>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
@@ -60,6 +67,6 @@ export const QuickAccess = () => {
       </CardContent>
     </Card>
   );
-}
+};
 
 export default QuickAccess;

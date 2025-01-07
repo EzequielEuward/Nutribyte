@@ -1,29 +1,14 @@
 import { useState } from "react";
-import {
-    Box,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableFooter,
-    TablePagination,
-    TableRow,
-    Paper,
-    TableHead,
-    MenuItem,
-    Select,
-    Button,
-    TextField,
-    Typography,
-} from "@mui/material";
+import { Box, MenuItem, Select, Button, TextField, Typography, } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { mockCaloriasData } from "../../mock/data/mockCaloriasData";
 import DashboardLayout from "../layout/DashboardLayout";
 import { Line } from "react-chartjs-2";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
+import { TablaCalorias } from "../components/progress";
 
-// Registra los elementos necesarios para gráficos de línea y torta
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Title, Tooltip, Legend);
 
 export const CaloriasConsumidasPage = () => {
@@ -42,11 +27,10 @@ export const CaloriasConsumidasPage = () => {
     };
 
     const filteredData = mockCaloriasData
+        .filter((item) => filterDate === "All" || item.fecha === filterDate)
         .filter((item) =>
-            filterDate === "All" || item.fecha === filterDate
-        )
-        .filter((item) =>
-            searchPatient === "" || item.paciente.toLowerCase().includes(searchPatient.toLowerCase())
+            searchPatient === "" ||
+            (item.paciente && item.paciente.toLowerCase().includes(searchPatient.toLowerCase()))
         );
 
     const handleChangePage = (event, newPage) => {
@@ -58,50 +42,54 @@ export const CaloriasConsumidasPage = () => {
         setPage(0);
     };
 
-    const totals = filteredData.reduce(
-        (acc, item) => ({
-            calorias: acc.calorias + item.calorias,
-            proteinas: acc.proteinas + item.proteinas,
-            carbohidratos: acc.carbohidratos + item.carbohidratos,
-            grasas: acc.grasas + item.grasas,
-        }),
-        { calorias: 0, proteinas: 0, carbohidratos: 0, grasas: 0 }
-    );
+    const totals = filteredData.length > 0
+        ? filteredData.reduce(
+            (acc, item) => ({
+                calorias: acc.calorias + item.calorias,
+                proteinas: acc.proteinas + item.proteinas,
+                carbohidratos: acc.carbohidratos + item.carbohidratos,
+                grasas: acc.grasas + item.grasas,
+            }),
+            { calorias: 0, proteinas: 0, carbohidratos: 0, grasas: 0 }
+        )
+        : { calorias: 0, proteinas: 0, carbohidratos: 0, grasas: 0 };
 
     // Datos para el gráfico de línea
-    const chartData = {
-        labels: filteredData.map((item) => item.fecha),
-        datasets: [
-            {
-                label: "Calorías",
-                data: filteredData.map((item) => item.calorias),
-                borderColor: "rgba(255, 99, 132, 1)",
-                backgroundColor: "rgba(255, 99, 132, 0.2)",
-                fill: true,
-            },
-            {
-                label: "Proteínas",
-                data: filteredData.map((item) => item.proteinas),
-                borderColor: "rgba(54, 162, 235, 1)",
-                backgroundColor: "rgba(54, 162, 235, 0.2)",
-                fill: true,
-            },
-            {
-                label: "Carbohidratos",
-                data: filteredData.map((item) => item.carbohidratos),
-                borderColor: "rgba(75, 192, 192, 1)",
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
-                fill: true,
-            },
-            {
-                label: "Grasas",
-                data: filteredData.map((item) => item.grasas),
-                borderColor: "rgba(153, 102, 255, 1)",
-                backgroundColor: "rgba(153, 102, 255, 0.2)",
-                fill: true,
-            },
-        ],
-    };
+    const chartData = filteredData.length > 0
+        ? {
+            labels: filteredData.map((item) => item.fecha),
+            datasets: [
+                {
+                    label: "Calorías",
+                    data: filteredData.map((item) => item.calorias),
+                    borderColor: "rgba(255, 99, 132, 1)",
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    fill: true,
+                },
+                {
+                    label: "Proteínas",
+                    data: filteredData.map((item) => item.proteinas),
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    fill: true,
+                },
+                {
+                    label: "Carbohidratos",
+                    data: filteredData.map((item) => item.carbohidratos),
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    fill: true,
+                },
+                {
+                    label: "Grasas",
+                    data: filteredData.map((item) => item.grasas),
+                    borderColor: "rgba(153, 102, 255, 1)",
+                    backgroundColor: "rgba(153, 102, 255, 0.2)",
+                    fill: true,
+                },
+            ],
+        }
+        : { labels: [], datasets: [] };
 
     // Datos para el gráfico de torta
     const pieChartData = {
@@ -119,7 +107,6 @@ export const CaloriasConsumidasPage = () => {
             },
         ],
     };
-
     // Recomendaciones para el paciente
     const recommendations = (
         <Box sx={{ mt: 3 }}>
@@ -148,40 +135,14 @@ export const CaloriasConsumidasPage = () => {
                         Agregar Registro
                     </Button>
                 </Box>
-
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 500, border: "1px solid #ddd" }} aria-label="calorias table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Fecha</TableCell>
-                                <TableCell>Paciente</TableCell>
-                                <TableCell>Comida</TableCell>
-                                <TableCell align="right">Calorías</TableCell>
-                                <TableCell align="right">Proteínas</TableCell>
-                                <TableCell align="right">Carbohidratos</TableCell>
-                                <TableCell align="right">Grasas</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                <TableRow key={row.id}>
-                                    <TableCell>{row.fecha}</TableCell>
-                                    <TableCell>{row.paciente}</TableCell>
-                                    <TableCell>{row.comida}</TableCell>
-                                    <TableCell align="right">{row.calorias}</TableCell>
-                                    <TableCell align="right">{row.proteinas}</TableCell>
-                                    <TableCell align="right">{row.carbohidratos}</TableCell>
-                                    <TableCell align="right">{row.grasas}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                        <TableFooter>
-                            <TableRow>
-                                <TablePagination rowsPerPageOptions={[5, 10, 25]} count={filteredData.length} rowsPerPage={rowsPerPage} page={page} onPageChange={handleChangePage} onRowsPerPageChange={handleChangeRowsPerPage} />
-                            </TableRow>
-                        </TableFooter>
-                    </Table>
-                </TableContainer>
+                <Box>
+                    <TablaCalorias filteredData={filteredData}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        handleChangePage={handleChangePage}
+                        handleChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                </Box>
 
                 {/* Gráficos en línea con flex */}
                 <Box sx={{ mt: 4, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 2 }}>
