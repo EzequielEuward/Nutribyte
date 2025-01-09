@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, Typography, Link, Divider, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import LogoOficial from '../../assets/LogoVerdeClaro.png';
+import LogoOficial from '../../assets/LogoBlanco.png';
 
 export const FooterSection = () => {
   const theme = useTheme();
@@ -10,23 +10,28 @@ export const FooterSection = () => {
     <footer
       style={{
         background: `linear-gradient(135deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`,
-        color: theme.palette.text.paper,
+        color: '#ffffff',  
         padding: '2rem 0',
       }}
     >
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <Box sx={{display: "flex"}}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography variant="h5" gutterBottom>
                 Sobre
               </Typography>
-              <img src={LogoOficial} alt="Logo"
+              <img 
+                src={LogoOficial} 
+                alt="Logo"
                 style={{
-                  maxWidth: '500px',
-                  height: '90px',
-                  objectFit: 'contain'
-                }} />
+                  width: '200px',  // Ajusta el ancho del logo
+                  height: 'auto',  // Mantiene la proporción
+                  objectFit: 'contain',
+                  marginLeft: '1rem',  // Añadí espacio entre el texto y el logo
+                  marginBottom: '8px',
+                }} 
+              />
             </Box>
             <Typography variant="body2">
               Transformando vidas a través de la nutrición personalizada y el bienestar integral.
@@ -50,6 +55,9 @@ export const FooterSection = () => {
               <li>
                 <Link href="#contacto" color="inherit" underline="hover">Contacto</Link>
               </li>
+              <li>
+                <Link href="#FAQ" color="inherit" underline="hover">FAQ</Link>
+              </li>
             </ul>
           </Grid>
 
@@ -58,7 +66,7 @@ export const FooterSection = () => {
               Contacto
             </Typography>
             <Typography variant="body2">
-              Email: <Link href="mailto:info@sintacc.com" color="inherit">info@sintacc.com</Link>
+              Email: <Link href="mailto:info@sintacc.com" color="inherit">sintacc.software@gmail.com</Link>
             </Typography>
             <Typography variant="body2">
               Teléfono: <Link href="tel:(123) 456-7890" color="inherit">(123) 456-7890</Link>

@@ -51,6 +51,7 @@ export const AboutSection = () => {
       linkedin: "https://www.linkedin.com/in/leoeuw/",
 
       img: DeveloperAgusImage,
+      
     }
   ];
 

@@ -1,13 +1,14 @@
 import { Box, Container, Typography, Grid, SvgIcon } from '@mui/material';
-import HealthIcon from '@mui/icons-material/HealthAndSafety'; // Icono relacionado con salud
-import NutritionIcon from '@mui/icons-material/Restaurant'; // Icono relacionado con comida
-import AnalyticsIcon from '@mui/icons-material/BarChart'; // Icono relacionado con análisis
-import CustomDietIcon from '@mui/icons-material/FitnessCenter'; // Icono relacionado con dietas personalizadas
-import MealPlanIcon from '@mui/icons-material/CalendarToday'; // Icono relacionado con planificación de comidas
+// ICONS
+import HealthIcon from '@mui/icons-material/HealthAndSafety'; 
+import NutritionIcon from '@mui/icons-material/Restaurant'; 
+import AnalyticsIcon from '@mui/icons-material/BarChart'; 
+import CustomDietIcon from '@mui/icons-material/FitnessCenter'; 
+import MealPlanIcon from '@mui/icons-material/CalendarToday'; 
 
 export const CaracterisitcasSection = () => {
   return (
-    <Box py={{ xs: 6, md: 12 }} bgcolor="white">
+    <Box py={{ xs: 6, md: 12 }} bgcolor="white" id="caracteristicas">
       <Container>
         <Typography variant="h2" align="center" gutterBottom>
           Nuestras cualidades

@@ -12,7 +12,7 @@ export const FAQSection = () => {
     };
 
     return (
-        <Box sx={{ maxWidth: '800px', mx: 'auto', mt: 4, px: 2 }}>
+        <Box sx={{ maxWidth: '800px', mx: 'auto', mt: 4, px: 2 }} id='FAQ'>
             <Typography variant="h4" component="h2" fontWeight="bold" gutterBottom align="center">
                 Preguntas Frecuentes
             </Typography>
