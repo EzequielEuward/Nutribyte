@@ -25,9 +25,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode } from "../../store/ui/uiSlice";
 import { useNavigate } from "react-router-dom";
-import LogoBlanco from '../../assets/LogoBlanco.png';
-import LogoNegro from '../../assets/LogoNegro.png';
-
+import { startLogout } from "../../store/auth/thunks"; // Importa el thunk para el logout
+import LogoBlanco from "../../assets/LogoBlanco.png";
+import LogoNegro from "../../assets/LogoNegro.png";
 
 export const Navbar = ({ drawerWidth = 240 }) => {
   const theme = useTheme();
@@ -35,6 +35,7 @@ export const Navbar = ({ drawerWidth = 240 }) => {
   const navigate = useNavigate();
   const isDarkMode = useSelector((state) => state.ui.isDarkMode);
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { nombre, apellido, rol } = useSelector((state) => state.auth); // Datos del usuario del store
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -52,8 +53,8 @@ export const Navbar = ({ drawerWidth = 240 }) => {
   };
 
   const handleLogout = () => {
-    // Aquí puedes agregar la lógica para cerrar sesión si es necesario (como eliminar tokens o datos de sesión)
-    navigate("/"); // Redirige a la página principal
+    dispatch(startLogout()); // Ejecuta el thunk para el logout
+    navigate("/"); // Redirige a la página inicial o de login
     setDrawerOpen(false);
   };
 
@@ -77,8 +78,10 @@ export const Navbar = ({ drawerWidth = 240 }) => {
           textAlign: "center",
         }}
       >
-        <Typography variant="h6">Nombre del Usuario</Typography>
-        <Typography variant="body2">Rol del Usuario</Typography>
+        <Typography variant="h6">
+          {nombre} {apellido}
+        </Typography>
+        <Typography variant="body2">{rol}</Typography>
       </Box>
 
       <Divider />
@@ -102,7 +105,7 @@ export const Navbar = ({ drawerWidth = 240 }) => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton onClick={handleLogout}> {/* Llamamos a handleLogout aquí */}
+          <ListItemButton onClick={handleLogout}>
             <ListItemIcon>
               <LogoutOutlined sx={{ color: theme.palette.text.primary }} />
             </ListItemIcon>
@@ -126,7 +129,7 @@ export const Navbar = ({ drawerWidth = 240 }) => {
       <Toolbar>
         <Box
           display="flex"
-          justifyContent={isMobile ? "center" : "space-between"} 
+          justifyContent={isMobile ? "center" : "space-between"}
           alignItems="center"
           width="100%"
         >
@@ -139,10 +142,10 @@ export const Navbar = ({ drawerWidth = 240 }) => {
                 maxWidth: isMobile ? "150px" : "500px",
                 height: isMobile ? "50px" : "90px",
                 objectFit: "contain",
-                opacity: 0,  // Inicialmente invisible
-                transition: "opacity 0.4s ease-in-out",  
+                opacity: 0,
+                transition: "opacity 0.4s ease-in-out",
               }}
-              onLoad={(e) => e.target.style.opacity = 1}  
+              onLoad={(e) => (e.target.style.opacity = 1)}
             />
           </Box>
 

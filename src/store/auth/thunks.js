@@ -19,12 +19,11 @@ const fetchData = async (url, method, body) => {
   return await response.json();
 };
 
-// Thunk para iniciar sesión con DNI y contraseña
 export const startLoginWithDniAndPassword = ({ dni, password }) => {
   return async (dispatch) => {
-    dispatch(CheckingCredentials()); // Cambia el estado a "checking"
+    dispatch(CheckingCredentials()); 
 
-    const url = `${URL}`; // URL de la API
+    const url = `${URL}`; 
 
     try {
     
@@ -53,6 +52,19 @@ export const startLoginWithDniAndPassword = ({ dni, password }) => {
     } catch (error) {
       dispatch(logout({ errorMessage: error.message })); 
       return null; 
+    }
+  };
+};
+
+export const startLogout = () => {
+  return async (dispatch) => {
+    try {
+
+       await fetchData(`${URL}/logout`, 'POST', {});
+
+      dispatch(logout());
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error.message);
     }
   };
 };
