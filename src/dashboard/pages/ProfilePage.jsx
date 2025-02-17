@@ -1,11 +1,19 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { Avatar, Box, Button, Card, CardContent, CardHeader, Grid, Typography, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 import { EditProfileForm } from '../components/profile/EditProfileForm';
 import { DashboardLayout } from '../layout/DashboardLayout';
+import { useSelector } from 'react-redux';
 
 export const ProfilePage = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { username, rol, persona, matricula, especialidad } = useSelector((state) => state.auth || {}); 
+  
+  const { nombre, apellido, email, telefono, sexoBiologico } = persona || {};
+
+
 
   return (
     <DashboardLayout>
@@ -22,7 +30,7 @@ export const ProfilePage = () => {
                 Perfil del Nutricionista
               </Typography>
             }
-            subheader={<Typography sx={{ fontSize: '0.875rem', color: '#6c757d' }}>Detalles del paciente y su consultorio</Typography>}
+            subheader={<Typography sx={{ fontSize: '0.875rem', color: '#6c757d' }}>Detalles del profesional</Typography>}
             action={
               <Button onClick={() => setIsOpen(true)} variant="outlined" sx={{ minWidth: 'auto' }}>
                 <EditIcon sx={{ fontSize: '1.5rem' }} />
@@ -39,30 +47,41 @@ export const ProfilePage = () => {
               <Grid item xs={12} sm={8}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
-                    <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Nombre de Usuario</Typography>
-                    <Typography variant="body1">demo</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Usuario:</Typography>
+                    <Typography variant="body1">{username || "No disponible"}</Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Nombre</Typography>
-                    <Typography variant="body1">Usuario</Typography>
+                    <Typography variant="body1">{nombre || "No disponible"}</Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Apellido</Typography>
-                    <Typography variant="body1">Prueba</Typography>
+                    <Typography variant="body1">{apellido || "No disponible"}</Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Email</Typography>
-                    <Typography variant="body1">usuario@ejemplo.com</Typography>
+                    <Typography variant="body1">{email || "No disponible"}</Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Matrícula</Typography>
-                    <Typography variant="body1">12345</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>rol</Typography>
+                    <Typography variant="body1">{rol || "No disponible"}</Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Ubicación del consultorio</Typography>
-                    <Typography variant="body1">Av. Siempre Viva 123</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Teléfono</Typography>
+                    <Typography variant="body1">{telefono || "No disponible"}</Typography>
                   </Grid>
-                  
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Sexo Biológico</Typography>
+                    <Typography variant="body1">{sexoBiologico ? (sexoBiologico === "m" ? "Masculino" : "Femenino") : "No disponible"}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Matrícula Profesional</Typography>
+                    <Typography variant="body1">{matricula || "No disponible"}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: '#6c757d' }}>Especialidad</Typography>
+                    <Typography variant="body1">{especialidad || "No disponible"}</Typography>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -79,10 +98,10 @@ export const ProfilePage = () => {
         </Card>
       </Box>
 
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)} fullWidth maxWidth="md">
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <DialogTitle>Editar Perfil</DialogTitle>
         <DialogContent>
-          <EditProfileForm onSuccess={() => setIsOpen(false)} />
+          <EditProfileForm onClose={() => setIsOpen(false)} />
         </DialogContent>
       </Dialog>
     </DashboardLayout>

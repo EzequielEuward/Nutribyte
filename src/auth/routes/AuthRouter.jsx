@@ -1,24 +1,22 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'; // Importar useSelector
 import { LoginPage } from '../pages/LoginPage';
-import { DashboardPage } from '../../dashboard/pages/DashboardPage'; 
-
-
-const isAuthenticated = true; 
 
 export const AuthRouter = () => {
+  // Obtener el estado de autenticación desde Redux
+  const { status } = useSelector((state) => state.auth);
+
+  // Si ya está autenticado, redirigir a /home
+  if (status === 'authenticated') {
+    return <Navigate to="/home" />;
+  }
+
   return (
     <Routes>
       {/* Ruta de login */}
       <Route path="login" element={<LoginPage />} />
-
-      {isAuthenticated ? (
-        <Route path="*" element={<Navigate to="/dashboard" />} />
-      ) : (
-        <Route path="*" element={<Navigate to="/auth/login" />} />
-      )}
-
-      {/* Otras rutas para el dashboard */}
-      <Route path="/dashboard" element={<DashboardPage />} />
+      {/* Redirigir a login si no está autenticado */}
+      <Route path="*" element={<Navigate to="/auth/login" />} />
     </Routes>
   );
 };

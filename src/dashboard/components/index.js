@@ -10,6 +10,5 @@ export * from './food';
 
 export * from './profile';
 
-export * from './TurnosTable';
 
 export * from './progress';

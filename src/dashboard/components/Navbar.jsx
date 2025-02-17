@@ -1,41 +1,22 @@
 import { useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Box,
-  IconButton,
-  SwipeableDrawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
-import {
-  LightModeOutlined,
-  DarkModeOutlined,
-  SettingsOutlined,
-  PersonOutlined,
-  LogoutOutlined,
-} from "@mui/icons-material";
+import {AppBar,Toolbar,Typography,Box,IconButton,SwipeableDrawer,List,ListItem,ListItemButton,ListItemIcon,ListItemText,Divider,useTheme,useMediaQuery,} from "@mui/material";
+import {LightModeOutlined, DarkModeOutlined,SettingsOutlined,PersonOutlined,LogoutOutlined,} from "@mui/icons-material";
+
 import { useDispatch, useSelector } from "react-redux";
-import { toggleDarkMode } from "../../store/ui/uiSlice";
 import { useNavigate } from "react-router-dom";
-import { startLogout } from "../../store/auth/thunks"; // Importa el thunk para el logout
+
+import { startLogout } from "../../store/auth/"; 
+import { toggleDarkMode } from "../../store/ui/uiSlice";
+
 import LogoBlanco from "../../assets/LogoBlanco.png";
 import LogoNegro from "../../assets/LogoNegro.png";
 
-export const Navbar = ({ drawerWidth = 240 }) => {
+export const Navbar = ({ drawerWidth = 240 , username, rol}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isDarkMode = useSelector((state) => state.ui.isDarkMode);
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { nombre, apellido, rol } = useSelector((state) => state.auth); // Datos del usuario del store
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -53,10 +34,10 @@ export const Navbar = ({ drawerWidth = 240 }) => {
   };
 
   const handleLogout = () => {
-    dispatch(startLogout()); // Ejecuta el thunk para el logout
-    navigate("/"); // Redirige a la página inicial o de login
-    setDrawerOpen(false);
-  };
+    dispatch(startLogout());  
+    setDrawerOpen(false);  
+    navigate("/"); 
+};
 
   const drawerContent = (
     <Box
@@ -79,7 +60,7 @@ export const Navbar = ({ drawerWidth = 240 }) => {
         }}
       >
         <Typography variant="h6">
-          {nombre} {apellido}
+          {username} 
         </Typography>
         <Typography variant="body2">{rol}</Typography>
       </Box>

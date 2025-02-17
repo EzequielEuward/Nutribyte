@@ -5,9 +5,6 @@ import {
   ConfigPage, HistorialPeso, CaloriasConsumidasPage
 } from '../pages/';
 
-
-
-
 export const DashboardRouter = () => {
   return (
     <Routes>

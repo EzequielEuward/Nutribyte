@@ -1,70 +1,89 @@
-import { CheckingCredentials, login, logout } from './authSlice';
+import axios from "axios";
+import { checkingCredentials, login, logout } from "./authSlice";
 
-var URLuser = 'URLusuario';
-
-// Función reutilizable para realizar solicitudes HTTP
-const fetchData = async (url, method, body) => {
-  const response = await fetch(url, {
-    method,
+const api = axios.create({
+    baseURL: "https://localhost:7041/api/Usuarios",
     headers: {
-      'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        "Accept": "application/json",
     },
-    body: JSON.stringify(body),
-  });
+    withCredentials: true,
+});
 
-  if (!response.ok) {
-    throw new Error('Error en la conexión con el servidor');
-  }
-
-  return await response.json();
-};
-
-export const startLoginWithDniAndPassword = ({ dni, password }) => {
-  return async (dispatch) => {
-    dispatch(CheckingCredentials()); 
-
-    const url = `${URL}`; 
-
-    try {
-    
-      const data = await fetchData(url, 'POST', { dni, password });
-
-      if (!data) {
-        throw new Error('Error en la autenticación');
+export const startLoginWithUsernameAndPassword = ({ username, password }) => {
+    return async (dispatch) => {
+      dispatch(checkingCredentials());
+  
+      try {
+        const { data } = await api.post("/login", { username, password });
+  
+        console.log("Respuesta de la API:", data);
+  
+        if (data.isSuccess) {
+          const user = data.result;
+          const token = user.token;
+          const persona = user.usuario?.persona || {};
+          const userPersona = {
+            nombre: persona.nombre || "",
+            apellido: persona.apellido || "",
+            email: persona.email || "",
+            telefono: persona.telefono || "",
+            sexoBiologico: persona.sexoBiologico || "",
+          };
+          const matricula = user.usuario?.matricula_Profesional || "";
+          const especialidad = user.usuario?.especialidad || "";
+          const rol = user.usuario?.rol || "";
+  
+          // Despachamos el login con todos los datos requeridos
+          dispatch(login({
+            uid: user.idUsuario,
+            username: username,
+            rol: rol,
+            persona: userPersona,  // Toda la información de persona
+            matricula: matricula,   // Asignamos matricula
+            especialidad: especialidad,   // Asignamos especialidad
+            token,
+          }));
+  
+          // Guardamos los datos relevantes en sessionStorage
+          sessionStorage.setItem('authToken', token);
+          sessionStorage.setItem('userData', JSON.stringify({
+            idUsuario: user.idUsuario,
+            userName: username,
+            rol: rol,
+            persona: userPersona,  // Guardamos persona también
+            matricula,
+            especialidad,
+          }));
+  
+          console.log(sessionStorage.getItem('userData'));
+  
+          return { isSuccess: true, result: { usuario: user, token } };
+        } else {
+          console.error("Error al hacer login:", data.message);
+          dispatch(logout({ errorMessage: data.message }));
+          return { isSuccess: false, errorMessage: data.message };
+        }
+      } catch (error) {
+        const errorMessage = error.response?.data?.message || error.message || "Error desconocido";
+        console.error("Error al iniciar sesión:", errorMessage);
+        dispatch(logout({ errorMessage }));
+        return { isSuccess: false, errorMessage };
       }
-
-      if (!data.activo) {
-        throw new Error('El usuario no está activo.');
-      }
-
-   
-      dispatch(
-        login({
-          uid: data.idUsuario,
-          username: data.userName,
-          rol: data.rol,
-          nombre: data.nombre,
-          apellido: data.apellido,
-        })
-      );
-
-      return data; 
-    } catch (error) {
-      dispatch(logout({ errorMessage: error.message })); 
-      return null; 
-    }
+    };
   };
-};
+  
 
+// **Cerrar sesión**
 export const startLogout = () => {
-  return async (dispatch) => {
-    try {
-
-       await fetchData(`${URL}/logout`, 'POST', {});
-
-      dispatch(logout());
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error.message);
-    }
-  };
+    return async (dispatch) => {
+        try {
+            // Eliminar datos de sessionStorage
+            sessionStorage.removeItem("authToken");
+            sessionStorage.removeItem("userData");
+            dispatch(logout()); // Despachar logout
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
+    };
 };

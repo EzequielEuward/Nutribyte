@@ -3,34 +3,42 @@ import { useDispatch } from 'react-redux';
 import { Button, Card, CardContent, CardActions, CardHeader, TextField, IconButton, Typography, Box } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { startLoginWithDniAndPassword } from '../../store/auth/'; 
+import { startLoginWithUsernameAndPassword } from '../../store/auth/';  // Asegúrate de que la acción esté preparada para usar 'username' y 'password'
 import LogoOficial from '../../assets/LogoOficial.png';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const LoginPage = () => {
-  const [dni, setDni] = useState('');
+
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage(null);
+    setIsLoading(true);
 
-    if (!dni || !password) {
+    if (!username || !password) {
       setErrorMessage('Por favor, completa todos los campos.');
+      setIsLoading(false);
       return;
     }
 
-    if (!/^\d{7,8}$/.test(dni)) {
-      setErrorMessage('El DNI ingresado no es válido.');
-      return;
-    }
+    const result = await dispatch(startLoginWithUsernameAndPassword({ username, password }));
+    setIsLoading(false);
 
-    const result = await dispatch(startLoginWithDniAndPassword({ dni, password }));
+    if (result?.isSuccess && result.result.usuario.activo) {
+      // Guardar la información del usuario en sessionStorage
+      const user = result.result.usuario;
+      const token = result.result.token;
+      sessionStorage.setItem('authToken', token);
+      sessionStorage.setItem('userData', JSON.stringify(user));
 
-    if (result?.username) {
+      console.log("Inicio de sesión exitoso", result);
       navigate('/home');
     } else {
       setErrorMessage(result?.errorMessage || 'Credenciales inválidas o usuario inactivo.');
@@ -68,14 +76,14 @@ export const LoginPage = () => {
         <CardContent>
           <form onSubmit={handleSubmit}>
             <TextField
-              label="DNI"
+              label="Nombre de usuario"
               type="text"
               fullWidth
               margin="normal"
               required
-              value={dni}
-              onChange={(e) => setDni(e.target.value)}
-              placeholder="Ingresa tu DNI"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Usuario"
             />
             <TextField
               label="Contraseña"
@@ -99,8 +107,18 @@ export const LoginPage = () => {
                 {errorMessage}
               </Typography>
             )}
-            <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }}>
-              Iniciar Sesión
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{ mt: 3 }}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <CircularProgress size={24} sx={{ color: 'white' }} />
+              ) : (
+                'Iniciar Sesión'
+              )}
             </Button>
           </form>
         </CardContent>

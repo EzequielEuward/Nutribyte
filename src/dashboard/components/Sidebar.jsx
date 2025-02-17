@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
+import React,{ useState } from 'react';
 import { Box, Divider, Drawer, List, Toolbar, Typography, IconButton, ListItem, ListItemIcon, ListItemText, CssBaseline, AppBar, Collapse } from '@mui/material';
 import { Archive, Menu as MenuIcon, CalendarToday, ExpandMore, ExpandLess, ChevronRight } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+
+import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../../mock/data/menuItems';
 import { useTheme } from '@emotion/react';
+import { useSelector } from 'react-redux';
 
-export const Sidebar = ({ drawerWidth = 280 }) => {
+export const Sidebar = ({ drawerWidth = 280, username, rol }) => {
 
   const { isDarkMode } = useSelector(state => state.ui);
-
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenus, setOpenMenus] = useState({});
   const [selectedMenu, setSelectedMenu] = useState('');
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const theme = useTheme();
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -26,8 +27,9 @@ export const Sidebar = ({ drawerWidth = 280 }) => {
     setSelectedMenu(menu);
   };
 
+
   const handleNavigate = (path) => {
-    navigate(path); // Navegar programáticamente
+    navigate(path); 
   };
 
   const linkColor = isDarkMode ? '#fff' : '#000';
@@ -36,8 +38,8 @@ export const Sidebar = ({ drawerWidth = 280 }) => {
     <Box
       sx={{
         width: drawerWidth,
-        backgroundColor: theme.palette.background.paper, 
-        color: theme.palette.text.primary, 
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
         '& .MuiListItem-root': {
           '&:hover': {
             backgroundColor: isDarkMode ? '#333' : '#f0f0f0',
@@ -51,7 +53,7 @@ export const Sidebar = ({ drawerWidth = 280 }) => {
     >
       <Toolbar>
         <Typography variant="h6" noWrap component="div">
-          Displayname
+          {username}
         </Typography>
       </Toolbar>
       <Divider sx={{ backgroundColor: isDarkMode ? '#444' : '#ddd' }} />
@@ -61,7 +63,7 @@ export const Sidebar = ({ drawerWidth = 280 }) => {
           <React.Fragment key={index}>
             <ListItem
               button
-              onClick={() => menu.submenus ? handleClick(menu.text) : handleNavigate(menu.link)} 
+              onClick={() => menu.submenus ? handleClick(menu.text) : handleNavigate(menu.link)}
               selected={selectedMenu === menu.text}
             >
               <ListItemIcon>{menu.icon}</ListItemIcon>
@@ -74,7 +76,7 @@ export const Sidebar = ({ drawerWidth = 280 }) => {
                   {menu.submenus.map((submenu, subIndex) => (
                     <ListItem
                       button
-                      onClick={() => handleNavigate(submenu.link)} 
+                      onClick={() => handleNavigate(submenu.link)}
                       sx={{ pl: 4 }}
                       key={subIndex}
                     >
@@ -102,7 +104,7 @@ export const Sidebar = ({ drawerWidth = 280 }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" sx={{ color: isDarkMode }} noWrap component="div">
-            Displayname
+            {rol}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -114,7 +116,7 @@ export const Sidebar = ({ drawerWidth = 280 }) => {
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: drawerWidth,
-            backgroundColor: theme.palette.background.paper, 
+            backgroundColor: theme.palette.background.paper,
           },
         }}
         open
