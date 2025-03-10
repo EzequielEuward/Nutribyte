@@ -11,17 +11,13 @@ export const App = () => {
     const userData = sessionStorage.getItem("userData");
     const authToken = sessionStorage.getItem("authToken");
 
-    console.log("userData:", userData); // Verificar si se obtiene el dato
-    console.log("authToken:", authToken); // Verificar si se obtiene el token
-
     if (userData && authToken) {
       const user = JSON.parse(userData);
-      console.log("user:", user); // Verificar que los datos son correctos
       dispatch(
         login({
           uid: user.idUsuario,
           username: user.userName,
-          persona: user.persona,  // Aquí es donde deberías asignar la persona
+          persona: user.persona,  
           rol: user.rol,
           matricula: user.matricula,
           especialidad: user.especialidad,

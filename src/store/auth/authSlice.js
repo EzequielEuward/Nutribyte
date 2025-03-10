@@ -14,8 +14,8 @@ export const authSlice = createSlice({
             telefono: "",
             sexoBiologico: "",
         },
-        matricula: "",  // Aquí se asigna directamente fuera de persona
-        especialidad: "",  // Aquí también se asigna directamente
+        matricula: "",
+        especialidad: "",
         token: "",
         errorMessage: null,
     },
@@ -28,17 +28,13 @@ export const authSlice = createSlice({
             state.uid = payload.uid;
             state.username = payload.username;
             state.rol = payload.rol;
-
-            // Asignación de los datos de persona
-            state.persona = payload.persona;  // Aquí asignamos todo el objeto persona
-
-            // Asignación de los campos adicionales directamente
-            state.matricula = payload.matricula;  // Ahora matricula se asigna directamente
-            state.especialidad = payload.especialidad;  // Y especialidad también
+            state.persona = payload.persona;
+            state.matricula = payload.matricula;
+            state.especialidad = payload.especialidad;
             state.token = payload.token;
             state.errorMessage = null;
         },
-        logout: (state, { payload }) => {
+        logout: (state) => {  // ✅ Corregido: ahora siempre limpia el errorMessage
             state.status = "not-authenticated";
             state.uid = null;
             state.username = "";
@@ -53,7 +49,7 @@ export const authSlice = createSlice({
             state.matricula = "";
             state.especialidad = "";
             state.token = "";
-            state.errorMessage = payload?.errorMessage || null;
+            state.errorMessage = null;  // ✅ Corregido: ahora se limpia correctamente el errorMessage
         },
         setError: (state, { payload }) => {
             state.status = "not-authenticated";
@@ -67,3 +63,4 @@ export const { login, logout, checkingCredentials, setError } = authSlice.action
 
 // Exportar el reducer
 export default authSlice.reducer;
+    

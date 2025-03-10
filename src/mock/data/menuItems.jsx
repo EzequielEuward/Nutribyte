@@ -9,6 +9,11 @@ export const menuItems = [
     link: "/home/",
   },
   {
+    text: "Turnos",
+    icon: <CalendarToday style={iconStyle} />,
+    link: "/home/turnos",
+  },
+  {
     text: "Pacientes",
     icon: <Person style={iconStyle} />,  
     link: "/home/paciente",
@@ -24,8 +29,15 @@ export const menuItems = [
     link: "/home/alimentos",
     submenus: [
       { text: "Tabla de alimentos", link: "/home/alimentos" },
-      { text: "Recetas", link: "/home/recetas" },
-      { text: "Planes alimenticios", link: "/home/planes" },
+      { text: "NutrIdeas", link: "/home/recetas" },
+      {
+        text: "Plan nutricional",
+        icon: <BarChart style={iconStyle} />,
+        link: "/home/planes",
+        submenus: [
+          { text: "Plan alimenticio", link: "/home/progreso/historial-peso" },
+        ],
+      },
     ],
   },
   {
@@ -38,10 +50,6 @@ export const menuItems = [
       { text: "Macronutrientes", link: "/home/progreso/macronutrientes" },
     ],
   },
-  {
-    text: "Turnos",
-    icon: <CalendarToday style={iconStyle} />,
-    link: "/home/turnos",
-  },
+  
  
 ];

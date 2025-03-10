@@ -1,74 +1,41 @@
 import { useState } from "react";
 import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  IconButton,
-  Typography,
-  TablePagination,
-  TextField,
-  TableSortLabel,
-  Toolbar,
+  Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Typography,
+  TablePagination, TextField, TableSortLabel, Toolbar
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility";
-import { DeletePatientModal } from "./DeletePatientModal";
 
 export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelete }) => {
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [patientToDelete, setPatientToDelete] = useState(null);
-
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortColumn, setSortColumn] = useState("dni");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
+  const handleChangePage = (_, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
   const handleOpenDeleteModal = (patient) => {
-    setPatientToDelete(patient);
-    setDeleteModalOpen(true);
-  };
-
-  const handleCloseDeleteModal = () => {
-    setDeleteModalOpen(false);
-    setPatientToDelete(null);
-  };
-
-  const handleConfirmDelete = () => {
-    if (patientToDelete) {
-      onDelete(patientToDelete);
-      handleCloseDeleteModal();
-    }
+    onDelete(patient); // Pasa el objeto completo del paciente a onDelete
   };
 
   const filteredPatients = patients
+    .filter((patient) => patient.activo)
     .filter((patient) =>
-      [patient.dni.toString(), patient.apellido, patient.nombre]
+      [patient.persona.dni.toString(), patient.persona.apellido, patient.persona.nombre]
         .some((field) =>
           field.toLowerCase().includes(searchQuery.toLowerCase())
         )
     )
     .sort((a, b) => {
-      if (sortOrder === "asc") {
-        return a[sortColumn].toString().localeCompare(b[sortColumn].toString());
-      } else {
-        return b[sortColumn].toString().localeCompare(a[sortColumn].toString());
-      }
+      return sortOrder === "asc"
+        ? a.persona[sortColumn].toString().localeCompare(b.persona[sortColumn].toString())
+        : b.persona[sortColumn].toString().localeCompare(a.persona[sortColumn].toString());
     });
 
   return (
@@ -116,14 +83,14 @@ export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelet
                 {filteredPatients
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((patient) => (
-                    <TableRow key={patient.id}>
-                      <TableCell>{patient.dni}</TableCell>
-                      <TableCell>{patient.apellido}</TableCell>
-                      <TableCell>{patient.nombre}</TableCell>
-                      <TableCell>{patient.sexo === "m" ? "Masculino" : "Femenino"}</TableCell>
-                      <TableCell>{patient.email}</TableCell>
+                    <TableRow key={patient.idPaciente}>
+                      <TableCell>{patient.persona.dni}</TableCell>
+                      <TableCell>{patient.persona.apellido}</TableCell>
+                      <TableCell>{patient.persona.nombre}</TableCell>
+                      <TableCell>{patient.persona.sexoBiologico === "m" ? "Masculino" : "Femenino"}</TableCell>
+                      <TableCell>{patient.persona.email}</TableCell>
                       <TableCell>
-                        <IconButton onClick={() => onViewPatient(patient)} aria-label="ver">
+                        <IconButton onClick={() => onViewPatient(patient)}>
                           <VisibilityIcon />
                         </IconButton>
                         <IconButton onClick={() => onViewAnamnesis(patient)} aria-label="ver anamnesis">
@@ -150,13 +117,6 @@ export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelet
           </TableContainer>
         )}
       </Paper>
-
-      <DeletePatientModal
-        open={deleteModalOpen}
-        onClose={handleCloseDeleteModal}
-        patient={patientToDelete}
-        onConfirm={handleConfirmDelete}
-      />
     </Box>
   );
 };

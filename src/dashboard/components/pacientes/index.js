@@ -2,7 +2,6 @@
 export * from './PatientTable';
 export * from './PatientForm';
 export * from './PatientCard';
-export * from './DeletePatientModal';
 export * from './PatientDrawer';
 export * from './PatientAnamnesis';
 

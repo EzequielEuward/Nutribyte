@@ -8,12 +8,13 @@ const drawerWidth = 280;
 export const DashboardLayout = ({ children }) => {
   const { username, rol } = useSelector((state) => state.auth);
 
+
   return (
     <AppTheme>
       <Box sx={{ display: 'flex' }} className='animate__animated animate__fadeIn animate__faster'>
         <Navbar drawerWidth={drawerWidth} username={username} rol={rol} />
         <Sidebar drawerWidth={drawerWidth} username={username} />
-        
+
         <Box
           component='main'
           sx={{

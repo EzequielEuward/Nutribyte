@@ -11,28 +11,13 @@ export const PatientAnamnesis = ({ patient }) => {
   return (
     <Box>
       <Tabs value={tabIndex} onChange={handleTabChange} centered>
-        <Tab label="Información básica" />
         <Tab label="Anamnesis" />
         <Tab label="Observaciones" />
       </Tabs>
 
-      {tabIndex === 0 && (
-        <Card>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>
-              Información del paciente
-            </Typography>
-            <Divider />
-            <Typography variant="body1">Nombre: {patient.nombre}</Typography>
-            <Typography variant="body1">Apellido: {patient.apellido}</Typography>
-            <Typography variant="body1">DNI: {patient.dni}</Typography>
-            <Typography variant="body1">Sexo: {patient.sexo === "m" ? "Masculino" : "Femenino"}</Typography>
-            <Typography variant="body1">Email: {patient.email}</Typography>
-          </CardContent>
-        </Card>
-      )}
+      
 
-      {tabIndex === 1 && (
+      {tabIndex === 0 && (
         <Card>
           <CardContent>
             <Typography variant="h5" gutterBottom>
@@ -55,7 +40,7 @@ export const PatientAnamnesis = ({ patient }) => {
         </Card>
       )}
 
-      {tabIndex === 2 && (
+      {tabIndex === 1 && (
         <Card>
           <CardContent>
             <Typography variant="h5" gutterBottom>

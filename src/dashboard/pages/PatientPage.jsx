@@ -1,83 +1,117 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { Typography, Box, Button, CircularProgress } from "@mui/material";
 import { DashboardLayout } from "../../dashboard/layout/DashboardLayout";
-import { PatientForm, PatientTable, PatientCard, DeletePatientModal, PatientAnamnesis, PatientDrawer  } from "../components";
+import { PatientForm, PatientTable, PatientCard, PatientAnamnesis, PatientDrawer } from "../components";
+import { useSelector, useDispatch } from "react-redux";
+import { crearPaciente, desactivarPaciente, listarPacientes, obtenerPacientePorId } from "../../store/patient/";
+import { limpiarPacienteSeleccionado } from "../../store/patient/";
+
+import Swal from 'sweetalert2';
 
 export const PatientPage = () => {
   const theme = useTheme();
-
-  const initialPatients = [
-    {
-      id: 1,
-      dni: "12345678",
-      apellido: "González",
-      nombre: "Juan",
-      sexo: "m",
-      email: "juan.gonzalez@example.com",
-    },
-    {
-      id: 2,
-      dni: "87654321",
-      apellido: "Pérez",
-      nombre: "María",
-      sexo: "f",
-      email: "maria.perez@example.com",
-    },
-  ];
+  const dispatch = useDispatch();
+  const { isLoading, error, pacientes, pacienteSeleccionado } = useSelector((state) => state.patients);
 
   const [formOpen, setFormOpen] = useState(false);
-  const [patients, setPatients] = useState(initialPatients);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [showAnamnesis, setShowAnamnesis] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState(null);
-
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-
-  // Manejo de modal de eliminación
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteReason, setDeleteReason] = useState("");
   const [patientToDelete, setPatientToDelete] = useState(null);
 
-
+  // Función para manejar la eliminación de un paciente
   const handleDelete = (patient) => {
-    setPatientToDelete(patient);
-    setDeleteModalOpen(true);
+    setPatientToDelete(patient); // Guarda el objeto completo del paciente
+
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción desactivará al paciente.",
+      icon: "warning",
+      input: "select",
+      inputOptions: {
+        "Motivo1": "Motivo 1",
+        "Motivo2": "Motivo 2",
+        "Motivo3": "Motivo 3"
+      },
+      inputPlaceholder: "Selecciona un motivo",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      preConfirm: (selectedReason) => {
+        if (!selectedReason) {
+          Swal.showValidationMessage("Debes seleccionar un motivo");
+        }
+        return selectedReason;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setDeleteReason(result.value);
+        handleConfirmDelete(patient.idPaciente); // Pasa el ID del paciente
+      }
+    });
   };
 
+  // Función para confirmar la eliminación del paciente
+  const handleConfirmDelete = (idPaciente) => {
+    if (!deleteReason.trim()) {
+      alert("Por favor selecciona un motivo para la eliminación.");
+      return;
+    }
+
+    dispatch(desactivarPaciente(idPaciente))
+      .unwrap()
+      .then(() => {
+        dispatch(listarPacientes()); // Actualizar la lista de pacientes después de la desactivación
+        Swal.fire("Éxito", "El paciente ha sido desactivado correctamente.", "success");
+      })
+      .catch((error) => {
+        console.error("Error al desactivar paciente:", error);
+        Swal.fire("Error", "Hubo un problema al desactivar el paciente.", "error");
+      });
+  };
+
+  // Función para abrir el drawer y ver los detalles del paciente
   const handleViewPatient = (patient) => {
-    setSelectedPatient(patient);
+    dispatch(obtenerPacientePorId(patient.idPaciente));
     setDrawerOpen(true);
-    setShowAnamnesis(false);
   };
 
+  // Función para mostrar la anamnesis del paciente
   const handleViewAnamnesis = (patient) => {
-    setSelectedPatient(patient);
     setShowAnamnesis(true);
     setDrawerOpen(false);
   };
 
+  // Función para cerrar la anamnesis
   const handleCloseAnamnesis = () => {
     setShowAnamnesis(false);
-    setSelectedPatient(null);
   };
 
-  const handleConfirmDelete = () => {
-    if (deleteReason) {
-      console.log(`Eliminando al paciente ${patientToDelete?.nombre} ${patientToDelete?.apellido} por el motivo: ${deleteReason}`);
-      // Llama a tu API o thunk aquí para eliminar el paciente
-      handleCloseDeleteModal();
-    } else {
-      alert("Por favor selecciona un motivo para la eliminación.");
+  // Función para cerrar el drawer
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+    dispatch(limpiarPacienteSeleccionado()); // Limpia el paciente seleccionado en Redux
+  };
+
+  // Efecto para cargar la lista de pacientes al montar el componente
+  useEffect(() => {
+    dispatch(listarPacientes());
+  }, [dispatch]);
+
+  // Función para crear un nuevo paciente
+  const handleCreatePatient = async (patientData) => {
+    console.log("Datos enviados a la API:", JSON.stringify(patientData, null, 2));
+    try {
+      await dispatch(crearPaciente(patientData)).unwrap();
+      console.log("Paciente creado con éxito");
+      dispatch(listarPacientes()); // Recarga la lista de pacientes después de crear uno
+      setFormOpen(false);
+      Swal.fire("Éxito", "Paciente creado correctamente.", "success");
+    } catch (error) {
+      console.error("Error al crear paciente:", error);
+      Swal.fire("Error", "Hubo un problema al crear el paciente.", "error");
     }
-  };
-
-  const handleCloseDeleteModal = () => {
-    setDeleteModalOpen(false);
-    setDeleteReason("");
-    setPatientToDelete(null);
   };
 
   return (
@@ -86,61 +120,48 @@ export const PatientPage = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Gestión de Pacientes
         </Typography>
-        <PatientCard patients={patients} />
 
-        {/* Botón para agregar pacientes */}
-        <Box sx={{ display: "flex", justifyContent: "flex", marginBottom: "16px" }}>
+        <PatientCard patients={pacientes} />
+
+        <Box sx={{ display: "flex", justifyContent: "flex-start", marginBottom: "16px" }}>
           <Button
             variant="contained"
             color="primary"
             onClick={() => setFormOpen(true)}
+            sx={{ fontSize: "1.2rem", padding: "12px 24px", width: "100%" }}
           >
-            Agregar Paciente
+            Registrar Paciente
           </Button>
         </Box>
 
-        {/* Tabla de pacientes */}
         {isLoading ? (
           <CircularProgress />
         ) : error ? (
-          <Typography color="error">{error}</Typography>
+          <Typography color="error">{typeof error === 'string' ? error : error?.title || 'Error desconocido'}</Typography>
         ) : (
           <>
-            <PatientForm open={formOpen} onClose={() => setFormOpen(false)} />
+            <PatientForm
+              open={formOpen}
+              onClose={() => setFormOpen(false)}
+              onSubmit={handleCreatePatient}
+            />
+
             <PatientTable
-              patients={patients}
+              patients={pacientes}
               onViewAnamnesis={handleViewAnamnesis}
               onViewPatient={handleViewPatient}
-              onDelete={handleDelete}
-              setDrawerOpen={setDrawerOpen}
-              setSelectedPatient={setSelectedPatient}
+              onDelete={(patient) => handleDelete(patient)}
             />
-            <DeletePatientModal
-              open={deleteModalOpen}
-              onClose={handleCloseDeleteModal}
-              handleConfirmDelete={handleConfirmDelete}
-              selectedDeleteReason={deleteReason}
-              setSelectedDeleteReason={setDeleteReason}
-              patientToDelete={patientToDelete}
-            />
-            {showAnamnesis && (
-              <PatientAnamnesis patient={selectedPatient} onClose={handleCloseAnamnesis} />
-            )}
+
+            {showAnamnesis && <PatientAnamnesis patient={pacienteSeleccionado} onClose={handleCloseAnamnesis} />}
 
             <PatientDrawer
-              drawerOpen={drawerOpen && !showAnamnesis} 
+              drawerOpen={drawerOpen}
               setDrawerOpen={setDrawerOpen}
-              selectedPatient={selectedPatient}
+              selectedPatient={pacienteSeleccionado}
             />
           </>
         )}
-
-        <PatientDrawer
-          drawerOpen={drawerOpen}
-          setDrawerOpen={setDrawerOpen}
-          selectedPatient={selectedPatient}
-        />
-
       </Box>
     </DashboardLayout>
   );
