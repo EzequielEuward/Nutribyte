@@ -16,4 +16,5 @@ export * from './HistorialPeso';
 
 export * from './CaloriasCosumidaPage';
 
-
+export * from './VersionPage';
+export * from './ControlDeUsuario';

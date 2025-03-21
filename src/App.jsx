@@ -8,9 +8,9 @@ export const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const userData = sessionStorage.getItem("userData");
-    const authToken = sessionStorage.getItem("authToken");
-
+    const userData = localStorage.getItem("userData");
+    const authToken = localStorage.getItem("authToken");
+  
     if (userData && authToken) {
       const user = JSON.parse(userData);
       dispatch(

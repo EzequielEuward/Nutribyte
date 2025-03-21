@@ -17,19 +17,16 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
     try {
       const { data } = await api.post("/login", { username, password });
 
-      console.log("Respuesta de la API:", data);
-
       if (data.isSuccess && data.result) {
-        const user = data.result.usuario; // ✅ Ahora accede correctamente a `usuario`
-        const token = data.result.token; // ✅ Ahora accede correctamente al `token`
+        const user = data.result.usuario; 
+        const token = data.result.token; 
 
-        console.log("Usuario recibido:", user);
 
         if (!user || !user.idUsuario) {
           throw new Error("El ID del usuario no fue recibido correctamente.");
         }
 
-        const persona = user.persona || {}; // ✅ Acceso seguro a `persona`
+        const persona = user.persona || {}; 
         const userPersona = {
           nombre: persona.nombre || "",
           apellido: persona.apellido || "",
@@ -42,7 +39,6 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
         const especialidad = user.especialidad || "";
         const rol = user.rol || "";
 
-        // ✅ Despachar la acción de login con los datos corregidos
         dispatch(
           login({
             uid: user.idUsuario,
@@ -55,12 +51,8 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
           })
         );
 
-        // ✅ Guardar los datos en `sessionStorage`
-        sessionStorage.setItem(
-          "authToken",
-          token
-        );
-        sessionStorage.setItem(
+        localStorage.setItem("authToken", token);
+        localStorage.setItem(
           "userData",
           JSON.stringify({
             idUsuario: user.idUsuario,
@@ -71,6 +63,7 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
             especialidad,
           })
         );
+
 
         return { isSuccess: true, result: { usuario: user, token } };
       } else {
@@ -92,8 +85,8 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
 export const startLogout = () => {
   return async (dispatch) => {
     try {
-      sessionStorage.removeItem("authToken");
-      sessionStorage.removeItem("userData");
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userData");
       dispatch(logout());
     } catch (error) {
       console.error("Error al cerrar sesión:", error);

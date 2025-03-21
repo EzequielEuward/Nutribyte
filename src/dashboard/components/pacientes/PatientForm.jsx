@@ -7,7 +7,7 @@ export const PatientForm = ({ open, onClose, onSubmit }) => {
     dni: "",
     apellido: "",
     nombre: "",
-    fechaNacimiento: "", // Se elimina del estado inicial
+    fechaNacimiento: "",
     sexo: "",
     email: "",
     telefono: "",
@@ -24,11 +24,9 @@ export const PatientForm = ({ open, onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { fechaNacimiento, ...dataWithoutDOB } = formData; // Excluir fechaNacimiento antes de enviarlo
-    console.log("Datos del formulario:", dataWithoutDOB);  // Agregar este log para verificar
-    onSubmit(dataWithoutDOB);
+    console.log("Datos del formulario:", formData);
+    onSubmit(formData); // Envía todo el formData, incluyendo fechaNacimiento
   };
-
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>

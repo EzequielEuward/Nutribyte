@@ -1,13 +1,6 @@
 import { Card, CardContent, CardHeader, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, Box, useMediaQuery, useTheme } from "@mui/material";
 
-const recentAppointments = [
-  { id: 1, patient: "Ana García", date: "2023-06-15", time: "10:00 AM", status: "Completado" },
-  { id: 2, patient: "Carlos López", date: "2023-06-15", time: "11:30 AM", status: "Completado" },
-  { id: 3, patient: "María Rodríguez", date: "2023-06-15", time: "2:00 PM", status: "En progreso" },
-  { id: 4, patient: "Juan Pérez", date: "2023-06-15", time: "3:30 PM", status: "Pendiente" },
-];
-
-export const RecentAppointments = () => {
+export const RecentAppointments = ({ turnos }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 
 
@@ -40,9 +33,9 @@ export const RecentAppointments = () => {
         {isMobile ? (
           // Vista en dispositivos móviles
           <Box display="flex" flexDirection="column" gap={2}>
-            {recentAppointments.map((appointment) => (
+            {turnos.map((turno) => (
               <Box
-                key={appointment.id}
+                key={turno.idTurno}
                 display="flex"
                 flexDirection="column"
                 gap={1}
@@ -54,18 +47,18 @@ export const RecentAppointments = () => {
                 }}
               >
                 <Typography variant="body1" fontWeight="bold">
-                  Paciente: {appointment.patient}
+                  Paciente: {turno.paciente}
                 </Typography>
                 <Typography variant="body2">
-                  Fecha: {appointment.date}
+                  Fecha: {new Date(turno.fechaInicio).toLocaleDateString()}
                 </Typography>
                 <Typography variant="body2">
-                  Hora: {appointment.time}
+                  Hora: {new Date(turno.fechaInicio).toLocaleTimeString()}
                 </Typography>
                 <Chip
-                  label={appointment.status}
+                  label={turno.estado}
                   sx={{
-                    ...statusColors[appointment.status],
+                    ...statusColors[turno.estado],
                     fontWeight: "bold",
                     borderRadius: 2,
                     alignSelf: "start",
@@ -103,16 +96,16 @@ export const RecentAppointments = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {recentAppointments.map((appointment) => (
-                  <TableRow key={appointment.id}>
-                    <TableCell>{appointment.patient}</TableCell>
-                    <TableCell>{appointment.date}</TableCell>
-                    <TableCell>{appointment.time}</TableCell>
+                {turnos.map((turno) => (
+                  <TableRow key={turno.idTurno}>
+                    <TableCell>{turno.paciente}</TableCell>
+                    <TableCell>{new Date(turno.fechaInicio).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(turno.fechaInicio).toLocaleTimeString()}</TableCell>
                     <TableCell>
                       <Chip
-                        label={appointment.status}
+                        label={turno.estado}
                         sx={{
-                          ...statusColors[appointment.status],
+                          ...statusColors[turno.estado],
                           fontWeight: "bold",
                           borderRadius: 2,
                         }}

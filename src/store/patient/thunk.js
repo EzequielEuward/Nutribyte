@@ -5,20 +5,32 @@ export const crearPaciente = createAsyncThunk(
   "pacientes/crear",
   async (datosPaciente, { dispatch, rejectWithValue }) => {
     try {
+      console.log("Datos recibidos en el thunk:", datosPaciente);
+
+      if (!datosPaciente.fechaNacimiento) {
+        throw new Error("La fecha de nacimiento está vacía o es inválida");
+      }
+
+      const fechaNacimiento = new Date(datosPaciente.fechaNacimiento);
+
+      if (isNaN(fechaNacimiento.getTime())) {
+        throw new Error("Fecha de nacimiento inválida");
+      }
+
       const paciente = {
-        historiaClinica: datosPaciente.historialClinico, // Cambié a minúscula para que coincida con la API
-        persona: { // Cambié a minúscula
+        historiaClinica: datosPaciente.historialClinico,
+        persona: {
           dni: Number(datosPaciente.dni),
           apellido: datosPaciente.apellido,
           nombre: datosPaciente.nombre,
-          fechaNacimiento: datosPaciente.fechaNacimiento || "2025-02-20", // Intenta usar la fecha que ingrese el usuario
+          fechaNacimiento: fechaNacimiento.toISOString().split('T')[0], // Formato YYYY-MM-DD
           sexoBiologico: datosPaciente.sexo,
           email: datosPaciente.email,
           telefono: datosPaciente.telefono,
         }
       };
 
-      console.log("Enviando datos:", paciente);
+      console.log("Paciente a enviar:", JSON.stringify(paciente, null, 2));
 
       const response = await axios.post("https://localhost:7041/api/Pacientes", paciente, {
         headers: {
@@ -26,7 +38,6 @@ export const crearPaciente = createAsyncThunk(
         },
       });
 
-      console.log("Respuesta de la API:", response);
       return response.data;
 
     } catch (error) {
@@ -43,7 +54,6 @@ export const listarPacientes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("https://localhost:7041/api/Pacientes");
-      console.log(response.data)
 
       return response.data; // Retornamos la lista de pacientes que devuelve la API
     } catch (error) {

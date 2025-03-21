@@ -6,6 +6,7 @@ import { PatientForm, PatientTable, PatientCard, PatientAnamnesis, PatientDrawer
 import { useSelector, useDispatch } from "react-redux";
 import { crearPaciente, desactivarPaciente, listarPacientes, obtenerPacientePorId } from "../../store/patient/";
 import { limpiarPacienteSeleccionado } from "../../store/patient/";
+import { format } from "date-fns";
 
 import Swal from 'sweetalert2';
 
@@ -99,13 +100,18 @@ export const PatientPage = () => {
     dispatch(listarPacientes());
   }, [dispatch]);
 
-  // Función para crear un nuevo paciente
+
+
   const handleCreatePatient = async (patientData) => {
-    console.log("Datos enviados a la API:", JSON.stringify(patientData, null, 2));
+    if (patientData.fechaNacimiento) {
+      patientData.fechaNacimiento = format(new Date(patientData.fechaNacimiento), "yyyy-MM-dd");
+    }
+    console.log("Fecha de nacimiento enviada:", patientData.fechaNacimiento);
+    console.log("Fecha formateada:", patientData.fechaNacimiento);
+
     try {
       await dispatch(crearPaciente(patientData)).unwrap();
-      console.log("Paciente creado con éxito");
-      dispatch(listarPacientes()); // Recarga la lista de pacientes después de crear uno
+      dispatch(listarPacientes());
       setFormOpen(false);
       Swal.fire("Éxito", "Paciente creado correctamente.", "success");
     } catch (error) {

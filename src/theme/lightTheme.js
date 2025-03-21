@@ -32,6 +32,13 @@ export const lightTheme = createTheme({
       control: { background: '#E8F5E9', text: '#43A047' },
       reminder: { background: '#FFF8E1', text: '#FF9800' },  // Fondo más claro y texto amarillo fuerte
     },
+    estadoTurnos: {
+      disponible: { background: '#D1E8FF', text: '#1565C0' },
+      pendienteConfirmacion: { background: '#FFF3E0', text: '#EF6C00' },
+      cancelado: { background: '#FFEBEE', text: '#D32F2F' },
+      confirmado: { background: '#E8F5E9', text: '#388E3C' },
+      completado: { background: '#E0F2F1', text: '#00695C' },
+    },
   },
 });
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { addHours } from "date-fns";
+import { addHours, addMinutes } from "date-fns";
 
 const API_TURNOS = "https://localhost:7041/api/Turnos";
 const API_PACIENTES = "https://localhost:7041/api/Pacientes";
@@ -45,7 +45,6 @@ export const crearTurno = createAsyncThunk(
     try {
       const { auth } = getState();
 
-      // Verificar si uid está definido antes de continuar
       if (!auth || !auth.uid) {
         console.error("Error: El usuario no está autenticado.");
         return rejectWithValue("Error: Usuario no autenticado.");
@@ -56,30 +55,136 @@ export const crearTurno = createAsyncThunk(
         return rejectWithValue("Fecha de inicio inválida");
       }
 
-      const fechaFin = addHours(fechaInicio, 1);
+      // Aquí se suman 45 minutos a la fecha de inicio
+      const fechaFin = addMinutes(fechaInicio, 45);
 
       const turnoConFechas = {
         ...nuevoTurno,
         fechaFin: fechaFin.toISOString(),
-        idUsuario: auth.uid, // Se asegura que uid esté presente
+        idUsuario: auth.uid,
         estado: "Pendiente de confirmación",
       };
 
       const responseTurno = await axios.post(API_TURNOS, turnoConFechas);
       const turnoCreado = responseTurno.data;
 
-      // Traer el paciente correspondiente al idPaciente
       const responsePaciente = await axios.get(`${API_PACIENTES}/${turnoCreado.idPaciente}`);
       const paciente = responsePaciente.data.persona;
 
       return {
         ...turnoCreado,
-        paciente, // Embebemos directamente el paciente dentro del turno creado
+        paciente,
       };
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message || "Error desconocido";
       console.error("Error al crear el turno:", errorMessage);
       return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+
+export const obtenerTurnoPorId = createAsyncThunk(
+  "turnos/obtenerTurnoPorId",
+  async (idTurno, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_TURNOS}/${idTurno}`);
+      const turno = response.data;
+
+      const pacienteResponse = await axios.get(`${API_PACIENTES}/${turno.idPaciente}`);
+      const paciente = pacienteResponse.data.persona;
+
+      return { ...turno, paciente };
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Error al obtener el turno");
+    }
+  }
+);
+
+export const eliminarTurno = createAsyncThunk(
+  "turnos/eliminarTurno",
+  async ({ idTurno, idUsuario }, { rejectWithValue, getState }) => {
+    try {
+      const turnoExistente = getState().turnos.turnos.find(t => t.idTurno === idTurno);
+
+      if (!turnoExistente) {
+        return rejectWithValue("Turno no encontrado");
+      }
+
+      const response = await axios.put(`${API_TURNOS}/${idTurno}`, {
+        idTurno,
+        estado: "cancelado",
+        tipoConsulta: turnoExistente.tipoConsulta,
+        fechaInicio: turnoExistente.fechaInicio,
+        fechaFin: turnoExistente.fechaFin,
+        idPaciente: turnoExistente.idPaciente,
+        idUsuario,
+      });
+
+      console.log(response.data);  // Esto es lo que deberías imprimir para ver la respuesta de la API
+      return response.data;
+    } catch (error) {
+      console.error("Error en la eliminación del turno:", error);
+      return rejectWithValue(error.response?.data || "Error al cancelar el turno");
+    }
+  }
+);
+
+export const modificarTurno = createAsyncThunk(
+  "turnos/modificarTurno",
+  async ({ idTurno, idUsuario, turnoModificado }, { rejectWithValue, getState }) => {
+    try {
+      // Buscar el turno existente en el estado
+      const turnoExistente = getState().turnos.turnos.find((t) => t.idTurno === idTurno);
+
+      if (!turnoExistente) {
+        return rejectWithValue("Turno no encontrado");
+      }
+
+      // Hacer la solicitud a la API para modificar el turno
+      const response = await axios.put(`${API_TURNOS}/${idTurno}`, {
+        idTurno,
+        tipoConsulta: turnoModificado.tipoConsulta || turnoExistente.tipoConsulta,
+        fechaInicio: turnoModificado.fechaInicio || turnoExistente.fechaInicio,
+        fechaFin: turnoModificado.fechaFin || turnoExistente.fechaFin,
+        idPaciente: turnoModificado.idPaciente || turnoExistente.idPaciente,
+        idUsuario,
+        estado: turnoModificado.estado || turnoExistente.estado,
+      });
+
+      console.log(response.data);  // Para depuración
+
+      // Retornar el turno actualizado desde la respuesta de la API
+      return response.data;
+    } catch (error) {
+      console.error("Error al modificar el turno:", error);
+      return rejectWithValue(error.response?.data || "Error al modificar el turno");
+    }
+  }
+);
+
+
+export const cambiarEstadoTurno = createAsyncThunk(
+  "turnos/cambiarEstadoTurno",
+  async ({ idTurno, nuevoEstado, idUsuario }, { rejectWithValue, getState }) => {
+    try {
+      const turnoExistente = getState().turnos.turnos.find((t) => t.idTurno === idTurno);
+      if (!turnoExistente) {
+        return rejectWithValue("Turno no encontrado");
+      }
+      const response = await axios.put(`${API_TURNOS}/${idTurno}`, {
+        idTurno,
+        tipoConsulta: turnoExistente.tipoConsulta,
+        fechaInicio: turnoExistente.fechaInicio,
+        fechaFin: turnoExistente.fechaFin,
+        idPaciente: turnoExistente.idPaciente,
+        idUsuario,
+        estado: nuevoEstado, 
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error al cambiar el estado del turno:", error);
+      return rejectWithValue(error.response?.data || "Error al actualizar el estado del turno");
     }
   }
 );

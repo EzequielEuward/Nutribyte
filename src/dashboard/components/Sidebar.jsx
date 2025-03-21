@@ -1,7 +1,6 @@
-import React,{ useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Divider, Drawer, List, Toolbar, Typography, IconButton, ListItem, ListItemIcon, ListItemText, CssBaseline, AppBar, Collapse } from '@mui/material';
 import { Archive, Menu as MenuIcon, CalendarToday, ExpandMore, ExpandLess, ChevronRight } from '@mui/icons-material';
-
 import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../../mock/data/menuItems';
 import { useTheme } from '@emotion/react';
@@ -17,7 +16,6 @@ export const Sidebar = ({ drawerWidth = 280, username, rol }) => {
   const navigate = useNavigate();
   const theme = useTheme();
 
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -27,12 +25,17 @@ export const Sidebar = ({ drawerWidth = 280, username, rol }) => {
     setSelectedMenu(menu);
   };
 
-
   const handleNavigate = (path) => {
-    navigate(path); 
+    navigate(path);
   };
 
   const linkColor = isDarkMode ? '#fff' : '#000';
+
+
+  const filteredMenuItems = rol === "Administrador"
+    ? menuItems
+    : menuItems.filter(item => item.text !== "Versiones" && item.text !== "Control de usuario");
+
 
   const drawerContent = (
     <Box
@@ -59,7 +62,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol }) => {
       <Divider sx={{ backgroundColor: isDarkMode ? '#444' : '#ddd' }} />
 
       <List>
-        {menuItems.map((menu, index) => (
+        {filteredMenuItems.map((menu, index) => (
           <React.Fragment key={index}>
             <ListItem
               button

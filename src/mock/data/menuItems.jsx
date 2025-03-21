@@ -1,4 +1,6 @@
 import { Person, Fastfood, BarChart, CalendarToday, Home } from '@mui/icons-material';
+import DeviceHubIcon from '@mui/icons-material/DeviceHub';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 
 const iconStyle = { color: "#6e6e6e" }; 
 
@@ -19,7 +21,7 @@ export const menuItems = [
     link: "/home/paciente",
     submenus: [
       { text: "Lista de pacientes", link: "/home/paciente/" },
-      { text: "Diagnósticos", link: "/home/diagnostico" },
+      { text: "Consulta", link: "/home/diagnostico" },
       { text: "Métricas", link: "/home/" },
     ],
   },
@@ -49,6 +51,16 @@ export const menuItems = [
       { text: "Calorías Consumidas", link: "/home/progreso/calorias-consumidas" },
       { text: "Macronutrientes", link: "/home/progreso/macronutrientes" },
     ],
+  },
+  {
+    text: "Versiones",
+    icon: <DeviceHubIcon style={iconStyle} />,
+    link: "/home/versiones",
+  },
+  {
+    text: "Control de usuario",
+    icon: <SupervisedUserCircleIcon style={iconStyle} />,
+    link: "/home/control-de-usuario",
   },
   
  

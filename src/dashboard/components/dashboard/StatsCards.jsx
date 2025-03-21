@@ -1,52 +1,62 @@
-import React from "react";
 import { Card, CardContent, CardHeader, Typography, Box } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import { isToday, parseISO } from "date-fns";
 
-const stats = [
-  { title: "Total Pacientes", value: "1,234", icon: <PeopleIcon />, color: "primary" },
-  { title: "Nuevos Pacientes", value: "12", icon: <PersonAddIcon />, color: "success" },
-  { title: "Consultas Hoy", value: "24", icon: <CheckCircleIcon />, color: "secondary" },
-  { title: "Tasa de Retención", value: "95%", icon: <TrendingUpIcon />, color: "warning" },
-];
+export const StatsCards = ({ totalPacientes, turnosHoy }) => {
+  const turnosHoyFiltrados = (turnosHoy || []).filter((turno) => {
+    const turnoFecha = parseISO(turno.fechaInicio);
+    return isToday(turnoFecha) && turno.estado !== "cancelado";
+  });
 
-export const StatsCards = () => {
+  const consultasHoy = turnosHoyFiltrados.length;
+
+  const stats = [
+    { title: "Total Pacientes", value: totalPacientes, icon: <PeopleIcon fontSize="large" />, color: "#1976D2" },
+    { title: "Consultas Hoy", value: consultasHoy, icon: <CheckCircleIcon fontSize="large" />, color: "#388E3C" },
+  ];
+
   return (
     <Box
       display="grid"
-      gap={2}
-      gridTemplateColumns={{ xs: "1fr", md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
-      sx={{ padding: { xs: 1, sm: 2 } }} // Padding responsivo
+      gap={3}
+      gridTemplateColumns="repeat(auto-fit, minmax(250px, 1fr))"
+      sx={{ padding: 2 }}
     >
       {stats.map((stat) => (
         <Card
           key={stat.title}
-          variant="outlined"
           sx={{
             display: "flex",
-            flexDirection: "column",
+            alignItems: "center",
+            padding: 2,
+            borderRadius: 3,
+            boxShadow: 2,
           }}
         >
-          <CardHeader
-            title={
-              <Typography variant="subtitle2" component="div" sx={{ fontWeight: "bold" }}>
-                {stat.title}
-              </Typography>
-            }
-            action={
-              <Box sx={{ color: stat.color }}>
-                {stat.icon}
-              </Box>
-            }
-            sx={{ paddingBottom: 0 }}
-          />
-          <CardContent>
-            <Typography variant="h5" component="div" sx={{ fontWeight: "bold" }}>
+          <Box
+            sx={{
+              width: 56,
+              height: 56,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: stat.color,
+              borderRadius: "50%",
+              color: "white",
+              marginRight: 2,
+            }}
+          >
+            {stat.icon}
+          </Box>
+          <Box>
+            <Typography variant="subtitle2" sx={{ fontWeight: "bold", color: "text.secondary" }}>
+              {stat.title}
+            </Typography>
+            <Typography variant="h4" sx={{ fontWeight: "bold" }}>
               {stat.value}
             </Typography>
-          </CardContent>
+          </Box>
         </Card>
       ))}
     </Box>

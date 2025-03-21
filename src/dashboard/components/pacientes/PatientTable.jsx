@@ -87,7 +87,7 @@ export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelet
                       <TableCell>{patient.persona.dni}</TableCell>
                       <TableCell>{patient.persona.apellido}</TableCell>
                       <TableCell>{patient.persona.nombre}</TableCell>
-                      <TableCell>{patient.persona.sexoBiologico === "m" ? "Masculino" : "Femenino"}</TableCell>
+                      <TableCell>{patient.persona.sexoBiologico.toUpperCase() === "M" ? "Masculino" : "Femenino"}</TableCell>
                       <TableCell>{patient.persona.email}</TableCell>
                       <TableCell>
                         <IconButton onClick={() => onViewPatient(patient)}>

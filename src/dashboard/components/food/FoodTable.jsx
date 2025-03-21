@@ -1,13 +1,26 @@
 import { useState } from "react";
-import {Box,Table,TableBody,TableCell,TableContainer,TableFooter,TablePagination,TableRow,Paper,TableHead,MenuItem,Select,IconButton} from "@mui/material";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TablePagination,
+  TableRow,
+  Paper,
+  TableHead,
+  MenuItem,
+  Select,
+  IconButton,
+} from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
-import {FoodAction,FoodDrawer} from "../food/";
-import { mockFoodData } from "../../../mock/data/mockFoodData";
+import { FoodAction, FoodDrawer } from "../food";
 
-export const FoodTable = () => {
+export const FoodTable = ({ alimentos }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [filterGroup, setFilterGroup] = useState("All");
+  const [filterGroup, setFilterGroup] = useState("Todos");
   const [drawerData, setDrawerData] = useState(null);
 
   const handleOpenDrawer = (data) => {
@@ -23,10 +36,11 @@ export const FoodTable = () => {
     setPage(0);
   };
 
+  // Filtrar los alimentos según el grupo seleccionado
   const filteredData =
-    filterGroup === "All"
-      ? mockFoodData
-      : mockFoodData.filter((item) => item.grupo === filterGroup);
+    filterGroup === "Todos"
+      ? alimentos
+      : alimentos.filter((item) => item.grupoAlimenticio === filterGroup);
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
@@ -49,41 +63,56 @@ export const FoodTable = () => {
           displayEmpty
           sx={{ minWidth: 120 }}
         >
-          <MenuItem value="All">All Groups</MenuItem>
-          {[...new Set(mockFoodData.map((item) => item.grupo))].map((group) => (
-            <MenuItem key={group} value={group}>
-              {group}
-            </MenuItem>
-          ))}
-        </Select>
-      </Box>
+          <MenuItem value="Todos">Todos los Grupos</MenuItem>
+          {[...new Set(alimentos.map((item) => item.grupoAlimenticio))].map(
+            (group) => (
+              <MenuItem key={group} value={group}>
+                {group}
+              </MenuItem>
+            )
+          )}
+          </Select>
+        </Box>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+        <Table sx={{ minWidth: 500 }} aria-label="tabla de alimentos">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Group</TableCell>
-              <TableCell align="right">Calories</TableCell>
-              <TableCell align="right">Proteins</TableCell>
-              <TableCell align="right">Carbohydrates</TableCell>
-              <TableCell align="right">Fats</TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell>Nombre</TableCell>
+              <TableCell>Grupo Alimenticio</TableCell>
+              <TableCell align="right">Calorías</TableCell>
+              <TableCell align="right">Proteínas (g)</TableCell>
+              <TableCell align="right">Carbohidratos (g)</TableCell>
+              <TableCell align="right">Azúcares (g)</TableCell>
+              <TableCell align="right">Grasas Totales (g)</TableCell>
+              <TableCell align="right">Grasas Saturadas (g)</TableCell>
+              <TableCell align="right">Grasas Insaturadas (g)</TableCell>
+              <TableCell align="right">Fibra Dietética (g)</TableCell>
+              <TableCell align="right">Sodio (mg)</TableCell>
+              <TableCell align="center">Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {(rowsPerPage > 0
-              ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              ? filteredData.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
               : filteredData
             ).map((row) => (
-              <TableRow key={row.id}>
+              <TableRow key={row.idAlimento}>
                 <TableCell component="th" scope="row">
                   {row.nombre}
                 </TableCell>
-                <TableCell>{row.grupo}</TableCell>
+                <TableCell>{row.grupoAlimenticio}</TableCell>
                 <TableCell align="right">{row.calorias}</TableCell>
                 <TableCell align="right">{row.proteinas}</TableCell>
                 <TableCell align="right">{row.carbohidratos}</TableCell>
-                <TableCell align="right">{row.grasas}</TableCell>
+                <TableCell align="right">{row.azucares}</TableCell>
+                <TableCell align="right">{row.grasasTotales}</TableCell>
+                <TableCell align="right">{row.grasasSaturadas}</TableCell>
+                <TableCell align="right">{row.grasasInsaturadas}</TableCell>
+                <TableCell align="right">{row.fibraDietetica}</TableCell>
+                <TableCell align="right">{row.sodio}</TableCell>
                 <TableCell align="center">
                   <IconButton onClick={() => handleOpenDrawer(row)}>
                     <InfoIcon />
@@ -93,15 +122,15 @@ export const FoodTable = () => {
             ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={7} />
+                <TableCell colSpan={12} />
               </TableRow>
             )}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={7}
+                rowsPerPageOptions={[5, 10, 25, { label: "Todos", value: -1 }]}
+                colSpan={12}
                 count={filteredData.length}
                 rowsPerPage={rowsPerPage}
                 page={page}

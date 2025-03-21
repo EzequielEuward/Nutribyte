@@ -6,3 +6,5 @@ export * from './MacronutrientesPlanes';
 export * from './EstadisticasPlanes';
 export * from './FoodDrawer';
 export * from './FoodAction';
+export * from './ChatInterface';
+export * from './FoodCards';

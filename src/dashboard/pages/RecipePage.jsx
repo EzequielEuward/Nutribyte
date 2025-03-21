@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { DashboardLayout } from "../layout/DashboardLayout";
+import { ChatInterface } from '../components/food/';
+import EggAltIcon from '@mui/icons-material/EggAlt';
 import { recipesMock } from "../../mock/data/mockRecipe";
 import { RecipeModal, RecipeCard } from "../components";
-import { Box, Typography, TextField, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
+import { Box, Typography, TextField, MenuItem, Select, InputLabel, FormControl, Fab, } from "@mui/material";
 
 export const RecipePage = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isChatOpen, setChatOpen] = useState(false); 
+  const [chatPosition, setChatPosition] = useState({ x: 0, y: 0 }); 
 
   // Estado para los filtros
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,14 +17,11 @@ export const RecipePage = () => {
 
   const handleOpenModal = (recipe) => {
     setSelectedRecipe(recipe);
-    setModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setModalOpen(false);
     setSelectedRecipe(null);
   };
-
 
   const filteredRecipes = recipesMock.filter((recipe) => {
     const hasValidName = recipe?.name && typeof recipe.name === "string";
@@ -33,13 +33,32 @@ export const RecipePage = () => {
     return matchesName && matchesPlan;
   });
 
-
   const plans = [...new Set(recipesMock.map(recipe => recipe.plan))];
+
+  // Función para abrir el chat con coordenadas
+  const handleClickChat = (e) => {
+    const { clientX, clientY } = e;
+    const offsetX = 250; // Ancho del chatbot
+    const offsetY = 100; // Alto del chatbot
+    const maxX = window.innerWidth - offsetX - 16; // Margen del botón flotante
+    const maxY = window.innerHeight - offsetY - 16;
+
+    const x = clientX > maxX ? maxX : clientX;
+    const y = clientY > maxY ? maxY : clientY;
+
+    setChatPosition({ x, y });
+    setChatOpen(true);
+  };
+
+  // Función para cerrar el chat
+  const handleCloseChat = () => {
+    setChatOpen(false);
+  };
 
   return (
     <DashboardLayout>
       <Box sx={{ textAlign: "left", ml: 3, mt: 2 }}>
-        <Typography variant="h4">Recetas | Platos </Typography>
+        <Typography variant="h4">Recetas | Platos</Typography>
       </Box>
 
       {/* Filtros */}
@@ -51,7 +70,7 @@ export const RecipePage = () => {
           size="small"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ width: 200 }} 
+          sx={{ width: 200 }}
         />
         {/* Filtro por plan */}
         <FormControl variant="outlined" size="small" sx={{ width: 200 }}>
@@ -93,35 +112,33 @@ export const RecipePage = () => {
             maxWidth="calc(25% - 16px)"
             minWidth="250px"
             boxSizing="border-box"
-            sx={{
-              "@media (max-width: 1024px)": {
-                flex: "1 1 calc(33.33% - 16px)",
-                maxWidth: "calc(33.33% - 16px)",
-              },
-              "@media (max-width: 768px)": {
-                flex: "1 1 calc(50% - 16px)",
-                maxWidth: "calc(50% - 16px)",
-              },
-              "@media (max-width: 480px)": {
-                flex: "1 1 100%",
-                maxWidth: "100%",
-              },
-            }}
           >
             <RecipeCard recipe={recipe} onOpenModal={handleOpenModal} />
           </Box>
         ))}
       </Box>
 
-      {selectedRecipe && (
-        <RecipeModal
-          open={isModalOpen}
-          onClose={handleCloseModal}
-          recipe={selectedRecipe}
-        />
-      )}
+      {/* Modal con los detalles de la receta */}
+      <RecipeModal
+        open={selectedRecipe !== null}
+        onClose={handleCloseModal}
+        recipe={selectedRecipe || {}}
+      />
+
+      {/* Botón flotante para el chatbot */}
+      <Fab
+        color="primary"
+        aria-label="chat"
+        onClick={handleClickChat}
+        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+      >
+        <EggAltIcon />
+      </Fab>
+
+      {/* Usar el componente Chatbot */}
+      <ChatInterface isOpen={isChatOpen} onClose={handleCloseChat} />
     </DashboardLayout>
   );
 };
 
-export default RecipePage;
+export default RecipePage

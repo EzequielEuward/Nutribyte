@@ -21,7 +21,8 @@ export const RecipeModal = ({ open, onClose, recipe }) => {
       aria-labelledby="scroll-dialog-title"
       aria-describedby="scroll-dialog-description"
     >
-      <DialogTitle id="scroll-dialog-title">{recipe.name}</DialogTitle>
+      <DialogTitle id="scroll-dialog-title">{recipe?.name || "Receta sin nombre"}</DialogTitle>
+
       <DialogContent dividers>
         <DialogContentText
           id="scroll-dialog-description"

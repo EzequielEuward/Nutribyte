@@ -16,7 +16,7 @@ export const AuthRouter = () => {
       {/* Ruta de login */}
       <Route path="login" element={<LoginPage />} />
       {/* Redirigir a login si no está autenticado */}
-      <Route path="*" element={<Navigate to="/auth/login" />} />
+      <Route path="*" element={<Navigate to="/auth/login" />} />W
     </Routes>
   );
 };
