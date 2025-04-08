@@ -10,7 +10,6 @@ const userSlice = createSlice({
     error: null,
   },
   reducers: {
-    // Otros reducers sincrónicos si los necesitas
   },
   extraReducers: (builder) => {
     builder
@@ -27,7 +26,6 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // Obtener un usuario por id
       .addCase(ListarUsuariosPorId.pending, (state) => {
         state.loading = true;
         state.error = null;

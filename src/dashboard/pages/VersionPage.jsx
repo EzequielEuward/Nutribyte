@@ -12,6 +12,8 @@ import {
     Chip,
     IconButton,
     Divider,
+    Modal,
+    Paper,
 } from "@mui/material";
 import CallMergeIcon from '@mui/icons-material/CallMerge';
 import {
@@ -25,11 +27,13 @@ import {
 } from "@mui/icons-material";
 import DashboardLayout from "../layout/DashboardLayout";
 import { getMockVersions } from "../../mock/data/mockVersiones";
+import Swal from "sweetalert2";
 
 export const VersionPage = () => {
     const [versions, setVersions] = useState([]);
     const [selectedVersion, setSelectedVersion] = useState(null);
     const [filter, setFilter] = useState("all");
+    const [openModal, setOpenModal] = useState(false);
 
     // Carga los datos del mock al montar el componente
     useEffect(() => {
@@ -39,6 +43,24 @@ export const VersionPage = () => {
         };
         fetchVersions();
     }, []);
+
+    const handleGitHubClick = () => {
+        window.open("https://github.com/EzequielEuward/Sintacc", "_blank");
+    };
+
+    const handleUpdateVersion = () => {
+        setOpenModal(true);
+    };
+
+    const confirmUpdate = () => {
+        setOpenModal(false);
+        Swal.fire({
+            title: "¡Versión actualizada a la ultima!",
+            text: "Oops tiene lal versión actualizada",
+            icon: "warning",
+        });
+    };
+
 
     const handleVersionSelect = (versionId) => {
         setSelectedVersion((prev) => (prev === versionId ? null : versionId));
@@ -64,9 +86,7 @@ export const VersionPage = () => {
 
     return (
         <DashboardLayout>
-            {/* Aquí puedes incluir tu header personalizado */}
             <Box sx={{ p: 3, pt: 4 }}>
-                {/* Filtros y búsqueda */}
                 <Box
                     sx={{
                         display: "flex",
@@ -85,16 +105,18 @@ export const VersionPage = () => {
                                 variant="outlined"
                                 size="small"
                                 startIcon={<GitHubIcon sx={{ width: 16, height: 16 }} />}
+                                onClick={handleGitHubClick}
                             >
-                                Crear Rama
+                                Revisar Rama
                             </Button>
                             <Button
                                 variant="contained"
                                 color="primary"
                                 size="small"
                                 startIcon={<CallMergeIcon sx={{ width: 16, height: 16 }} />}
+                                onClick={handleUpdateVersion}
                             >
-                                Publicar Cambios
+                                Actualizar versión
                             </Button>
                         </Box >
                         <FormControl size="small" sx={{ minWidth: 120 }}>
@@ -226,6 +248,23 @@ export const VersionPage = () => {
                     })}
                 </Box>
             </Box>
+
+            <Modal open={openModal} onClose={() => setOpenModal(false)}>
+                <Paper sx={{ p: 3, maxWidth: 400, margin: "auto", mt: 10, textAlign: "center" }}>
+                    <Typography variant="h6" fontWeight={700}>Precaución</Typography>
+                    <Typography variant="body2" sx={{ mt: 2 }}>
+                        La actualización de la versión puede influir en el rendimiento o causar fallos inesperados. La pagina quedara inactiva por un tiempo para actualizarla!
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        sx={{ mt: 2 }}
+                        onClick={confirmUpdate}
+                    >
+                        Hacer Actualización
+                    </Button>
+                </Paper>
+            </Modal>
         </DashboardLayout>
     );
 };

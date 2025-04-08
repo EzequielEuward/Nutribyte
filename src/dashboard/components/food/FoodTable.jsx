@@ -10,8 +10,6 @@ import {
   TableRow,
   Paper,
   TableHead,
-  MenuItem,
-  Select,
   IconButton,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
@@ -20,7 +18,6 @@ import { FoodAction, FoodDrawer } from "../food";
 export const FoodTable = ({ alimentos }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [filterGroup, setFilterGroup] = useState("Todos");
   const [drawerData, setDrawerData] = useState(null);
 
   const handleOpenDrawer = (data) => {
@@ -31,19 +28,8 @@ export const FoodTable = ({ alimentos }) => {
     setDrawerData(null);
   };
 
-  const handleFilterChange = (event) => {
-    setFilterGroup(event.target.value);
-    setPage(0);
-  };
-
-  // Filtrar los alimentos según el grupo seleccionado
-  const filteredData =
-    filterGroup === "Todos"
-      ? alimentos
-      : alimentos.filter((item) => item.grupoAlimenticio === filterGroup);
-
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - alimentos.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -56,23 +42,6 @@ export const FoodTable = ({ alimentos }) => {
 
   return (
     <Box sx={{ p: 2, ml: 2 }}>
-      <Box sx={{ mb: 2, display: "flex", justifyContent: "space-between" }}>
-        <Select
-          value={filterGroup}
-          onChange={handleFilterChange}
-          displayEmpty
-          sx={{ minWidth: 120 }}
-        >
-          <MenuItem value="Todos">Todos los Grupos</MenuItem>
-          {[...new Set(alimentos.map((item) => item.grupoAlimenticio))].map(
-            (group) => (
-              <MenuItem key={group} value={group}>
-                {group}
-              </MenuItem>
-            )
-          )}
-          </Select>
-        </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="tabla de alimentos">
           <TableHead>
@@ -93,17 +62,24 @@ export const FoodTable = ({ alimentos }) => {
           </TableHead>
           <TableBody>
             {(rowsPerPage > 0
-              ? filteredData.slice(
+              ? alimentos.slice(
                   page * rowsPerPage,
                   page * rowsPerPage + rowsPerPage
                 )
-              : filteredData
+              : alimentos
             ).map((row) => (
               <TableRow key={row.idAlimento}>
                 <TableCell component="th" scope="row">
                   {row.nombre}
                 </TableCell>
-                <TableCell>{row.grupoAlimenticio}</TableCell>
+                <TableCell
+                  sx={{
+                    backgroundColor: getGroupColor(row.grupoAlimenticio),
+                    color: "white",
+                  }}
+                >
+                  {row.grupoAlimenticio}
+                </TableCell>
                 <TableCell align="right">{row.calorias}</TableCell>
                 <TableCell align="right">{row.proteinas}</TableCell>
                 <TableCell align="right">{row.carbohidratos}</TableCell>
@@ -131,7 +107,7 @@ export const FoodTable = ({ alimentos }) => {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: "Todos", value: -1 }]}
                 colSpan={12}
-                count={filteredData.length}
+                count={alimentos.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
@@ -148,6 +124,20 @@ export const FoodTable = ({ alimentos }) => {
       )}
     </Box>
   );
+};
+
+// Función para asignar colores a los grupos
+const getGroupColor = (group) => {
+  const colors = {
+    Frutas: "#4caf50", // verde
+    Verduras: "#ff9800", // naranja
+    Cereales: "#2196f3", // azul
+    Lácteos: "#9c27b0", // púrpura
+    Carnes: "#f44336", // rojo
+    // Agrega otros grupos según sea necesario
+  };
+
+  return colors[group] || "#607d8b"; // color por defecto
 };
 
 export default FoodTable;

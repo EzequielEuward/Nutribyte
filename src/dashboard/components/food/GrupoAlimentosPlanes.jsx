@@ -1,6 +1,7 @@
 import { Box, Card, CardHeader, Typography, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 
+
 export const GrupoAlimentosPlanes = ({ plan }) => {
   const [tabSeleccionada, setTabSeleccionada] = useState(0);
 

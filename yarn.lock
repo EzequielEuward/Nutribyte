@@ -175,6 +175,18 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
+"@date-io/core@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@date-io/core/-/core-3.2.0.tgz#7c8985ac26ccacf4f1b1fec10e2e22c75a28288a"
+  integrity sha512-hqwXvY8/YBsT9RwQITG868ZNb1MVFFkF7W1Ecv4P472j/ZWa7EFcgSmxy8PUElNVZfvhdvfv+a8j6NWJqOX5mA==
+
+"@date-io/date-fns@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@date-io/date-fns/-/date-fns-3.2.1.tgz#907aa974c150b3f2d2d79b0f6e18b0fe64c7f051"
+  integrity sha512-CtXgTOAamkImI+CmbWRNdBi4ljj9xm/tdoPa+eeeiygduzubJTsXp18vYz+Vs/9yLho1zUOXlxpsfsF7PsXSWQ==
+  dependencies:
+    "@date-io/core" "^3.2.0"
+
 "@devexpress/utils@^1.4.3":
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/@devexpress/utils/-/utils-1.4.3.tgz#346caf3328b2f5ce1814f187a56a1ed0ef69a4fc"

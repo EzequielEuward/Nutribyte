@@ -195,7 +195,7 @@ export const CalendarPage = () => {
       handleCloseModal();
     } catch (error) {
       console.error("Error al guardar el turno:", error);
-      Swal.fire("Error", "Hubo un problema al guardar el turno.", "error");
+      Swal.fire("Error", "Hubo un problema al guardar el turno, no se encuentra disponibilidad o el paciente no esta cargado", "error");
     }
   };
 
@@ -238,7 +238,6 @@ export const CalendarPage = () => {
   return (
     <ThemeProvider theme={currentTheme}>
       <DashboardLayout>
-        {/* Título del Calendario de Turnos */}
         <Typography
           variant="h5"
           sx={{

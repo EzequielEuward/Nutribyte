@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FoodTable, FoodCards } from "../components";
+import { FoodTable, FoodCards, FoodFilters } from "../components";
 import { DashboardLayout } from "../layout/DashboardLayout";
 import { listarAlimentos } from "../../store/food/thunk";
 import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
@@ -8,8 +8,14 @@ import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 export const FoodPage = () => {
   const dispatch = useDispatch();
   const { alimentos, loading, error } = useSelector((state) => state.alimentos);
-  // Estado para alternar entre vista de tabla y vista de tarjetas
+  
   const [view, setView] = useState("table");
+  const [filters, setFilters] = useState({
+    nombre: "",
+    grupo: "",
+    calorias: [0, 500],
+    proteinas: [0, 50]
+  });
 
   useEffect(() => {
     dispatch(listarAlimentos());
@@ -19,13 +25,33 @@ export const FoodPage = () => {
     if (nextView !== null) setView(nextView);
   };
 
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
+
+  const filteredAlimentos = alimentos.filter((food) => {
+    const matchesNombre = food.nombre
+      .toLowerCase()
+      .includes(filters.nombre.toLowerCase());
+    const matchesGrupo =
+      filters.grupo === "" || food.grupoAlimenticio === filters.grupo;
+    const matchesCalorias =
+      food.calorias >= filters.calorias[0] && food.calorias <= filters.calorias[1];
+    const matchesProteinas =
+      food.proteinas >= filters.proteinas[0] && food.proteinas <= filters.proteinas[1];
+
+    return matchesNombre && matchesGrupo && matchesCalorias && matchesProteinas;
+  });
+
   return (
     <DashboardLayout>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom sx={{padding:2}}>
         Alimentos
       </Typography>
 
-      {/* Toggle para elegir vista */}
+      {/* Filtros */}
+      <FoodFilters onFilterChange={handleFilterChange} />
+
       <ToggleButtonGroup
         value={view}
         exclusive
@@ -38,11 +64,11 @@ export const FoodPage = () => {
 
       {loading && <p>Cargando...</p>}
       {error && <p>Error: {error}</p>}
-      {alimentos.length > 0 ? (
+      {filteredAlimentos.length > 0 ? (
         view === "table" ? (
-          <FoodTable alimentos={alimentos} />
+          <FoodTable alimentos={filteredAlimentos} />
         ) : (
-          <FoodCards alimentos={alimentos} />
+          <FoodCards alimentos={filteredAlimentos} />
         )
       ) : (
         <p>No hay alimentos disponibles.</p>

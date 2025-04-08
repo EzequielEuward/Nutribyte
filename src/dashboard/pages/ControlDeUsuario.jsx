@@ -73,11 +73,6 @@ export const ControlDeUsuario = () => {
         handleMenuClose();
     };
 
-    const handleModificarUsuario = (userId, updatedUserData) => {
-        dispatch(ModificarUsuario({ userId, userData: updatedUserData }));
-    };
-    
-    
 
     const handleAddUser = (newUserData) => {
         console.log("Datos enviados:", newUserData); 
@@ -104,6 +99,9 @@ export const ControlDeUsuario = () => {
         setNewUserDialogOpen(false);
     };
     
+    const handleModificarUsuario = (userId, updatedUserData) => {
+        dispatch(ModificarUsuario({ userId, userData: updatedUserData }));
+    };
     
 
     // Filtrado de usuarios según searchTerm, rol y estado

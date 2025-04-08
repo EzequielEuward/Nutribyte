@@ -61,8 +61,8 @@ export const ModificarUsuario = createAsyncThunk(
     'user/ModificarUsuario',
     async ({ userId, userData }, { rejectWithValue }) => {
       try {
-        console.log('Modificando usuario con ID:', userId);  // Agregado para depuración
-        console.log('Datos a actualizar:', userData);        // Agregado para depuración
+        console.log('Modificando usuario con ID:', userId);  
+        console.log('Datos a actualizar:', userData);        
   
         const response = await fetch(`${API_USUARIO}/${userId}`, {
           method: "PUT",
@@ -72,15 +72,15 @@ export const ModificarUsuario = createAsyncThunk(
   
         if (!response.ok) {
           const errorData = await response.json();
-          console.error('Error al modificar el usuario:', errorData);  // Agregado para depuración
+          console.error('Error al modificar el usuario:', errorData);  
           return rejectWithValue(errorData);
         }
   
         const updatedUser = await response.json();
-        console.log('Usuario modificado con éxito:', updatedUser);  // Agregado para depuración
+        console.log('Usuario modificado con éxito:', updatedUser);  
         return updatedUser;
       } catch (error) {
-        console.error('Error al enviar la solicitud de modificación:', error);  // Agregado para depuración
+        console.error('Error al enviar la solicitud de modificación:', error);  
         return rejectWithValue(error.message);
       }
     }

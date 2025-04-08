@@ -23,7 +23,7 @@ export const patientSlice = createSlice({
         state.error = null;
       })
       .addCase(crearPaciente.fulfilled, (state, action) => {
-        state.pacientes.push(action.payload); // Agregar nuevo paciente a la lista
+        state.pacientes.push(action.payload); 
         state.isLoading = false;
       })
       .addCase(crearPaciente.rejected, (state, action) => {
@@ -35,9 +35,10 @@ export const patientSlice = createSlice({
         state.error = null;
       })
       .addCase(listarPacientes.fulfilled, (state, action) => {
-        state.pacientes = action.payload; // Asignar la lista de pacientes
+        state.pacientes = action.payload; 
         state.isLoading = false;
       })
+
       .addCase(listarPacientes.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || 'Error desconocido';
@@ -46,20 +47,18 @@ export const patientSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(obtenerPacientePorId.fulfilled, (state, action) => {
-        state.pacienteSeleccionado = action.payload; // Asignar el paciente seleccionado
+        state.pacienteSeleccionado = action.payload; 
         state.isLoading = false;
       })
       .addCase(obtenerPacientePorId.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Error desconocido";
       })
-      // Añadimos el case para desactivar el paciente
       .addCase(desactivarPaciente.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
       .addCase(desactivarPaciente.fulfilled, (state, action) => {
-        // Si desactivamos correctamente, actualizamos el estado de los pacientes
         state.pacientes = state.pacientes.map(paciente =>
           paciente.idPaciente === action.payload.idPaciente ? { ...paciente, activo: false } : paciente
         );

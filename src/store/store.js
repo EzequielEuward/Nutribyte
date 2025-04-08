@@ -5,6 +5,7 @@ import { patientSlice } from './patient/patientSlice';
 import { turnosSlice } from './calendar/turnosSlice';
 import { foodSlice } from './food/foodSlice';
 import userReducer from './user/userSlice';
+import { planSlice } from './plans/planSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     auth: authSlice.reducer,
     patients: patientSlice.reducer,
     turnos: turnosSlice.reducer,
-    alimentos: foodSlice.reducer 
+    alimentos: foodSlice.reducer,
+    plan:planSlice.reducer,
   },
 });

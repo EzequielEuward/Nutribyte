@@ -4,7 +4,7 @@ import { AccessAlarm } from "@mui/icons-material";
 
 export const InfoPlanes = ({ planSeleccionado }) => {
   const plan = planesInfo[planSeleccionado] || {};
-
+ 
   return (
     <Box sx={{ flex: 1 }}>
       <Card sx={{ boxShadow: 3 }}>

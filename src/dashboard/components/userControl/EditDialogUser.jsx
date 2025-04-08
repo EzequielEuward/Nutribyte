@@ -17,17 +17,17 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
     const [usuario, setUsuario] = useState({
         rol: "",
         username: "",
-        userPassword: "",  // Si no se ingresa nada, mantener la contraseña actual
+        userPassword: "",  
         matricula_Profesional: "",
         especialidad: "",
         activo: true
     });
 
-    // Actualizamos los estados cuando selectedUser cambie
+
     useEffect(() => {
         if (selectedUser) {
             setPersona({
-                idPersona: selectedUser.persona?.idPersona || "",  // Agregado el id de la persona
+                idPersona: selectedUser.persona?.idPersona || "",  
                 dni: selectedUser.persona?.dni || "",
                 apellido: selectedUser.persona?.apellido || "",
                 nombre: selectedUser.persona?.nombre || "",
@@ -40,7 +40,7 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
             setUsuario({
                 rol: selectedUser.rol || "",
                 username: selectedUser.username || "",
-                userPassword: "",  // Para que quede vacío y solo se modifique si se ingresa una nueva contraseña
+                userPassword: "", 
                 matricula_Profesional: selectedUser.matricula_Profesional || "",
                 especialidad: selectedUser.especialidad || "",
                 activo: selectedUser.activo || true
@@ -53,10 +53,9 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
         const { name, value } = e.target;
         setPersona(prev => ({ ...prev, [name]: value }));
     };
-
+ 
     const handleUsuarioChange = (e) => {
         const { name, value } = e.target;
-        // Para el campo "activo" podemos convertir el string a booleano
         if (name === "activo") {
             setUsuario(prev => ({ ...prev, [name]: value === 'activo' }));
         } else {
