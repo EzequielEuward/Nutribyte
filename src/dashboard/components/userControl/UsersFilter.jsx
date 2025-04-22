@@ -50,7 +50,7 @@ export const UserFilters = ({ searchTerm, setSearchTerm, roleFilter, setRoleFilt
             label="Estado"
             onChange={(e) => setStatusFilter(e.target.value)}
           >
-            <MenuItem value="todos">Todos los estados</MenuItem>
+            <MenuItem value="todos">Todos</MenuItem>
             <MenuItem value="activo">Activo</MenuItem>
             <MenuItem value="inactivo">Inactivo</MenuItem>
           </Select>

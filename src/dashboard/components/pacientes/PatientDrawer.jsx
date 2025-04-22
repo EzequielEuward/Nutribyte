@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
-import { Drawer, List, ListItem, ListItemText, Avatar, Divider, Typography, IconButton, TextField, Button } from "@mui/material";
+import { Drawer, List, ListItem, ListItemText, Avatar, Divider, Typography, IconButton, TextField, Button, MenuItem } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import { format } from "date-fns"; // Para formatear la fecha
+import { useDispatch } from "react-redux";
+import { actualizarPaciente } from "../../../store/patient";
+import Swal from "sweetalert2";
 
 export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedPatient, setEditedPatient] = useState({});
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (selectedPatient) {
@@ -16,25 +21,70 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
   }, [selectedPatient]);
 
   const handleEditClick = () => {
-    setIsEditing((prev) => !prev); // Alterna el estado de edición
+    setIsEditing((prev) => !prev);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEditedPatient((prev) => ({
+
+    if (name === 'estadoPaciente' || name === 'historiaClinica') {
+      setEditedPatient(prev => ({
+        ...prev,
+        [name]: value
+      }));
+      return;
+    }
+
+
+    if (name === 'fechaNacimiento') {
+      const formattedDate = new Date(value).toISOString().split('T')[0];
+      setEditedPatient(prev => ({
+        ...prev,
+        persona: {
+          ...prev.persona,
+          [name]: formattedDate
+        }
+      }));
+      return;
+    }
+
+    setEditedPatient(prev => ({
       ...prev,
       persona: {
         ...prev.persona,
-        [name]: value,
-      },
+        [name]: value
+      }
     }));
   };
 
   const handleSave = () => {
-    console.log("Paciente guardado:", editedPatient);
-    setDrawerOpen(false);
-  };
+    const datosActualizados = {
+      idPaciente: editedPatient.idPaciente,
+      historiaClinica: editedPatient.historiaClinica,
+      estadoPaciente: editedPatient.estadoPaciente,
+      idUsuario: editedPatient.idUsuario,
+      persona: {
+        idPersona: editedPatient.persona.idPersona,
+        dni: Number(editedPatient.persona.dni),
+        apellido: editedPatient.persona.apellido,
+        nombre: editedPatient.persona.nombre,
+        fechaNacimiento: editedPatient.persona.fechaNacimiento,
+        sexoBiologico: editedPatient.persona.sexoBiologico,
+        email: editedPatient.persona.email,
+        telefono: editedPatient.persona.telefono
+      }
+    };
 
+    dispatch(actualizarPaciente(datosActualizados))
+      .unwrap()
+      .then(() => {
+        setDrawerOpen(false);
+        Swal.fire('Éxito', 'Paciente actualizado correctamente', 'success');
+      })
+      .catch(error => {
+        Swal.fire('Error', error.message || 'Error al actualizar', 'error');
+      });
+  };
   const handleCloseDrawer = () => {
     setDrawerOpen(false);
   };
@@ -55,6 +105,11 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
           <IconButton onClick={handleEditClick} aria-label="editar" size="small">
             {isEditing ? <CloseIcon fontSize="small" /> : <EditIcon fontSize="small" />}
           </IconButton>
+          {isEditing && (
+            <Typography variant="caption" color="textSecondary">
+              Modo edición
+            </Typography>
+          )}
         </Typography>
         <Divider style={{ margin: '16px 0' }} />
 
@@ -74,6 +129,8 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
           )} />
         </ListItem>
 
+
+
         <ListItem>
           <ListItemText primary="Nombre" secondary={isEditing ? (
             <TextField name="nombre" value={editedPatient.persona?.nombre || ""} onChange={handleInputChange} variant="outlined" fullWidth margin="dense" />
@@ -86,11 +143,26 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
           <ListItemText primary="Sexo" secondary={selectedPatient?.persona?.sexoBiologico === "m" ? "Masculino" : "Femenino"} />
         </ListItem>
 
+
         <ListItem>
           <ListItemText primary="Email" secondary={isEditing ? (
             <TextField name="email" value={editedPatient.persona?.email || ""} onChange={handleInputChange} variant="outlined" fullWidth margin="dense" />
           ) : (
             selectedPatient?.persona?.email
+          )} />
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Teléfono" secondary={isEditing ? (
+            <TextField
+              name="telefono"
+              value={editedPatient.persona?.telefono || ""}
+              onChange={handleInputChange}
+              variant="outlined"
+              fullWidth
+              margin="dense"
+            />
+          ) : (
+            selectedPatient?.persona?.telefono
           )} />
         </ListItem>
 
@@ -100,6 +172,51 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
           ) : (
             formatFechaNacimiento(selectedPatient?.persona?.fechaNacimiento)
           )} />
+        </ListItem>
+        <ListItem>
+          <ListItemText
+            primary="Estado del Paciente"
+            secondary={isEditing ? (
+              <TextField
+                select
+                name="estadoPaciente"
+                value={editedPatient.estadoPaciente}
+                onChange={handleInputChange}
+                variant="outlined"
+                fullWidth
+                margin="dense"
+              >
+                <MenuItem value="Registrado">Registrado</MenuItem>
+                <MenuItem value="En evaluacion">En evaluación</MenuItem>
+                <MenuItem value="En tratamiento">En tratamiento</MenuItem>
+                <MenuItem value="Reevaluacion">Reevaluación</MenuItem>
+                <MenuItem value="Abandonado">Abandonado</MenuItem>
+                <MenuItem value="Completado">Completado</MenuItem>
+                <MenuItem value="Cerrado">Cerrado</MenuItem>
+              </TextField>
+            ) : (
+              editedPatient.estadoPaciente
+            )}
+          />
+        </ListItem>
+        <ListItem>
+          <ListItemText
+            primary="Historial Clínico"
+            secondary={isEditing ? (
+              <TextField
+                name="historiaClinica"
+                value={editedPatient.historiaClinica || ""}
+                onChange={handleInputChange}
+                variant="outlined"
+                fullWidth
+                margin="dense"
+                multiline
+                rows={4}
+              />
+            ) : (
+              selectedPatient?.historiaClinica
+            )}
+          />
         </ListItem>
 
         {isEditing && (

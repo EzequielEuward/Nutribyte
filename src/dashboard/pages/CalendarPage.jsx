@@ -1,35 +1,37 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DashboardLayout } from "../layout/DashboardLayout";
-import { format, parse, startOfWeek, getDay, addMinutes } from "date-fns";
+import {
+  format,
+  parseISO,
+  isValid,
+  addMinutes,
+  startOfWeek,
+  getDay
+} from "date-fns";
 import { es } from "date-fns/locale";
-
-
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-
 import {
   listarTurnos,
   crearTurno,
   cambiarEstadoTurno,
   obtenerTurnoPorId,
   modificarTurno,
-  eliminarTurno,
+  eliminarTurno
 } from "../../store/calendar";
 import { listarPacientes } from "../../store/patient";
 import { TurnoModal, CalendarTable } from "../components/calendario/";
-
 import Swal from "sweetalert2";
-
 import { lightTheme } from "../../theme/lightTheme";
 import { darkTheme } from "../../theme/darkTheme";
 
 const locales = { es };
 const localizer = dateFnsLocalizer({
   format,
-  parse,
+  parse: parseISO,
   startOfWeek: (date) => startOfWeek(date, { weekStartsOn: 1 }),
   getDay,
   locales,
@@ -49,7 +51,6 @@ const messages = {
   event: "Evento",
   showMore: (total) => `+ Ver más (${total})`,
 };
-
 export const CalendarPage = () => {
   const { uid } = useSelector((state) => state.auth);
   const isDarkMode = useSelector((state) => state.ui.isDarkMode);
@@ -62,44 +63,84 @@ export const CalendarPage = () => {
   const [turnoSeleccionado, setTurnoSeleccionado] = useState(null);
   const [turno, setTurno] = useState([]);
 
+  const now = new Date();
+  const defaultStart = format(now, "yyyy-MM-dd'T'HH:mm");
+  const defaultEnd = format(addMinutes(now, 45), "yyyy-MM-dd'T'HH:mm");
+  
   const [formValues, setFormValues] = useState({
     title: "",
-    start: "",
-    end: "",
+    motivo: "",
+    tipoConsulta:"",
+    start: defaultStart,
+    end: defaultEnd,
     pacienteSeleccionado: "",
     estado: "pendiente",
   });
+  
+
+  const safeToISOString = (value) => {
+    const date = new Date(value);
+    return isValid(date) ? date.toISOString() : "";
+  };
+  
+  const turnoModificado = {
+    tipoConsulta: formValues.title,
+    motivo: formValues.motivo,
+    fechaInicio: safeToISOString(formValues.start),
+    fechaFin: safeToISOString(formValues.end),
+    idPaciente: parseInt(formValues.pacienteSeleccionado, 10),
+    estado: formValues.estado,
+  };
+  
 
   useEffect(() => {
-    if (turnos.length === 0) dispatch(listarTurnos());
+    dispatch(listarTurnos());
     if (pacientes.length === 0) dispatch(listarPacientes());
-  }, [dispatch, turnos, pacientes.length]);
+  }, [dispatch, uid]); 
 
 
 
   const handleOpenModal = async (slotOrEvent) => {
-    if (slotOrEvent.id) {
-      const turno = await dispatch(obtenerTurnoPorId(slotOrEvent.id)).unwrap();
-      setTurnoSeleccionado(turno);
-      setFormValues({
-        title: turno.tipoConsulta,
-        start: new Date(turno.fechaInicio).toISOString().slice(0, 16),
-        end: new Date(turno.fechaFin).toISOString().slice(0, 16),
-        pacienteSeleccionado: turno.idPaciente.toString(),
-        estado: turno.estado,
-        idTurno: turno.idTurno,
-      });
+    try {
+      if (slotOrEvent.id) {
+        const turno = await dispatch(
+          obtenerTurnoPorId({ idTurno: slotOrEvent.id, idUsuario: uid })
+        ).unwrap();
+        
+        const fechaInicio = parseISO(turno.fechaInicio);
+        const fechaFin = parseISO(turno.fechaFin);
+
+        if (!isValid(fechaInicio) || !isValid(fechaFin)) {
+          throw new Error('Fechas inválidas en el turno');
+        }
+
+        setFormValues({
+          title: turno.tipoConsulta,
+          motivo: turno.motivo || "",
+          start: format(fechaInicio, "yyyy-MM-dd'T'HH:mm"),
+          end: format(fechaFin, "yyyy-MM-dd'T'HH:mm"),
+          pacienteSeleccionado: turno.idPaciente.toString(),
+          estado: turno.estado,
+          idTurno: turno.idTurno,
+        });
+      } else {
+        const startDate = isValid(slotOrEvent.start) ? slotOrEvent.start : new Date();
+        const endDate = addMinutes(startDate, 45);
+
+        setFormValues({
+          title: "",
+          motivo: "",
+          start: format(startDate, "yyyy-MM-dd'T'HH:mm"),
+          end: format(endDate, "yyyy-MM-dd'T'HH:mm"),
+          pacienteSeleccionado: "",
+          estado: "pendiente",
+          idTurno: null,
+        });
+      }
       setOpenModal(true);
-    } else {
-      setFormValues({
-        title: "",
-        start: slotOrEvent.start.toISOString().slice(0, 16),
-        end: slotOrEvent.end.toISOString().slice(0, 16),
-        pacienteSeleccionado: "",
-        estado: "pendiente",
-        idTurno: null,
-      });
-      setOpenModal(true);
+    } catch (error) {
+      console.error("Error al abrir modal:", error);
+      Swal.fire("Error", "No se pudo cargar el turno", "error");
     }
   };
 
@@ -109,13 +150,18 @@ export const CalendarPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues((prev) => {
+    setFormValues(prev => {
       const newValues = { ...prev, [name]: value };
-      if (name === "start") {
-        const fechaInicio = new Date(value);
-        if (!isNaN(fechaInicio)) {
-          const fechaFin = addMinutes(fechaInicio, 45);
-          newValues.end = fechaFin.toISOString().slice(0, 16);
+      
+      if (name === 'start') {
+        try {
+          const fechaInicio = parseISO(value);
+          if (isValid(fechaInicio)) {
+            const fechaFin = addMinutes(fechaInicio, 45);
+            newValues.end = format(fechaFin, "yyyy-MM-dd'T'HH:mm");
+          }
+        } catch (error) {
+          console.error("Error al actualizar fechas:", error);
         }
       }
       return newValues;
@@ -123,13 +169,13 @@ export const CalendarPage = () => {
   };
 
   const handleDeleteTurno = async () => {
-    if (!turnoSeleccionado) {
+    if (!formValues.idTurno) {
       console.error("No hay turno seleccionado para eliminar");
       return;
     }
-
+  
     handleCloseModal();
-
+  
     Swal.fire({
       title: "¿Estás seguro?",
       text: "Esta acción no se puede deshacer.",
@@ -139,7 +185,7 @@ export const CalendarPage = () => {
       cancelButtonText: "Cancelar",
       preConfirm: async () => {
         try {
-          await dispatch(eliminarTurno(turnoSeleccionado)).unwrap();
+          await dispatch(eliminarTurno({ idTurno: formValues.idTurno })).unwrap();
           Swal.fire("Eliminado", "El turno ha sido eliminado correctamente.", "success");
         } catch (error) {
           Swal.fire("Error", "Hubo un problema al eliminar el turno.", "error");
@@ -147,67 +193,94 @@ export const CalendarPage = () => {
       },
     });
   };
-
+  
+  
   const handleEstadoChange = async (e, turno) => {
     const nuevoEstado = e.target.value;
     try {
-      const turnoActualizado = await dispatch(
-        cambiarEstadoTurno({ idTurno: turno.idTurno, nuevoEstado, idUsuario: uid })
+      await dispatch(
+        cambiarEstadoTurno({
+          idTurno: turno.idTurno,
+          idUsuario: uid,
+          nuevoEstado
+        })
       ).unwrap();
-
-      setTurno((prevTurnos) =>
-        prevTurnos.map((t) =>
-          t.idTurno === turnoActualizado.idTurno ? { ...t, estado: turnoActualizado.estado } : t
-        )
-      );
-
-      // Recargar la página sin cambiar la URL
-      window.location.replace(window.location.href);
-
-      Swal.fire("Actualizado", "El estado del turno ha sido actualizado correctamente.", "success");
+      
+      dispatch(listarTurnos()); 
     } catch (error) {
-      Swal.fire("Error", "Hubo un problema al actualizar el estado del turno.", "error");
+      Swal.fire("Error", "Hubo un problema al actualizar el estado", "error");
     }
   };
 
   const handleSave = async () => {
-    if (!formValues.title || !formValues.start || !formValues.end || !formValues.pacienteSeleccionado) {
-      console.error("Todos los campos son obligatorios.");
-      return;
-    }
-
-    const turnoModificado = {
-      tipoConsulta: formValues.title,
-      fechaInicio: new Date(formValues.start).toISOString(),
-      fechaFin: new Date(formValues.end).toISOString(),
-      idPaciente: parseInt(formValues.pacienteSeleccionado, 10),
-      estado: formValues.estado,
-    };
-
     try {
-      if (formValues.idTurno) {
-        await dispatch(modificarTurno({ idTurno: formValues.idTurno, idUsuario: uid, turnoModificado })).unwrap();
-        Swal.fire("Actualizado", "El turno ha sido actualizado correctamente.", "success");
-      } else {
-        await dispatch(crearTurno({ ...turnoModificado, idUsuario: uid })).unwrap();
-        Swal.fire("Creado", "El turno ha sido creado correctamente.", "success");
+      if (!formValues.title || !formValues.start || !formValues.pacienteSeleccionado) {
+        throw new Error("Complete todos los campos obligatorios");
       }
+  
+      const fechaInicio = new Date(formValues.start);
+      if (!isValid(fechaInicio)) {
+        throw new Error("Fecha de inicio inválida");
+      }
+      const fechaFin = new Date(formValues.end);
+      if (!isValid(fechaFin)) {
+        throw new Error("Fecha de fin inválida");
+      }
+  
+      const turnoData = {
+        tipoConsulta: formValues.title,
+        motivo: formValues.motivo,
+        fechaInicio: fechaInicio.toISOString(),
+        fechaFin: fechaFin.toISOString(),
+        idPaciente: Number(formValues.pacienteSeleccionado),
+        estado: formValues.estado,
+      };
+  
+      if (formValues.idTurno) {
+        await dispatch(modificarTurno({
+          idTurno: formValues.idTurno,
+          idUsuario: uid,
+          turnoModificado: turnoData
+        })).unwrap();
+      } else {
+        await dispatch(crearTurno({ ...turnoData, idUsuario: uid })).unwrap();
+      }
+  
       handleCloseModal();
+      dispatch(listarTurnos());
     } catch (error) {
-      console.error("Error al guardar el turno:", error);
-      Swal.fire("Error", "Hubo un problema al guardar el turno, no se encuentra disponibilidad o el paciente no esta cargado", "error");
+      console.error("Error al guardar:", error);
+      Swal.fire("Error", error.message || "Error al guardar el turno", "error");
     }
   };
+  
 
   const eventos = turnos
-    .filter((turno) => turno.estado.toLowerCase() !== "cancelado")
-    .map((turno) => ({
-      id: turno.idTurno,
-      title: `${turno.tipoConsulta} - ${turno.paciente?.nombre || "Desconocido"} ${turno.paciente?.apellido || ""} [${turno.estado}]`,
-      start: new Date(turno.fechaInicio),
-      end: new Date(turno.fechaFin),
-      estado: turno.estado,
-    }));
+    .filter(turno => turno.estado.toLowerCase() !== 'cancelado')
+    .map(turno => {
+      try {
+        // Usar parseISO en lugar de new Date
+        const start = parseISO(turno.fechaInicio);
+        const end = parseISO(turno.fechaFin);
+
+        if (!isValid(start) || !isValid(end)) {
+          console.warn('Turno con fechas inválidas:', turno);
+          return null;
+        }
+
+        return {
+          id: turno.idTurno,
+          title: `${turno.tipoConsulta} - ${turno.paciente?.nombre || 'Desconocido'} ${turno.paciente?.apellido || ''} [${turno.estado}]`,
+          start,
+          end,
+          estado: turno.estado
+        };
+      } catch (error) {
+        console.error('Error procesando turno:', error);
+        return null;
+      }
+    })
+    .filter(event => event !== null);
 
   const getEventStyle = (event) => {
     const mapping = {
@@ -234,7 +307,6 @@ export const CalendarPage = () => {
       },
     };
   };
-
   return (
     <ThemeProvider theme={currentTheme}>
       <DashboardLayout>
@@ -243,7 +315,7 @@ export const CalendarPage = () => {
           sx={{
             fontSize: { xs: "1.2rem", sm: "1.5rem", md: "2rem" },
             fontWeight: "bold",
-            marginTop:1,
+            marginTop: 1, 
           }}
         >
           Calendario de Turnos

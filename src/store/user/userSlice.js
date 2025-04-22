@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ListarUsuarios, ListarUsuariosPorId, CrearUsuario, ModificarUsuario } from './thunk';
+import { ListarUsuarios, ListarUsuariosPorId, CrearUsuario, ModificarUsuario, EliminarUsuario,ToggleUserStatus } from './thunk';
 
 const userSlice = createSlice({
   name: 'user',
@@ -59,13 +59,39 @@ const userSlice = createSlice({
       })
       .addCase(ModificarUsuario.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.users.findIndex((user) => user.idUsuario === action.payload.idUsuario);
-        if (index !== -1) {
-          state.users[index] = action.payload;
-        }
+        state.users = state.users.map((user) =>
+          user.idUsuario === action.payload.idUsuario ? action.payload : user
+        );
       })
-      
       .addCase(ModificarUsuario.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(EliminarUsuario.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(EliminarUsuario.fulfilled, (state, action) => {
+        state.loading = false;
+        // Eliminamos el usuario del array. Puedes usar action.payload.idUsuario
+        state.users = state.users.filter(
+          (user) => user.idUsuario !== action.payload.idUsuario
+        );
+      })
+      .addCase(EliminarUsuario.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(ToggleUserStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(ToggleUserStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = state.users.map((user) =>
+          user.idUsuario === action.payload.idUsuario ? { ...user, activo: action.payload.activo } : user)
+      })
+      .addCase(ToggleUserStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
       });

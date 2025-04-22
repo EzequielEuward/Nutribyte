@@ -13,6 +13,8 @@ import {
   Box,
   TextField,
   Typography,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import Swal from "sweetalert2";
 
@@ -31,6 +33,7 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
   const [selectedTurno, setSelectedTurno] = useState(null);
   const [dniFilter, setDniFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const [mostrarCancelados, setMostrarCancelados] = useState(false); // Nuevo estado
 
   const estadoOptions = {
     disponible: { background: "#D1E8FF", text: "#1565C0" },
@@ -68,9 +71,14 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
     handleCloseMenu();
   };
 
-  // Filtrado de turnos
+  // Filtrado de turnos: excluye los cancelados si no se quiere verlos
   const filteredTurnos = turnos.filter((turno) => {
-    const dniCoincide = turno.paciente.dni
+    // Excluir cancelados si el checkbox no está marcado
+    if (!mostrarCancelados && turno.estado.toLowerCase() === "cancelado") {
+      return false;
+    }
+
+    const dniCoincide = (turno.paciente?.persona?.dni || '')
       .toString()
       .toLowerCase()
       .includes(dniFilter.toLowerCase());
@@ -83,26 +91,22 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
     return dniCoincide && fechaCoincide;
   });
 
-  // Filtrado por fecha
-  const turnosFiltrados = turnos.filter((turno) => {
-    let fechaCoincide = true;
-    if (dateFilter && turno.fechaInicio) {
-      const fechaTurno = format(new Date(turno.fechaInicio), "yyyy-MM-dd");
-      fechaCoincide = fechaTurno === dateFilter;
-    }
-    return fechaCoincide;
-  });
-
-  // Ordenamiento: si hay filtro de DNI, se priorizan los turnos que lo contengan.
+  // Si necesitás ordenar o filtrar adicionalmente, podés hacerlo a partir de filteredTurnos
   const turnosOrdenados = dniFilter
-    ? [...turnosFiltrados].sort((a, b) => {
-      const aCoincide = a.paciente.dni.toString().toLowerCase().includes(dniFilter.toLowerCase());
-      const bCoincide = b.paciente.dni.toString().toLowerCase().includes(dniFilter.toLowerCase());
-      if (aCoincide && !bCoincide) return -1;
-      if (!aCoincide && bCoincide) return 1;
-      return 0;
-    })
-    : turnosFiltrados;
+    ? [...filteredTurnos].sort((a, b) => {
+        const aCoincide = (a.paciente?.persona.dni || '')
+          .toString()
+          .toLowerCase()
+          .includes(dniFilter.toLowerCase());
+        const bCoincide = (b.paciente?.persona.dni || '')
+          .toString()
+          .toLowerCase()
+          .includes(dniFilter.toLowerCase());
+        if (aCoincide && !bCoincide) return -1;
+        if (!aCoincide && bCoincide) return 1;
+        return 0;
+      })
+    : filteredTurnos;
 
   return (
     <Box sx={{ p: 2 }}>
@@ -111,7 +115,7 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
         <Typography variant="h6" sx={{ mb: 2 }}>
           Filtros Avanzados
         </Typography>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, alignItems: "center" }}>
           <TextField
             label="Buscar por DNI"
             variant="outlined"
@@ -128,6 +132,16 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
             onChange={(e) => setDateFilter(e.target.value)}
             InputLabelProps={{ shrink: true }}
           />
+          {/* Checkbox para mostrar turnos cancelados */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={mostrarCancelados}
+                onChange={(e) => setMostrarCancelados(e.target.checked)}
+              />
+            }
+            label="Mostrar cancelados"
+          />
           {/* Se pueden agregar más filtros aquí */}
         </Box>
       </Paper>
@@ -140,19 +154,19 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
           maxHeight: "60vh",
           overflowY: "auto",
           // Para que el scroll se aplique solo a la tabla y no al layout general
-          "& .MuiTable-root": { minWidth: 600 }
+          "& .MuiTable-root": { minWidth: 600 },
         }}
       >
         <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>DNI</TableCell>
-              <TableCell>NOMBRE</TableCell>
+              <TableCell>NOMBRE COMPLETO</TableCell>
               <TableCell>FECHA</TableCell>
               <TableCell>HORA</TableCell>
               <TableCell>ESTADO</TableCell>
+              <TableCell>TIPO CONSULTA</TableCell>
               <TableCell>MOTIVO</TableCell>
-              <TableCell>Asistencia</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -161,9 +175,10 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
               const estadoKey = normalizarEstado(turno.estado);
               return (
                 <TableRow key={turno.idTurno}>
-                  <TableCell>{turno.paciente.dni}</TableCell>
+                  <TableCell>{turno.paciente?.persona.dni || "N/A"}</TableCell>
                   <TableCell>
-                    {turno.paciente.apellido} {turno.paciente.nombre}
+                    {turno.paciente?.apellido} {turno.paciente?.persona.nombre}{" "}
+                    {turno.paciente?.persona.apellido}
                   </TableCell>
                   <TableCell>{fecha ? format(fecha, "dd/MM/yyyy") : ""}</TableCell>
                   <TableCell>{fecha ? format(fecha, "HH:mm") : ""}</TableCell>
@@ -184,8 +199,8 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
                       {turno.estado}
                     </Box>
                   </TableCell>
-                  <TableCell>{turno.paciente.motivo}</TableCell>
-                  <TableCell>{turno.paciente.asistencia}</TableCell>
+                  <TableCell>{turno.tipoConsulta}</TableCell>
+                  <TableCell>{turno.motivo}</TableCell>
                 </TableRow>
               );
             })}

@@ -12,6 +12,7 @@ export const PatientForm = ({ open, onClose, onSubmit }) => {
     email: "",
     telefono: "",
     historialClinico: "",
+    estadoPaciente: "Registrado"
   });
 
   const handleChange = (e) => {
@@ -28,6 +29,7 @@ export const PatientForm = ({ open, onClose, onSubmit }) => {
     onSubmit(formData); // Envía todo el formData, incluyendo fechaNacimiento
   };
 
+ 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       <DialogTitle>Registrar Nuevo Paciente</DialogTitle>
@@ -105,6 +107,25 @@ export const PatientForm = ({ open, onClose, onSubmit }) => {
                 fullWidth
                 required
               />
+            </div>
+            <div style={{ flex: "1 1 calc(50% - 16px)" }}>
+              <TextField
+                select
+                label="Estado del Paciente"
+                name="estadoPaciente"
+                value={formData.estadoPaciente}
+                onChange={handleChange}
+                fullWidth
+                required
+              >
+                <MenuItem value="Registrado">Registrado</MenuItem>
+                <MenuItem value="En evaluacion">En evaluación</MenuItem>
+                <MenuItem value="En tratamiento">En tratamiento</MenuItem>
+                <MenuItem value="Reevaluacion">Reevaluación</MenuItem>
+                <MenuItem value="Abandonado">Abandonado</MenuItem>
+                <MenuItem value="Completado">Completado</MenuItem>
+                <MenuItem value="Cerrado">Cerrado</MenuItem>
+              </TextField>
             </div>
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
               <TextField

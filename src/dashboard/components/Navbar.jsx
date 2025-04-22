@@ -23,14 +23,17 @@ import {
   SettingsOutlined,
   PersonOutlined,
   LogoutOutlined,
-  LightbulbOutlined, // Nuevo icono de bombilla
+  LightbulbOutlined,
 } from "@mui/icons-material";
+import PaymentIcon from '@mui/icons-material/Payment';
+import InfoIcon from '@mui/icons-material/Info';
+import SecurityIcon from '@mui/icons-material/Security';
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { startLogout } from "../../store/auth/";
 import { toggleDarkMode } from "../../store/ui/uiSlice";
-import { useQuotes } from "../../helpers/"; 
+import { useQuotes } from "../../helpers/";
 
 import LogoBlanco from "../../assets/LogoBlanco.png";
 import LogoNegro from "../../assets/LogoNegro.png";
@@ -43,7 +46,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { quote, fetchQuote, loading } = useQuotes(); 
+  const { quote, fetchQuote, loading } = useQuotes();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const toggleDrawer = (open) => () => setDrawerOpen(open);
@@ -108,7 +111,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
 
             <Box display="flex" alignItems="center">
 
-               <IconButton onClick={handleOpenQuote} sx={{ color: theme.palette.text.primary }}>
+              <IconButton onClick={handleOpenQuote} sx={{ color: theme.palette.text.primary }}>
                 <LightbulbOutlined />
               </IconButton>
 
@@ -116,7 +119,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
                 {isDarkMode ? <LightModeOutlined /> : <DarkModeOutlined />}
               </IconButton>
 
-             
+
 
               <IconButton onClick={toggleDrawer(true)} sx={{ color: theme.palette.text.primary }}>
                 <PersonOutlined />
@@ -151,6 +154,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
 
           {/* Opciones */}
           <List>
+            {/* Perfil */}
             <ListItem disablePadding>
               <ListItemButton onClick={() => handleNavigation("/home/perfil")}>
                 <ListItemIcon>
@@ -159,6 +163,34 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
                 <ListItemText primary="Perfil" />
               </ListItemButton>
             </ListItem>
+            {/* Pagos y suscripciones */}
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleNavigation("/home/pagos-y-suscripciones")}>
+                <ListItemIcon>
+                  <PaymentIcon sx={{ color: theme.palette.text.primary }} />
+                </ListItemIcon>
+                <ListItemText primary="Pagos y suscripciones" />
+              </ListItemButton>
+            </ListItem>
+            {/* Informacion de Planes */}
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleNavigation("/home/informacion-planes")}>
+                <ListItemIcon>
+                  <InfoIcon sx={{ color: theme.palette.text.primary }} />
+                </ListItemIcon>
+                <ListItemText primary="Informacion del plan" />
+              </ListItemButton>
+            </ListItem>
+            {/* Medidas de seguridad */}
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleNavigation("/home/medidas-de-seguridad")}>
+                <ListItemIcon>
+                  <SecurityIcon sx={{ color: theme.palette.text.primary }} />
+                </ListItemIcon>
+                <ListItemText primary="Medidas de seguridad" />
+              </ListItemButton>
+            </ListItem>
+            {/* Ajustes */}
             <ListItem disablePadding>
               <ListItemButton onClick={() => handleNavigation("/home/configuracion")}>
                 <ListItemIcon>

@@ -1,21 +1,18 @@
-import { useState } from "react";
-import {
-  Card, CardHeader, CardContent, CardActions,
-  Button, Grid, TextField, FormControl,
-  InputLabel, Select, MenuItem
-} from "@mui/material";
-import { MealPlanTabs } from "./MealPlanTabs";
+import { Card, CardHeader, CardContent, CardActions, Button, Grid, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
+import { MealPlanTabs } from "./MealPlanTabs";
 
 export const PlanCreationForm = ({
   planType,
   setPlanType,
-  calorias,
-  setCalorias,
   fechaInicio,
   setFechaInicio,
   fechaFin,
   setFechaFin,
+  observaciones,
+  setObservaciones,
+  alimentos,
+  setAlimentos,
   onCancel,
   onGenerate
 }) => {
@@ -43,17 +40,6 @@ export const PlanCreationForm = ({
             </FormControl>
           </Grid>
 
-          {/* Calorías Diarias */}
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Calorías Diarias"
-              type="number"
-              fullWidth
-              value={calorias}
-              onChange={(e) => setCalorias(e.target.value)}
-            />
-          </Grid>
-
           {/* Fecha de Inicio */}
           <Grid item xs={12} md={6}>
             <TextField
@@ -78,12 +64,21 @@ export const PlanCreationForm = ({
             />
           </Grid>
 
-          
-          {planType && (
-            <Grid item xs={12}>
-              <MealPlanTabs />
-            </Grid>
-          )}
+          {/* Observaciones */}
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Observaciones"
+              type="text"
+              fullWidth
+              value={observaciones}
+              onChange={(e) => setObservaciones(e.target.value)}
+            />
+          </Grid>
+
+          {/* Componente para seleccionar alimentos y definir gramos */}
+          <Grid item xs={12}>
+            <MealPlanTabs alimentos={alimentos} setAlimentos={setAlimentos} />
+          </Grid>
         </Grid>
       </CardContent>
 

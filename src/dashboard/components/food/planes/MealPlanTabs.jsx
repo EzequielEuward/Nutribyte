@@ -1,9 +1,6 @@
-// MealPlanTabs.jsx
 import { useState } from "react";
 import {
   Paper,
-  Tabs,
-  Tab,
   Box,
   Button,
   Table,
@@ -18,91 +15,51 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FoodSearchModal from "./FoodSearchModal";
 
-// Estado inicial para cada comida (tabs)
-const initialMealState = {
-  desayuno: [
-    { id: 1, nombre: "Alimento ejemplo 1", carbs: 30, protein: 10, fats: 5, cantidad: 100 },
-  ],
-  almuerzo: [
-    { id: 2, nombre: "Alimento ejemplo 2", carbs: 20, protein: 5, fats: 2, cantidad: 50 },
-  ],
-  merienda: [],
-  cena: [],
-  snacks: [],
-};
-
-export const MealPlanTabs = () => {
-  const [selectedTab, setSelectedTab] = useState("desayuno");
-  const [meals, setMeals] = useState(initialMealState);
+export const MealPlanTabs = ({ alimentos, setAlimentos }) => {
   const [openModal, setOpenModal] = useState(false);
 
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
+  // Función para cambiar la cantidad de un alimento
+  const handleQuantityChange = (idAlimento, newQuantity) => {
+    let gramos = parseInt(newQuantity || 0, 10);
+    // Validar entre 1 y 10000
+    gramos = Math.min(Math.max(gramos, 1), 10000);
+
+    setAlimentos(alimentos.map(item =>
+      item.idAlimento === idAlimento ? { ...item, gramos } : item
+    ));
   };
 
-  // Maneja el cambio de cantidad en la tabla
-  const handleQuantityChange = (mealKey, id, newQuantity) => {
-    setMeals((prev) => {
-      const updatedMeals = { ...prev };
-      updatedMeals[mealKey] = updatedMeals[mealKey].map((item) =>
-        item.id === id
-          ? { ...item, cantidad: parseInt(newQuantity || 0, 10) }
-          : item
-      );
-      return updatedMeals;
-    });
+  // Función para quitar un alimento de la lista
+  const handleRemoveFood = (idAlimento) => {
+    setAlimentos(alimentos.filter(item => item.idAlimento !== idAlimento));
   };
 
-  // Maneja la eliminación de un alimento en la tabla
-  const handleRemoveFood = (mealKey, id) => {
-    setMeals((prev) => {
-      const updatedMeals = { ...prev };
-      updatedMeals[mealKey] = updatedMeals[mealKey].filter((item) => item.id !== id);
-      return updatedMeals;
-    });
-  };
-
-  // Agrega el alimento obtenido desde el modal a la pestaña actual
   const handleAddFoodFromModal = (food) => {
-    setMeals((prev) => {
-      const updatedMeals = { ...prev };
-      updatedMeals[selectedTab] = [
-        ...updatedMeals[selectedTab],
-        {
-          ...food,
-          // Puedes generar un id único o usar el id del alimento seleccionado
-          id: Date.now(), 
-        },
-      ];
-      return updatedMeals;
-    });
-    // Cierra el modal
+    const nuevoAlimento = {
+      idAlimento: food.idAlimento || food.id, 
+      nombre: food.nombre,
+      carbohidratos: food.carbohidratos,
+      proteinas: food.proteinas,
+      grasasTotales: food.grasasTotales,
+      grupoAlimenticio: food.grupoAlimenticio,
+      calorias: food.calorias,
+      gramos: food.gramos,
+    };
+    
+    
+    
+
+    setAlimentos([...alimentos, nuevoAlimento]);
     setOpenModal(false);
   };
 
-  // Abre el modal en lugar de agregar un alimento "dummy"
   const handleOpenModal = () => {
     setOpenModal(true);
   };
 
   return (
     <Paper elevation={1}>
-      {/* Tabs para seleccionar la comida */}
-      <Tabs
-        value={selectedTab}
-        onChange={handleTabChange}
-        variant="scrollable"
-        scrollButtons="auto"
-      >
-        <Tab label="Desayuno" value="desayuno" />
-        <Tab label="Almuerzo" value="almuerzo" />
-        <Tab label="Merienda" value="merienda" />
-        <Tab label="Cena" value="cena" />
-        <Tab label="Snacks" value="snacks" />
-      </Tabs>
-
-      {/* Contenido de la pestaña seleccionada */}
-      <Box sx={{ p: 2, borderTop: "1px solid #e0e0e0" }}>
+      <Box sx={{ p: 2 }}>
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -110,25 +67,24 @@ export const MealPlanTabs = () => {
                 <TableCell>Alimento</TableCell>
                 <TableCell>Carbs (g)</TableCell>
                 <TableCell>Proteína (g)</TableCell>
-                <TableCell>Grasas (g)</TableCell>
+                <TableCell>Grasas Totales (g)</TableCell>
                 <TableCell>Cantidad (g)</TableCell>
                 <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {meals[selectedTab].map((food) => (
-                <TableRow key={food.id}>
+              {alimentos.map((food) => (
+                <TableRow key={food.idAlimento}>
                   <TableCell>{food.nombre}</TableCell>
-                  <TableCell>{food.carbs}</TableCell>
-                  <TableCell>{food.protein}</TableCell>
-                  <TableCell>{food.fats}</TableCell>
+                  <TableCell>{food.carbohidratos}</TableCell>
+                  <TableCell>{food.proteinas}</TableCell>
+                  <TableCell>{food.grasasTotales}</TableCell>
+
                   <TableCell>
                     <TextField
                       type="number"
-                      value={food.cantidad}
-                      onChange={(e) =>
-                        handleQuantityChange(selectedTab, food.id, e.target.value)
-                      }
+                      value={food.gramos}
+                      onChange={(e) => handleQuantityChange(food.idAlimento, e.target.value)}
                       variant="outlined"
                       size="small"
                       sx={{ width: 80 }}
@@ -138,7 +94,8 @@ export const MealPlanTabs = () => {
                     <Button
                       variant="text"
                       color="error"
-                      onClick={() => handleRemoveFood(selectedTab, food.id)}
+                      onClick={() => handleRemoveFood(food.idAlimento)}
+
                     >
                       <RemoveIcon />
                     </Button>
@@ -148,7 +105,6 @@ export const MealPlanTabs = () => {
             </TableBody>
           </Table>
         </TableContainer>
-
         <Button
           variant="outlined"
           fullWidth

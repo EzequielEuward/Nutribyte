@@ -45,6 +45,9 @@ export const DetailsDialogUser = ({ open, onClose, selectedUser }) => {
                                 <Grid item xs={6}><Typography variant="subtitle2" color="text.secondary">Sexo Biológico</Typography><Typography>{selectedUser.persona.sexoBiologico === 'M' ? 'Masculino' : 'Femenino'}</Typography></Grid>
                                 <Grid item xs={6}><Typography variant="subtitle2" color="text.secondary">Teléfono</Typography><Typography>{selectedUser.persona.telefono}</Typography></Grid>
                                 <Grid item xs={12}><Typography variant="subtitle2" color="text.secondary">Email</Typography><Typography>{selectedUser.persona.email}</Typography></Grid>
+                                <Typography variant="body1">
+                                    Plan: {selectedUser?.planUsuario || 'No especificado'}
+                                </Typography>
                             </Grid>
                         )}
                         {tabValue === 1 && (

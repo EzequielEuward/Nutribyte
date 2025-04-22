@@ -2,12 +2,26 @@ import { Box, Table, TableHead, TableRow, TableCell, TableBody, Chip, IconButton
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 export const UserTable = ({ handleMenuOpen, users }) => {
+
+    const getEstadoColor = (estado) => {
+        switch (estado) {
+            case 'Activo':
+                return 'success';
+            case 'Inactivo':
+                return 'error';
+            case 'Pendiente':
+                return 'warning';
+            case 'Suspendido':
+                return 'secondary';
+            default:
+                return 'default';
+        }
+    };
     return (
         <Box sx={{ overflowX: 'auto' }}>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>ID</TableCell>
                         <TableCell>Usuario</TableCell>
                         <TableCell>Nombre completo</TableCell>
                         <TableCell>Email</TableCell>
@@ -27,7 +41,6 @@ export const UserTable = ({ handleMenuOpen, users }) => {
                     ) : (
                         users.map((user) => (
                             <TableRow key={user.idUsuario}>
-                                <TableCell>{user.idUsuario}</TableCell>
                                 <TableCell>{user.username}</TableCell>
                                 <TableCell>
                                     {user.persona.nombre} {user.persona.apellido}
@@ -38,16 +51,19 @@ export const UserTable = ({ handleMenuOpen, users }) => {
                                         label={user.rol}
                                         color={
                                             user.rol === 'Administrador'
-                                                ? 'default'
-                                                : user.rol === 'Médico'
-                                                ? 'secondary'
-                                                : 'primary'
+                                                ? 'error'
+                                                : user.rol === 'Nutricionista'
+                                                ? 'primary'
+                                                : 'secondary'
                                         }
                                     />
                                 </TableCell>
                                 <TableCell>{user.matricula_Profesional}</TableCell>
                                 <TableCell>
-                                    <Chip label={user.activo ? 'Activo' : 'Inactivo'} color={user.activo ? 'success' : 'error'} />
+                                    <Chip
+                                        label={user.estadoUsuario}
+                                        color={getEstadoColor(user.estadoUsuario)}
+                                    />
                                 </TableCell>
                                 <TableCell align="right">
                                     <IconButton onClick={(e) => handleMenuOpen(e, user)}>

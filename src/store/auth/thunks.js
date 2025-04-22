@@ -18,15 +18,15 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
       const { data } = await api.post("/login", { username, password });
 
       if (data.isSuccess && data.result) {
-        const user = data.result.usuario; 
-        const token = data.result.token; 
+        const user = data.result.usuario;
+        const token = data.result.token;
 
 
         if (!user || !user.idUsuario) {
           throw new Error("El ID del usuario no fue recibido correctamente.");
         }
 
-        const persona = user.persona || {}; 
+        const persona = user.persona || {};
         const userPersona = {
           nombre: persona.nombre || "",
           apellido: persona.apellido || "",
@@ -38,12 +38,14 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
         const matricula = user.matricula_Profesional || "";
         const especialidad = user.especialidad || "";
         const rol = user.rol || "";
+        const planUsuario = user.planUsuario || "";
 
         dispatch(
           login({
             uid: user.idUsuario,
             username,
             rol,
+            planUsuario,
             persona: userPersona,
             matricula,
             especialidad,
@@ -58,6 +60,7 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
             idUsuario: user.idUsuario,
             userName: username,
             rol,
+            planUsuario,
             persona: userPersona,
             matricula,
             especialidad,

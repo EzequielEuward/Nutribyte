@@ -38,6 +38,17 @@ export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelet
         : b.persona[sortColumn].toString().localeCompare(a.persona[sortColumn].toString());
     });
 
+  const statusColorMap = {
+    "Registrado": { bg: "#FFF3E0", color: "#E65100" },
+    "En evaluación": { bg: "#E3F2FD", color: "#1565C0" },
+    "En tratamiento": { bg: "#E8F5E9", color: "#2E7D32" },
+    "Reevaluación": { bg: "#F3E5F5", color: "#6A1B9A" },
+    "Abandonado": { bg: "#FFEBEE", color: "#C62828" },
+    "Completado": { bg: "#E0F2F1", color: "#004D40" },
+    "Cerrado": { bg: "#ECEFF1", color: "#37474F" }
+  };
+
+
   return (
     <Box>
       <Paper sx={{ height: "100%", width: "100%" }}>
@@ -76,6 +87,7 @@ export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelet
                   ))}
                   <TableCell>Sexo</TableCell>
                   <TableCell>Email</TableCell>
+                  <TableCell>Estado</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
               </TableHead>
@@ -89,6 +101,23 @@ export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelet
                       <TableCell>{patient.persona.nombre}</TableCell>
                       <TableCell>{patient.persona.sexoBiologico.toUpperCase() === "M" ? "Masculino" : "Femenino"}</TableCell>
                       <TableCell>{patient.persona.email}</TableCell>
+                      <TableCell>
+                        <Box
+                          sx={{
+                            backgroundColor: statusColorMap[patient.estadoPaciente]?.bg || "#ECEFF1",
+                            color: statusColorMap[patient.estadoPaciente]?.color || "#37474F",
+                            padding: "4px 8px",
+                            borderRadius: "16px",
+                            display: "inline-block",
+                            fontSize: "0.8rem",
+                            fontWeight: 500,
+                            textAlign: "center",
+                            minWidth: "100px"
+                          }}
+                        >
+                          {patient.estadoPaciente}
+                        </Box>
+                      </TableCell>
                       <TableCell>
                         <IconButton onClick={() => onViewPatient(patient)}>
                           <VisibilityIcon />

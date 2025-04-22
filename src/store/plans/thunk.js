@@ -3,39 +3,85 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_PLANES = "https://localhost:7041/api/PlanesAlimenticios";
-const API_PACIENTE_BY_DNI = "https://localhost:7041/api/Pacientes/dni";
+const API_PLAN = "https://localhost:7041/api/PlanAlimenticios";
+const API_PACIENTES ="https://localhost:7041/api/Pacientes";
 const API_ALIMENTOS = "https://localhost:7041/api/Alimentos";
 
 export const crearPlanAlimenticio = createAsyncThunk(
   "planes/crearPlanAlimenticio",
-  async (planData, { rejectWithValue }) => {
+  async (planData, { rejectWithValue, getState }) => {
     try {
-      const response = await axios.post(API_PLANES, planData, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const { auth } = getState();
+      const idUsuario = auth?.uid;
+
+      if (!idUsuario || !planData.idPaciente) {
+        return rejectWithValue("Datos incompletos");
+      }
+
+      const payload = {
+        ...planData,
+        idUsuario: idUsuario,
+        idPaciente: planData.idPaciente, 
+        alimentos: planData.alimentos.map(alimento => ({
+          alimentoId: alimento.alimentoId,
+          gramos: alimento.gramos
+        }))
+      };
+
+      const response = await axios.post(API_PLAN, payload);
       return response.data;
     } catch (error) {
-      console.error("Error al crear el plan alimenticio:", error.response?.data || error.message);
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-export const buscarPacientePorDni = createAsyncThunk(
-  "planes/buscarPacientePorDni",
-  async (dni, { rejectWithValue }) => {
+export const obtenerPlanesPorNutricionista = createAsyncThunk(
+  "planes/obtenerPlanesPorNutricionista",
+  async (_, { getState, rejectWithValue }) => {
     try {
-      console.log("🔍 Buscando paciente con DNI:", dni);
-      const response = await axios.get(`${API_PACIENTE_BY_DNI}/${dni}`);
-      console.log("✅ Respuesta del backend:", response.data);
+      const { auth } = getState();
+      const idUsuario = auth?.uid;
+      
+      if (!idUsuario) {
+        return rejectWithValue("Usuario no autenticado");
+      }
+
+      const response = await axios.get(`${API_PLAN}/${idUsuario}`);
       return response.data;
     } catch (error) {
-      console.error("❌ Error al buscar paciente por DNI:", error.response?.data || error.message);
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
+
+
+
+export const buscarPacientePorDni = createAsyncThunk(
+  "planes/buscarPacientePorDni",
+  async (dni, { rejectWithValue, getState }) => {
+    try {
+      const { auth } = getState();
+      if (!auth?.uid) return rejectWithValue("Usuario no autenticado");
+
+     
+
+      const response = await axios.get(`${API_PACIENTES}/${auth.uid}/dni/${dni}`);
+
+      if (!response.data) {
+        throw new Error("Paciente no encontrado");
+      }
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+
+
+
 
 export const obtenerAlimentos = createAsyncThunk(
   "plan/getAlimentos",

@@ -7,6 +7,7 @@ export const authSlice = createSlice({
         uid: null,
         username: "",
         rol: "",
+        planUsuario: "",
         persona: {
             nombre: "",
             apellido: "",
@@ -27,6 +28,7 @@ export const authSlice = createSlice({
             state.status = "authenticated";
             state.uid = payload.uid;
             state.username = payload.username;
+            state.planUsuario = payload.planUsuario;
             state.rol = payload.rol;
             state.persona = payload.persona;
             state.matricula = payload.matricula;
@@ -47,6 +49,7 @@ export const authSlice = createSlice({
                 sexoBiologico: "",
             };
             state.matricula = "";
+            state.planUsuario = "";
             state.especialidad = "";
             state.token = "";
             state.errorMessage = null;  // ✅ Corregido: ahora se limpia correctamente el errorMessage
@@ -63,4 +66,3 @@ export const { login, logout, checkingCredentials, setError } = authSlice.action
 
 // Exportar el reducer
 export default authSlice.reducer;
-    

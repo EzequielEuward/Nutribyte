@@ -33,7 +33,7 @@ export const PatientCard = ({patients}) => {
                 <EventIcon />
               </Avatar>
               <Box>
-                <Typography variant="h6">Turnos de Hoy</Typography>
+                <Typography variant="h6">Estado de los pacientes</Typography>
                 <Typography variant="h4">0</Typography>
               </Box>
             </CardContent>

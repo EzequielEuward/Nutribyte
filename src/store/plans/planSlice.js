@@ -1,25 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { crearPlanAlimenticio, buscarPacientePorDni, obtenerAlimentos } from "./thunk"; 
+import { crearPlanAlimenticio, buscarPacientePorDni, obtenerAlimentos, obtenerPlanesPorNutricionista } from "./thunk"; 
 
 const initialState = {
   paciente: null,
   plan: null,
-  alimentos: [], // Nuevo estado para almacenar alimentos
+  planes: [], // Nuevo estado para almacenar todos los planes
+  alimentos: [],
   isLoading: false,
-  isLoadingAlimentos: false, // Estado de carga específico para alimentos
+  isLoadingPlanes: false, // Estado de carga específico para planes
+  isLoadingAlimentos: false,
   error: null,
-  errorAlimentos: null, // Error específico para alimentos
+  errorPlanes: null, // Error específico para planes
+  errorAlimentos: null,
 };
 
 export const planSlice = createSlice({
   name: "plan",
   initialState,
   reducers: {
-    agregarComida: (state, action) => {
+    agregarAlimento: (state, action) => {
       if (!state.plan) {
-        state.plan = { comidas: [] };
+        state.plan = { alimentos: [] };
       }
-      state.plan.comidas.push(action.payload);
+      state.plan.alimentos.push(action.payload);
     },
     limpiarPlan: (state) => {
       state.plan = null;
@@ -27,20 +30,18 @@ export const planSlice = createSlice({
       state.error = null;
       state.isLoading = false;
     },
-    // Reducer para limpiar errores de alimentos si lo necesitas
     limpiarErroresAlimentos: (state) => {
       state.errorAlimentos = null;
     }
   },
   extraReducers: (builder) => {
     builder
-      // Casos existentes para paciente y planes
       .addCase(buscarPacientePorDni.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
       .addCase(buscarPacientePorDni.fulfilled, (state, action) => {
-        state.paciente = action.payload;
+        state.paciente = action.payload; 
         state.isLoading = false;
       })
       .addCase(buscarPacientePorDni.rejected, (state, action) => {
@@ -48,7 +49,6 @@ export const planSlice = createSlice({
         state.error = action.payload || "Error al buscar paciente por DNI";
       })
       
-      // Caso para crear plan
       .addCase(crearPlanAlimenticio.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -56,13 +56,14 @@ export const planSlice = createSlice({
       .addCase(crearPlanAlimenticio.fulfilled, (state, action) => {
         state.plan = action.payload;
         state.isLoading = false;
+        // Actualizamos la lista de planes con el nuevo creado
+        state.planes = [...state.planes, action.payload];
       })
       .addCase(crearPlanAlimenticio.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Error al crear el plan alimenticio";
       })
       
-      // Nuevos casos para el manejo de alimentos
       .addCase(obtenerAlimentos.pending, (state) => {
         state.isLoadingAlimentos = true;
         state.errorAlimentos = null;
@@ -74,6 +75,20 @@ export const planSlice = createSlice({
       .addCase(obtenerAlimentos.rejected, (state, action) => {
         state.isLoadingAlimentos = false;
         state.errorAlimentos = action.payload || "Error al obtener alimentos";
+      })
+      
+      // Nuevos casos para obtener planes del nutricionista
+      .addCase(obtenerPlanesPorNutricionista.pending, (state) => {
+        state.isLoadingPlanes = true;
+        state.errorPlanes = null;
+      })
+      .addCase(obtenerPlanesPorNutricionista.fulfilled, (state, action) => {
+        state.isLoadingPlanes = false;
+        state.planes = action.payload; // Almacenamos todos los planes
+      })
+      .addCase(obtenerPlanesPorNutricionista.rejected, (state, action) => {
+        state.isLoadingPlanes = false;
+        state.errorPlanes = action.payload || "Error al obtener planes";
       });
   },
 });

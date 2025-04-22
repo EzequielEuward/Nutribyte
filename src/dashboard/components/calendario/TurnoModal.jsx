@@ -5,50 +5,79 @@ import {
     DialogTitle,
     FormControl,
     Button,
-    InputLabel,
-    MenuItem,
-    Select,
     TextField,
     Switch,
-    FormControlLabel
+    FormControlLabel,
+    Autocomplete
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export const TurnoModal = ({ open, onClose, handleChange, handleSave, pacientes, formValues, handleDelete }) => {
+export const TurnoModal = ({
+    open,
+    onClose,
+    handleChange,
+    handleSave,
+    pacientes,
+    formValues,
+    handleDelete
+}) => {
+
+    // Función para extraer la etiqueta a mostrar
+    const getPacienteLabel = (paciente) => {
+        if (!paciente || !paciente.persona) return "";
+        return `${paciente.persona.nombre} ${paciente.persona.apellido} (DNI: ${paciente.persona.dni || "N/A"})`;
+    };
+
+    // Manejar el cambio en Autocomplete: actualizamos el formValues con el id del paciente seleccionado.
+    const handlePacienteChange = (event, newValue) => {
+        handleChange({
+            target: {
+                name: "pacienteSeleccionado",
+                value: newValue ? newValue.idPaciente : ""
+            }
+        });
+    };
+
+    const pacienteSeleccionadoActual = pacientes.find(
+        (p) => p.idPaciente.toString() === formValues.pacienteSeleccionado
+    ) || null;
 
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{formValues.title ? "Editar Turno" : "Nuevo Turno"}</DialogTitle>
             <DialogContent>
+                {/* Campo de Autocomplete para seleccionar paciente */}
                 <FormControl fullWidth margin="normal">
-                    <InputLabel>Paciente</InputLabel>
-                    <Select
-                        name="pacienteSeleccionado"
-                        value={formValues.pacienteSeleccionado}
-                        onChange={handleChange}
-                        label="Paciente"
-                    >
-                        {pacientes.map((paciente) => (
-                            <MenuItem key={paciente.idPaciente} value={paciente.idPaciente}>
-                                {`${paciente.persona?.nombre} ${paciente.persona?.apellido}`}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                    <Autocomplete
+                        options={pacientes}
+                        getOptionLabel={getPacienteLabel}
+                        value={pacienteSeleccionadoActual}
+                        onChange={handlePacienteChange}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Paciente" variant="outlined" />
+                        )}
+                        noOptionsText="No se encontraron pacientes"
+                    />
                 </FormControl>
 
                 <FormControl fullWidth margin="normal">
-                    <InputLabel>Tipo de Consulta</InputLabel>
-                    <Select
+                    <TextField
+                        select
+                        label="Tipo de Consulta"
                         name="title"
                         value={formValues.title}
                         onChange={handleChange}
-                        label="Tipo de Consulta"
+                        SelectProps={{
+                            native: true
+                        }}
+                        variant="outlined"
                     >
-                        <MenuItem value="Primera consulta">Primera consulta</MenuItem>
-                        <MenuItem value="Seguimiento">Seguimiento</MenuItem>
-                        <MenuItem value="Revisión">Revisión</MenuItem>
-                        <MenuItem value="Problema especifico">Problema específico</MenuItem>
-                    </Select>
+                        {/*ESTADOS DEL PACIENTE: Registrado, en evaluacion, en tratamiento, revaluacion , abandonado, completado, cerrado */}
+                        <option value="Primera consulta">Primera consulta</option>
+                        <option value="Seguimiento">Seguimiento</option>
+                        <option value="Revisión">Revisión</option>
+                        <option value="Problema especifico">Problema específico</option>
+                    </TextField>
                 </FormControl>
 
                 <TextField
@@ -57,12 +86,22 @@ export const TurnoModal = ({ open, onClose, handleChange, handleSave, pacientes,
                     label="Fecha de Inicio"
                     type="datetime-local"
                     name="start"
-                    value={formValues.start ? formValues.start.split('.')[0] : ''}  // Eliminar milisegundos si es necesario
+                    value={formValues.start ? formValues.start.split('.')[0] : ''}  // Si es necesario eliminar milisegundos
                     onChange={handleChange}
                     InputLabelProps={{ shrink: true }}
                 />
 
-                {/* Eliminamos el input de Fecha de Fin para que se calcule automáticamente */}
+                <TextField
+                    label="Motivo de la consulta"
+                    name="motivo"
+                    value={formValues.motivo}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    required
+                />
+
+                {/* El campo Fecha de Fin se calcula automáticamente */}
 
                 <FormControlLabel
                     control={

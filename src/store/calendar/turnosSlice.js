@@ -94,6 +94,7 @@ export const turnosSlice = createSlice({
             : turno
         );
       })
+      
       .addCase(eliminarTurno.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Error al cancelar el turno";

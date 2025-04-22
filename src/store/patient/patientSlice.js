@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { crearPaciente, listarPacientes, obtenerPacientePorId, desactivarPaciente } from './';
+import { crearPaciente, listarPacientes, obtenerPacientePorId, desactivarPaciente, actualizarPaciente } from './';
 
 const initialState = {
   pacientes: [],
-  pacienteSeleccionado: null, // Agregamos este estado
+  pacienteSeleccionado: null, 
   isLoading: false,
   error: null,
 };
@@ -13,7 +13,7 @@ export const patientSlice = createSlice({
   initialState,
   reducers: {
     limpiarPacienteSeleccionado: (state) => {
-      state.pacienteSeleccionado = null; // Permite limpiar el estado cuando se cierre el drawer
+      state.pacienteSeleccionado = null; 
     },
   },
   extraReducers: (builder) => {
@@ -23,7 +23,7 @@ export const patientSlice = createSlice({
         state.error = null;
       })
       .addCase(crearPaciente.fulfilled, (state, action) => {
-        state.pacientes.push(action.payload); 
+        state.pacientes.push(action.payload);
         state.isLoading = false;
       })
       .addCase(crearPaciente.rejected, (state, action) => {
@@ -35,7 +35,7 @@ export const patientSlice = createSlice({
         state.error = null;
       })
       .addCase(listarPacientes.fulfilled, (state, action) => {
-        state.pacientes = action.payload; 
+        state.pacientes = action.payload;
         state.isLoading = false;
       })
 
@@ -47,7 +47,7 @@ export const patientSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(obtenerPacientePorId.fulfilled, (state, action) => {
-        state.pacienteSeleccionado = action.payload; 
+        state.pacienteSeleccionado = action.payload;
         state.isLoading = false;
       })
       .addCase(obtenerPacientePorId.rejected, (state, action) => {
@@ -67,6 +67,22 @@ export const patientSlice = createSlice({
       .addCase(desactivarPaciente.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Error al desactivar el paciente";
+      })
+      .addCase(actualizarPaciente.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(actualizarPaciente.fulfilled, (state, action) => {
+        state.pacientes = state.pacientes.map(paciente =>
+          paciente.idPaciente === action.payload.idPaciente ? action.payload : paciente
+        );
+        state.isLoading = false;
+      })
+      
+      
+      .addCase(actualizarPaciente.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

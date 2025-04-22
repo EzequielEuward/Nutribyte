@@ -1,87 +1,48 @@
-import { Box, Typography, Paper, Stack, List, ListItem } from '@mui/material';
+import { Box, Typography, Paper, Stack, List, ListItem, Button } from '@mui/material';
 import { MacronutrientesChart, PolarChart } from './';
 
-export const PlanSummaryStep = () => {
-  const comidas = [
-    {
-      nombre: 'Desayuno',
-      alimentos: [
-        {
-          nombre: 'Avena',
-          cantidad: '50g',
-          macros: { proteinas: '5g', carbohidratos: '30g', grasas: '3g' },
-        },
-        {
-          nombre: 'Leche de almendras',
-          cantidad: '200ml',
-          macros: { proteinas: '2g', carbohidratos: '1g', grasas: '3g' },
-        },
-        {
-          nombre: 'Plátano',
-          cantidad: '1 unidad',
-          macros: { proteinas: '1g', carbohidratos: '23g', grasas: '0g' },
-        },
-      ],
-    },
-    {
-      nombre: 'Almuerzo',
-      alimentos: [
-        {
-          nombre: 'Pechuga de pollo',
-          cantidad: '150g',
-          macros: { proteinas: '45g', carbohidratos: '0g', grasas: '3g' },
-        },
-        {
-          nombre: 'Arroz integral',
-          cantidad: '80g',
-          macros: { proteinas: '3g', carbohidratos: '65g', grasas: '1g' },
-        },
-        {
-          nombre: 'Brócoli',
-          cantidad: '100g',
-          macros: { proteinas: '3g', carbohidratos: '7g', grasas: '0g' },
-        },
-      ],
-    },
-    {
-      nombre: 'Merienda',
-      alimentos: [
-        {
-          nombre: 'Yogur griego',
-          cantidad: '150g',
-          macros: { proteinas: '15g', carbohidratos: '6g', grasas: '5g' },
-        },
-        {
-          nombre: 'Frutos rojos',
-          cantidad: '50g',
-          macros: { proteinas: '1g', carbohidratos: '7g', grasas: '0g' },
-        },
-      ],
-    },
-    {
-      nombre: 'Cena',
-      alimentos: [
-        {
-          nombre: 'Salmón',
-          cantidad: '120g',
-          macros: { proteinas: '25g', carbohidratos: '0g', grasas: '15g' },
-        },
-        {
-          nombre: 'Quinoa',
-          cantidad: '70g',
-          macros: { proteinas: '4g', carbohidratos: '30g', grasas: '2g' },
-        },
-        {
-          nombre: 'Espárragos',
-          cantidad: '100g',
-          macros: { proteinas: '2g', carbohidratos: '4g', grasas: '0g' },
-        },
-      ],
-    },
-  ];
+export const PlanSummaryStep = ({ plan, paciente, onEdit }) => {
+  const comidas = plan?.alimentos?.reduce((acc, alimento) => {
+    const comida = acc.find(c => c.tipoComida === alimento.tipoComida);
+    if (comida) {
+      comida.alimentos.push({
+        nombre: alimento.nombre,
+        cantidad: `${alimento.gramos}g`,
+        macros: {
+          proteinas: `${alimento.proteinas}g`,
+          carbohidratos: `${alimento.carbohidratos}g`,
+          grasas: `${alimento.grasas}g`
+        }
+      });
+    } else {
+      acc.push({
+        nombre: alimento.tipoComida,
+        alimentos: [{
+          nombre: alimento.nombre,
+          cantidad: `${alimento.gramos}g`,
+          macros: {
+            proteinas: `${alimento.proteinas}g`,
+            carbohidratos: `${alimento.carbohidratos}g`,
+            grasas: `${alimento.grasas}g`
+          }
+        }]
+      });
+    }
+    return acc;
+  }, []) || [];
 
   return (
-    <Stack spacing={3} sx={{mt:4}}>
+    <Stack spacing={3} sx={{ mt: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h4">
+          Plan: {plan?.tipoPlan}
+        </Typography>
+        {/* Botón para editar que usa el onEdit pasado como prop */}
+        <Button variant="contained" onClick={onEdit}>
+          Editar Plan
+        </Button>
+      </Box>
+
       {comidas.map((comida, index) => (
         <Paper
           key={index}

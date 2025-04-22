@@ -2,19 +2,28 @@ export * from './DashboardPage';
 
 export * from  './PatientPage';
 export * from './ConfigPage';
-export * from './DiagnosticoPage';
+export * from './SeguridadMedidas';
+export * from './DetallePlan';
+export * from './ProfilePage';
 
+// Alimentos
 export * from './FoodPage';
 export * from './PlanesPage';
 export * from './RecipePage';
+export * from './ConsultaPage';
+export * from './PlanSummaryPage';
 
-export * from './ProfilePage';
-
+// Calendario
 export * from './CalendarPage';
 
+// Progreso
 export * from './HistorialPeso';
-
 export * from './CaloriasCosumidaPage';
 
+// Sistema
+export * from './ControlDeSistemaPage'
 export * from './VersionPage';
-export * from './ControlDeUsuario';
+
+
+
+

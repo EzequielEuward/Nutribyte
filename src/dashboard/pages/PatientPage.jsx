@@ -4,7 +4,7 @@ import { Typography, Box, Button, CircularProgress } from "@mui/material";
 import { DashboardLayout } from "../../dashboard/layout/DashboardLayout";
 import { PatientForm, PatientTable, PatientCard, PatientAnamnesis, PatientDrawer } from "../components";
 import { useSelector, useDispatch } from "react-redux";
-import { crearPaciente, desactivarPaciente, listarPacientes, obtenerPacientePorId } from "../../store/patient/";
+import { actualizarPaciente, crearPaciente, desactivarPaciente, listarPacientes, obtenerPacientePorId } from "../../store/patient/";
 import { limpiarPacienteSeleccionado } from "../../store/patient/";
 import { format } from "date-fns";
 
@@ -29,38 +29,23 @@ export const PatientPage = () => {
       title: "¿Estás seguro?",
       text: "Esta acción desactivará al paciente.",
       icon: "warning",
-      input: "select",
-      inputOptions: {
-        "Motivo1": "Motivo 1",
-        "Motivo2": "Motivo 2",
-        "Motivo3": "Motivo 3"
-      },
-      inputPlaceholder: "Selecciona un motivo",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-      preConfirm: (selectedReason) => {
-        if (!selectedReason) {
-          Swal.showValidationMessage("Debes seleccionar un motivo");
-        }
-        return selectedReason;
-      }
+      cancelButtonText: "Cancelar"
     }).then((result) => {
       if (result.isConfirmed) {
-        setDeleteReason(result.value);
         handleConfirmDelete(patient.idPaciente); // Pasa el ID del paciente
       }
     });
   };
 
+  
+
   // Función para confirmar la eliminación del paciente
   const handleConfirmDelete = (idPaciente) => {
-    if (!deleteReason.trim()) {
-      alert("Por favor selecciona un motivo para la eliminación.");
-      return;
-    }
 
-    dispatch(desactivarPaciente(idPaciente))
+    // Aquí se cambia: en lugar de pasar directamente idPaciente, se pasa { idPaciente }
+    dispatch(desactivarPaciente({ idPaciente }))
       .unwrap()
       .then(() => {
         dispatch(listarPacientes()); // Actualizar la lista de pacientes después de la desactivación
@@ -117,6 +102,17 @@ export const PatientPage = () => {
     } catch (error) {
       console.error("Error al crear paciente:", error);
       Swal.fire("Error", "Hubo un problema al crear el paciente.", "error");
+    }
+  };
+
+  const handleUpdatePatient = async (updatedData) => {
+    try {
+      await dispatch(actualizarPaciente(updatedData)).unwrap();
+      
+      dispatch(listarPacientes()); // Opcional: refrescar la lista
+      Swal.fire("Éxito", "Paciente actualizado", "success");
+    } catch (error) {
+      Swal.fire("Error", "Error al actualizar", "error");
     }
   };
 
