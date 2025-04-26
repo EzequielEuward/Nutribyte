@@ -10,110 +10,150 @@ import {
   MenuItem,
   AccordionSummary,
   AccordionDetails,
+  Button,
 } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export const ConsultaCreationForm = ({ values, onChange }) => {
-  const handleFieldChange = (field) => (e) => {
-    onChange({ ...values, [field]: e.target.value });
-  };
+export const ConsultaCreationForm = ({ onSubmit }) => {
+  const { control, handleSubmit, formState: { errors } } = useForm();
 
   return (
-    <Box>
+    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       {/* Sección Consulta */}
-      <Card variant="outlined" sx={{ mb: 3 }}>
+      <Card variant="outlined" sx={{ mb: 4 }}>
         <CardContent>
-          <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
+          <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', mb: 2 }}>
             Datos de la Consulta
           </Typography>
-          <Grid container spacing={2}>
-            {/* Fecha */}
+          <Grid container spacing={3}>
+            {/* Fecha de Consulta */}
             <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Fecha de Consulta"
-                type="datetime-local"
-                InputLabelProps={{ shrink: true }}
-                value={values.fecha || ''}
-                onChange={handleFieldChange('fecha')}
-              />
-            </Grid>
-            {/* Motivo */}
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Motivo de Consulta"
-                multiline
-                rows={2}
-                value={values.motivo || ''}
-                onChange={handleFieldChange('motivo')}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Tipo de Consulta"
-                select
-                value={values.tipoConsulta || ''}
-                onChange={handleFieldChange('tipoConsulta')}
-              >
-                <MenuItem value="Primera">Primera consulta</MenuItem>
-                <MenuItem value="Seguimiento">Seguimiento</MenuItem>
-                <MenuItem value="Revision">Revisión</MenuItem>
-                <MenuItem value="Problema especifico">Problema específico</MenuItem>
-              </TextField>
-            </Grid>
-            {/* Diagnóstico */}
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Diagnóstico"
-                multiline
-                rows={3}
-                value={values.diagnostico || ''}
-                onChange={handleFieldChange('diagnostico')}
-              />
-            </Grid>
-            {/* OBSERVACIONES */}
-            <TextField
-              label="Observaciones"
-              multiline
-              rows={3}
-              value={values.observaciones || ''}
-              onChange={handleFieldChange('observaciones')}
-            />
-            {/* Tratamiento */}
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Tratamiento"
-                multiline
-                rows={3}
-                value={values.tratamiento || ''}
-                onChange={handleFieldChange('tratamiento')}
-              />
-            </Grid>
-            {/* Antecedentes */}
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Antecedentes"
-                multiline
-                rows={3}
-                value={values.antecedentes || ''}
-                onChange={handleFieldChange('antecedentes')}
+              <Controller
+                name="fecha"
+                control={control}
+                defaultValue={new Date().toISOString().split('T')[0]}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Fecha de Consulta"
+                    type="datetime-local"
+                    InputLabelProps={{ shrink: true }}
+                  />
+                )}
               />
             </Grid>
 
-            {/* Examen Físico */}
+            {/* Tipo de Consulta */}
             <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Examen Físico"
-                multiline
-                rows={3}
-                value={values.examenFisico || ''}
-                onChange={handleFieldChange('examenFisico')}
+              <Controller
+                name="tipoConsulta"
+                control={control}
+                defaultValue={new Date().toISOString().slice(0, 16)}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Tipo de Consulta"
+                    select
+                  >
+                    <MenuItem value="Primera">Primera consulta</MenuItem>
+                    <MenuItem value="Seguimiento">Seguimiento</MenuItem>
+                    <MenuItem value="Revision">Revisión</MenuItem>
+                    <MenuItem value="Problema especifico">Problema específico</MenuItem>
+                  </TextField>
+                )}
+              />
+            </Grid>
+
+            {/* Motivo de Consulta */}
+            <Grid item xs={12}>
+              <Controller
+                name="motivoVisita"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Motivo de Consulta"
+                    multiline
+                    rows={2}
+                  />
+                )}
+              />
+            </Grid>
+
+            {/* Diagnóstico */}
+            <Grid item xs={12} md={6}>
+              <Controller
+                name="diagnostico"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Diagnóstico"
+                    multiline
+                    rows={3}
+                  />
+                )}
+              />
+            </Grid>
+
+            {/* Antecedentes */}
+            <Grid item xs={12} md={6}>
+              <Controller
+                name="antecedente"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Antecedentes"
+                    multiline
+                    rows={3}
+                  />
+                )}
+              />
+            </Grid>
+
+            {/* Tratamiento */}
+            <Grid item xs={12} md={6}>
+              <Controller
+                name="tratamiento"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Tratamiento"
+                    multiline
+                    rows={3}
+                  />
+                )}
+              />
+            </Grid>
+
+            {/* Observaciones */}
+            <Grid item xs={12} md={6}>
+              <Controller
+                name="observaciones"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Observaciones"
+                    multiline
+                    rows={3}
+                  />
+                )}
               />
             </Grid>
           </Grid>
@@ -122,112 +162,132 @@ export const ConsultaCreationForm = ({ values, onChange }) => {
 
       {/* Acordeón de Anamnesis opcional */}
       <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="anamnesis-content"
-          id="anamnesis-header"
-        >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="h6" sx={{ color: 'primary.main' }}>
             Anamnesis (opcional)
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             {/* Fecha Anamnesis */}
             <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Fecha de Anamnesis"
-                type="datetime-local"
-                InputLabelProps={{ shrink: true }}
-                value={values.fechaAnamnesis || ''}
-                onChange={handleFieldChange('fechaAnamnesis')}
+              <Controller
+                name="fechaAnamnesis"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Fecha de Anamnesis"
+                    type="datetime-local"
+                    InputLabelProps={{ shrink: true }}
+                  />
+                )}
               />
             </Grid>
-            {/* Motivo Visita */}
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Motivo de Visita"
-                value={values.motivoVisita || ''}
-                onChange={handleFieldChange('motivoVisita')}
-              />
+
+            {/* Campos Antropométricos */}
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" sx={{ mb: 2, color: 'text.secondary' }}>
+                Mediciones Corporales
+              </Typography>
             </Grid>
-            {/* Talla */}
-            <Grid item xs={6} md={3}>
-              <TextField
-                fullWidth
-                label="Talla (cm)"
-                type="number"
-                value={values.talla || ''}
-                onChange={handleFieldChange('talla')}
-              />
+
+            {[
+              'talla',
+              'pesoActual',
+              'pesoHabitual',
+              'circunferenciaBrazoRelajado',
+              'circunferenciaBrazo',
+              'circunferenciaAntebrazo',
+              'circunferenciaCintura',
+              'circunferenciaCinturaMaxima',
+              'circunferenciaPantorrilla'
+            ].map((fieldName) => (
+              <Grid item xs={6} md={4} key={fieldName}>
+                <Controller
+                  name={fieldName}
+                  control={control}
+                  defaultValue={0}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label={getLabel(fieldName)}
+                      type="number"
+                      InputProps={{ inputProps: { min: 0, step: 0.1 } }}
+                    />
+                  )}
+                />
+              </Grid>
+            ))}
+
+            {/* Pliegues Cutáneos */}
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" sx={{ mt: 3, mb: 2, color: 'text.secondary' }}>
+                Pliegues Cutáneos (mm)
+              </Typography>
             </Grid>
-            {/* Peso Actual */}
-            <Grid item xs={6} md={3}>
-              <TextField
-                fullWidth
-                label="Peso Actual (kg)"
-                type="number"
-                value={values.pesoActual || ''}
-                onChange={handleFieldChange('pesoActual')}
-              />
-            </Grid>
-            {/* Peso Habitual */}
-            <Grid item xs={6} md={3}>
-              <TextField
-                fullWidth
-                label="Peso Habitual (kg)"
-                type="number"
-                value={values.pesoHabitual || ''}
-                onChange={handleFieldChange('pesoHabitual')}
-              />
-            </Grid>
-            {/* Circunferencia Cintura */}
-            <Grid item xs={6} md={3}>
-              <TextField
-                fullWidth
-                label="Circ. Cintura (cm)"
-                type="number"
-                value={values.circunferenciaCintura || ''}
-                onChange={handleFieldChange('circunferenciaCintura')}
-              />
-            </Grid>
-            {/* Circunferencia Brazo */}
-            <Grid item xs={6} md={3}>
-              <TextField
-                fullWidth
-                label="Circ. Brazo (cm)"
-                type="number"
-                value={values.circunferenciaBrazo || ''}
-                onChange={handleFieldChange('circunferenciaBrazo')}
-              />
-            </Grid>
-            {/* Pliegue Tríceps */}
-            <Grid item xs={6} md={3}>
-              <TextField
-                fullWidth
-                label="Pliegue Tríceps (mm)"
-                type="number"
-                value={values.pliegueTriceps || ''}
-                onChange={handleFieldChange('pliegueTriceps')}
-              />
-            </Grid>
-            {/* Pliegue Abdominal */}
-            <Grid item xs={6} md={3}>
-              <TextField
-                fullWidth
-                label="Pliegue Abdominal (mm)"
-                type="number"
-                value={values.pliegueAbdominal || ''}
-                onChange={handleFieldChange('pliegueAbdominal')}
-              />
-            </Grid>
+
+            {[
+              'pliegueBiceps',
+              'pliegueTriceps',
+              'pliegueSubescapular',
+              'pliegueSupraespinal',
+              'pliegueAbdominal',
+              'pliegueMuslo',
+              'plieguePantorrilla'
+            ].map((fieldName) => (
+              <Grid item xs={6} md={3} key={fieldName}>
+                <Controller
+                  name={fieldName}
+                  control={control}
+                  defaultValue={0}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label={getLabel(fieldName)}
+                      type="number"
+                      InputProps={{ inputProps: { min: 0, max: 50 } }}
+                    />
+                  )}
+                />
+              </Grid>
+            ))}
           </Grid>
         </AccordionDetails>
       </Accordion>
+
+      <Button type="submit" variant="contained" color="secondary" sx={{ mt: 3 }}>
+        Guardar Consulta Completa
+      </Button>
     </Box>
   );
+};
+
+// Función helper para labels
+const getLabel = (fieldName) => {
+  const labels = {
+    talla: 'Talla (cm)',
+    pesoActual: 'Peso Actual (kg)',
+    pesoHabitual: 'Peso Habitual (kg)',
+    circunferenciaBrazoRelajado: 'Circ. Brazo Relajado (cm)',
+    circunferenciaBrazo: 'Circ. Brazo Contraído (cm)',
+    circunferenciaAntebrazo: 'Circ. Antebrazo (cm)',
+    circunferenciaCintura: 'Circ. Cintura (cm)',
+    circunferenciaCinturaMaxima: 'Circ. Cintura Máxima (cm)',
+    circunferenciaPantorrilla: 'Circ. Pantorrilla (cm)',
+    pliegueBiceps: 'Pliegue Bíceps',
+    pliegueTriceps: 'Pliegue Tríceps',
+    pliegueSubescapular: 'Pliegue Subescapular',
+    pliegueSupraespinal: 'Pliegue Supraespinal',
+    pliegueAbdominal: 'Pliegue Abdominal',
+    pliegueMuslo: 'Pliegue Muslo',
+    plieguePantorrilla: 'Pliegue Pantorrilla'
+  };
+  return labels[fieldName] || fieldName;
 };
 
 export default ConsultaCreationForm;

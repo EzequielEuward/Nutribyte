@@ -80,9 +80,6 @@ export const buscarPacientePorDni = createAsyncThunk(
 );
 
 
-
-
-
 export const obtenerAlimentos = createAsyncThunk(
   "plan/getAlimentos",
   async (_, { rejectWithValue }) => {

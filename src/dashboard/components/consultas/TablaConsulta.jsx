@@ -33,12 +33,11 @@ export const TablaConsulta = ({ handleMenuOpen, consultas = [] }) => {
             <TableCell>Nombre Completo</TableCell>
             <TableCell>Diagnóstico</TableCell>
             <TableCell>Plan Alimenticio</TableCell>
-            <TableCell align="right">Acciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {consultas.map((row) => (
-            <TableRow key={row.id} hover>
+            <TableRow key={row.idConsulta} hover>
               <TableCell>{row.paciente?.persona.dni || 'N/A'}</TableCell>
               <TableCell>
                 {row.fecha ? new Date(row.fecha).toLocaleDateString() : 'N/A'}
@@ -65,15 +64,6 @@ export const TablaConsulta = ({ handleMenuOpen, consultas = [] }) => {
                   color={getChipColorEstado(row.planAlimenticio)}
                   variant="outlined"
                 />
-              </TableCell>
-              <TableCell align="right">
-                <IconButton
-                  size="small"
-                  onClick={(e) => handleMenuOpen(e, row.id)}
-                  disabled={!row.id}
-                >
-                  <MoreHorizIcon />
-                </IconButton>
               </TableCell>
             </TableRow>
           ))}
