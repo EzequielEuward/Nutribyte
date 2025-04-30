@@ -1,3 +1,6 @@
+export * from './InformacionGeneralConsultaPage';
+export * from './ConsejosRapidos';
+
 export * from './TablaConsulta';
 export * from './ConsultaCreationForm';
 export * from './ConsultasPacienteTable';

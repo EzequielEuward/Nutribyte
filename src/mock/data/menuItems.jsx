@@ -46,9 +46,8 @@ export const menuItems = [
     icon: <BarChart style={iconStyle} />,
     link: "/home/progreso",
     submenus: [
-      { text: "Historial de Peso", link: "/home/progreso/historial-peso" },
       { text: "Calorías Consumidas", link: "/home/progreso/calorias-consumidas" },
-      { text: "Macronutrientes", link: "/home/progreso/macronutrientes" },
+      { text: "Metricas", link: "/home/progreso/historial-peso" },
     ],
   },
   {

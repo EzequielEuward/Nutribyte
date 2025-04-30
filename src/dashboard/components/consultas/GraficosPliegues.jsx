@@ -21,7 +21,6 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
-// Registrar componentes de Chart.js
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -32,46 +31,51 @@ ChartJS.register(
   Legend
 );
 
-export const GraficosPliegues = () => {
+export const GraficosPliegues = ({ data }) => {
   const theme = useTheme();
 
-  // Datos ficticios para demo
-  const datos = {
-    pliegueBiceps: 12,
-    pliegueTriceps: 15,
-    pliegueSubescapular: 10,
-    pliegueSupraespinal: 9,
-    pliegueAbdominal: 20,
-    pliegueMuslo: 18,
-    plieguePantorrilla: 14,
-  };
+  if (!data) {
+    return <Typography variant="body2">No hay datos de pliegues disponibles.</Typography>;
+  }
 
-  const dataArr = [
-    { name: 'Bíceps', value: datos.pliegueBiceps },
-    { name: 'Tríceps', value: datos.pliegueTriceps },
-    { name: 'Subescapular', value: datos.pliegueSubescapular },
-    { name: 'Supraespinal', value: datos.pliegueSupraespinal },
-    { name: 'Abdominal', value: datos.pliegueAbdominal },
-    { name: 'Muslo', value: datos.pliegueMuslo },
-    { name: 'Pantorrilla', value: datos.plieguePantorrilla },
+  const datosPliegues = [
+    { name: 'Bíceps', value: parseFloat(data.pliegueBiceps) || 0 },
+    { name: 'Tríceps', value: parseFloat(data.pliegueTriceps) || 0 },
+    { name: 'Subescapular', value: parseFloat(data.pliegueSubescapular) || 0 },
+    { name: 'Supraespinal', value: parseFloat(data.pliegueSupraespinal) || 0 },
+    { name: 'Abdominal', value: parseFloat(data.pliegueAbdominal) || 0 },
+    { name: 'Muslo', value: parseFloat(data.pliegueMuslo) || 0 },
+    { name: 'Pantorrilla', value: parseFloat(data.plieguePantorrilla) || 0 },
   ];
 
-  const labels = dataArr.map((d) => d.name);
-  const values = dataArr.map((d) => d.value);
-  const maxValue = Math.max(...values);
+  const labels = datosPliegues.map((d) => d.name);
+  const values = datosPliegues.map((d) => d.value);
+  const maxValue = Math.max(...values, 1);
   const totalPliegues = values.reduce((sum, v) => sum + v, 0);
 
-  // Configuración de datos para Line (área) de Chart.js
+  // 🎨 Colores para cada pliegue
+  const colores = [
+    theme.palette.primary.main,
+    theme.palette.secondary.main,
+    theme.palette.error.main,
+    theme.palette.success.main,
+    theme.palette.warning.main,
+    theme.palette.info.main,
+    '#9c27b0' // violeta para el último
+  ];
+
   const chartData = {
     labels,
     datasets: [
       {
         label: 'Pliegues (mm)',
         data: values,
-        fill: true,
-        backgroundColor: theme.palette.primary.light,
-        borderColor: theme.palette.primary.main,
+        fill: false,
+        backgroundColor: colores,
+        borderColor: colores,
         borderWidth: 2,
+        pointBackgroundColor: colores,
+        pointBorderColor: colores,
       },
     ],
   };
@@ -89,7 +93,7 @@ export const GraficosPliegues = () => {
     },
     plugins: {
       legend: {
-        position: 'top',
+        display: false, // 🔕 ocultamos la leyenda para no saturar
       },
       tooltip: {
         enabled: true,
@@ -116,7 +120,7 @@ export const GraficosPliegues = () => {
               Detalles de Pliegues
             </Typography>
             <Box>
-              {dataArr.map((item) => {
+              {datosPliegues.map((item, index) => {
                 const percent = (item.value / maxValue) * 100;
                 return (
                   <Box
@@ -134,13 +138,13 @@ export const GraficosPliegues = () => {
                           height: 8,
                           borderRadius: 4,
                           '& .MuiLinearProgress-bar': {
-                            backgroundColor: theme.palette.primary.main,
+                            backgroundColor: colores[index] || theme.palette.primary.main,
                           },
                         }}
                       />
                     </Box>
                     <Typography variant="body2">
-                      {item.value} mm
+                      {item.value.toFixed(1)} mm
                     </Typography>
                   </Box>
                 );
@@ -149,7 +153,7 @@ export const GraficosPliegues = () => {
               <Box sx={{ pt: 2, borderTop: `1px solid ${theme.palette.divider}` }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 500 }}>
                   <Typography>Total pliegues</Typography>
-                  <Typography>{totalPliegues} mm</Typography>
+                  <Typography>{totalPliegues.toFixed(1)} mm</Typography>
                 </Box>
               </Box>
             </Box>

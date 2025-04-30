@@ -13,7 +13,7 @@ import {
   IconButton
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { obtenerPlanesPorNutricionista } from "../../../../store/plans";
+import { obtenerPlanesPorNutricionista } from "../../../store/plans";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 export const TablaPlanesGet = ({ onViewPlan }) => {  // Recibimos prop para ver plan

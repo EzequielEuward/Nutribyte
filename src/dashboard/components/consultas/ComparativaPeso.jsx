@@ -1,9 +1,8 @@
-import React from 'react'
-import { Card, CardHeader, CardContent, Box } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { Bar } from 'react-chartjs-2'
+import React from 'react';
+import { Card, CardHeader, CardContent, Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Bar } from 'react-chartjs-2';
 
-// ✅ Registrar componentes de chart.js
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +11,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js'
+} from 'chart.js';
 
 ChartJS.register(
   CategoryScale,
@@ -21,82 +20,81 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-)
-// Componente demo con datos ficticios para visualizar el gráfico
-export const  ComparativaPeso = () => {
-  const theme = useTheme()
+);
 
-  // Datos de ejemplo
-  const datos = {
-    pesoActual: 65,    // Peso actual ficticio
-    pesoHabitual: 70,  // Peso habitual ficticio
+export const ComparativaPeso = ({ data }) => {
+  const theme = useTheme();
+
+  if (!data) {
+    return <p>No hay datos de peso disponibles.</p>;
   }
 
-  // Cálculos de diferencia y texto descriptivo
-  const diferencia = datos.pesoActual - datos.pesoHabitual
-  const porcentaje = ((diferencia / datos.pesoHabitual) * 100).toFixed(1)
+  // Datos reales desde props
+  const pesoActual = parseFloat(data.pesoActual) || 0;
+  const pesoHabitual = parseFloat(data.pesoHabitual) || 0;
+
+  const diferencia = pesoActual - pesoHabitual;
+  const porcentaje = pesoHabitual > 0 ? ((diferencia / pesoHabitual) * 100).toFixed(1) : 0;
   const tendencia =
     diferencia > 0
       ? 'aumento'
       : diferencia < 0
       ? 'pérdida'
-      : 'mantenimiento'
+      : 'mantenimiento';
   const descripcion =
     diferencia !== 0
       ? `${Math.abs(diferencia)} kg de ${tendencia} (${porcentaje}%)`
-      : 'Sin cambios en el peso'
+      : 'Sin cambios en el peso';
 
-  // Límite superior del eje Y con un 20% extra
-  const maxY = Math.max(datos.pesoActual, datos.pesoHabitual) * 1.2
+  const maxY = Math.max(pesoActual, pesoHabitual) * 1.2 || 10;
 
-  // Configuración de datos para Chart.js v2
   const dataChart = {
     labels: ['Peso'],
     datasets: [
       {
         label: 'Peso Actual',
         backgroundColor: theme.palette.primary.main,
-        data: [datos.pesoActual],
+        data: [pesoActual],
       },
       {
         label: 'Peso Habitual',
         backgroundColor: theme.palette.secondary.main,
-        data: [datos.pesoHabitual],
+        data: [pesoHabitual],
       },
     ],
-  }
+  };
 
   const options = {
     maintainAspectRatio: false,
+    responsive: true,
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-            max: maxY,
-          },
-          gridLines: {
-            borderDash: [3, 3],
-          },
+      y: {
+        beginAtZero: true,
+        suggestedMax: maxY,
+        grid: {
+          borderDash: [3, 3],
         },
-      ],
-      xAxes: [
-        {
-          gridLines: {
-            display: false,
-          },
+      },
+      x: {
+        grid: {
+          display: false,
         },
-      ],
+      },
     },
-    tooltips: {
-      enabled: true,
+    plugins: {
+      tooltip: {
+        enabled: true,
+      },
+      legend: {
+        position: 'top',
+      },
     },
-  }
+  };
 
   return (
     <Card>
       <CardHeader
-        title="Comparativa de Peso (Demo)"
+        title="Comparativa de Peso"
         subheader={descripcion}
       />
       <CardContent>
@@ -105,7 +103,7 @@ export const  ComparativaPeso = () => {
         </Box>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
 export default ComparativaPeso;

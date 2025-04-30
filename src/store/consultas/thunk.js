@@ -144,34 +144,39 @@ export const modificarConsulta = createAsyncThunk(
   }
 );
 
-//MODIFICAR ANAMNESIS
 export const modificarAnamnesis = createAsyncThunk(
   "anamnesis/modificarAnamnesis",
-  async ({ idAnamnesis, datosActualizados }, { rejectWithValue, getState }) => {
-    console.log("[Thunk modificarAnamnesis] start", { idAnamnesis, datosActualizados });
+  async ({ idAnamnesis, datosActualizados }, { rejectWithValue }) => {
     try {
-      const { auth } = getState();
-      const userId = auth?.uid;
-      console.log("[Thunk modificarAnamnesis] auth.uid =", auth?.uid);
-      if (!userId) throw new Error("Usuario no autenticado");
-
       const payload = {
-        ...datosActualizados,
-        idUsuario: userId,
-        // Asegurar todos los campos requeridos por el backend
+        idAnamnesis,
         fecha: new Date(datosActualizados.fecha).toISOString(),
-        idPaciente: datosActualizados.idPaciente // Si es necesario
+        talla: datosActualizados.talla,
+        pesoActual: datosActualizados.pesoActual,
+        pesoHabitual: datosActualizados.pesoHabitual,
+        circunferenciaBrazoRelajado: datosActualizados.circunferenciaBrazoRelajado,
+        circunferenciaBrazo: datosActualizados.circunferenciaBrazo,
+        circunferenciaAntebrazo: datosActualizados.circunferenciaAntebrazo,
+        circunferenciaCintura: datosActualizados.circunferenciaCintura,
+        circunferenciaCinturaMaxima: datosActualizados.circunferenciaCinturaMaxima,
+        circunferenciaPantorrilla: datosActualizados.circunferenciaPantorrilla,
+        pliegueBiceps: datosActualizados.pliegueBiceps,
+        pliegueTriceps: datosActualizados.pliegueTriceps,
+        pliegueSubescapular: datosActualizados.pliegueSubescapular,
+        pliegueSupraespinal: datosActualizados.pliegueSupraespinal,
+        pliegueAbdominal: datosActualizados.pliegueAbdominal,
+        pliegueMuslo: datosActualizados.pliegueMuslo,
+        plieguePantorrilla: datosActualizados.plieguePantorrilla
       };
+      console.log("[PAYLOAD enviado al PUT Anamnesis]:", payload);
+      const response = await axios.put(`${API_ANAMNESIS}/${idAnamnesis}`, payload);
 
-      console.log("[Thunk modificarAnamnesis] payload final =", payload);
-
-      const response = await axios.put(`${API_ANAMNESIS}/${idAnamnesis}`);
-      
-      console.log("[Thunk modificarAnamnesis] response.data =", response.data);
-      return { idAnamnesis, updatedData: response.data };
+      return response.data;
     } catch (error) {
-      console.error("[Thunk modificarAnamnesis] error =", error);
-      return rejectWithValue(error.response?.data || error.message);
+      console.error("[ERROR PUT Anamnesis]:", error.response?.data || error.message);
+      return rejectWithValue(
+        error.response?.data?.message || error.message
+      );
     }
   }
 );
@@ -183,7 +188,7 @@ export const obtenerPorIdAnamnesis = createAsyncThunk(
   async (idAnamnesis, { rejectWithValue }) => {
     console.log("[7] Thunk obtenerPorIdAnamnesis - ID recibido:", idAnamnesis);
     try {
-      
+
       const response = await axios.get(`${API_ANAMNESIS}/${idAnamnesis}`);
       console.log("[8] Respuesta del servidor:", response.data);
       return response.data;
@@ -212,3 +217,22 @@ export const eliminarConsulta = createAsyncThunk(
 );
 
 
+export const listarAnamnesisPorPaciente = createAsyncThunk(
+  "anamnesis/listarPorPaciente",
+  async (idPaciente, { rejectWithValue, getState }) => {
+    try {
+      const { auth } = getState();
+      const userId = auth?.uid;
+
+      if (!userId) {
+        throw new Error("Usuario no autenticado");
+      }
+
+      const { data } = await axios.get(`${API_ANAMNESIS}/${userId}/${idPaciente}`);
+
+      return data; // YA ES ARRAY ✅
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);

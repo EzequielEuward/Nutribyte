@@ -1,7 +1,7 @@
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
-import { PlanSummaryStep } from '../components/food/planes/';
+import { PlanSummaryStep } from '../components/planes/';
 import { DashboardLayout } from '../layout/DashboardLayout';
 
 export const PlanSummaryPage = () => {

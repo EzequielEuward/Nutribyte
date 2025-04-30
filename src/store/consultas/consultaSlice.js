@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { buscarPacientePorDni, listarConsulta, crearConsulta, modificarConsulta, eliminarConsulta, obtenerPorIdAnamnesis, modificarAnamnesis } from "./thunk";
+import { buscarPacientePorDni, listarConsulta, crearConsulta, modificarConsulta, eliminarConsulta, obtenerPorIdAnamnesis, modificarAnamnesis, listarAnamnesisPorPaciente } from "./thunk";
 
 const initialState = {
   consultas: [],
   paciente: null,
   isLoading: false,
-  anamnesisList:[],
+  anamnesisList: [],
   currentAnamnesis: null,
   error: null,
 };
@@ -34,11 +34,9 @@ export const consultaSlice = createSlice({
         state.error = null;
       })
       .addCase(listarConsulta.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.consultas = action.payload;
-        state.anamnesis = action.payload
-          .filter(c => c.idAnamnesis)
-          .map(c => c.anamnesis);
+        state.isLoading = false;
+
       })
       .addCase(listarConsulta.rejected, (state, action) => {
         state.isLoading = false;
@@ -61,13 +59,16 @@ export const consultaSlice = createSlice({
       })
       .addCase(modificarConsulta.fulfilled, (state, action) => {
         state.isLoading = false;
-        if (state.consultas) {
+
+        if (state.consultas && action.payload && action.payload.idConsulta) {
           const index = state.consultas.findIndex(
             c => c.idConsulta === action.payload.idConsulta
           );
           if (index !== -1) {
             state.consultas[index] = action.payload;
           }
+        } else {
+          console.warn("modificarConsulta.fulfilled: action.payload.idConsulta no existe o action.payload es inválido", action.payload);
         }
       })
       .addCase(modificarConsulta.rejected, (state, action) => {
@@ -113,6 +114,10 @@ export const consultaSlice = createSlice({
       .addCase(modificarAnamnesis.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(listarAnamnesisPorPaciente.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.anamnesisList = action.payload; // ✅ ACA
       });
   },
 });

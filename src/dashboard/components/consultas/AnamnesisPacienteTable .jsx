@@ -8,8 +8,14 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export const AnamnesisPacienteTable = ({ handleMenuOpen, anamnesis }) => {
-  
+export const AnamnesisPacienteTable = ({ handleMenuOpen, anamnesis = [] }) => {
+  if (!Array.isArray(anamnesis) || anamnesis.length === 0) {
+    return (
+      <Typography sx={{ p: 2 }} color="text.secondary">
+        No hay registros de Anamnesis para este paciente
+      </Typography>
+    );
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -40,7 +46,7 @@ export const AnamnesisPacienteTable = ({ handleMenuOpen, anamnesis }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {anamnesis.map((a) => (
+        {anamnesis.map((a) => (
             <TableRow key={a.idAnamnesis}>
               {/* Celdas con datos reales */}
               <TableCell>

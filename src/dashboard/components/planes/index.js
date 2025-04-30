@@ -6,10 +6,14 @@ export * from './MealPlanTabs';
 export * from './PatientInfoCard';
 export * from './PatientSearchCard';
 export * from './PlanCreationForm';
-
+export * from './InformacionGeneralPlanes';
+export * from './EstadisticasPlanes';
 export * from './PlanSummaryStep';
 export * from './ResumenPlanAlimenticio';
-
+export * from './GrupoAlimentosPlanes';
 export * from './FoodSearchModal';
 export * from './PolarChart';
 export * from './TablaPlanesGet';
+export * from './InfoPlanes';
+export * from './SelectPlanes';
+export * from './MacronutrientesPlanes';

@@ -80,7 +80,7 @@ export const PendingAppointments = ({ turnos }) => {
                     }}
                   />
                   <Typography variant="body1" sx={{ fontWeight: "medium", flex: 1 }}>
-                    {turno.paciente ? `${turno.paciente.nombre} ${turno.paciente.apellido}` : 'Paciente no disponible'}
+                    {turno.paciente ? `${turno.paciente.persona.nombre} ${turno.paciente.persona.apellido}` : 'Paciente no disponible'}
                   </Typography>
                 </Box>
                 <Chip

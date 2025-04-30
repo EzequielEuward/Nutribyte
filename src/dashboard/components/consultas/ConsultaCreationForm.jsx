@@ -18,8 +18,32 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 export const ConsultaCreationForm = ({ onSubmit }) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
 
+  const handleValidatedSubmit = () => {
+    const data = getValues();
+
+    const tieneAnamnesis = Object.entries(data).some(
+      ([key, value]) =>
+        key !== "fecha" &&
+        key !== "tipoConsulta" &&
+        key !== "motivoVisita" &&
+        key !== "diagnostico" &&
+        key !== "antecedente" &&
+        key !== "tratamiento" &&
+        key !== "observaciones" &&
+        key !== "idPlanAlimento" &&
+        key !== "fechaAnamnesis" &&
+        typeof value === "number" && value > 0
+    );
+
+    if (tieneAnamnesis && (!data.tipoConsulta || data.tipoConsulta.trim() === "")) {
+      alert("Si cargás datos de anamnesis, también debés ingresar una consulta.");
+      return;
+    }
+
+    onSubmit(data); // ahora sí lo mandamos
+  };
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+    <Box component="form" onSubmit={handleSubmit(handleValidatedSubmit)}>
       {/* Sección Consulta */}
       <Card variant="outlined" sx={{ mb: 4 }}>
         <CardContent>

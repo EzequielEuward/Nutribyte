@@ -14,7 +14,7 @@ import {
   CircularProgress,
   Alert
 } from "@mui/material";
-import { obtenerAlimentos } from "../../../../store/plans/"; 
+import { obtenerAlimentos } from "../../../store/plans"; 
 
 export const FoodSearchModal = ({ open, onClose, onSelectFood }) => {
   const dispatch = useDispatch();

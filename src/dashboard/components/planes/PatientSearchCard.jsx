@@ -7,7 +7,7 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
   );
 
   return (
-    <Card sx={{ maxWidth: 600, mx: "auto", mb: 2 }}>
+    <Card sx={{ maxWidth: 700, mx: "auto", mb: 2 ,mt:2}}>
       <CardHeader
         title="Buscar Paciente"
         subheader="Ingrese el DNI del paciente para crear un nuevo plan alimenticio"

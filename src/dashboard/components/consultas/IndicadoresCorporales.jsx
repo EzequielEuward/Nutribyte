@@ -10,16 +10,20 @@ import {
 } from '@mui/material';
 import { blue, green, yellow, orange, red } from '@mui/material/colors';
 
-export const IndicadoresCorporales = (
-  { 
-    datos = { talla: 170, pesoActual: 65, circunferenciaCintura: 80 },
-    showDetails = false,
+export const IndicadoresCorporales = ({ data, showDetails = false }) => {
+  if (!data) {
+    return <Typography variant="body2">No hay datos de indicadores corporales disponibles.</Typography>;
   }
-) => {
-  // Datos ficticios por defecto si no se proporcionan props
-  const { talla, pesoActual, circunferenciaCintura } = datos;
-  const imc = pesoActual / Math.pow(talla / 100, 2);
 
+  // Datos extraídos de formData
+  const talla = parseFloat(data.talla) || 0;
+  const pesoActual = parseFloat(data.pesoActual) || 0;
+  const circunferenciaCintura = parseFloat(data.circunferenciaCintura) || 0;
+
+  const imc = talla > 0 ? pesoActual / Math.pow(talla / 100, 2) : 0;
+  const ice = talla > 0 ? circunferenciaCintura / talla : 0;
+
+  // Clasificación IMC
   let imcCategoria = '';
   let imcColor = '';
   if (imc < 18.5) {
@@ -42,7 +46,7 @@ export const IndicadoresCorporales = (
     imcColor = red[700];
   }
 
-  const ice = circunferenciaCintura / talla;
+  // Clasificación ICE
   let iceCategoria = '';
   let iceColor = '';
   if (ice < 0.4) {
@@ -100,7 +104,7 @@ export const IndicadoresCorporales = (
               />
             </Box>
             <Typography variant="body2" fontWeight={500}>
-              {imc.toFixed(1)} kg/m²
+              {imc > 0 ? `${imc.toFixed(1)} kg/m²` : 'No disponible'}
             </Typography>
 
             {showDetails && (
@@ -142,7 +146,7 @@ export const IndicadoresCorporales = (
               />
             </Box>
             <Typography variant="body2" fontWeight={500}>
-              {ice.toFixed(2)}
+              {ice > 0 ? ice.toFixed(2) : 'No disponible'}
             </Typography>
 
             {showDetails && (

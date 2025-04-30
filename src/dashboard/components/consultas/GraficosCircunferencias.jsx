@@ -30,40 +30,36 @@ ChartJS.register(
   Legend
 );
 
-export const GraficosCircunferencias = () => {
+export const GraficosCircunferencias = ({ data }) => {
   const theme = useTheme();
 
-  // Datos ficticios para demo
-  const datos = {
-    circunferenciaBrazoRelajado: 30,
-    circunferenciaBrazo: 32,
-    circunferenciaAntebrazo: 28,
-    circunferenciaCintura: 80,
-    circunferenciaCinturaMaxima: 85,
-    circunferenciaPantorrilla: 37,
-  };
+  // Validamos que haya datos
+  if (!data) {
+    return <Typography variant="body2">No hay datos de circunferencias disponibles.</Typography>;
+  }
 
-  const data = [
-    { subject: 'Brazo Relajado', value: datos.circunferenciaBrazoRelajado },
-    { subject: 'Brazo', value: datos.circunferenciaBrazo },
-    { subject: 'Antebrazo', value: datos.circunferenciaAntebrazo },
-    { subject: 'Cintura', value: datos.circunferenciaCintura },
-    { subject: 'Cintura Máx', value: datos.circunferenciaCinturaMaxima },
-    { subject: 'Pantorrilla', value: datos.circunferenciaPantorrilla },
+  // Mapeamos los datos que nos pasan
+  const datosCircunferencia = [
+    { subject: 'Brazo Relajado', value: parseFloat(data.circunferenciaBrazoRelajado) || 0 },
+    { subject: 'Brazo', value: parseFloat(data.circunferenciaBrazo) || 0 },
+    { subject: 'Antebrazo', value: parseFloat(data.circunferenciaAntebrazo) || 0 },
+    { subject: 'Cintura', value: parseFloat(data.circunferenciaCintura) || 0 },
+    { subject: 'Cintura Máxima', value: parseFloat(data.circunferenciaCinturaMaxima) || 0 },
+    { subject: 'Pantorrilla', value: parseFloat(data.circunferenciaPantorrilla) || 0 },
   ];
 
-  const maxValue = Math.max(...data.map((d) => d.value));
+  const maxValue = Math.max(...datosCircunferencia.map((d) => d.value), 1); // Nunca dejar max en 0
 
-  // Configuración de datos para Radar de Chart.js
+  // Configuración de datos para Radar
   const chartData = {
-    labels: data.map((d) => d.subject),
+    labels: datosCircunferencia.map((d) => d.subject),
     datasets: [
       {
         label: 'Circunferencias (cm)',
-        data: data.map((d) => d.value),
+        data: datosCircunferencia.map((d) => d.value),
         backgroundColor: theme.palette.primary.light,
         borderColor: theme.palette.primary.main,
-        borderWidth: 1,
+        borderWidth: 2,
         fill: true,
       },
     ],
@@ -105,7 +101,7 @@ export const GraficosCircunferencias = () => {
               Detalles de Circunferencias
             </Typography>
             <Box>
-              {data.map((item) => {
+              {datosCircunferencia.map((item) => {
                 const percent = (item.value / maxValue) * 100;
                 return (
                   <Box
@@ -129,7 +125,7 @@ export const GraficosCircunferencias = () => {
                       />
                     </Box>
                     <Typography variant="body2">
-                      {item.value} cm
+                      {item.value.toFixed(1)} cm
                     </Typography>
                   </Box>
                 );

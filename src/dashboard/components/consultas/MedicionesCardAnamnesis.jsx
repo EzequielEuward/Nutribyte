@@ -12,7 +12,11 @@ import {
   Paper,
 } from '@mui/material';
 
-export const MedicionesCardAnamnesis = ({ datos }) => {
+export const MedicionesCardAnamnesis = ({ data }) => {
+  if (!data) {
+    return <p>No hay datos disponibles.</p>;
+  }
+
   return (
     <Card sx={{ width: '100%' }}>
       <CardHeader
@@ -21,7 +25,7 @@ export const MedicionesCardAnamnesis = ({ datos }) => {
       />
       <CardContent>
         <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
-          <Table>
+          <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell>Medición</TableCell>
@@ -31,23 +35,33 @@ export const MedicionesCardAnamnesis = ({ datos }) => {
             <TableBody>
               <TableRow>
                 <TableCell>Talla</TableCell>
-                <TableCell align="right">talla cm</TableCell>
+                <TableCell align="right">
+                  {data.talla ? `${data.talla} cm` : '—'}
+                </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Peso actual</TableCell>
-                <TableCell align="right">peso actual kg</TableCell>
+                <TableCell>Peso Actual</TableCell>
+                <TableCell align="right">
+                  {data.pesoActual ? `${data.pesoActual} kg` : '—'}
+                </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Peso habitual</TableCell>
-                <TableCell align="right">pesoHabitual kg</TableCell>
+                <TableCell>Peso Habitual</TableCell>
+                <TableCell align="right">
+                  {data.pesoHabitual ? `${data.pesoHabitual} kg` : '—'}
+                </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Circunferencia cintura</TableCell>
-                <TableCell align="right">circunferencia cintura cm</TableCell>
+                <TableCell>Circunferencia Cintura</TableCell>
+                <TableCell align="right">
+                  {data.circunferenciaCintura ? `${data.circunferenciaCintura} cm` : '—'}
+                </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Pliegue abdominal</TableCell>
-                <TableCell align="right">Pliegue abdominal mm</TableCell>
+                <TableCell>Pliegue Abdominal</TableCell>
+                <TableCell align="right">
+                  {data.pliegueAbdominal ? `${data.pliegueAbdominal} mm` : '—'}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -56,4 +70,5 @@ export const MedicionesCardAnamnesis = ({ datos }) => {
     </Card>
   );
 };
+
 export default MedicionesCardAnamnesis;

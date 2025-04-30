@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 
 import DashboardLayout from "../layout/DashboardLayout";
-import { PatientSearchCard } from "../components/food/planes";
+import { PatientSearchCard } from "../components/planes";
 import {
   TablaConsulta,
   ConsultaCreationForm,
@@ -24,6 +24,8 @@ import {
   ModalEditAnamnesis,
   AnamnesisPacienteTable,
   FichaAnamnesis,
+  ConsejosRapidos,
+  InformacionGeneralConsultaPage,
 } from "../components/consultas/";
 import { buscarPacientePorDni, crearConsulta, eliminarConsulta, listarAnamnesisPorPaciente, listarConsulta, modificarAnamnesis, modificarConsulta, obtenerPorIdAnamnesis } from "../../store/consultas";
 import { FormProvider, useForm } from "react-hook-form";
@@ -35,12 +37,10 @@ import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 export const ConsultaPage = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector((state) => state.auth);
-  const { paciente, consultas, isLoading, error, currentAnamnesis } = useSelector((state) => state.consulta);
-
+  const { paciente, consultas, isLoading, error, currentAnamnesis, anamnesisList } = useSelector((state) => state.consulta);
   const [dni, setDni] = useState('');
   const [step, setStep] = useState('busqueda');
 
-  // Estado para menú de acciones
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [menuConsulta, setMenuConsulta] = useState(null);
 
@@ -100,8 +100,6 @@ export const ConsultaPage = () => {
     setSelectedConsulta(consulta);
     setIsEditModalOpen(true);
   };
-
-  //mierda
 
   const handleTableAction = (action, item) => {
     if (activeTab === 'consultas') {
@@ -183,7 +181,6 @@ export const ConsultaPage = () => {
 
     const parseDate = (value) => {
       if (!value.includes('T')) {
-        // Si falta la hora, le agregamos una hora por defecto
         return new Date(`${value}T00:00`);
       }
       return new Date(value);
@@ -212,7 +209,6 @@ export const ConsultaPage = () => {
       plieguePantorrilla: Number(data.plieguePantorrilla) || 0
     };
 
-
     const hasAnamnesis = Object.values(anamnesisFields)
       .some(v => typeof v === 'number' ? v > 0 : !!v);
 
@@ -230,7 +226,6 @@ export const ConsultaPage = () => {
         ...anamnesisFields,
         fecha: fechaAnamnesis
       } : null
-
     };
 
     dispatch(crearConsulta(payload))
@@ -244,7 +239,6 @@ export const ConsultaPage = () => {
       })
       .catch(err => alert(`Error: ${err}`));
   };
-
   const handleUpdateConsulta = async (data) => {
     try {
       const payload = {
@@ -252,18 +246,10 @@ export const ConsultaPage = () => {
         idConsulta: selectedConsulta.idConsulta,
         fecha: new Date(data.fecha).toISOString(),
       };
-
       await dispatch(modificarConsulta(payload)).unwrap();
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Consulta actualizada',
-        text: 'Los cambios se guardaron correctamente',
-      });
-
-      dispatch(listarConsulta());
+      await dispatch(listarConsulta());
       setIsEditModalOpen(false);
-
+      Swal.fire('Éxito', 'Consulta actualizada correctamente', 'success');
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -276,7 +262,6 @@ export const ConsultaPage = () => {
   const handleUpdateAnamnesis = async ({ datosForm, idAnamnesis, idPaciente }) => {
     console.log("[9] handleUpdateAnamnesis - IDs:", { idAnamnesis, idPaciente });
     if (!idAnamnesis || !idPaciente) {
-      console.error("[10] Error: IDs faltantes");
       return;
     }
     try {
@@ -287,21 +272,14 @@ export const ConsultaPage = () => {
           idPaciente
         }
       })).unwrap();
-
       dispatch(listarConsulta());
+      dispatch(listarAnamnesisPorPaciente(idPaciente));
       setIsAnamnesisModalOpen(false);
-
       Swal.fire('Éxito', 'Anamnesis actualizada correctamente', 'success');
     } catch (error) {
       Swal.fire('Error', error.message || 'No se pudo actualizar la anamnesis', 'error');
     }
   };
-
-  console.log('Datos para anamnesis:',
-    (consultas || []) // Si consultas es null/undefined, usa array vacío
-      .filter(c => c.idPaciente === paciente?.idPaciente) // Optional chaining por si paciente es null
-      .flatMap(c => c.anamnesis ? [c.anamnesis] : [])
-  );
 
   return (
     <DashboardLayout>
@@ -309,16 +287,10 @@ export const ConsultaPage = () => {
         <Typography variant="h3" sx={{ mt: 2, color: "secondary.main" }}>
           Gestión de Consultas
         </Typography>
-
         {step === "busqueda" && (
           <>
-            <PatientSearchCard
-              dni={dni}
-              setDni={setDni}
-              onSearch={buscarPaciente}
-              variant="consultas"
+            <PatientSearchCard dni={dni} setDni={setDni} onSearch={buscarPaciente} variant="consultas"
             />
-
             <Divider sx={{ my: 4 }} />
 
             <Grid container spacing={4}>
@@ -329,47 +301,7 @@ export const ConsultaPage = () => {
               </Grid>
 
               {/* Estadísticas rápidas */}
-              <Grid item xs={12} md={4}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="h6" sx={{ mb: 1 }}>
-                      📊 Consultas Hoy
-                    </Typography>
-                    <Typography variant="h4" color="primary">
-                      15
-                    </Typography>
-                    <Typography variant="caption">Registros del día</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="h6" sx={{ mb: 1 }}>
-                      👥 Pacientes Activos
-                    </Typography>
-                    <Typography variant="h4" color="secondary">
-                      243
-                    </Typography>
-                    <Typography variant="caption">En seguimiento</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="h6" sx={{ mb: 1 }}>
-                      ⚠️ Pendientes
-                    </Typography>
-                    <Typography variant="h4" color="error">
-                      8
-                    </Typography>
-                    <Typography variant="caption">Por completar</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <InformacionGeneralConsultaPage consultas={consultas} />
 
               {/* Últimas consultas */}
               <Grid item xs={12}>
@@ -383,23 +315,9 @@ export const ConsultaPage = () => {
                   </CardContent>
                 </Card>
               </Grid>
-
               {/* Consejos rápidos */}
-              <Grid item xs={12} md={6}>
-                <Card variant="outlined" sx={{ bgcolor: '#f5f5f5' }}>
-                  <CardHeader
-                    title="💡 Consejos Rápidos"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <ul style={{ paddingLeft: 20 }}>
-                      <li><Typography>Usa el buscador por DNI para acceder rápido al historial</Typography></li>
-                      <li><Typography>Verifica siempre los datos antropométricos</Typography></li>
-                      <li><Typography>Revisa el historial antes de nueva consulta</Typography></li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <ConsejosRapidos />
+
             </Grid>
           </>
         )}
@@ -410,13 +328,9 @@ export const ConsultaPage = () => {
               paciente={paciente.persona}
               onEdit={() => setStep("busqueda")}
             />
-
             <Divider sx={{ my: 4 }} />
-
             <Box sx={{ mt: 4 }}>
               <Grid container spacing={4}>
-
-
                 <Grid item xs={12} md={12}>
                   <Card variant="outlined">
                     <CardHeader
@@ -449,8 +363,7 @@ export const ConsultaPage = () => {
                       </Tabs>
                       {activeTab === 'consultas' ? (
                         <ConsultasPacienteTable
-                          handleMenuOpen={handleTableAction}
-                          consultas={consultas.filter(c => c.idPaciente === paciente.idPaciente)}
+                          handleMenuOpen={handleTableAction} consultas={consultas.filter(c => c.idPaciente === paciente.idPaciente)}
                         />
                       ) : (
                         <AnamnesisPacienteTable
@@ -458,7 +371,12 @@ export const ConsultaPage = () => {
                           anamnesis={anamnesisList}
                         />
                       )}
-
+                      <Grid sx={{ mt: 4 }}>
+                        <FichaAnamnesis open={isAnamnesisModalOpen} onClose={() => setIsAnamnesisModalOpen(false)} onEdit={() => setIsAnamnesisModalOpen(true)}
+                          currentAnamnesis={selectedAnamnesis} handleMenuOpen={handleTableAction} anamnesisList={anamnesisList}
+                          setActiveTab={setActiveTab}
+                        />
+                      </Grid>
                     </CardContent>
                   </Card>
                 </Grid>
@@ -483,18 +401,8 @@ export const ConsultaPage = () => {
                 </Card>
               </Grid>
 
-
             </Grid>
             <Divider sx={{ my: 4 }}></Divider>
-            <Grid>
-              <FichaAnamnesis open={isAnamnesisModalOpen}
-                onClose={() => setIsAnamnesisModalOpen(false)}
-                onEdit={() => setIsAnamnesisModalOpen(true)}
-                currentAnamnesis={selectedAnamnesis}
-                handleMenuOpen={handleTableAction}
-              />
-
-            </Grid>
           </Box>
 
         )}
@@ -503,21 +411,11 @@ export const ConsultaPage = () => {
         {error && <Typography color="error">{error}</Typography>}
 
         {isEditModalOpen && (
-          <ConsultaEditModal
-            open={isEditModalOpen}
-            consulta={selectedConsulta}
-            onClose={() => setIsEditModalOpen(false)}
-            onSave={handleUpdateConsulta}
-            isLoading={isLoading}
-          />
+          <ConsultaEditModal open={isEditModalOpen} consulta={selectedConsulta} onClose={() => setIsEditModalOpen(false)} onSave={handleUpdateConsulta} isLoading={isLoading} />
         )}
         {isAnamnesisModalOpen && (
 
-          <ModalEditAnamnesis
-            open={true}
-            idPaciente={paciente.idPaciente}
-            idAnamnesis={selectedAnamnesis?.idAnamnesis}
-            onClose={() => setIsAnamnesisModalOpen(false)}
+          <ModalEditAnamnesis open={true} idPaciente={paciente.idPaciente} idAnamnesis={selectedAnamnesis?.idAnamnesis} onClose={() => setIsAnamnesisModalOpen(false)}
             anamnesis={selectedAnamnesis}
             onSave={handleUpdateAnamnesis}
           />

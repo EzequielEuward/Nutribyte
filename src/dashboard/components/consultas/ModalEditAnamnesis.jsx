@@ -19,41 +19,46 @@ import { listarConsulta, modificarAnamnesis } from '../../../store/consultas';
 
 export const ModalEditAnamnesis = ({
     open, onClose, anamnesis, onSave, idPaciente, idAnamnesis
-  }) => {
+}) => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
-      defaultValues: {
-        fecha: '', talla: 0, pesoActual: 0, pesoHabitual: 0,
-        circunferenciaBrazo: 0, circunferenciaBrazoRelajado: 0,
-        circunferenciaAntebrazo: 0, circunferenciaCintura: 0,
-        circunferenciaCinturaMaxima: 0, circunferenciaPantorrilla: 0,
-        pliegueBiceps: 0, pliegueTriceps: 0, pliegueSubescapular: 0,
-        pliegueSupraespinal: 0, pliegueAbdominal: 0,
-        pliegueMuslo: 0, plieguePantorrilla: 0
-      }
+        defaultValues: {
+            fecha: '', talla: 0, pesoActual: 0, pesoHabitual: 0,
+            circunferenciaBrazo: 0, circunferenciaBrazoRelajado: 0,
+            circunferenciaAntebrazo: 0, circunferenciaCintura: 0,
+            circunferenciaCinturaMaxima: 0, circunferenciaPantorrilla: 0,
+            pliegueBiceps: 0, pliegueTriceps: 0, pliegueSubescapular: 0,
+            pliegueSupraespinal: 0, pliegueAbdominal: 0,
+            pliegueMuslo: 0, plieguePantorrilla: 0
+        }
     });
-  
+
     // Cuando abra o cambie la anamnesis, precargo el form
     useEffect(() => {
-      if (anamnesis) {
-        reset({
-          ...anamnesis,
-          fecha: anamnesis.fecha.slice(0,16)  // para datetime-local
-        });
-      }
-    }, [anamnesis, reset]);
-  
-    const submit = handleSubmit(data => {
-      // Convertir fecha a ISO completo y despachar
-      onSave({
-        idAnamnesis,
-        idPaciente,
-        datosForm: {
-          ...data,
-          fecha: new Date(data.fecha).toISOString()
+        if (anamnesis) {
+            reset({
+                ...anamnesis,
+                fecha: anamnesis.fecha.slice(0, 16)  // para datetime-local
+            });
         }
-      });
+    }, [anamnesis, reset]);
+
+    const submit = handleSubmit(data => {
+        if (!idAnamnesis || !idPaciente) {
+            console.error('Faltan ID de Anamnesis o Paciente');
+            return;
+        }
+
+        onSave({
+            idAnamnesis,
+            idPaciente,
+            datosForm: {
+                ...data,
+                fecha: new Date(data.fecha).toISOString()
+            }
+        });
+
     });
-   
+
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -84,6 +89,9 @@ export const ModalEditAnamnesis = ({
                                     label="Talla (cm)"
                                     type="number"
                                     size="small"
+                                    inputProps={{
+                                        step: "any"
+                                    }}
                                     {...register('talla', {
                                         min: { value: 0, message: 'Mínimo 0' },
                                         max: { value: 300, message: 'Máximo 300' }
@@ -98,9 +106,13 @@ export const ModalEditAnamnesis = ({
                                     label="Peso actual (kg)"
                                     type="number"
                                     size="small"
+                                    
+                                    inputProps={{
+                                        step: "any"
+                                    }}
                                     {...register('pesoActual', {
-                                        min: { value: 0, message: 'Mínimo 0' },
-                                        max: { value: 1000, message: 'Máximo 1000' }
+                                        min: { value: 1, message: 'Mínimo 1 kg' },
+                                        max: { value: 300, message: 'Máximo 300 kg' }
                                     })}
                                     error={!!errors.pesoActual}
                                     helperText={errors.pesoActual?.message}
@@ -113,8 +125,8 @@ export const ModalEditAnamnesis = ({
                                     type="number"
                                     size="small"
                                     {...register('pesoHabitual', {
-                                        min: { value: 0, message: 'Mínimo 0' },
-                                        max: { value: 1000, message: 'Máximo 1000' }
+                                        min: { value: 1, message: 'Mínimo 1 kg' },
+                                        max: { value: 300, message: 'Máximo 300 kg' }
                                     })}
                                     error={!!errors.pesoHabitual}
                                     helperText={errors.pesoHabitual?.message}
@@ -143,6 +155,9 @@ export const ModalEditAnamnesis = ({
                                 <Grid item xs={6} sm={4} key={field.name}>
                                     <TextField
                                         fullWidth
+                                        inputProps={{
+                                            step: "any"
+                                        }}
                                         label={field.label}
                                         type="number"
                                         size="small"
@@ -182,6 +197,9 @@ export const ModalEditAnamnesis = ({
                                         label={field.label}
                                         type="number"
                                         size="small"
+                                        inputProps={{
+                                            step: "any"
+                                        }}
                                         {...register(field.name, {
                                             min: { value: 0, message: 'Mínimo 0' },
                                             max: { value: 100, message: 'Máximo 100' }
