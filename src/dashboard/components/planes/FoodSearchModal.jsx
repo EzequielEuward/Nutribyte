@@ -1,101 +1,178 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  List,
-  ListItem,
-  ListItemText,
-  Button,
-  Box,
-  CircularProgress,
-  Alert
+  Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button,
+  Box, CircularProgress, Alert, Checkbox, Typography, Divider, Paper
 } from "@mui/material";
-import { obtenerAlimentos } from "../../../store/plans"; 
+import { obtenerAlimentos } from "../../../store/plans";
+import { FixedSizeList as VirtualList } from "react-window";
+import { FoodGroupFilter } from './';
 
-export const FoodSearchModal = ({ open, onClose, onSelectFood }) => {
+export const FoodSearchModal = ({
+  open,
+  onClose,
+  onConfirmSelection,
+  alimentosSugeridos = []
+}) => {
   const dispatch = useDispatch();
+  const [grupoFiltro, setGrupoFiltro] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [seleccionados, setSeleccionados] = useState({});
   const { alimentos, isLoadingAlimentos, errorAlimentos } = useSelector((state) => state.plan);
 
-  // Cargar alimentos cuando se abre el modal
   useEffect(() => {
     if (open) {
       dispatch(obtenerAlimentos());
+      setSearchText("");
+      setSeleccionados({});
     }
-  }, [open, dispatch]);
+  }, [open]);
 
-  // Filtra los alimentos en base al texto ingresado
-  const filteredFoods = alimentos.filter((food) =>
-    food.nombre.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const handleToggle = (id) => {
+    setSeleccionados((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
-  // Mapear los campos de la API a la estructura esperada
-  const handleSelectFood = (food) => {
-    const mappedFood = {
-      id: food.idAlimento,
-      nombre: food.nombre,
-      carbs: food.carbohidratos,
-      protein: food.proteinas,
-      fats: food.grasasTotales,
-      cantidad: 100 // Valor por defecto
-    };
-    onSelectFood(mappedFood);
+  const colorPorGrupo = {
+    Frutas: "#1f77b4",
+    Verduras: "#ff7f0e",
+    Cereales: "#2ca02c",
+    Legumbres: "#d62728",
+    Lácteos: "#9467bd",
+    Carnes: "#8c564b",
+    Huevos: "#e377c2",
+    Grasas: "#7f7f7f",
+    Azúcares: "#bcbd22",
+    Otros: "#17becf"
+  };
+
+  const filteredFoods = useMemo(() => {
+    return alimentos.filter(food =>
+      food.nombre.toLowerCase().includes(searchText.toLowerCase()) &&
+      (grupoFiltro === "" || food.grupoAlimenticio === grupoFiltro)
+    );
+  }, [alimentos, searchText, grupoFiltro]);
+
+  const seleccionadosFinales = useMemo(() => {
+    const todos = [...alimentosSugeridos, ...filteredFoods];
+    const unicos = todos.filter((a, i, self) =>
+      seleccionados[a.idAlimento] &&
+      i === self.findIndex(f => f.idAlimento === a.idAlimento)
+    );
+    return unicos.map(a => ({ ...a, gramos: 100 }));
+  }, [seleccionados, alimentosSugeridos, filteredFoods]);
+
+  const Row = ({ index, style }) => {
+    const food = filteredFoods[index];
+    return (
+      <Box
+        style={style}
+        display="flex"
+        justifyContent="space-between"
+        px={2}
+        py={1}
+        alignItems="center"
+        sx={{ borderBottom: "1px solid #f0f0f0", bgcolor: index % 2 === 0 ? "#fafafa" : "#fff" }}
+      >
+        <Box>
+          <Typography fontWeight={600}>{food.nombre}</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Carbs: {food.carbohidratos}g | Proteínas: {food.proteinas}g | Grasas: {food.grasasTotales}g
+          </Typography>
+        </Box>
+        <Checkbox
+          checked={!!seleccionados[food.idAlimento]}
+          onChange={() => handleToggle(food.idAlimento)}
+        />
+      </Box>
+    );
   };
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Buscar Alimento</DialogTitle>
-      <DialogContent>
-        <Box sx={{ my: 2 }}>
+      <DialogTitle sx={{ pb: 0, fontWeight: 'bold' }}>Buscar o seleccionar alimento</DialogTitle>
+      <DialogContent sx={{ pt: 1 }}>
+        <Box sx={{ mb: 2 }}>
+          <FoodGroupFilter
+            grupos={[...new Set(alimentos.map(a => a.grupoAlimenticio))]}
+            grupoSeleccionado={grupoFiltro}
+            onChange={setGrupoFiltro}
+          />
           <TextField
             fullWidth
-            label="Buscar alimento"
+            label="Buscar alimento por nombre"
             variant="outlined"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
+            sx={{ mt: 2 }}
           />
         </Box>
 
-        {errorAlimentos && (
-          <Alert severity="error" sx={{ my: 2 }}>
-            {errorAlimentos}
-          </Alert>
+        {alimentosSugeridos.length > 0 && (
+          <Box mb={4}>
+            <Typography variant="subtitle1" fontWeight={600} mb={1}>
+              Alimentos sugeridos por tipo de plan
+            </Typography>
+            <Paper variant="outlined">
+              {alimentosSugeridos.map((food) => (
+                <Box
+                  key={food.idAlimento}
+                  display="flex"
+                  justifyContent="space-between"
+                  px={2} py={1}
+                  sx={{ borderBottom: "1px solid #eee" }}
+                >
+                  <Box>
+                    <Typography fontWeight={500}>{food.nombre}</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Carbs: {food.carbohidratos}g | Proteínas: {food.proteinas}g | Grasas: {food.grasasTotales}g
+                    </Typography>
+                  </Box>
+                  <Checkbox
+                    checked={!!seleccionados[food.idAlimento]}
+                    onChange={() => handleToggle(food.idAlimento)}
+                  />
+                </Box>
+              ))}
+            </Paper>
+            <Divider sx={{ my: 3 }} />
+          </Box>
         )}
 
+        {errorAlimentos && <Alert severity="error">{errorAlimentos}</Alert>}
         {isLoadingAlimentos ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
+          <Box textAlign="center" py={3}>
             <CircularProgress />
           </Box>
         ) : (
-          <List sx={{ maxHeight: 300, overflowY: "auto" }}>
-            {filteredFoods.map((food) => (
-              <ListItem
-                key={food.idAlimento}
-                button
-                onClick={() => handleSelectFood(food)}
-                divider
-              >
-                <ListItemText
-                  primary={food.nombre}
-                  secondary={`Carbs: ${food.carbohidratos}g | Proteína: ${food.proteinas}g | Grasas: ${food.grasasTotales}g`}
-                />
-              </ListItem>
-            ))}
-            {filteredFoods.length === 0 && !isLoadingAlimentos && (
-              <ListItem>
-                <ListItemText primary="No se encontraron alimentos" />
-              </ListItem>
-            )}
-          </List>
+          <Paper variant="outlined" sx={{ height: 300 }}>
+            <VirtualList
+              height={300}
+              itemCount={filteredFoods.length}
+              itemSize={72}
+              width="100%"
+            >
+              {Row}
+            </VirtualList>
+          </Paper>
         )}
       </DialogContent>
-      <DialogActions>
+
+      <DialogActions sx={{ px: 3, pb: 2 }}>
         <Button onClick={onClose} variant="outlined" color="secondary">
           Cancelar
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            onConfirmSelection(seleccionadosFinales);
+            setSeleccionados({});
+            onClose();
+          }}
+        >
+          Agregar seleccionados
         </Button>
       </DialogActions>
     </Dialog>

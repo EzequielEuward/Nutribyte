@@ -37,7 +37,6 @@ export const TablaPlanesGet = ({ onViewPlan }) => {  // Recibimos prop para ver 
       <Table sx={{ minWidth: 650 }} aria-label="tabla de planes">
         <TableHead sx={{ bgcolor: 'background.paper' }}>
           <TableRow>
-            <TableCell>ID</TableCell>
             <TableCell>Tipo de Plan</TableCell>
             <TableCell>Fecha Inicio</TableCell>
             <TableCell>Fecha Fin</TableCell>
@@ -48,7 +47,6 @@ export const TablaPlanesGet = ({ onViewPlan }) => {  // Recibimos prop para ver 
         <TableBody>
           {planesDelPaciente?.map((plan) => (
             <TableRow key={plan.idPlan} hover>
-              <TableCell>{plan.idPlan}</TableCell>
               <TableCell>{plan.tipoPlan}</TableCell>
               <TableCell>
                 {new Date(plan.fechaInicio).toLocaleDateString()}

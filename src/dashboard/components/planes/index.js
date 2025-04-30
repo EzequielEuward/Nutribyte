@@ -17,3 +17,5 @@ export * from './TablaPlanesGet';
 export * from './InfoPlanes';
 export * from './SelectPlanes';
 export * from './MacronutrientesPlanes';
+
+export * from './FoodGroupFilter';

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Container, Typography, Box, Grid, Divider, Tabs, Tab, Card, CardHeader, CardContent } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Container, Typography, Box, Grid, Divider, Card, CardContent } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import {
@@ -7,22 +7,22 @@ import {
   PatientInfoCard,
   PlanCreationForm,
   TablaPlanesGet,
-  TablaDeEquivalencias,
   InformacionGeneralPlanes,
-  MacronutrientesPlanes,
 } from "../components/planes/";
 import DashboardLayout from "../layout/DashboardLayout";
-
-
 import { planesInfo } from "../../mock/data/mockPlanesData";
 import { buscarPacientePorDni, crearPlanAlimenticio } from "../../store/plans";
-import { differenceInYears } from "date-fns";
+import { listarAlimentos } from "../../store/food";
+import { differenceInYears, addDays } from "date-fns";
+import Swal from 'sweetalert2';
 
 export const PlanesPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { paciente, isLoading, error } = useSelector((state) => state.plan || {});
   const { uid } = useSelector((state) => state.auth);
+  const alimentosDisponibles = useSelector((state) => state.alimentos.alimentos || []);
 
   const [step, setStep] = useState("busqueda");
   const [dni, setDni] = useState("");
@@ -32,12 +32,17 @@ export const PlanesPage = () => {
   const [observaciones, setObservaciones] = useState("");
   const [alimentos, setAlimentos] = useState([]);
   const [planSeleccionado, setPlanSeleccionado] = useState(null);
-  const [activeTab, setActiveTab] = useState("planes"); // 👈🏻 Estado para Tabs
   const planData = planSeleccionado !== null ? planSeleccionado : planesInfo[0];
+
+  useEffect(() => {
+    dispatch(listarAlimentos());
+  }, [dispatch]);
 
   const handleViewPlan = (plan) => {
     navigate('resumen-plan', { state: { plan, paciente } });
   };
+
+
 
   const buscarPaciente = () => {
     const dniValido = dni.trim();
@@ -62,7 +67,7 @@ export const PlanesPage = () => {
       edad: differenceInYears(new Date(), new Date(paciente.persona.fechaNacimiento)),
       altura: paciente.altura || 170,
       peso: paciente.peso || 70,
-      sexo: paciente.persona.sexoBiologico === "M" ? "Masculino" : "Femenino",
+      sexo: paciente.persona.sexoBiologico === "m" ? "Masculino" : "Femenino",
       nivelActividad: paciente.nivelActividad || "Media",
       imc: paciente.imc || 24.2,
       objetivos: paciente.objetivos || "Mantener peso y mejorar hábitos",
@@ -72,43 +77,72 @@ export const PlanesPage = () => {
     }
     : null;
 
+  //POST DE PLANES
   const generarPlan = () => {
     if (!paciente?.idPaciente) {
-      alert("Primero seleccione un paciente válido");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Paciente no seleccionado',
+        text: 'Debe seleccionar un paciente antes de crear el plan.',
+      });
       return;
     }
+  
     if (alimentos.length === 0) {
-      alert("Debe seleccionar al menos un alimento");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin alimentos',
+        text: 'Debe seleccionar al menos un alimento para el plan.',
+      });
       return;
     }
-    const alimentosInvalidos = alimentos.some(item => item.cantidad < 1 || item.cantidad > 10000);
-    if (alimentosInvalidos) {
-      alert("La cantidad de gramos debe estar entre 1 y 10,000");
+  
+    if (!fechaInicio) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Fecha de inicio requerida',
+        text: 'Debe seleccionar una fecha de inicio válida.',
+      });
       return;
     }
+  
     const alimentosFormateados = alimentos.map(item => ({
       alimentoId: item.idAlimento,
       gramos: item.gramos,
     }));
-
+  
+    const fechaFinCalculada = addDays(new Date(fechaInicio), 30)
+      .toISOString()
+      .slice(0, 10);
+  
     const payload = {
       tipoPlan: planType,
       fechaInicio,
-      fechaFin,
+      fechaFin: fechaFinCalculada,
       observaciones,
       idPaciente: paciente.idPaciente,
       idUsuario: uid,
       alimentos: alimentosFormateados,
     };
-
+  
     dispatch(crearPlanAlimenticio(payload))
       .unwrap()
       .then((response) => {
-        navigate('resumen-plan', { state: { plan: response.plan, paciente } });
+        Swal.fire({
+          icon: 'success',
+          title: 'Plan creado con éxito',
+          text: 'El plan alimenticio ha sido guardado correctamente.',
+          confirmButtonText: 'Ver resumen',
+        }).then(() => {
+          navigate('resumen-plan', { state: { plan: response.plan, paciente } });
+        });
       })
       .catch((err) => {
-        console.error("Error completo:", err);
-        alert("Error al crear plan: " + (err.message || JSON.stringify(err)));
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al crear plan',
+          text: err.message || "Ocurrió un error inesperado.",
+        });
       });
   };
 
@@ -123,7 +157,6 @@ export const PlanesPage = () => {
           <>
             <PatientSearchCard dni={dni} setDni={setDni} onSearch={buscarPaciente} />
             <Divider sx={{ my: 4 }} />
-            {/* De esta parte */}
             <Typography variant="h4" sx={{ mt: 4 }}>
               Información general
             </Typography>
@@ -138,53 +171,44 @@ export const PlanesPage = () => {
         {step === "creacion" && paciente && (
           <>
             <PatientInfoCard paciente={pacienteAdaptado} onEdit={() => setStep("busqueda")} />
-            <Divider sx={{ my: 4 }} />
 
-            {/* Tabs para alternar */}
-            <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 3 }}>
-              <Tab label="Planes del Paciente" value="planes" />
-              <Tab label="Análisis Nutricional" value="analisis" />
-            </Tabs>
+            <Box sx={{ mt: 4 }}>
+              <Typography variant="h5" sx={{ mb: 2 }}>
+                Planes del Paciente
+              </Typography>
+              <Card variant="outlined">
+                <CardContent>
+                  <TablaPlanesGet onViewPlan={handleViewPlan} />
+                </CardContent>
+              </Card>
+            </Box>
 
-            {activeTab === "planes" && (
-              <Grid container spacing={4}>
-                <Grid item xs={12} md={6}>
-                  <Card variant="outlined">
-                    <CardHeader title="Planes del Paciente" />
-                    <CardContent>
-                      <TablaPlanesGet onViewPlan={handleViewPlan} />
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Card variant="outlined">
-                    <CardHeader title="Crear Nuevo Plan" />
-                    <CardContent>
-                      <PlanCreationForm
-                        planType={planType}
-                        setPlanType={setPlanType}
-                        fechaInicio={fechaInicio}
-                        setFechaInicio={setFechaInicio}
-                        fechaFin={fechaFin}
-                        setFechaFin={setFechaFin}
-                        observaciones={observaciones}
-                        setObservaciones={setObservaciones}
-                        alimentos={alimentos}
-                        setAlimentos={setAlimentos}
-                        onCancel={() => setStep("busqueda")}
-                        onGenerate={generarPlan}
-                      />
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Grid>
-            )}
+            <Divider sx={{ my: 5 }} />
 
-            {activeTab === "analisis" && (
-              <>
-            <h1>esto es un analiss</h1>
-              </>
-            )}
+            <Box sx={{ mt: 4 }}>
+              <Typography variant="h5" sx={{ mb: 2 }}>
+                Crear Nuevo Plan Alimenticio
+              </Typography>
+              <Card variant="outlined">
+                <CardContent>
+                  <PlanCreationForm
+                    planType={planType}
+                    setPlanType={setPlanType}
+                    fechaInicio={fechaInicio}
+                    setFechaInicio={setFechaInicio}
+                    fechaFin={fechaFin}
+                    setFechaFin={setFechaFin}
+                    observaciones={observaciones}
+                    setObservaciones={setObservaciones}
+                    alimentos={alimentos}
+                    alimentosDisponibles={alimentosDisponibles}
+                    setAlimentos={setAlimentos}
+                    onCancel={() => setStep("busqueda")}
+                    onGenerate={generarPlan}
+                  />
+                </CardContent>
+              </Card>
+            </Box>
           </>
         )}
 
