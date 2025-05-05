@@ -19,6 +19,7 @@ export const App = () => {
           username: user.userName,
           persona: user.persona,  
           rol: user.rol,
+          planUsuario: user.planUsuario,
           matricula: user.matricula,
           especialidad: user.especialidad,
           token: authToken,

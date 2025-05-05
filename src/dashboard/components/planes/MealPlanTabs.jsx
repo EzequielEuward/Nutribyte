@@ -14,6 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FoodSearchModal from "./FoodSearchModal";
 
+
 export const MealPlanTabs = ({ alimentos, setAlimentos, alimentosSugeridos }) => {
   const [openModal, setOpenModal] = useState(false);
 
@@ -63,6 +64,7 @@ export const MealPlanTabs = ({ alimentos, setAlimentos, alimentosSugeridos }) =>
                     >
                       <RemoveIcon />
                     </Button>
+                   
                   </TableCell>
                 </TableRow>
               ))}

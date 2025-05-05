@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { crearPlanAlimenticio, buscarPacientePorDni, obtenerAlimentos, obtenerPlanesPorNutricionista } from "./thunk"; 
+import { crearPlanAlimenticio, buscarPacientePorDni, obtenerAlimentos, obtenerPlanesPorNutricionista, editarPlanAlimenticio, eliminarPlanAlimenticio } from "./thunk";
 
 const initialState = {
   paciente: null,
@@ -41,14 +41,14 @@ export const planSlice = createSlice({
         state.error = null;
       })
       .addCase(buscarPacientePorDni.fulfilled, (state, action) => {
-        state.paciente = action.payload; 
+        state.paciente = action.payload;
         state.isLoading = false;
       })
       .addCase(buscarPacientePorDni.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Error al buscar paciente por DNI";
       })
-      
+
       .addCase(crearPlanAlimenticio.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -63,7 +63,7 @@ export const planSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload || "Error al crear el plan alimenticio";
       })
-      
+
       .addCase(obtenerAlimentos.pending, (state) => {
         state.isLoadingAlimentos = true;
         state.errorAlimentos = null;
@@ -76,8 +76,7 @@ export const planSlice = createSlice({
         state.isLoadingAlimentos = false;
         state.errorAlimentos = action.payload || "Error al obtener alimentos";
       })
-      
-      // Nuevos casos para obtener planes del nutricionista
+
       .addCase(obtenerPlanesPorNutricionista.pending, (state) => {
         state.isLoadingPlanes = true;
         state.errorPlanes = null;
@@ -89,6 +88,28 @@ export const planSlice = createSlice({
       .addCase(obtenerPlanesPorNutricionista.rejected, (state, action) => {
         state.isLoadingPlanes = false;
         state.errorPlanes = action.payload || "Error al obtener planes";
+      })
+      .addCase(eliminarPlanAlimenticio.fulfilled, (state, action) => {
+        state.planes = state.planes.filter(p => p.idPlanAlimenticio !== action.payload);
+      })
+      .addCase(eliminarPlanAlimenticio.rejected, (state, action) => {
+        state.error = action.payload || "Error al eliminar el plan";
+      })
+      .addCase(editarPlanAlimenticio.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(editarPlanAlimenticio.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.planes.findIndex(p => p.idPlanAlimenticio === action.payload.idPlanAlimenticio);
+        if (index !== -1) {
+          state.planes[index] = action.payload;
+        }
+        state.plan = action.payload;
+      })
+      .addCase(editarPlanAlimenticio.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Error al editar el plan alimenticio";
       });
   },
 });

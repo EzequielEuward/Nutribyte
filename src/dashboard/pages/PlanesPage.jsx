@@ -8,19 +8,23 @@ import {
   PlanCreationForm,
   TablaPlanesGet,
   InformacionGeneralPlanes,
+  PlanEditModal,
 } from "../components/planes/";
 import DashboardLayout from "../layout/DashboardLayout";
 import { planesInfo } from "../../mock/data/mockPlanesData";
-import { buscarPacientePorDni, crearPlanAlimenticio } from "../../store/plans";
+import { buscarPacientePorDni, crearPlanAlimenticio, eliminarPlanAlimenticio, editarPlanAlimenticio, obtenerPlanesPorNutricionista } from "../../store/plans";
+import { listarPacientes } from "../../store/patient";
 import { listarAlimentos } from "../../store/food";
 import { differenceInYears, addDays } from "date-fns";
 import Swal from 'sweetalert2';
+
 
 export const PlanesPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { paciente, isLoading, error } = useSelector((state) => state.plan || {});
+  const pacientesList = useSelector(state => state.patients.pacientes || []);
   const { uid } = useSelector((state) => state.auth);
   const alimentosDisponibles = useSelector((state) => state.alimentos.alimentos || []);
 
@@ -31,17 +35,25 @@ export const PlanesPage = () => {
   const [fechaFin, setFechaFin] = useState("");
   const [observaciones, setObservaciones] = useState("");
   const [alimentos, setAlimentos] = useState([]);
-  const [planSeleccionado, setPlanSeleccionado] = useState(null);
+  const [planSeleccionado, setPlanSeleccionado] = useState(1);
   const planData = planSeleccionado !== null ? planSeleccionado : planesInfo[0];
+  const [planEnEdicion, setPlanEnEdicion] = useState(null);
 
   useEffect(() => {
     dispatch(listarAlimentos());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(listarPacientes());
   }, [dispatch]);
 
   const handleViewPlan = (plan) => {
     navigate('resumen-plan', { state: { plan, paciente } });
   };
 
+  const handleAbrirModalEdicion = (plan) => {
+    setPlanEnEdicion(plan);
+  };
 
 
   const buscarPaciente = () => {
@@ -87,7 +99,7 @@ export const PlanesPage = () => {
       });
       return;
     }
-  
+
     if (alimentos.length === 0) {
       Swal.fire({
         icon: 'warning',
@@ -96,7 +108,7 @@ export const PlanesPage = () => {
       });
       return;
     }
-  
+
     if (!fechaInicio) {
       Swal.fire({
         icon: 'warning',
@@ -105,16 +117,16 @@ export const PlanesPage = () => {
       });
       return;
     }
-  
+
     const alimentosFormateados = alimentos.map(item => ({
       alimentoId: item.idAlimento,
       gramos: item.gramos,
     }));
-  
+
     const fechaFinCalculada = addDays(new Date(fechaInicio), 30)
       .toISOString()
       .slice(0, 10);
-  
+
     const payload = {
       tipoPlan: planType,
       fechaInicio,
@@ -124,7 +136,7 @@ export const PlanesPage = () => {
       idUsuario: uid,
       alimentos: alimentosFormateados,
     };
-  
+
     dispatch(crearPlanAlimenticio(payload))
       .unwrap()
       .then((response) => {
@@ -134,7 +146,7 @@ export const PlanesPage = () => {
           text: 'El plan alimenticio ha sido guardado correctamente.',
           confirmButtonText: 'Ver resumen',
         }).then(() => {
-          navigate('resumen-plan', { state: { plan: response.plan, paciente } });
+          // navigate('resumen-plan', { state: { plan: response.plan, paciente } });
         });
       })
       .catch((err) => {
@@ -146,6 +158,92 @@ export const PlanesPage = () => {
       });
   };
 
+  //EDITAR
+  const handleEditForm = (planEditado) => {
+    const idPlan = planEditado.idPlanAlimenticio || planEditado.idPlanAlimento;
+
+    console.log("🧪 ID del Plan a editar:", idPlan);
+    console.log("🧪 Payload:", planEditado);
+
+    console.log("🧪 Comparación de IDs:", {
+      idURL: idPlan,
+      idBody: planEditado.idPlanAlimenticio || planEditado.idPlanAlimento
+    });
+
+    if (!idPlan) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "El plan no tiene un ID válido para editar."
+      });
+      return;
+    }
+
+    dispatch(editarPlanAlimenticio({ idPlan, planData: planEditado }))
+      .unwrap()
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Plan actualizado',
+          text: 'El plan fue modificado correctamente.'
+        });
+        dispatch(obtenerPlanesPorNutricionista());
+        setPlanEnEdicion(null);
+      })
+      .catch((err) => {
+        console.error("Error al editar:", err);
+        let mensaje = typeof err === "string" ? err : err?.message || "Ocurrió un error inesperado.";
+        Swal.fire({
+          icon: "error",
+          title: "Error al editar",
+          text: mensaje,
+        });
+      });
+  };
+
+
+  //DELETE
+  const handleEliminarPlan = (idPlan) => {
+    Swal.fire({
+      title: "¿Está seguro?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(eliminarPlanAlimenticio(idPlan))
+          .unwrap()
+          .then(() => {
+            Swal.fire("Eliminado", "El plan fue eliminado correctamente", "success");
+            dispatch(obtenerPlanesPorNutricionista())
+          })
+          .catch((err) => {
+            console.error("Error al eliminar:", err);
+
+            let mensaje = "No se pudo eliminar el plan";
+
+            if (typeof err === "string") {
+              mensaje = err;
+            } else if (err?.message) {
+              mensaje = err.message;
+            } else if (err?.title) {
+              mensaje = err.title;
+            } else if (err?.data?.title) {
+              mensaje = err.data.title;
+            }
+
+            Swal.fire({
+              icon: "error",
+              title: "Error al eliminar",
+              text: mensaje,
+            });
+          });
+      }
+    });
+  };
+
   return (
     <DashboardLayout>
       <Container maxWidth="xl">
@@ -155,7 +253,12 @@ export const PlanesPage = () => {
 
         {step === "busqueda" && (
           <>
-            <PatientSearchCard dni={dni} setDni={setDni} onSearch={buscarPaciente} />
+            <PatientSearchCard
+              dni={dni}
+              setDni={setDni}
+              onSearch={buscarPaciente}
+              pacientesList={pacientesList}
+            />
             <Divider sx={{ my: 4 }} />
             <Typography variant="h4" sx={{ mt: 4 }}>
               Información general
@@ -177,8 +280,8 @@ export const PlanesPage = () => {
                 Planes del Paciente
               </Typography>
               <Card variant="outlined">
-                <CardContent>
-                  <TablaPlanesGet onViewPlan={handleViewPlan} />
+                <CardContent ontent>
+                  <TablaPlanesGet onViewPlan={handleViewPlan} onDeletePlan={handleEliminarPlan} onEditPlan={handleAbrirModalEdicion} />
                 </CardContent>
               </Card>
             </Box>
@@ -211,7 +314,13 @@ export const PlanesPage = () => {
             </Box>
           </>
         )}
-
+        <PlanEditModal
+          open={!!planEnEdicion}
+          onClose={() => setPlanEnEdicion(null)}
+          initialData={planEnEdicion}
+          alimentosDisponibles={alimentosDisponibles}
+          onSubmitEdit={handleEditForm}
+        />
         {isLoading && <Typography>Cargando...</Typography>}
         {error && <Typography color="error">{error}</Typography>}
       </Container>

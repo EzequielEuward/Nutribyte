@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
-  Paper, 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
   Typography,
   CircularProgress,
   Alert,
@@ -15,8 +15,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { obtenerPlanesPorNutricionista } from "../../../store/plans";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
-export const TablaPlanesGet = ({ onViewPlan }) => {  // Recibimos prop para ver plan
+export const TablaPlanesGet = ({ onViewPlan, onDeletePlan, onEditPlan }) => {
   const dispatch = useDispatch();
   const { planes, isLoading, error } = useSelector((state) => state.plan);
   const { paciente } = useSelector((state) => state.plan);
@@ -28,7 +30,11 @@ export const TablaPlanesGet = ({ onViewPlan }) => {  // Recibimos prop para ver 
   const planesDelPaciente = planes?.filter(
     (plan) => plan.idPaciente === paciente?.idPaciente
   );
-
+  const handleEliminarPlan = (idPlan) => {
+    if (onDeletePlan) {
+      onDeletePlan(idPlan);
+    }
+  };
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
 
@@ -43,10 +49,10 @@ export const TablaPlanesGet = ({ onViewPlan }) => {  // Recibimos prop para ver 
             <TableCell>Acciones</TableCell>
           </TableRow>
         </TableHead>
-        
+
         <TableBody>
           {planesDelPaciente?.map((plan) => (
-            <TableRow key={plan.idPlan} hover>
+            <TableRow key={plan.idPlanAlimento}>
               <TableCell>{plan.tipoPlan}</TableCell>
               <TableCell>
                 {new Date(plan.fechaInicio).toLocaleDateString()}
@@ -55,16 +61,20 @@ export const TablaPlanesGet = ({ onViewPlan }) => {  // Recibimos prop para ver 
                 {new Date(plan.fechaFin).toLocaleDateString()}
               </TableCell>
               <TableCell>
-                <IconButton 
-                  onClick={() => onViewPlan(plan)}
-                  color="primary"
-                >
+                <IconButton onClick={() => onViewPlan(plan)} color="primary">
                   <RemoveRedEyeIcon />
+                </IconButton>
+
+                <IconButton color="error" onClick={() => handleEliminarPlan(plan.idPlanAlimento)}>
+                  <DeleteIcon />
+                </IconButton>
+                <IconButton color="secondary" onClick={() => onEditPlan(plan)}>
+                  <EditIcon />
                 </IconButton>
               </TableCell>
             </TableRow>
           ))}
-          
+
           {planesDelPaciente?.length === 0 && (
             <TableRow>
               <TableCell colSpan={5} align="center">

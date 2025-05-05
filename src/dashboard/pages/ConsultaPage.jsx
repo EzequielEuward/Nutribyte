@@ -27,6 +27,7 @@ import {
   ConsejosRapidos,
   InformacionGeneralConsultaPage,
 } from "../components/consultas/";
+import { listarPacientes } from "../../store/patient";
 import { buscarPacientePorDni, crearConsulta, eliminarConsulta, listarAnamnesisPorPaciente, listarConsulta, modificarAnamnesis, modificarConsulta, obtenerPorIdAnamnesis } from "../../store/consultas";
 import { FormProvider, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -38,6 +39,7 @@ export const ConsultaPage = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector((state) => state.auth);
   const { paciente, consultas, isLoading, error, currentAnamnesis, anamnesisList } = useSelector((state) => state.consulta);
+  const pacientesList = useSelector(state => state.patients.pacientes || []);
   const [dni, setDni] = useState('');
   const [step, setStep] = useState('busqueda');
 
@@ -74,6 +76,10 @@ export const ConsultaPage = () => {
 
   useEffect(() => {
     dispatch(listarConsulta());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(listarPacientes());
   }, [dispatch]);
 
   useEffect(() => {
@@ -289,7 +295,16 @@ export const ConsultaPage = () => {
         </Typography>
         {step === "busqueda" && (
           <>
-            <PatientSearchCard dni={dni} setDni={setDni} onSearch={buscarPaciente} variant="consultas"
+            {/* Estadísticas rápidas */}
+            <Box sx={{ mt: 3 }}>
+              <InformacionGeneralConsultaPage consultas={consultas} />
+            </Box>
+            <PatientSearchCard
+              dni={dni}
+              setDni={setDni}
+              onSearch={buscarPaciente}
+              pacientesList={pacientesList}
+              variant="consultas"
             />
             <Divider sx={{ my: 4 }} />
 
@@ -300,8 +315,8 @@ export const ConsultaPage = () => {
                 </Typography>
               </Grid>
 
-              {/* Estadísticas rápidas */}
-              <InformacionGeneralConsultaPage consultas={consultas} />
+
+
 
               {/* Últimas consultas */}
               <Grid item xs={12}>

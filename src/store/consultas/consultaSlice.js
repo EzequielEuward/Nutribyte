@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { buscarPacientePorDni, listarConsulta, crearConsulta, modificarConsulta, eliminarConsulta, obtenerPorIdAnamnesis, modificarAnamnesis, listarAnamnesisPorPaciente } from "./thunk";
+import { buscarPacientePorDni, listarConsulta, crearConsulta, modificarConsulta, eliminarConsulta, obtenerPorIdAnamnesis, obtenerAnamnesisCalculadaPorConsulta, listarPacientesPorNutricionista, modificarAnamnesis, listarAnamnesisPorPaciente } from "./thunk";
 
 const initialState = {
   consultas: [],
@@ -7,6 +7,7 @@ const initialState = {
   isLoading: false,
   anamnesisList: [],
   currentAnamnesis: null,
+  anamnesisCalculada: null,
   error: null,
 };
 
@@ -118,6 +119,27 @@ export const consultaSlice = createSlice({
       .addCase(listarAnamnesisPorPaciente.fulfilled, (state, action) => {
         state.isLoading = false;
         state.anamnesisList = action.payload; // ✅ ACA
+      })
+      .addCase(listarPacientesPorNutricionista.fulfilled, (state, action) => {
+        state.lista = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(listarPacientesPorNutricionista.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(listarPacientesPorNutricionista.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(obtenerAnamnesisCalculadaPorConsulta.fulfilled, (state, action) => {
+        state.anamnesisCalculada = action.payload; // ⬅️ GUARDAR ACÁ
+      })
+      .addCase(obtenerAnamnesisCalculadaPorConsulta.pending, (state) => {
+        state.anamnesisCalculada = null; 
+      })
+      .addCase(obtenerAnamnesisCalculadaPorConsulta.rejected, (state, action) => {
+        state.anamnesisCalculada = null;
+        state.error = action.payload;
       });
   },
 });

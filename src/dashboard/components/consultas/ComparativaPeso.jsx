@@ -1,8 +1,7 @@
 import React from 'react';
-import { Card, CardHeader, CardContent, Box } from '@mui/material';
+import { Card, CardHeader, CardContent, Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Bar } from 'react-chartjs-2';
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,23 +12,13 @@ import {
   Legend,
 } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export const ComparativaPeso = ({ data }) => {
   const theme = useTheme();
 
-  if (!data) {
-    return <p>No hay datos de peso disponibles.</p>;
-  }
+  if (!data) return <Typography variant="body2">No hay datos disponibles.</Typography>;
 
-  // Datos reales desde props
   const pesoActual = parseFloat(data.pesoActual) || 0;
   const pesoHabitual = parseFloat(data.pesoHabitual) || 0;
 
@@ -49,7 +38,7 @@ export const ComparativaPeso = ({ data }) => {
   const maxY = Math.max(pesoActual, pesoHabitual) * 1.2 || 10;
 
   const dataChart = {
-    labels: ['Peso'],
+    labels: ['Comparación de Peso'],
     datasets: [
       {
         label: 'Peso Actual',
@@ -58,7 +47,7 @@ export const ComparativaPeso = ({ data }) => {
       },
       {
         label: 'Peso Habitual',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.grey[500],
         data: [pesoHabitual],
       },
     ],
@@ -72,7 +61,10 @@ export const ComparativaPeso = ({ data }) => {
         beginAtZero: true,
         suggestedMax: maxY,
         grid: {
-          borderDash: [3, 3],
+          borderDash: [4, 4],
+        },
+        ticks: {
+          stepSize: 5,
         },
       },
       x: {
@@ -86,7 +78,7 @@ export const ComparativaPeso = ({ data }) => {
         enabled: true,
       },
       legend: {
-        position: 'top',
+        position: 'bottom',
       },
     },
   };
@@ -95,10 +87,14 @@ export const ComparativaPeso = ({ data }) => {
     <Card>
       <CardHeader
         title="Comparativa de Peso"
-        subheader={descripcion}
+        subheader={
+          <Typography variant="body2" color={diferencia > 0 ? 'error.main' : diferencia < 0 ? 'primary.main' : 'text.secondary'}>
+            {descripcion}
+          </Typography>
+        }
       />
       <CardContent>
-        <Box sx={{ height: 200, width: '100%' }}>
+        <Box sx={{ height: 450, width: '100%' }}>
           <Bar data={dataChart} options={options} />
         </Box>
       </CardContent>

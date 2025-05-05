@@ -1,138 +1,69 @@
-import { Box, Typography, Paper, Stack, List, ListItem, Button } from '@mui/material';
-import { MacronutrientesChart, PolarChart } from './';
+import { Box, Typography, Stack, Button, Paper, Grid, Divider } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DownloadIcon from '@mui/icons-material/Download';
+import PrintIcon from '@mui/icons-material/Print';
+import { PLAN_TEMPLATES } from '../../../mock/data/planTemplates';
+import html2pdf from 'html2pdf.js';
+import { useRef } from 'react';
 
-export const PlanSummaryStep = ({ plan, paciente, onEdit }) => {
-  const comidas = plan?.alimentos?.reduce((acc, alimento) => {
-    const comida = acc.find(c => c.tipoComida === alimento.tipoComida);
-    if (comida) {
-      comida.alimentos.push({
-        nombre: alimento.nombre,
-        cantidad: `${alimento.gramos}g`,
-        macros: {
-          proteinas: `${alimento.proteinas}g`,
-          carbohidratos: `${alimento.carbohidratos}g`,
-          grasas: `${alimento.grasas}g`
-        }
-      });
-    } else {
-      acc.push({
-        nombre: alimento.tipoComida,
-        alimentos: [{
-          nombre: alimento.nombre,
-          cantidad: `${alimento.gramos}g`,
-          macros: {
-            proteinas: `${alimento.proteinas}g`,
-            carbohidratos: `${alimento.carbohidratos}g`,
-            grasas: `${alimento.grasas}g`
-          }
-        }]
-      });
-    }
-    return acc;
-  }, []) || [];
+export const PlanSummaryStep = ({ plan, paciente  }) => {
+  const config = PLAN_TEMPLATES[plan.tipoPlan] || {};
+  const resumenRef = useRef();
+
 
   return (
-    <Stack spacing={3} sx={{ mt: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h4">
-          Plan: {plan?.tipoPlan}
-        </Typography>
-        {/* Botón para editar que usa el onEdit pasado como prop */}
-        <Button variant="contained" onClick={onEdit}>
-          Editar Plan
-        </Button>
-      </Box>
-
-      {comidas.map((comida, index) => (
-        <Paper
-          key={index}
-          variant="outlined"
-          sx={{ p: { xs: 2, md: 3 } }}
-        >
-          <Typography variant="h6" gutterBottom>
-            {comida.nombre}
+    <Box ref={resumenRef}>
+      <Stack spacing={4} sx={{ mt: 4, px: { xs: 2, md: 6 } }} >
+        {/* Título principal */}
+        <Box textAlign="center">
+          <Typography variant="h4" fontWeight="bold" gutterBottom sx={{mt:4}}>
+            {plan.tipoPlan}
           </Typography>
-          <Stack spacing={1}>
-            {comida.alimentos.map((alimento, idx) => (
-              <Box
-                key={idx}
-                sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  borderBottom: '1px solid',
-                  borderColor: 'divider',
-                  pb: 1,
-                  mb: 1,
-                }}
-              >
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {alimento.nombre}
+          <Typography variant="subtitle1">
+            {config.descripcion || 'Descripción no disponible para este tipo de plan.'}
+          </Typography>
+        </Box>
+
+        <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
+          <Typography variant="h6" gutterBottom>
+            Información Nutricional
+          </Typography>
+
+          {/* Macronutrientes dinámicos */}
+          <Grid container spacing={2} mt={2}>
+            {(config.macronutrientes || []).map((m, i) => (
+              <Grid item xs={12} md={4} key={i}>
+                <Paper sx={{ p: 2, borderLeft: `5px solid ${m.color}` }}>
+                  <Typography variant="subtitle1" fontWeight="bold" sx={{ color: m.color }}>
+                    {m.label}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Proteínas: {alimento.macros.proteinas} | Carbohidratos: {alimento.macros.carbohidratos} | Grasas: {alimento.macros.grasas}
-                  </Typography>
-                </Box>
-                <Typography variant="body2" sx={{ fontWeight: 500, ml: 2 }}>
-                  {alimento.cantidad}
-                </Typography>
-              </Box>
+                  <Typography variant="body2">{m.porcentaje} - {m.descripcion}</Typography>
+                  <Typography variant="body2" mt={1}><strong>Fuentes:</strong> {m.fuentes}</Typography>
+                </Paper>
+              </Grid>
             ))}
-          </Stack>
+          </Grid>
+
+          {/* Beneficios dinámicos */}
+          <Box mt={4}>
+            <Typography variant="h6" gutterBottom>Beneficios del Plan</Typography>
+            <Stack spacing={1}>
+              {(config.beneficios || []).map((beneficio, i) => (
+                <Box key={i} display="flex" alignItems="center" gap={1}>
+                  <CheckCircleIcon color="success" fontSize="small" />
+                  <Typography variant="body2">{beneficio}</Typography>
+                </Box>
+              ))}
+            </Stack>
+          </Box>
+
+          <Divider sx={{ my: 3 }} />
+          <Typography variant="caption" color="text.secondary">
+            Nota: Este plan es una guía general...
+          </Typography>
         </Paper>
-      ))}
-
-      {/* Gráfico de Macronutrientes */}
-      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
-        <Typography variant="h6" gutterBottom>
-          Distribución de Macronutrientes
-        </Typography>
-        <MacronutrientesChart />
-      </Paper>
-
-      {/* Gráfico de Progreso */}
-      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
-        <Typography variant="h6" gutterBottom>
-          Progreso del Plan
-        </Typography>
-        <PolarChart />
-      </Paper>
-
-      {/* Notas del plan */}
-      <Paper
-        variant="outlined"
-        sx={{ mt: 2, p: { xs: 2, md: 3 }, backgroundColor: 'grey.100' }}
-      >
-        <Typography variant="h6" gutterBottom>
-          Notas del plan
-        </Typography>
-        <List dense>
-          <ListItem disableGutters>
-            <Typography variant="body2">
-              Beber al menos 2 litros de agua al día
-            </Typography>
-          </ListItem>
-          <ListItem disableGutters>
-            <Typography variant="body2">
-              Evitar alimentos procesados y con azúcares añadidos
-            </Typography>
-          </ListItem>
-          <ListItem disableGutters>
-            <Typography variant="body2">
-              Consumir las comidas en intervalos de 3-4 horas
-            </Typography>
-          </ListItem>
-          <ListItem disableGutters>
-            <Typography variant="body2">
-              Ajustar las porciones según la actividad física diaria
-            </Typography>
-          </ListItem>
-        </List>
-      </Paper>
-    </Stack>
+      </Stack>
+    </Box>
   );
 };
-
 export default PlanSummaryStep;

@@ -20,7 +20,7 @@ export const InformacionGeneralConsultaPage = ({ consultas }) => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={6}>
         <Card variant="outlined">
           <CardContent>
             <Typography variant="h6" sx={{ mb: 1 }}>
@@ -34,21 +34,8 @@ export const InformacionGeneralConsultaPage = ({ consultas }) => {
         </Card>
       </Grid>
 
-      <Grid item xs={12} md={4}>
-        <Card variant="outlined">
-          <CardContent>
-            <Typography variant="h6" sx={{ mb: 1 }}>
-              👥 Pacientes Activos
-            </Typography>
-            <Typography variant="h4" color="secondary">
-              {pacientesActivos}
-            </Typography>
-            <Typography variant="caption">Pacientes únicos atendidos</Typography>
-          </CardContent>
-        </Card>
-      </Grid>
 
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={6}>
         <Card variant="outlined">
           <CardContent>
             <Typography variant="h6" sx={{ mb: 1 }}>

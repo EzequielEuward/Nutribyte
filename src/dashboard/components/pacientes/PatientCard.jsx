@@ -19,25 +19,7 @@ export const PatientCard = ({patients}) => {
             marginBottom: "16px",
           }}
         >
-          {/* Tarjeta: Turnos de Hoy */}
-          <Card
-            sx={{
-              flex: "1 1 calc(33.33% - 16px)",
-              minWidth: "200px",
-              backgroundColor: theme.palette.primary.main,
-              color: theme.palette.primary.contrastText,
-            }}
-          >
-            <CardContent sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <Avatar sx={{ bgcolor: theme.palette.primary.contrastText, color: theme.palette.primary.main }}>
-                <EventIcon />
-              </Avatar>
-              <Box>
-                <Typography variant="h6">Estado de los pacientes</Typography>
-                <Typography variant="h4">0</Typography>
-              </Box>
-            </CardContent>
-          </Card>
+         
 
           {/* Tarjeta: Total Pacientes */}
           <Card
@@ -53,7 +35,7 @@ export const PatientCard = ({patients}) => {
                 <PeopleIcon />
               </Avatar>
               <Box>
-                <Typography variant="h6">Total Pacientes</Typography>
+                <Typography variant="h6">Total Pacientes Registrados</Typography>
                 <Typography variant="h4">{patients.length}</Typography>
               </Box>
             </CardContent>

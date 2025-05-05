@@ -1,13 +1,18 @@
+import { useMemo } from "react";
 import { Card, CardHeader, CardContent, Grid, TextField, Button, Autocomplete } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] }) => {
-  const filteredOptions = pacientesList.filter((p) =>
-    p.persona.dni.toString().startsWith(dni.trim())
-  );
+
+  const filteredOptions = useMemo(() => {
+    if (!dni.trim()) return [];
+    return pacientesList.filter((p) =>
+      p.persona.dni.toString().startsWith(dni.trim())
+    );
+  }, [dni, pacientesList]);
 
   return (
-    <Card sx={{ maxWidth: 700, mx: "auto", mb: 2 ,mt:2}}>
+    <Card sx={{ maxWidth: 700, mx: "auto", mb: 2, mt: 2 }}>
       <CardHeader
         title="Buscar Paciente"
         subheader="Ingrese el DNI del paciente para crear un nuevo plan alimenticio"
@@ -19,14 +24,16 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
               freeSolo
               options={filteredOptions}
               getOptionLabel={(option) =>
-                `${option.persona.dni} - ${option.persona.nombre} ${option.persona.apellido}`
+                typeof option === "object"
+                  ? `${option.persona.dni} - ${option.persona.nombre} ${option.persona.apellido}`
+                  : option
               }
               inputValue={dni}
               onInputChange={(event, newInputValue) => {
                 setDni(newInputValue);
               }}
+              value={null} // ← esta línea es la clave para que no te reemplace el input con la opción completa
               onChange={(event, selectedOption) => {
-                // Al seleccionar la opción, actualizamos el input con el DNI completo
                 if (selectedOption) {
                   setDni(selectedOption.persona.dni.toString());
                 }

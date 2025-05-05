@@ -39,7 +39,7 @@ export const PatientPage = () => {
     });
   };
 
-  
+
 
   // Función para confirmar la eliminación del paciente
   const handleConfirmDelete = (idPaciente) => {
@@ -91,9 +91,7 @@ export const PatientPage = () => {
     if (patientData.fechaNacimiento) {
       patientData.fechaNacimiento = format(new Date(patientData.fechaNacimiento), "yyyy-MM-dd");
     }
-    console.log("Fecha de nacimiento enviada:", patientData.fechaNacimiento);
-    console.log("Fecha formateada:", patientData.fechaNacimiento);
-
+   
     try {
       await dispatch(crearPaciente(patientData)).unwrap();
       dispatch(listarPacientes());
@@ -108,7 +106,7 @@ export const PatientPage = () => {
   const handleUpdatePatient = async (updatedData) => {
     try {
       await dispatch(actualizarPaciente(updatedData)).unwrap();
-      
+
       dispatch(listarPacientes()); // Opcional: refrescar la lista
       Swal.fire("Éxito", "Paciente actualizado", "success");
     } catch (error) {
@@ -146,6 +144,7 @@ export const PatientPage = () => {
               open={formOpen}
               onClose={() => setFormOpen(false)}
               onSubmit={handleCreatePatient}
+              pacientes={pacientes}
             />
 
             <PatientTable

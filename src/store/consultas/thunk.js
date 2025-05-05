@@ -32,6 +32,21 @@ export const listarConsulta = createAsyncThunk(
   }
 );
 
+export const listarPacientesPorNutricionista = createAsyncThunk(
+  "pacientes/listarPorNutricionista",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const { auth } = getState();
+      if (!auth?.uid) return rejectWithValue("Usuario no autenticado");
+
+      const response = await axios.get(`${API_PACIENTES}/${auth.uid}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
 export const buscarPacientePorDni = createAsyncThunk(
   "consulta/buscarPacientePorDni",
   async (dni, { rejectWithValue, getState }) => {
@@ -232,6 +247,28 @@ export const listarAnamnesisPorPaciente = createAsyncThunk(
 
       return data; // YA ES ARRAY ✅
     } catch (err) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+// Thunk para obtener datos calculados de una anamnesis por consulta
+export const obtenerAnamnesisCalculadaPorConsulta = createAsyncThunk(
+  'consulta/obtenerAnamnesisCalculadaPorConsulta',
+  async (idConsulta, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const userId = auth?.uid;
+
+      if (!userId) {
+        throw new Error("Usuario no autenticado");
+      }
+      const url = `https://localhost:7041/api/Anamnesis/Calculado/${userId}/${idConsulta}`;
+      const { data } = await axios.get(url);
+
+      return data;
+    } catch (err) {
+      console.error('❌ [THUNK] Error al obtener anamnesis calculada:', err.response?.data || err.message);
       return rejectWithValue(err.response?.data?.message || err.message);
     }
   }

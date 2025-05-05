@@ -39,7 +39,7 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
         const especialidad = user.especialidad || "";
         const rol = user.rol || "";
         const planUsuario = user.planUsuario || "";
-
+        console.log("Usuario completo recibido del backend:", user);
         dispatch(
           login({
             uid: user.idUsuario,
@@ -66,6 +66,8 @@ export const startLoginWithUsernameAndPassword = ({ username, password }) => {
             especialidad,
           })
         );
+        const now = new Date().toLocaleString("es-AR");
+        localStorage.setItem("ultimaSesion", now);
 
 
         return { isSuccess: true, result: { usuario: user, token } };

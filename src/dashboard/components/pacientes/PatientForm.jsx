@@ -1,8 +1,10 @@
 
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import Swal from "sweetalert2";
 
-export const PatientForm = ({ open, onClose, onSubmit }) => {
+export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
+  const [dniRepetido, setDniRepetido] = useState(false);
   const [formData, setFormData] = useState({
     dni: "",
     apellido: "",
@@ -17,6 +19,9 @@ export const PatientForm = ({ open, onClose, onSubmit }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "dni") {
+      setDniRepetido(false);
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -25,11 +30,31 @@ export const PatientForm = ({ open, onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Datos del formulario:", formData);
-    onSubmit(formData); // Envía todo el formData, incluyendo fechaNacimiento
+
+    const { dni, nombre, apellido } = formData;
+
+    if (!dni || !nombre || !apellido) {
+      Swal.fire("Campos incompletos", "Por favor completá DNI, nombre y apellido", "warning");
+      return;
+    }
+
+    const dniIngresado = Number(dni);
+    const existe = pacientes.find(p => p.persona?.dni === dniIngresado);
+
+    if (existe) {
+      setDniRepetido(true); // activa el error en el campo
+      return;
+    }
+
+    setDniRepetido(false);
+    onSubmit(formData);
   };
 
- 
+  const estados = useMemo(() => ([
+    "Registrado", "En evaluacion", "En tratamiento",
+    "Reevaluacion", "Abandonado", "Completado", "Cerrado"
+  ]), []);
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       <DialogTitle>Registrar Nuevo Paciente</DialogTitle>
@@ -45,6 +70,8 @@ export const PatientForm = ({ open, onClose, onSubmit }) => {
                 type="text"
                 fullWidth
                 required
+                error={dniRepetido}
+                helperText={dniRepetido ? "Este DNI ya pertenece a un paciente registrado." : ""}
               />
             </div>
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
@@ -118,13 +145,11 @@ export const PatientForm = ({ open, onClose, onSubmit }) => {
                 fullWidth
                 required
               >
-                <MenuItem value="Registrado">Registrado</MenuItem>
-                <MenuItem value="En evaluacion">En evaluación</MenuItem>
-                <MenuItem value="En tratamiento">En tratamiento</MenuItem>
-                <MenuItem value="Reevaluacion">Reevaluación</MenuItem>
-                <MenuItem value="Abandonado">Abandonado</MenuItem>
-                <MenuItem value="Completado">Completado</MenuItem>
-                <MenuItem value="Cerrado">Cerrado</MenuItem>
+                {estados.map((estado) => (
+                  <MenuItem key={estado} value={estado}>
+                    {estado}
+                  </MenuItem>
+                ))}
               </TextField>
             </div>
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>

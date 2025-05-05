@@ -55,8 +55,6 @@ export const obtenerPlanesPorNutricionista = createAsyncThunk(
   }
 );
 
-
-
 export const buscarPacientePorDni = createAsyncThunk(
   "planes/buscarPacientePorDni",
   async (dni, { rejectWithValue, getState }) => {
@@ -88,6 +86,56 @@ export const obtenerAlimentos = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+
+export const editarPlanAlimenticio = createAsyncThunk(
+  "planes/editarPlanAlimenticio",
+  async ({ idPlan, planData }, { rejectWithValue, getState }) => {
+    try {
+      const { auth } = getState();
+      const idUsuario = auth?.uid;
+
+      if (!idUsuario || !idPlan || !planData) {
+        return rejectWithValue("Datos incompletos para la edición");
+      }
+
+      const payload = {
+        idPlanAlimento: idPlan,
+        tipoPlan: planData.tipoPlan,
+        fechaInicio: planData.fechaInicio,
+        fechaFin: planData.fechaFin,
+        observaciones: planData.observaciones,
+        idPaciente: planData.idPaciente,
+        idUsuario: idUsuario,
+        alimentos: planData.alimentos.map(a => ({
+          alimentoId: a.idAlimento || a.alimentoId,
+          gramos: a.gramos
+        }))
+      };
+      const response = await axios.put(`${API_PLAN}/${idUsuario}/${idPlan}`, payload);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+
+export const eliminarPlanAlimenticio = createAsyncThunk(
+  "planes/eliminarPlanAlimenticio",
+  async (idPlan, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${API_PLAN}/${idPlan}`);
+      return idPlan; // Asegurate de devolver el ID simple
+    } catch (error) {
+      const mensaje =
+        typeof error.response?.data === 'string'
+          ? error.response.data
+          : error.response?.data?.title || "Error al eliminar el plan";
+      return rejectWithValue(mensaje);
     }
   }
 );

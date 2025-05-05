@@ -28,6 +28,7 @@ export const UserTable = ({ handleMenuOpen, users }) => {
                         <TableCell>Rol</TableCell>
                         <TableCell>Matrícula</TableCell>
                         <TableCell>Estado</TableCell>
+                        <TableCell>Plan</TableCell>
                         <TableCell align="right">Acciones</TableCell>
                     </TableRow>
                 </TableHead>
@@ -64,6 +65,9 @@ export const UserTable = ({ handleMenuOpen, users }) => {
                                         label={user.estadoUsuario}
                                         color={getEstadoColor(user.estadoUsuario)}
                                     />
+                                </TableCell>
+                                <TableCell>
+                                    {user.planUsuario} 
                                 </TableCell>
                                 <TableCell align="right">
                                     <IconButton onClick={(e) => handleMenuOpen(e, user)}>

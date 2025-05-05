@@ -1,57 +1,108 @@
 export const getMockVersions = () => {
-    return Promise.resolve([
-      {
-        id: "v1.2.5",
-        date: "2025-03-18",
-        time: "14:32",
-        author: "María García",
-        authorAvatar: "/placeholder.svg?height=40&width=40",
-        authorInitials: "MG",
-        changes: 12,
-        status: "stable", // stable | prerelease | obsolete
-        shortDescription: "Actualización de interfaz de usuario y corrección de errores",
-        longDescription:
-          "En esta versión se realizaron ajustes importantes en la interfaz para mejorar la experiencia de usuario, además de corregir varios errores menores reportados por los usuarios.",
-      },
-      {
-        id: "v1.2.4-beta",
-        date: "2025-03-10",
-        time: "09:00",
-        author: "Carlos Pérez",
-        authorAvatar: "/placeholder.svg?height=40&width=40",
-        authorInitials: "CP",
-        changes: 5,
-        status: "prerelease",
-        shortDescription: "Versión de prueba con nuevas funciones experimentales",
-        longDescription:
-          "Esta es una versión de prueba que incluye la integración de la API externa de pagos y un nuevo módulo de reportes avanzados. Puede presentar inestabilidades.",
-      },
-      {
-        id: "v1.2.3",
-        date: "2025-02-25",
-        time: "17:10",
-        author: "María García",
-        authorAvatar: "/placeholder.svg?height=40&width=40",
-        authorInitials: "MG",
-        changes: 8,
-        status: "obsolete",
-        shortDescription: "Corrección de errores críticos en seguridad",
-        longDescription:
-          "Se corrigieron vulnerabilidades de seguridad críticas y se mejoró la gestión de tokens de autenticación. Esta versión quedó obsoleta tras la salida de la 1.2.4-beta.",
-      },
-      {
-        id: "v1.2.2",
-        date: "2025-02-10",
-        time: "11:45",
-        author: "Ana López",
-        authorAvatar: "/placeholder.svg?height=40&width=40",
-        authorInitials: "AL",
-        changes: 10,
-        status: "stable",
-        shortDescription: "Integración con API externa y mejoras de UX/UI",
-        longDescription:
-          "Se añadió la integración con la API de proveedores y se realizaron mejoras generales en la experiencia de usuario. Correcciones menores en la interfaz.",
-      },
-    ]);
-  };
-  
+  return Promise.resolve([
+    {
+      id: "v1.0.0",
+      date: "2024-11-09",
+      time: "10:00",
+      author: "Vasquez Melina",
+      authorAvatar: "/placeholder.svg?height=40&width=40",
+      authorInitials: "VM",
+      changes: 1,
+      status: "obsolete",
+      shortDescription: "Lanzamiento inicial de la aplicación",
+      longDescription:
+        "Esta es la versión inicial de la aplicación, que incluye las funcionalidades básicas y el diseño inicial. Se eobsoletecen las bases para futuras actualizaciones.",
+    },
+    {
+      id: "v1.1.0",
+      date: "2025-01-15",
+      time: "12:30",
+      author: "Euward Ezequiel",
+      authorAvatar: "/placeholder.svg?height=40&width=40",
+      authorInitials: "EE",
+      changes: 6,
+      status: "obsolete",
+      shortDescription: "Mejoras en el diseño y la usabilidad",
+      longDescription:
+        "Se realizaron mejoras significativas en el diseño de la interfaz de usuario, optimizando la navegación y la experiencia general del usuario.",
+    },
+    {
+      id: "v1.1.1",
+      date: "2025-01-20",
+      time: "14:00",
+      author: "Euward Leonel",
+      authorAvatar: "/placeholder.svg?height=40&width=40",
+      authorInitials: "EL",
+      changes: 3,
+      status: "obsolete",
+      shortDescription: "Corrección de errores menores",
+      longDescription:
+        "Se corrigieron varios errores menores reportados por los usuarios, mejorando la estabilidad de la aplicación.",
+    },
+    {
+      id: "v1.2.0",
+      date: "2025-02-05",
+      time: "09:45",
+      author: "Euward Leonel",
+      authorAvatar: "/placeholder.svg?height=40&width=40",
+      authorInitials: "AL",
+      changes: 4,
+      status: "obsolete",
+      shortDescription: "Mejoras en el funcionamiento de procesos",
+      longDescription:
+        "Se optimizaron los procesos internos de la aplicación, mejorando la eficiencia y reduciendo los tiempos de carga en un 20%.",
+    },
+    {
+      id: "v1.2.1",
+      date: "2025-02-15",
+      time: "11:00",
+      author: "Euward Leonel",
+      authorAvatar: "/placeholder.svg?height=40&width=40",
+      authorInitials: "EL",
+      changes: 5,
+      status: "obsolete",
+      shortDescription: "Mejoras en cálculos y reportes",
+      longDescription:
+        "Se mejoraron los algoritmos de cálculo para ofrecer resultados más precisos y se añadieron nuevas funcionalidades de reportes.",
+    },
+    {
+      id: "v1.2.2",
+      date: "2025-02-25",
+      time: "17:10",
+      author: "Euward Ezequiel",
+      authorAvatar: "/placeholder.svg?height=40&width=40",
+      authorInitials: "EE",
+      changes: 10,
+      status: "obsolete",
+      shortDescription: "Integración con API externa y mejoras de UX/UI",
+      longDescription:
+        "Se añadió la integración con la API de proveedores y se realizaron mejoras generales en la experiencia de usuario. Correcciones menores en la interfaz.",
+    },
+    {
+      id: "v1.3.0",
+      date: "2025-03-20",
+      time: "10:30",
+      author: "Euwards Vasquez",
+      authorAvatar: "/placeholder.svg?height=40&width=40",
+      authorInitials: "EV",
+      changes: 7,
+      status: "obsolete",
+      shortDescription: "Modificaciones en procesos internos",
+      longDescription:
+        "Se actualizaron y optimizaron varios procesos internos para mejorar el rendimiento general y la estabilidad del sistema.",
+    },
+    {
+      id: "v1.3.1",
+      date: "2025-03-28",
+      time: "15:00",
+      author: "Euward Ezequiel",
+      authorAvatar: "/placeholder.svg?height=40&width=40",
+      authorInitials: "EE",
+      changes: 4,
+      status: "prerelease",
+      shortDescription: "Actualización de medidas y métricas",
+      longDescription:
+        "Se actualizaron las medidas y métricas utilizadas en los cálculos, garantizando mayor precisión y confiabilidad en los resultados mostrados.",
+    }
+  ]);
+};

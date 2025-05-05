@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Card,
   CardHeader,
@@ -19,34 +20,49 @@ import IndicadoresCorporales from './IndicadoresCorporales';
 import ComparativaPeso from './ComparativaPeso';
 import GraficosCircunferencias from './GraficosCircunferencias';
 import GraficosPliegues from './GraficosPliegues';
+import { obtenerAnamnesisCalculadaPorConsulta } from '../../../store/consultas';
 
 export const FichaAnamnesis = ({
-  open, onClose, onEdit, currentAnamnesis,
-  handleMenuOpen, anamnesisList, setActiveTab
+  open,
+  onClose,
+  onEdit,
+  currentAnamnesis,
+  handleMenuOpen,
+  anamnesisList,
+  setActiveTab
 }) => {
 
+  const dispatch = useDispatch();
+  const { anamnesisCalculada, consultas } = useSelector(state => state.consulta);
+  
   const [tabValue, setTabValue] = useState(0);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [formData, setFormData] = useState({});
-  const [selectedAnamnesisId, setSelectedAnamnesisId] = useState(''); // 👉 ID seleccionada
+  const [selectedAnamnesisId, setSelectedAnamnesisId] = useState('');
 
   const handleTabChange = (_, newValue) => setTabValue(newValue);
 
-  // Cuando cambia la anamnesis seleccionada, actualizamos formData
   useEffect(() => {
-    if (selectedAnamnesisId && anamnesisList?.length > 0) {
-      const encontrada = anamnesisList.find(a => a.idAnamnesis === selectedAnamnesisId);
-      if (encontrada) {
-        setFormData(encontrada);
+    if (selectedAnamnesisId && consultas.length > 0) {
+      const consultaVinculada = consultas.find(c => c.idAnamnesis === selectedAnamnesisId);
+      if (consultaVinculada?.idConsulta) {
+       
+        dispatch(obtenerAnamnesisCalculadaPorConsulta(consultaVinculada.idConsulta));
+      } else {
       }
     }
-  }, [selectedAnamnesisId, anamnesisList]);
+  }, [selectedAnamnesisId, consultas, dispatch]);
 
-  // Cuando entra un currentAnamnesis inicial
   useEffect(() => {
-    if (currentAnamnesis) {
-      setFormData(currentAnamnesis);
-      setSelectedAnamnesisId(currentAnamnesis.idAnamnesis || '');
+
+    if (anamnesisCalculada?.idAnamnesis) {
+      setFormData(anamnesisCalculada);
+    }
+  }, [anamnesisCalculada]);
+
+  useEffect(() => {
+    if (currentAnamnesis?.idAnamnesis) {
+      setSelectedAnamnesisId(currentAnamnesis.idAnamnesis);
     }
   }, [currentAnamnesis]);
 
@@ -81,8 +97,6 @@ export const FichaAnamnesis = ({
         />
 
         <CardContent>
-
-          {/* 🆕 Select para elegir Anamnesis */}
           {anamnesisList && anamnesisList.length > 0 && (
             <FormControl fullWidth sx={{ mb: 3 }}>
               <InputLabel id="select-anamnesis-label">Seleccionar Anamnesis</InputLabel>

@@ -20,7 +20,6 @@ import {
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 
-// Registrar componentes de Chart.js
 ChartJS.register(
   RadialLinearScale,
   PointElement,
@@ -33,24 +32,22 @@ ChartJS.register(
 export const GraficosCircunferencias = ({ data }) => {
   const theme = useTheme();
 
-  // Validamos que haya datos
   if (!data) {
     return <Typography variant="body2">No hay datos de circunferencias disponibles.</Typography>;
   }
 
-  // Mapeamos los datos que nos pasan
   const datosCircunferencia = [
     { subject: 'Brazo Relajado', value: parseFloat(data.circunferenciaBrazoRelajado) || 0 },
     { subject: 'Brazo', value: parseFloat(data.circunferenciaBrazo) || 0 },
+    { subject: 'Media Brazo', value: parseFloat(data.circunferenciaMediaBrazo) || 0 },
     { subject: 'Antebrazo', value: parseFloat(data.circunferenciaAntebrazo) || 0 },
     { subject: 'Cintura', value: parseFloat(data.circunferenciaCintura) || 0 },
     { subject: 'Cintura Máxima', value: parseFloat(data.circunferenciaCinturaMaxima) || 0 },
     { subject: 'Pantorrilla', value: parseFloat(data.circunferenciaPantorrilla) || 0 },
   ];
 
-  const maxValue = Math.max(...datosCircunferencia.map((d) => d.value), 1); // Nunca dejar max en 0
+  const maxValue = Math.max(...datosCircunferencia.map((d) => d.value), 1);
 
-  // Configuración de datos para Radar
   const chartData = {
     labels: datosCircunferencia.map((d) => d.subject),
     datasets: [
@@ -108,9 +105,7 @@ export const GraficosCircunferencias = ({ data }) => {
                     key={item.subject}
                     sx={{ display: 'flex', alignItems: 'center', mb: 2 }}
                   >
-                    <Typography sx={{ width: '30%' }}>
-                      {item.subject}
-                    </Typography>
+                    <Typography sx={{ width: '30%' }}>{item.subject}</Typography>
                     <Box sx={{ width: '60%', mr: 2 }}>
                       <LinearProgress
                         variant="determinate"

@@ -53,7 +53,6 @@ export const GraficosPliegues = ({ data }) => {
   const maxValue = Math.max(...values, 1);
   const totalPliegues = values.reduce((sum, v) => sum + v, 0);
 
-  // 🎨 Colores para cada pliegue
   const colores = [
     theme.palette.primary.main,
     theme.palette.secondary.main,
@@ -61,7 +60,7 @@ export const GraficosPliegues = ({ data }) => {
     theme.palette.success.main,
     theme.palette.warning.main,
     theme.palette.info.main,
-    '#9c27b0' // violeta para el último
+    '#9c27b0',
   ];
 
   const chartData = {
@@ -72,10 +71,11 @@ export const GraficosPliegues = ({ data }) => {
         data: values,
         fill: false,
         backgroundColor: colores,
-        borderColor: colores,
+        borderColor: theme.palette.primary.dark,
         borderWidth: 2,
         pointBackgroundColor: colores,
         pointBorderColor: colores,
+        tension: 0.3,
       },
     ],
   };
@@ -92,12 +92,8 @@ export const GraficosPliegues = ({ data }) => {
       },
     },
     plugins: {
-      legend: {
-        display: false, // 🔕 ocultamos la leyenda para no saturar
-      },
-      tooltip: {
-        enabled: true,
-      },
+      legend: { display: false },
+      tooltip: { enabled: true },
     },
   };
 
@@ -105,7 +101,7 @@ export const GraficosPliegues = ({ data }) => {
     <Card>
       <CardHeader
         title="Pliegues Cutáneos"
-        subheader="Mediciones de pliegues en milímetros"
+        subheader="Mediciones en milímetros"
       />
       <CardContent>
         <Grid container spacing={4}>
@@ -123,13 +119,8 @@ export const GraficosPliegues = ({ data }) => {
               {datosPliegues.map((item, index) => {
                 const percent = (item.value / maxValue) * 100;
                 return (
-                  <Box
-                    key={item.name}
-                    sx={{ display: 'flex', alignItems: 'center', mb: 2 }}
-                  >
-                    <Typography sx={{ width: '30%' }}>
-                      {item.name}
-                    </Typography>
+                  <Box key={item.name} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Typography sx={{ width: '30%' }}>{item.name}</Typography>
                     <Box sx={{ width: '60%', mr: 2 }}>
                       <LinearProgress
                         variant="determinate"
@@ -143,16 +134,14 @@ export const GraficosPliegues = ({ data }) => {
                         }}
                       />
                     </Box>
-                    <Typography variant="body2">
-                      {item.value.toFixed(1)} mm
-                    </Typography>
+                    <Typography variant="body2">{item.value.toFixed(1)} mm</Typography>
                   </Box>
                 );
               })}
 
               <Box sx={{ pt: 2, borderTop: `1px solid ${theme.palette.divider}` }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 500 }}>
-                  <Typography>Total pliegues</Typography>
+                  <Typography>Total de pliegues</Typography>
                   <Typography>{totalPliegues.toFixed(1)} mm</Typography>
                 </Box>
               </Box>
