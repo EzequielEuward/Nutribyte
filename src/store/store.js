@@ -6,19 +6,21 @@ import { turnosSlice } from './calendar/turnosSlice';
 import { foodSlice } from './food/foodSlice';
 import userReducer from './user/userSlice';
 import { planSlice } from './plans/planSlice';
-import {cobroSlice} from './cobro/cobroSlice';
-import {consultaSlice} from './consultas/consultaSlice';
+import { cobroSlice } from './cobro/cobroSlice';
+import { consultaSlice } from './consultas/consultaSlice';
+import { consumoSlice } from './consumo/consumoSlice';
 
 export const store = configureStore({
   reducer: {
     ui: uiSlice.reducer,
-    user: userReducer, 
+    user: userReducer,
     auth: authSlice.reducer,
     patients: patientSlice.reducer,
     turnos: turnosSlice.reducer,
     alimentos: foodSlice.reducer,
-    plan:planSlice.reducer,
-    cobro:cobroSlice.reducer,
+    plan: planSlice.reducer,
+    cobro: cobroSlice.reducer,
     consulta: consultaSlice.reducer,
+    consumo: consumoSlice.reducer,
   },
 });

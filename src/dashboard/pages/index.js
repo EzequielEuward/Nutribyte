@@ -18,7 +18,7 @@ export * from './CalendarPage';
 
 // Progreso
 export * from './HistorialPeso';
-export * from './CaloriasCosumidaPage';
+export * from './ConsumoPage';
 
 // Sistema
 export * from './ControlDeSistemaPage'

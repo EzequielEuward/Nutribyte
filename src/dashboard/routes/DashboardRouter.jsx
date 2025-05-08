@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import {
   DashboardPage, PatientPage, FoodPage, ProfilePage,
   CalendarPage, ConsultaPage, PlanesPage, RecipePage,
-  ConfigPage, HistorialPeso, CaloriasConsumidasPage, VersionPage,
+  ConfigPage, HistorialPeso, ConsumoPage, VersionPage,
   ControlDeSistemaPage, PlanSummaryPage, SeguridadMedidas, DetallePlan
 } from '../pages/';
 
@@ -32,7 +32,7 @@ export const DashboardRouter = () => {
 
       {/* Progreso */}
       <Route path="progreso/historial-peso" element={<HistorialPeso />} />
-      <Route path="progreso/calorias-consumidas" element={<CaloriasConsumidasPage />} />
+      <Route path="progreso/calorias-consumidas" element={<ConsumoPage />} />
       <Route path="turnos" element={<CalendarPage />} />
 
 

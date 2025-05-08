@@ -1,49 +1,99 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Card, CardContent, CardActions, CardHeader, TextField, IconButton, Typography, Box } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+  CardHeader,
+  TextField,
+  IconButton,
+  Typography,
+  Collapse,
+  Box
+} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { startLoginWithUsernameAndPassword } from '../../store/auth/';  // Asegúrate de que la acción esté preparada para usar 'username' y 'password'
+import { startLoginWithUsernameAndPassword } from '../../store/auth/';
 import LogoOficial from '../../assets/LogoOficial.png';
 import CircularProgress from '@mui/material/CircularProgress';
+import Swal from 'sweetalert2';
 
 export const LoginPage = () => {
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [codigo2FA, setCodigo2FA] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [requiere2FA, setRequiere2FA] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrorMessage(null);
-    setIsLoading(true);
 
     if (!username || !password) {
-      setErrorMessage('Por favor, completa todos los campos.');
-      setIsLoading(false);
-      return;
+      return Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor, completá usuario y contraseña.',
+      });
     }
 
-    const result = await dispatch(startLoginWithUsernameAndPassword({ username, password }));
-    setIsLoading(false);
+    if (requiere2FA && !codigo2FA) {
+      return Swal.fire({
+        icon: 'warning',
+        title: 'Falta el código 2FA',
+        text: 'Por favor ingresá el código de autenticación.',
+      });
+    }
 
-    if (result?.isSuccess && result.result.usuario.activo) {
-      // Guardar la información del usuario en sessionStorage
-      const user = result.result.usuario;
-      const token = result.result.token;
-      sessionStorage.setItem('authToken', token);
-      sessionStorage.setItem('userData', JSON.stringify(user));
+    setIsLoading(true);
 
-      console.log("Inicio de sesión exitoso", result);
-      navigate('/home');
-    } else {
-      setErrorMessage(result?.errorMessage || 'Credenciales inválidas o usuario inactivo.');
+    try {
+      const result = await dispatch(
+        startLoginWithUsernameAndPassword({ username, password, codigo2FA })
+      );
+
+      if (result?.requires2FA) {
+        setIsLoading(false);
+        await Swal.fire({
+          icon: 'info',
+          title: 'Código 2FA requerido',
+          text: 'Ingresá el código de Google Authenticator para continuar.',
+        });
+
+        // Forzar recarga para limpiar estados y evitar loop
+        return window.location.reload();
+      }
+
+      if (
+        result?.isSuccess &&
+        result?.result &&
+        result.result.usuario?.activo &&
+        result.result.token
+      ) {
+        const user = result.result.usuario;
+        const token = result.result.token;
+        sessionStorage.setItem('authToken', token);
+        sessionStorage.setItem('userData', JSON.stringify(user));
+        return navigate('/home');
+      }
+
+      throw new Error(result?.errorMessage || 'Credenciales inválidas o usuario inactivo.');
+    } catch (error) {
+      setIsLoading(false);
+      return Swal.fire({
+        icon: 'error',
+        title: 'Error de inicio de sesión',
+        text: error.message || 'Ocurrió un error inesperado al iniciar sesión.',
+      });
     }
   };
+
 
   return (
     <Box
@@ -61,15 +111,15 @@ export const LoginPage = () => {
           <img
             src={LogoOficial}
             alt="Logo"
-            style={{
-              width: '200px',
-              height: '200px',
-              objectFit: 'contain',
-            }}
+            style={{ width: '200px', height: '200px', objectFit: 'contain' }}
           />
         </Box>
         <CardHeader
-          title={<Typography variant="h5" component="div" fontWeight="bold">Inicio de Sesión</Typography>}
+          title={
+            <Typography variant="h5" component="div" fontWeight="bold">
+              Inicio de Sesión
+            </Typography>
+          }
           subheader="Ingresa tus credenciales"
           sx={{ textAlign: 'center' }}
         />
@@ -87,7 +137,7 @@ export const LoginPage = () => {
             />
             <TextField
               label="Contraseña"
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               fullWidth
               margin="normal"
               required
@@ -102,6 +152,33 @@ export const LoginPage = () => {
                 ),
               }}
             />
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={() => setRequiere2FA((prev) => !prev)}
+              sx={{
+                mt: 2,
+                textTransform: 'none',
+                transition: '0.3s',
+                fontWeight: 'bold',
+                backgroundColor: requiere2FA ? '#e3f2fd' : 'transparent',
+                '&:hover': { backgroundColor: '#bbdefb' },
+              }}
+            >
+              {requiere2FA ? 'No poseo código de autenticación 2FA' : 'Ingresar código de autenticación 2FA'}
+            </Button>
+
+            <Collapse in={requiere2FA} timeout="auto" unmountOnExit>
+              <TextField
+                label="Código 2FA"
+                type="text"
+                fullWidth
+                margin="normal"
+                value={codigo2FA}
+                onChange={(e) => setCodigo2FA(e.target.value)}
+                placeholder="Ingrese el código de Google Authenticator"
+              />
+            </Collapse>
             {errorMessage && (
               <Typography color="error" variant="body2" sx={{ mt: 1 }}>
                 {errorMessage}
@@ -124,7 +201,7 @@ export const LoginPage = () => {
         </CardContent>
         <CardActions sx={{ justifyContent: 'center', flexDirection: 'column', textAlign: 'center' }}>
           <Typography variant="body2" color="textSecondary">
-            ¿Olvidaste tu contraseña?{" "}
+            ¿Olvidaste tu contraseña?{' '}
             <a href="/" style={{ color: '#1976d2', textDecoration: 'none' }}>
               Ingresa Aquí
             </a>

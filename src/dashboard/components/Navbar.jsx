@@ -73,6 +73,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
 
   const open = Boolean(anchorEl);
   const id = open ? "quote-popover" : undefined;
+  const mostrarFrases = JSON.parse(localStorage.getItem("mostrarFrasesMotivacionales") ?? "true");
 
   return (
     <AppBar
@@ -111,9 +112,11 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
 
             <Box display="flex" alignItems="center">
 
-              <IconButton onClick={handleOpenQuote} sx={{ color: theme.palette.text.primary }}>
-                <LightbulbOutlined />
-              </IconButton>
+              {mostrarFrases && (
+                <IconButton onClick={handleOpenQuote} sx={{ color: theme.palette.text.primary }}>
+                  <LightbulbOutlined />
+                </IconButton>
+              )}
 
               <IconButton onClick={handleThemeToggle} sx={{ color: theme.palette.text.primary }}>
                 {isDarkMode ? <LightModeOutlined /> : <DarkModeOutlined />}
