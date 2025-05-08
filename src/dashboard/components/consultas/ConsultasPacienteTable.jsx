@@ -45,13 +45,13 @@ export const ConsultasPacienteTable = ({ handleMenuOpen, consultas = [] }) => {
               <TableCell>{c.observaciones || '—'}</TableCell>
               <TableCell>{c.planAlimenticio || 'No posee '}</TableCell>
               <TableCell align="center">
-                <Tooltip title="Editar">
+                <Tooltip title="Editar Consulta">
                   <IconButton onClick={() => handleMenuOpen('edit', c)}>
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Eliminar">
-                  <IconButton onClick={() => handleMenuOpen('delete', c)}>
+                <Tooltip title="Eliminar Consulta">
+                  <IconButton color="error" onClick={() => handleMenuOpen('delete', c)}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>

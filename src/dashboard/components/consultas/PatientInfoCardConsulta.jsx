@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Divider, Button } from "@mui/material";
+import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Divider, Button, Tooltip } from "@mui/material";
 import { differenceInYears, parseISO } from "date-fns";
 
 export const PatientInfoCardConsulta = ({ paciente, onEdit, actionButtons }) => {
@@ -16,6 +16,7 @@ export const PatientInfoCardConsulta = ({ paciente, onEdit, actionButtons }) => 
   const fechaNac = persona.fechaNacimiento
     ? new Date(persona.fechaNacimiento).toLocaleDateString()
     : "N/A";
+
   const edad = persona.fechaNacimiento
     ? differenceInYears(new Date(), parseISO(persona.fechaNacimiento))
     : null;
@@ -25,10 +26,13 @@ export const PatientInfoCardConsulta = ({ paciente, onEdit, actionButtons }) => 
       <CardHeader
         title={`${persona.nombre} ${persona.apellido}`}
         subheader={`DNI: ${persona.dni}`}
+        
         action={
-          <Button variant="outlined" color="secondary" size="small" onClick={onEdit}>
-            Cambiar paciente
-          </Button>
+          <Tooltip title="Buscar otro paciente" arrow>
+            <Button variant="outlined" color="secondary" size="small" onClick={onEdit}>
+              Cambiar paciente
+            </Button>
+          </Tooltip>
         }
       />
       <Divider />

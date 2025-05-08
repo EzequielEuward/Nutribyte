@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   Container,
   Typography,
@@ -40,6 +41,8 @@ export const ConsultaPage = () => {
   const { uid } = useSelector((state) => state.auth);
   const { paciente, consultas, isLoading, error, currentAnamnesis, anamnesisList } = useSelector((state) => state.consulta);
   const pacientesList = useSelector(state => state.patients.pacientes || []);
+  const formRef = useRef(null);
+
   const [dni, setDni] = useState('');
   const [step, setStep] = useState('busqueda');
 
@@ -309,11 +312,7 @@ export const ConsultaPage = () => {
             <Divider sx={{ my: 4 }} />
 
             <Grid container spacing={4}>
-              <Grid item xs={12}>
-                <Typography variant="h4" sx={{ mb: 3, color: 'text.secondary' }}>
-                  Información General del Sistema
-                </Typography>
-              </Grid>
+
 
 
 
@@ -344,6 +343,15 @@ export const ConsultaPage = () => {
               onEdit={() => setStep("busqueda")}
             />
             <Divider sx={{ my: 4 }} />
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                formRef.current?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Nueva consulta
+            </Button>
             <Box sx={{ mt: 4 }}>
               <Grid container spacing={4}>
                 <Grid item xs={12} md={12}>
@@ -402,7 +410,7 @@ export const ConsultaPage = () => {
             {/* Primera fila: formulario de Consulta y Anamnesis lado a lado */}
             <Grid container spacing={4} justifyContent="center" >
               <Grid item xs={12} md={12} sx={{}}>
-                <Card variant="outlined">
+                <Card variant="outlined" ref={formRef}>
                   <CardHeader
                     title="Nueva Consulta Integral"
                     titleTypographyProps={{ variant: 'h5', color: 'secondary' }}

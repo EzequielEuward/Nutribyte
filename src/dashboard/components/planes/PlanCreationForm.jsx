@@ -30,7 +30,7 @@ export const PlanCreationForm = ({
   const fechaInicioSeleccionada = watch("fechaInicio");
 
   const alimentosPorTipo = {
-    "Plan Estandar": [126, 100, 576, 151, 26, 468, 611, 86, 522, 132, 160, 401, 319, 479, 76, 62, 136, 275, 670, 44],
+    "Plan Personalizado": [0],
     "Plan Keto": [134, 651, 676, 663, 479, 44, 610, 569, 679, 26, 476, 670, 8, 62, 34, 39, 75, 653, 755],
     "Plan Hiper Calorico": [928, 364, 600, 603, 583, 684, 618, 495, 276, 77, 53, 494, 25, 109, 100, 134, 670, 676, 671, 503],
     "Plan Alto Calorico": [316, 151, 82, 254, 800, 125, 468, 583, 275, 676, 494, 329, 348, 671, 346, 252,  699, 160, 579],

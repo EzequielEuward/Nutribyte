@@ -20,8 +20,11 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "dni") {
-      setDniRepetido(false);
+      const dniIngresado = Number(value);
+      const existe = pacientes.find((p) => p.persona?.dni === dniIngresado);
+      setDniRepetido(!!existe);
     }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -38,11 +41,17 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
       return;
     }
 
+
     const dniIngresado = Number(dni);
     const existe = pacientes.find(p => p.persona?.dni === dniIngresado);
 
     if (existe) {
       setDniRepetido(true); // activa el error en el campo
+      return;
+    }
+
+    if (dniRepetido) {
+      Swal.fire("DNI duplicado", "Este DNI ya está registrado. Por favor, ingresá uno diferente.", "error");
       return;
     }
 

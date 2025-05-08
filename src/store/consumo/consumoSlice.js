@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { listarConsumosPorUsuario , buscarPacientePorDni, obtenerConsumoPorId, crearConsumo, editarConsumo, eliminarConsumo } from './thunk';
+import { listarConsumosPorUsuario, buscarPacientePorDni, obtenerConsumoPorId, listarConsumosPorPaciente, crearConsumo, editarConsumo, eliminarConsumo } from './thunk';
 
 const initialState = {
   consumos: [],
@@ -12,7 +12,7 @@ const slice = createSlice({
   name: 'consumo',
   initialState,
   reducers: {
-    limpiarConsumoSeleccionado: (state) => {  
+    limpiarConsumoSeleccionado: (state) => {
       state.consumoSeleccionado = null;
     }
   },
@@ -23,6 +23,10 @@ const slice = createSlice({
         state.error = null;
       })
       .addCase(listarConsumosPorUsuario.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.consumos = action.payload;
+      })
+      .addCase(listarConsumosPorPaciente.fulfilled, (state, action) => {
         state.isLoading = false;
         state.consumos = action.payload;
       })

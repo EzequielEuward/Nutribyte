@@ -69,7 +69,7 @@ export const FooterSection = () => {
               Email: <Link href="mailto:info@sintacc.com" color="inherit">sintacc.software@gmail.com</Link>
             </Typography>
             <Typography variant="body2">
-              Teléfono: <Link href="tel:(123) 456-7890" color="inherit">(123) 456-7890</Link>
+              Teléfono: <Link href="tel:+5493512783658" color="inherit">(+54) 9 351 2783658</Link>
             </Typography>
           </Grid>
 

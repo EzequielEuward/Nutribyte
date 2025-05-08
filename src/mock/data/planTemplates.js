@@ -35,4 +35,6 @@ export const PLAN_TEMPLATES = {
    
     // Podés seguir agregando más...
   };
+
+  export default PLAN_TEMPLATES;
   

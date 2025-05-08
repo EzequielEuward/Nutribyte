@@ -16,7 +16,7 @@ export const App = () => {
       dispatch(
         login({
           uid: user.idUsuario,
-          username: user.userName,
+          username: user.username,
           persona: user.persona,  
           rol: user.rol,
           planUsuario: user.planUsuario,

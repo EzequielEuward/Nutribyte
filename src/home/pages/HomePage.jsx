@@ -8,36 +8,37 @@ export const HomePage = () => {
         <NavBarHome />
       </header>
 
-      <section>
+      <section id="hero">
         <HeroSection />
       </section>
 
-      <section>
-        <PlanSection/>
+      <section id="plans">
+        <PlanSection />
       </section>
 
-      <section>
+      <section id="features">
         <CaracterisitcasSection />
       </section>
 
-      <section>
+      <section id="contact">
         <ContactFormSection />
       </section>
-
-      <section>
-        <FAQSection/>
+      
+      <section id="faq">
+        <FAQSection />
       </section>
 
-      <section>
+      <section id="about">
         <AboutSection />
-      </section >
+      </section>
 
-      <section>
-        <FooterSection/>
+      <section id="about">
+        <FooterSection />
       </section>
 
     </>
   );
 };
+
 
 export default HomePage;

@@ -84,7 +84,7 @@ export const FichaAnamnesis = ({
       <Card sx={{ width: '100%' }}>
         <CardHeader
           title="Anamnesis"
-          subheader="Historial médico del paciente"
+          subheader="Seguimiento médico del paciente"
           action={
             <Button
               onClick={handleEditAnamnesis}

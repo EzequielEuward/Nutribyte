@@ -42,19 +42,41 @@ export const PatientPage = () => {
 
 
   // Función para confirmar la eliminación del paciente
-  const handleConfirmDelete = (idPaciente) => {
+  const handleConfirmDelete = async (idPaciente) => {
+    // Primer confirmación: intención general
+    const primerPaso = await Swal.fire({
+      title: "¿Deseás eliminar este paciente?",
+      text: "Esta acción lo marcará como inactivo.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, continuar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true
+    });
 
-    // Aquí se cambia: en lugar de pasar directamente idPaciente, se pasa { idPaciente }
-    dispatch(desactivarPaciente({ idPaciente }))
-      .unwrap()
-      .then(() => {
-        dispatch(listarPacientes()); // Actualizar la lista de pacientes después de la desactivación
-        Swal.fire("Éxito", "El paciente ha sido desactivado correctamente.", "success");
-      })
-      .catch((error) => {
-        console.error("Error al desactivar paciente:", error);
-        Swal.fire("Error", "Hubo un problema al desactivar el paciente.", "error");
-      });
+    if (!primerPaso.isConfirmed) return;
+
+    // Segunda confirmación: seguridad final
+    const segundoPaso = await Swal.fire({
+      title: "¿Estás completamente seguro?",
+      text: "Esta acción no se puede deshacer fácilmente.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true
+    });
+    if (!segundoPaso.isConfirmed) return;
+
+    // Si el usuario confirmó los dos pasos, se ejecuta la eliminación
+    try {
+      await dispatch(desactivarPaciente({ idPaciente })).unwrap();
+      dispatch(listarPacientes());
+      Swal.fire("Éxito", "El paciente ha sido desactivado correctamente.", "success");
+    } catch (error) {
+      console.error("Error al desactivar paciente:", error);
+      Swal.fire("Error", "Hubo un problema al desactivar el paciente.", "error");
+    }
   };
 
   // Función para abrir el drawer y ver los detalles del paciente
@@ -91,17 +113,35 @@ export const PatientPage = () => {
     if (patientData.fechaNacimiento) {
       patientData.fechaNacimiento = format(new Date(patientData.fechaNacimiento), "yyyy-MM-dd");
     }
-   
+
+    // Mostrar primero la confirmación
+    const result = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: `¿Deseás cargar al paciente ${patientData.nombre} ${patientData.apellido}?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, cargar",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true
+    });
+
+    if (!result.isConfirmed) {
+      return; // Si cancela, no se hace nada y el modal sigue abierto
+    }
+
+    // Si confirma, recién ahí enviamos y cerramos el modal
     try {
       await dispatch(crearPaciente(patientData)).unwrap();
       dispatch(listarPacientes());
-      setFormOpen(false);
       Swal.fire("Éxito", "Paciente creado correctamente.", "success");
+      setFormOpen(false); // cerrar modal SOLO después del éxito
     } catch (error) {
       console.error("Error al crear paciente:", error);
       Swal.fire("Error", "Hubo un problema al crear el paciente.", "error");
     }
   };
+
+
 
   const handleUpdatePatient = async (updatedData) => {
     try {

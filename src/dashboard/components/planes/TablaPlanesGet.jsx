@@ -10,6 +10,7 @@ import {
   Typography,
   CircularProgress,
   Alert,
+  Tooltip,
   IconButton
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,17 +62,26 @@ export const TablaPlanesGet = ({ onViewPlan, onDeletePlan, onEditPlan }) => {
                 {new Date(plan.fechaFin).toLocaleDateString()}
               </TableCell>
               <TableCell>
-                <IconButton onClick={() => onViewPlan(plan)} color="primary">
-                  <RemoveRedEyeIcon />
-                </IconButton>
 
-                <IconButton color="error" onClick={() => handleEliminarPlan(plan.idPlanAlimento)}>
-                  <DeleteIcon />
-                </IconButton>
-                <IconButton color="secondary" onClick={() => onEditPlan(plan)}>
-                  <EditIcon />
-                </IconButton>
+                <Tooltip title="Ver Plan" arrow>
+                  <IconButton onClick={() => onViewPlan(plan)} color="primary">
+                    <RemoveRedEyeIcon />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Editar Plan" arrow>
+                  <IconButton color="secondary" onClick={() => onEditPlan(plan)}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Eliminar Plan" arrow>
+                  <IconButton color="error" onClick={() => handleEliminarPlan(plan.idPlanAlimento)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
+
             </TableRow>
           ))}
 

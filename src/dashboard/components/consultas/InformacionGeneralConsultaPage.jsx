@@ -1,6 +1,7 @@
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { Card, CardContent, Typography, Grid, Box } from "@mui/material";
+import BarChartIcon from '@mui/icons-material/BarChart';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
-// Función para contar consultas realizadas hoy
 const contarConsultasHoy = (consultas) => {
   const hoy = new Date();
   return consultas.filter(c => {
@@ -18,33 +19,55 @@ export const InformacionGeneralConsultaPage = ({ consultas }) => {
   const pacientesActivos = new Set(consultas.map(c => c.idPaciente)).size;
   const consultasPendientes = consultas.filter(c => c.estado === 'Pendiente').length;
 
+  const fechaHoy = new Date().toLocaleDateString('es-AR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+
+  const iconStyle = (bgColor) => ({
+    backgroundColor: bgColor,
+    color: '#fff',
+    borderRadius: '8px',
+    padding: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '2rem',
+  });
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
         <Card variant="outlined">
           <CardContent>
-            <Typography variant="h6" sx={{ mb: 1 }}>
-              📊 Consultas Hoy
-            </Typography>
+            <Box sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={iconStyle('primary.main')}>
+                <BarChartIcon fontSize="large" />
+              </Box>
+              <Typography variant="h6">Consultas Totales Registradas</Typography>
+            </Box>
             <Typography variant="h4" color="primary">
-              {consultasHoy}
+              {consultas.length}
             </Typography>
-            <Typography variant="caption">Registros del día</Typography>
+            <Typography variant="caption">Total de consultas hechas</Typography>
           </CardContent>
         </Card>
       </Grid>
 
-
       <Grid item xs={12} md={6}>
         <Card variant="outlined">
           <CardContent>
-            <Typography variant="h6" sx={{ mb: 1 }}>
-              ⚠️ Consultas Pendientes
+            <Box sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={iconStyle('success.main')}>
+                <AssignmentIcon fontSize="large" />
+              </Box>
+              <Typography variant="h6">Consultas del día</Typography>
+            </Box>
+            <Typography variant="h4" color="success.main">
+              {consultasHoy}
             </Typography>
-            <Typography variant="h4" color="error">
-              {consultasPendientes}
-            </Typography>
-            <Typography variant="caption">Consultas por completar</Typography>
+            <Typography variant="caption">Consultas hechas en {fechaHoy}</Typography>
           </CardContent>
         </Card>
       </Grid>

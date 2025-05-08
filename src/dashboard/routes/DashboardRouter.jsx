@@ -4,7 +4,8 @@ import {
   DashboardPage, PatientPage, FoodPage, ProfilePage,
   CalendarPage, ConsultaPage, PlanesPage, RecipePage,
   ConfigPage, HistorialPeso, ConsumoPage, VersionPage,
-  ControlDeSistemaPage, PlanSummaryPage, SeguridadMedidas, DetallePlan
+  ControlDeSistemaPage, PlanSummaryPage, SeguridadMedidas, DetallePlan, ReportesPage,
+
 } from '../pages/';
 
 
@@ -18,7 +19,7 @@ export const DashboardRouter = () => {
       <Route path="perfil" element={<ProfilePage />} />
       <Route path="configuracion" element={<ConfigPage />} />
       <Route path="medidas-de-seguridad" element={<SeguridadMedidas />} />
-      <Route path="informacion-planes" element={<DetallePlan planUsuario={planUsuario}/>} />
+      <Route path="informacion-planes" element={<DetallePlan planUsuario={planUsuario} />} />
 
       {/* Paciente */}
       <Route path="paciente" element={<PatientPage />} />
@@ -35,7 +36,8 @@ export const DashboardRouter = () => {
       <Route path="progreso/calorias-consumidas" element={<ConsumoPage />} />
       <Route path="turnos" element={<CalendarPage />} />
 
-
+      <Route path="reportes" element={<ReportesPage />} />
+      
       {/* Solo los administradores pueden ver estas rutas */}
       {rol === "Administrador" && (
         <>

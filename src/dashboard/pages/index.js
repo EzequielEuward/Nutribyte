@@ -23,6 +23,7 @@ export * from './ConsumoPage';
 // Sistema
 export * from './ControlDeSistemaPage'
 export * from './VersionPage';
+export * from './ReportesPage';
 
 
 

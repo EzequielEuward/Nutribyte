@@ -19,12 +19,12 @@ import AddIcon from "@mui/icons-material/Add";
 import DashboardLayout from "../layout/DashboardLayout";
 
 import { listarPacientes } from "../../store/patient/";
-import { buscarPacientePorDni, listarConsumosPorUsuario, crearConsumo, eliminarConsumo } from "../../store/consumo/thunk";
+import { buscarPacientePorDni, listarConsumosPorUsuario, crearConsumo, eliminarConsumo, editarConsumo, listarConsumosPorPaciente } from "../../store/consumo/thunk";
 
-import { TablaConsumosPaciente, FormularioNuevoConsumo, ListaConsumosAccordion } from "../components/consumo/";
+import { TablaConsumosPaciente, FormularioNuevoConsumo, ListaConsumosAccordion, FormularioEditarConsumo } from "../components/consumo/";
 
 
-import { PatientSearchCard } from "../components/planes/";
+import { PatientSearchCard } from "../components/planes/"
 import { PatientInfoCardConsulta } from "../components/consultas/";
 
 export const ConsumoPage = () => {
@@ -39,6 +39,8 @@ export const ConsumoPage = () => {
     const [step, setStep] = useState("busqueda");
     const [paciente, setPaciente] = useState(null);
     const [activeTab, setActiveTab] = useState("consumos");
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [selectedConsumo, setSelectedConsumo] = useState(null);
 
 
     //Manejo de efectos
@@ -55,6 +57,13 @@ export const ConsumoPage = () => {
             });
         }
     }, [paciente]);
+
+    const handleOpenEdit = (consumo) => {
+        setSelectedConsumo(consumo);
+        setEditModalOpen(true);
+    };
+
+
 
     const buscarPaciente = () => {
         const dniValido = dni.trim();
@@ -73,6 +82,7 @@ export const ConsumoPage = () => {
                 alert(error.message || "Error buscando paciente");
             });
     };
+
 
     //POST CONSUMO
     const handleCrearConsumo = async (data, resetForm) => {
@@ -96,11 +106,41 @@ export const ConsumoPage = () => {
             await dispatch(crearConsumo(payload)).unwrap();
             Swal.fire("¡Guardado!", "El consumo fue registrado correctamente", "success");
             resetForm(); // limpia el formulario
-            dispatch(listarConsumosPorPaciente(paciente.idPaciente)); // recarga
+            dispatch(listarConsumosPorPaciente(paciente.idPaciente)); 
         } catch (err) {
             Swal.fire("Error", err.message || "No se pudo registrar el consumo", "error");
         }
     };
+
+    const handleEditarConsumo = async ({ idConsumo, idPaciente, fecha, consumoAlimentos = [] }) => {
+        const consumoPayload = {
+          idConsumo,
+          idPaciente,
+          fecha,
+          consumoAlimentos: consumoAlimentos.map((a) => ({
+            idConsumo,
+            idAlimento: Number(a.idAlimento),
+            cantidad: Number(a.cantidad),
+          })),
+        };
+      
+        try {
+          await dispatch(editarConsumo({ idConsumo, consumo: consumoPayload })).unwrap();
+      
+          // 🔁 Esperá a que se actualice antes de cerrar el modal
+          const action = await dispatch(listarConsumosPorPaciente(idPaciente));
+          if (listarConsumosPorPaciente.fulfilled.match(action)) {
+            Swal.fire("Actualizado", "El consumo fue editado correctamente", "success");
+            setEditModalOpen(false);
+          } else {
+            throw new Error("No se pudo recargar la lista de consumos");
+          }
+      
+        } catch (err) {
+          Swal.fire("Error", err.message || "No se pudo editar el consumo", "error");
+        }
+      };
+      
 
     //ELIMINAR CONSUMO
     const handleEliminarConsumo = (idConsumo) => {
@@ -185,7 +225,7 @@ export const ConsumoPage = () => {
                                     <CardContent>
                                         <ListaConsumosAccordion
                                             consumos={consumos}
-                                            onEdit={(c) => console.log("Editar:", c)}
+                                            onEdit={handleOpenEdit}
                                             onDelete={handleEliminarConsumo}
                                             onAdd={(c) => console.log("Agregar algo a:", c)}
                                         />
@@ -209,7 +249,12 @@ export const ConsumoPage = () => {
                     </>
                 )}
 
-
+                <FormularioEditarConsumo
+                    open={editModalOpen}
+                    onClose={() => setEditModalOpen(false)}
+                    consumo={selectedConsumo}
+                    onSubmit={handleEditarConsumo}
+                />
 
                 {isLoading && <Typography>Cargando...</Typography>}
                 {error && <Typography color="error">{error}</Typography>}

@@ -12,7 +12,7 @@ export const StatsCards = ({ totalPacientes, turnosHoy }) => {
   const consultasHoy = turnosHoyFiltrados.length;
 
   const stats = [
-    { title: "Total Pacientes", value: totalPacientes, icon: <PeopleIcon fontSize="large" />, color: "#1976D2" },
+    { title: "Total Pacientes Registrados", value: totalPacientes, icon: <PeopleIcon fontSize="large" />, color: "#1976D2" },
     { title: "Consultas Hoy", value: consultasHoy, icon: <CheckCircleIcon fontSize="large" />, color: "#388E3C" },
   ];
 
