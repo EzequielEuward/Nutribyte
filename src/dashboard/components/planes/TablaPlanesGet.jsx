@@ -31,11 +31,13 @@ export const TablaPlanesGet = ({ onViewPlan, onDeletePlan, onEditPlan }) => {
   const planesDelPaciente = planes?.filter(
     (plan) => plan.idPaciente === paciente?.idPaciente
   );
+
   const handleEliminarPlan = (idPlan) => {
     if (onDeletePlan) {
       onDeletePlan(idPlan);
     }
   };
+
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error}</Alert>;
 
@@ -52,38 +54,48 @@ export const TablaPlanesGet = ({ onViewPlan, onDeletePlan, onEditPlan }) => {
         </TableHead>
 
         <TableBody>
-          {planesDelPaciente?.map((plan) => (
-            <TableRow key={plan.idPlanAlimento}>
-              <TableCell>{plan.tipoPlan}</TableCell>
-              <TableCell>
-                {new Date(plan.fechaInicio).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
-                {new Date(plan.fechaFin).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
+          {planesDelPaciente?.map((plan) => {
+            const hoy = new Date();
+            const fechaFin = new Date(plan.fechaFin);
+            const vencido = fechaFin < hoy;
 
-                <Tooltip title="Ver Plan" arrow>
-                  <IconButton onClick={() => onViewPlan(plan)} color="primary">
-                    <RemoveRedEyeIcon />
-                  </IconButton>
-                </Tooltip>
+            return (
+              <TableRow key={plan.idPlanAlimento}>
+                <TableCell>{plan.tipoPlan}</TableCell>
+                <TableCell>{new Date(plan.fechaInicio).toLocaleDateString()}</TableCell>
+                <TableCell>{new Date(plan.fechaFin).toLocaleDateString()}</TableCell>
+                <TableCell>
+                  <Tooltip title="Ver Plan" arrow>
+                    <IconButton onClick={() => onViewPlan(plan)} color="primary">
+                      <RemoveRedEyeIcon />
+                    </IconButton>
+                  </Tooltip>
 
-                <Tooltip title="Editar Plan" arrow>
-                  <IconButton color="secondary" onClick={() => onEditPlan(plan)}>
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
+                  <Tooltip
+                    title={vencido ? "Este plan ya finalizó. Debe crear uno nuevo." : "Editar Plan"}
+                    arrow
+                  >
+                    <span>
+                      <IconButton
+                        color="secondary"
+                        onClick={() => onEditPlan(plan)}
+                        disabled={vencido}
+                        sx={{ opacity: vencido ? 0.4 : 1 }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
 
-                <Tooltip title="Eliminar Plan" arrow>
-                  <IconButton color="error" onClick={() => handleEliminarPlan(plan.idPlanAlimento)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
-
-            </TableRow>
-          ))}
+                  <Tooltip title="Eliminar Plan" arrow>
+                    <IconButton color="error" onClick={() => handleEliminarPlan(plan.idPlanAlimento)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            );
+          })}
 
           {planesDelPaciente?.length === 0 && (
             <TableRow>

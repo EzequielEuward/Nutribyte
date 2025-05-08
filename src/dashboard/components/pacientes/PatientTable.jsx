@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Typography,
+  Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Typography, Tooltip,
   TablePagination, TextField, TableSortLabel, Toolbar
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -119,14 +119,17 @@ export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelet
                         </Box>
                       </TableCell>
                       <TableCell>
+
                         <IconButton onClick={() => onViewPatient(patient)}>
-                          <VisibilityIcon />
+                          <Tooltip title="Ver Paciente"arrow>
+                            <VisibilityIcon />
+                          </Tooltip>
                         </IconButton>
-                        <IconButton onClick={() => onViewAnamnesis(patient)} aria-label="ver anamnesis">
-                          <SettingsAccessibilityIcon />
-                        </IconButton>
+
                         <IconButton onClick={() => handleOpenDeleteModal(patient)} aria-label="eliminar">
+                        <Tooltip title="Eliminar Paciente"arrow>
                           <DeleteIcon />
+                          </Tooltip>
                         </IconButton>
                       </TableCell>
                     </TableRow>

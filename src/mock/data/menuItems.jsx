@@ -3,6 +3,7 @@ import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import FlagIcon from '@mui/icons-material/Flag';
 const iconStyle = { color: "#6e6e6e" }; 
+import CalculateIcon from '@mui/icons-material/Calculate';
 
 export const menuItems = [
   {
@@ -54,6 +55,11 @@ export const menuItems = [
     text: "Reportes",
     icon: <FlagIcon style={iconStyle} />,
     link: "/home/reportes",
+  },
+  {
+    text: "Calculadora Antropometrica",
+    icon: <CalculateIcon style={iconStyle}/>,
+    link: "/home/calculadora-antropometrica"
   },
   {
     text: "Versiones",

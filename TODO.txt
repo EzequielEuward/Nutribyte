@@ -10,9 +10,9 @@ EN CONJUNTA CON EL LEONEL: 🟨
 ✅ hacer que el navbar de /home ande
 ✅ Nueva cita debe redirigir a turnos
 ✅ Agregar un boton que me lleve abajo para poder hacer el formulario que me lleve directo con un #formularioConsulta (CONSULTA)
-✅Vincular que me diga la cantidad de consultas que tengo en total y las consultas pendientes
-✅cambiar el subtitulo de consulta anamnesis que diga "Seguimiento  médico del paciente"
-✅Cuando selecciono cada boton agregar una toolp a cada boton ya sea de planes y en otros componentes que use
+✅ Vincular que me diga la cantidad de consultas que tengo en total y las consultas pendientes
+✅ Cambiar el subtitulo de consulta anamnesis que diga "Seguimiento  médico del paciente"
+✅ Cuando selecciono cada boton agregar una toolp a cada boton ya sea de planes y en otros componentes que use
 ⚠️ En la pagina principal hacer que todo este justificado y este mas grande
 🚧 hacer pestaña de reportes
 ✅ Cambiar nombre de generar informe y que me lleve a reportes que estaria creado
@@ -22,19 +22,19 @@ EN CONJUNTA CON EL LEONEL: 🟨
 🟨 Hacer que cobros dependiendo el estado mando un email.
 ✅ Arreglar que ande el localstore de la sesion para que figure el nombre que se borra cuando actualizo
 ✅ Validar el campo de que si tiene el dni repetido te diga antes de escribirlo
-❌ Que te diga si de verdad quiere cargar al usuario dos swal en pacientes
-❌ Agregar lo de las calculadoras
-❌ Hacer que si paso un mes del plano no se pueda editar  (outline button)
-❌ Ver planesSummarysetp y lo otro y subir la imagen que paso meli
-❌ En control de usuario hacer que tengan las ultimas modificaciones o algo historico
+✅ Que te diga si de verdad quiere cargar al usuario dos swal en pacientes
+✅ Hacer que si paso un mes del plano no se pueda editar  (outline button)
+ ❗ Ver planesSummarysetp y lo otro y subir la imagen que paso meli
+🟨 En control de usuario hacer que tengan las ultimas modificaciones o algo historico
+✅ Agregar lo de las calculadoras
 
 
 //HACER A LA TARDE
-❌ Que en el form de Crear consulta se pueda hacer como una recomendacion de los antecedentes o el diagnostico si es que ya tiene
-❌ En cargar anamnesis me tiene que dejar poner con . porque con , me da error y ponerle una lupa en el centro del culo para que diga que tiene que usar punto si los centimetros estan en con , sumado a todas las alertas que hay que poner en todos los inputs 
-❌ Agregar que enviar recordatorios en dashboardpage
-❌ En nutriideas hacer que cada receta te deje imprimir. 
-❌ En grafico de anamensis de "Comparativa de peso" agregar una columna mas con el peso recomendado / peso ideal
+✅ Que en el form de Crear consulta se pueda hacer como una recomendacion de los antecedentes o el diagnostico si es que ya tiene
+✅ En cargar anamnesis me tiene que dejar poner con . porque con , me da error y ponerle una lupa en el centro del culo para que diga que tiene que usar punto si los centimetros estan en con , sumado a todas las alertas que hay que poner en todos los inputs 
+✅ Agregar que enviar recordatorios en dashboardpage
+✅ En nutriideas hacer que cada receta te deje imprimir. 
+✅ En grafico de anamensis de "Comparativa de peso" agregar una columna mas con el peso recomendado / peso ideal
 
 
 

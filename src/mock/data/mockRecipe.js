@@ -4,7 +4,7 @@ export const recipesMock = [
         id: 1,
         name: "Licuado de Proteína y Frutas",
         type: "Bebida",
-        preparacion: "Rápida preparación con licuadora.",
+        description: "Rápida preparación con licuadora.",
         plan: "Hiper Proteico",
         macronutrientes: {
             calorias: 400,
@@ -20,7 +20,7 @@ export const recipesMock = [
         id: 2,
         name: "Omelette de Huevos Enteros con Queso y Palta",
         type: "Desayuno/Cena",
-        preparacion: "Un omelette cargado de calorías y grasas saludables.",
+        description: "Un omelette cargado de calorías y grasas saludables.",
         plan: "Alto en calorías",
         macronutrientes: {
             calorias: 500,
@@ -36,7 +36,7 @@ export const recipesMock = [
         id: 3,
         name: "Pasta con Salsa de Crema y Nueces",
         type: "Plato Principal",
-        preparacion: "Una pasta cremosa y llena de calorías.",
+        description: "Una pasta cremosa y llena de calorías.",
         plan: "Alto en calorías",
         macronutrientes: {
             calorias: 800,
@@ -52,7 +52,7 @@ export const recipesMock = [
         id: 4,
         name: "Tostadas de Pan Integral con Mantequilla de Almendras y Miel",
         type: "Desayuno/Merienda",
-        preparacion: "Una opción rápida y llena de energía.",
+        description: "Una opción rápida y llena de energía.",
         plan: "Alto en calorías",
         macronutrientes: {
             calorias: 450,
@@ -68,7 +68,7 @@ export const recipesMock = [
         id: 5,
         name: "Bowl de Arroz, Pollo y Palta",
         type: "Plato Principal",
-        preparacion: "Un bowl lleno de calorías y nutrientes.",
+        description: "Un bowl lleno de calorías y nutrientes.",
         plan: "Alto en calorías",
         macronutrientes: {
             calorias: 700,
@@ -84,7 +84,7 @@ export const recipesMock = [
         id: 6,
         name: "Batido de Proteínas con Frutas y Avena",
         type: "Bebida",
-        preparacion: "Un batido ideal para ganar masa muscular.",
+        description: "Un batido ideal para ganar masa muscular.",
         plan: "Alto en calorías",
         macronutrientes: {
             calorias: 600,
@@ -100,7 +100,7 @@ export const recipesMock = [
         id: 7,
         name: "Hamburguesa de Carne con Queso y Papas Fritas",
         type: "Plato Principal",
-        preparacion: "Una comida clásica y llena de calorías.",
+        description: "Una comida clásica y llena de calorías.",
         plan: "Alto en calorías",
         macronutrientes: {
             calorias: 900,
@@ -116,7 +116,7 @@ export const recipesMock = [
         id: 8,
         name: "Tarta de Queso y Espinaca",
         type: "Plato Principal",
-        preparacion: "Una tarta cremosa y llena de calorías.",
+        description: "Una tarta cremosa y llena de calorías.",
         plan: "Alto en calorías",
         macronutrientes: {
             calorias: 600,
@@ -132,7 +132,7 @@ export const recipesMock = [
         id: 9,
         name: " Pizza Casera con Queso y Jamón",
         type: "Plato Principal",
-        preparacion: "Una pizza cargada de calorías y sabor.",
+        description: "Una pizza cargada de calorías y sabor.",
         plan: "Alto en calorías",
         macronutrientes: {
             calorias: 800,
@@ -148,7 +148,7 @@ export const recipesMock = [
         id: 10,
         name: "Helado de Crema con Frutos Secos",
         type: "Postre",
-        preparacion: "Un postre cremoso y lleno de calorías.",
+        description: "Un postre cremoso y lleno de calorías.",
         plan: "Alto en calorías",
         macronutrientes: {
             calorias: 500,
@@ -165,7 +165,7 @@ export const recipesMock = [
         id: 11,
         name: "Ensalada de Palta y Quinoa",
         type: "Ensalada",
-        preparacion: "Una ensalada fresca y llena de grasas saludables.",
+        description: "Una ensalada fresca y llena de grasas saludables.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 350,
@@ -181,7 +181,7 @@ export const recipesMock = [
         id: 12,
         name: "Salmón al Horno con Verduras",
         type: "Plato Principal",
-        preparacion: "Un plato rico en omega-3, ideal para el corazón.",
+        description: "Un plato rico en omega-3, ideal para el corazón.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 400,
@@ -197,7 +197,7 @@ export const recipesMock = [
         id: 13,
         name: "Guiso de Lentejas con Verduras",
         type: "Guiso",
-        preparacion: "Un guiso lleno de fibra y nutrientes para el corazón.",
+        description: "Un guiso lleno de fibra y nutrientes para el corazón.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 380,
@@ -213,7 +213,7 @@ export const recipesMock = [
         id: 14,
         name: "Tostadas de Pan Integral con Palta y Semillas",
         type: "Desayuno/Merienda",
-        preparacion: "Una opción rápida y llena de grasas saludables.",
+        description: "Una opción rápida y llena de grasas saludables.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 250,
@@ -229,7 +229,7 @@ export const recipesMock = [
         id: 15,
         name: "Bowl de Quinoa, Garbanzos y Espinaca",
         type: "Plato Principal",
-        preparacion: "Un bowl lleno de fibra y proteínas vegetales.",
+        description: "Un bowl lleno de fibra y proteínas vegetales.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 400,
@@ -245,7 +245,7 @@ export const recipesMock = [
         id: 16,
         name: "Sopa de Calabaza y Jengibre",
         type: "Sopa",
-        preparacion: "Una sopa reconfortante y llena de antioxidantes.",
+        description: "Una sopa reconfortante y llena de antioxidantes.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 200,
@@ -261,7 +261,7 @@ export const recipesMock = [
         id: 17,
         name: "Ensalada de Salmón Ahumado y Rúcula",
         type: "Ensalada",
-        preparacion: "Una ensalada fresca y llena de omega-3.",
+        description: "Una ensalada fresca y llena de omega-3.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 300,
@@ -277,7 +277,7 @@ export const recipesMock = [
         id: 18,
         name: "Hummus con Zanahorias",
         type: "Aperitivo",
-        preparacion: "Un snack saludable y lleno de fibra.",
+        description: "Un snack saludable y lleno de fibra.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 180,
@@ -293,7 +293,7 @@ export const recipesMock = [
         id: 19,
         name: "Smoothie de Frutos Rojos y Avena",
         type: "Bebida",
-        preparacion: "Un batido lleno de antioxidantes y fibra.",
+        description: "Un batido lleno de antioxidantes y fibra.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 250,
@@ -309,7 +309,7 @@ export const recipesMock = [
         id: 20,
         name: "Pescado al Vapor con Brócoli",
         type: "Plato Principal",
-        preparacion: "Una opción ligera y llena de nutrientes.",
+        description: "Una opción ligera y llena de nutrientes.",
         plan: "Cardioprotector",
         macronutrientes: {
             "calorias": 300,
@@ -325,7 +325,7 @@ export const recipesMock = [
         id: 21,
         name: "Omelette de Huevos Enteros con Queso y Aguacate",
         type: "Desayuno/Cena",
-        preparacion: "Rápido y cargado de nutrientes esenciales",
+        description: "Rápido y cargado de nutrientes esenciales",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 650,
@@ -341,7 +341,7 @@ export const recipesMock = [
         id: 22,
         name: "Bowl de Arroz Integral con Atún y Huevo Duro",
         type: "Plato Principal",
-        preparacion: "Completo y lleno de proteínas",
+        description: "Completo y lleno de proteínas",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 800,
@@ -357,7 +357,7 @@ export const recipesMock = [
         id: 23,
         name: "Batido de Avena, Banana y Mantequilla de Maní",
         type: "Bebida",
-        preparacion: "Energético y nutritivo",
+        description: "Energético y nutritivo",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 700,
@@ -373,7 +373,7 @@ export const recipesMock = [
         id: 24,
         name: "Pechuga de Pollo Rellena con Queso y Jamón Cocido",
         type: "Plato Principal",
-        preparacion: "Proteína magra con extra calórico",
+        description: "Proteína magra con extra calórico",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 750,
@@ -389,7 +389,7 @@ export const recipesMock = [
         id: 25,
         name: "Ensalada César con Pollo y Croutons Integrales",
         type: "Ensalada",
-        preparacion: "Ensalada contundente",
+        description: "Ensalada contundente",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 850,
@@ -405,7 +405,7 @@ export const recipesMock = [
         id: 26,
         name: "Salmón al Horno con Puré de Batata",
         type: "Plato Principal",
-        preparacion: "Rico en omega-3 y carbohidratos complejos",
+        description: "Rico en omega-3 y carbohidratos complejos",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 900,
@@ -421,7 +421,7 @@ export const recipesMock = [
         id: 27,
         name: "Yogur Griego con Frutos Secos y Miel",
         type: "Postre/Merienda",
-        preparacion: "Merienda proteica y calórica",
+        description: "Merienda proteica y calórica",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 600,
@@ -437,7 +437,7 @@ export const recipesMock = [
         id: 28,
         name: "Bife de Chorizo con Ensalada de Papa y Huevo",
         type: "Plato Principal",
-        preparacion: "Completo y nutritivo",
+        description: "Completo y nutritivo",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 950,
@@ -453,7 +453,7 @@ export const recipesMock = [
         id: 29,
         name: "Tostadas de Pan Integral con Palta y Huevo Poché",
         type: "Desayuno",
-        preparacion: "Desayuno energético",
+        description: "Desayuno energético",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 550,
@@ -469,7 +469,7 @@ export const recipesMock = [
         id: 30,
         name: "Batido de Proteína con Leche y Frutas",
         type: "Post-entreno",
-        preparacion: "Recuperación muscular",
+        description: "Recuperación muscular",
         plan: "Hipercalórico",
         macronutrientes: {
             "calorias": 650,
@@ -485,7 +485,7 @@ export const recipesMock = [
         id: 31,
         name: "Ensalada de Quinoa y Garbanzos",
         type: "Ensalada",
-        preparacion: "Una ensalada fresca y llena de proteínas.",
+        description: "Una ensalada fresca y llena de proteínas.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 400,
@@ -501,7 +501,7 @@ export const recipesMock = [
         id: 32,
         name: "Milanesa de Soja con Puré de Batata",
         type: "Plato Principal",
-        preparacion: "Un clásico argentino con un toque proteico.",
+        description: "Un clásico argentino con un toque proteico.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 450,
@@ -517,7 +517,7 @@ export const recipesMock = [
         id: 33,
         name: "Wok de Tofu y Verduras",
         type: "Plato Principal",
-        preparacion: "Una comida rápida y llena de proteínas.",
+        description: "Una comida rápida y llena de proteínas.",
         plan: "Alto en proteínas y vitaminas",
         macronutrientes: {
             "calorias": 350,
@@ -533,7 +533,7 @@ export const recipesMock = [
         id: 34,
         name: "Hamburguesa de Lentejas y Avena",
         type: "Plato Principal",
-        preparacion: "Una hamburguesa casera y llena de proteínas.",
+        description: "Una hamburguesa casera y llena de proteínas.",
         plan: "Alto en proteínas y fibra",
         macronutrientes: {
             "calorias": 380,
@@ -549,7 +549,7 @@ export const recipesMock = [
         id: 35,
         name: "Revuelto de Clara de Huevo con Espinaca",
         type: "Desayuno/Cena",
-        preparacion: "Ideal para empezar el día con proteínas.",
+        description: "Ideal para empezar el día con proteínas.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 200,
@@ -565,7 +565,7 @@ export const recipesMock = [
         id: 36,
         name: "Bowl de Quinoa, Pollo y Palta",
         type: "Plato Principal",
-        preparacion: "Un bowl lleno de proteínas y grasas saludables.",
+        description: "Un bowl lleno de proteínas y grasas saludables.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 500,
@@ -581,7 +581,7 @@ export const recipesMock = [
         id: 37,
         name: "Batido de Proteínas con Frutas",
         type: "Bebida",
-        preparacion: "Un batido ideal para después del entrenamiento.",
+        description: "Un batido ideal para después del entrenamiento.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 300,
@@ -597,7 +597,7 @@ export const recipesMock = [
         id: 38,
         name: "Tarta de Espinaca y Clara de Huevo",
         type: "Plato Principal",
-        preparacion: "Una tarta ligera y llena de proteínas.",
+        description: "Una tarta ligera y llena de proteínas.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 320,
@@ -613,7 +613,7 @@ export const recipesMock = [
         id: 39,
         name: "Fajitas de Pollo y Pimientos",
         type: "Plato Principal",
-        preparacion: "Una opción rápida y llena de sabor.",
+        description: "Una opción rápida y llena de sabor.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 400,
@@ -629,7 +629,7 @@ export const recipesMock = [
         id: 40,
         name: "Omelette de Clara de Huevo con Jamón y Queso",
         type: "Desayuno/Cena",
-        preparacion: "Un omelette ligero y lleno de proteínas.",
+        description: "Un omelette ligero y lleno de proteínas.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 250,
@@ -645,7 +645,7 @@ export const recipesMock = [
         id: 41,
         name: "Ensalada de Quinoa y Vegetales",
         type: "Ensalada",
-        preparacion: "Una ensalada fresca y llena de nutrientes.",
+        description: "Una ensalada fresca y llena de nutrientes.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 350,
@@ -661,7 +661,7 @@ export const recipesMock = [
         id: 42,
         name: "Pollo al Horno con Verduras",
         type: "Plato Principal",
-        preparacion: "Un plato sencillo y lleno de sabor.",
+        description: "Un plato sencillo y lleno de sabor.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 400,
@@ -677,7 +677,7 @@ export const recipesMock = [
         id: 43,
         name: "Sopa de Verduras con Lentejas",
         type: "Sopa",
-        preparacion: "Una sopa reconfortante y nutritiva.",
+        description: "Una sopa reconfortante y nutritiva.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 300,
@@ -693,7 +693,7 @@ export const recipesMock = [
         id: 44,
         name: "Tostadas de Pan Integral con Palta y Huevo",
         type: "Desayuno/Merienda",
-        preparacion: "Una opción rápida y llena de nutrientes.",
+        description: "Una opción rápida y llena de nutrientes.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 300,
@@ -709,7 +709,7 @@ export const recipesMock = [
         id: 45,
         name: "Pescado al Vapor con Brócoli",
         type: "Plato Principal",
-        preparacion: "Una opción ligera y llena de nutrientes.",
+        description: "Una opción ligera y llena de nutrientes.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 280,
@@ -725,7 +725,7 @@ export const recipesMock = [
         id: 46,
         name: "Tarta de Espinaca y Queso",
         type: "Plato Principal",
-        preparacion: "Una tarta cremosa y llena de sabor.",
+        description: "Una tarta cremosa y llena de sabor.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 350,
@@ -741,7 +741,7 @@ export const recipesMock = [
         id: 47,
         name: "Fideos Integrales con Salsa de Tomate y Albahaca",
         type: "Plato Principal",
-        preparacion: "Una opción rápida y llena de sabor.",
+        description: "Una opción rápida y llena de sabor.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 400,
@@ -757,7 +757,7 @@ export const recipesMock = [
         id: 48,
         name: "Yogur con Frutas y Granola",
         type: "Desayuno/Merienda",
-        preparacion: "Un desayuno fresco y lleno de energía.",
+        description: "Un desayuno fresco y lleno de energía.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 250,
@@ -773,7 +773,7 @@ export const recipesMock = [
         id: 49,
         name: "Revuelto de Verduras con Huevo",
         type: "Desayuno/Cena",
-        preparacion: "Una opción rápida y llena de nutrientes.",
+        description: "Una opción rápida y llena de nutrientes.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 300,
@@ -789,7 +789,7 @@ export const recipesMock = [
         id: 50,
         name: "Budín de Zanahoria",
         type: "Postre",
-        preparacion: "Un postre liviano y lleno de sabor.",
+        description: "Un postre liviano y lleno de sabor.",
         plan: "Normocalórico",
         macronutrientes: {
             "calorias": 280,
@@ -805,7 +805,7 @@ export const recipesMock = [
         id: 51,
         name: "Ensalada de Quinoa y Vegetales",
         type: "Ensalada",
-        preparacion: "Una ensalada fresca y llena de nutrientes.",
+        description: "Una ensalada fresca y llena de nutrientes.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 350,
@@ -821,7 +821,7 @@ export const recipesMock = [
         id: 52,
         name: "Milanesas de Pollo con Harina de Arroz",
         type: "Plato Principal",
-        preparacion: "Una versión sin TACC de las clásicas milanesas.",
+        description: "Una versión sin TACC de las clásicas milanesas.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 400,
@@ -837,7 +837,7 @@ export const recipesMock = [
         id: 53,
         name: "Tarta de Espinaca y Choclo",
         type: "Plato Principal",
-        preparacion: "Una tarta sin TACC, ideal para cualquier ocasión.",
+        description: "Una tarta sin TACC, ideal para cualquier ocasión.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 320,
@@ -853,7 +853,7 @@ export const recipesMock = [
         id: 54,
         name: "Fideos de Arroz con Verduras Salteadas",
         type: "Plato Principal",
-        preparacion: "Una opción rápida y llena de sabor.",
+        description: "Una opción rápida y llena de sabor.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 380,
@@ -869,7 +869,7 @@ export const recipesMock = [
         id: 55,
         name: "Budín de Zapallo sin Harina",
         type: "Postre",
-        preparacion: "Un budín liviano y sin TACC.",
+        description: "Un budín liviano y sin TACC.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 250,
@@ -885,7 +885,7 @@ export const recipesMock = [
         id: 56,
         name: "Pizza sin TACC",
         type: "Plato Principal",
-        preparacion: "Una pizza casera sin gluten.",
+        description: "Una pizza casera sin gluten.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 400,
@@ -901,7 +901,7 @@ export const recipesMock = [
         id: 57,
         name: "Guiso de Lentejas sin TACC",
         type: "Guiso",
-        preparacion: "Un guiso nutritivo y sin gluten.",
+        description: "Un guiso nutritivo y sin gluten.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 350,
@@ -917,7 +917,7 @@ export const recipesMock = [
         id: 58,
         name: "Panqueques de Harina de Maíz",
         type: "Desayuno/Merienda",
-        preparacion: "Un desayuno sin TACC, dulce o salado.",
+        description: "Un desayuno sin TACC, dulce o salado.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 300,
@@ -933,7 +933,7 @@ export const recipesMock = [
         id: 59,
         name: "Empanadas de Carne sin TACC",
         type: "Aperitivo",
-        preparacion: "Una versión sin gluten de las clásicas empanadas.",
+        description: "Una versión sin gluten de las clásicas empanadas.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 280,
@@ -949,7 +949,7 @@ export const recipesMock = [
         id: 60,
         name: "Brownie de Chocolate sin Harina",
         type: "Postre",
-        preparacion: "Un brownie rico y sin TACC.",
+        description: "Un brownie rico y sin TACC.",
         plan: "Sin TACC",
         macronutrientes: {
             "calorias": 350,
@@ -965,7 +965,7 @@ export const recipesMock = [
         id: 61,
         name: "Ensalada de Quinoa",
         type: "Ensalada",
-        preparacion: "Preparación rápida con ingredientes frescos.",
+        description: "Preparación rápida con ingredientes frescos.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 350,
@@ -981,7 +981,7 @@ export const recipesMock = [
         id: 62,
         name: "Milanesa de Soja con Puré",
         type: "Plato Principal",
-        preparacion: "Un clásico argentino en versión vegana.",
+        description: "Un clásico argentino en versión vegana.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 400,
@@ -997,7 +997,7 @@ export const recipesMock = [
         id: 63,
         name: "Guiso de Lentejas Vegano",
         type: "Guiso",
-        preparacion: "Ideal para días fríos, bien nutritivo.",
+        description: "Ideal para días fríos, bien nutritivo.",
         plan: "Alto en fibra y hierro",
         macronutrientes: {
             "calorias": 380,
@@ -1013,7 +1013,7 @@ export const recipesMock = [
         id: 64,
         name: "Tarta de Espinaca y Garbanzos",
         type: "Plato Principal",
-        preparacion: "Una tarta bien nutritiva y fácil de hacer.",
+        description: "Una tarta bien nutritiva y fácil de hacer.",
         plan: "Alto en proteínas y fibra",
         macronutrientes: {
             "calorias": 320,
@@ -1029,7 +1029,7 @@ export const recipesMock = [
         id: 65,
         name: "Falafel al Horno",
         type: "Aperitivo",
-        preparacion: "Una opción saludable y llena de sabor.",
+        description: "Una opción saludable y llena de sabor.",
         plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 280,
@@ -1045,7 +1045,7 @@ export const recipesMock = [
         id: 66,
         name: "Budín de Zapallo",
         type: "Postre",
-        preparacion: "Un postre liviano y nutritivo.",
+        description: "Un postre liviano y nutritivo.",
         plan: "Bajo en grasas",
         macronutrientes: {
             "calorias": 200,
@@ -1061,7 +1061,7 @@ export const recipesMock = [
         id: 67,
         name: "Wok de Verduras con Tofu",
         type: "Plato Principal",
-        preparacion: "Una comida rápida y llena de nutrientes.",
+        description: "Una comida rápida y llena de nutrientes.",
         plan: "Alto en proteínas y vitaminas",
         macronutrientes: {
             "calorias": 300,
@@ -1077,7 +1077,7 @@ export const recipesMock = [
         id: 68,
         name: "Ensalada de Remolacha y Quinoa",
         type: "Ensalada",
-        preparacion: "Una ensalada fresca y llena de nutrientes.",
+        description: "Una ensalada fresca y llena de nutrientes.",
         plan: "Alto en fibra y hierro",
         macronutrientes: {
             "calorias": 250,
@@ -1093,7 +1093,7 @@ export const recipesMock = [
         id: 69,
         name: "Hummus con Bastones de Zanahoria",
         type: "Aperitivo",
-        preparacion: "Un snack saludable y fácil de preparar.",
+        description: "Un snack saludable y fácil de preparar.",
         plan: "Alto en fibra",
         macronutrientes: {
             "calorias": 180,
@@ -1109,7 +1109,7 @@ export const recipesMock = [
         id: 70,
         name: "Smoothie de Frutos Rojos",
         type: "Bebida",
-        preparacion: "Un batido refrescante y lleno de antioxidantes.",
+        description: "Un batido refrescante y lleno de antioxidantes.",
         plan: "Bajo en calorías",
         macronutrientes: {
             "calorias": 150,
@@ -1125,7 +1125,7 @@ export const recipesMock = [
         id: 1,
         name: "Ensalada de Quinoa y Garbanzos",
         type: "Ensalada",
-        preparacion: "Una ensalada fresca y llena de proteínas.",
+        description: "Una ensalada fresca y llena de proteínas.",
        plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 400,
@@ -1141,7 +1141,7 @@ export const recipesMock = [
         id: 2,
         name: "Milanesas de Berenjena al Horno",
         type: "Plato Principal",
-        preparacion: "Una versión vegetariana de las clásicas milanesas.",
+        description: "Una versión vegetariana de las clásicas milanesas.",
        plan: "Alto en fibra",
         macronutrientes: {
             "calorias": 350,
@@ -1157,7 +1157,7 @@ export const recipesMock = [
         id: 3,
         name: "Guiso de Lentejas con Verduras",
         type: "Guiso",
-        preparacion: "Un guiso nutritivo y lleno de sabor.",
+        description: "Un guiso nutritivo y lleno de sabor.",
        plan: "Alto en hierro y fibra",
         macronutrientes: {
             "calorias": 380,
@@ -1173,7 +1173,7 @@ export const recipesMock = [
         id: 4,
         name: "Tarta de Espinaca y Queso",
         type: "Plato Principal",
-        preparacion: "Una tarta cremosa y llena de nutrientes.",
+        description: "Una tarta cremosa y llena de nutrientes.",
        plan: "Alto en calcio",
         macronutrientes: {
             "calorias": 320,
@@ -1189,7 +1189,7 @@ export const recipesMock = [
         id: 5,
         name: "Falafel al Horno",
         type: "Aperitivo",
-        preparacion: "Una opción saludable y llena de sabor.",
+        description: "Una opción saludable y llena de sabor.",
        plan: "Alto en proteínas",
         macronutrientes: {
             "calorias": 280,
@@ -1205,7 +1205,7 @@ export const recipesMock = [
         id: 6,
         name: "Budín de Zapallo",
         type: "Postre",
-        preparacion: "Un postre liviano y nutritivo.",
+        description: "Un postre liviano y nutritivo.",
        plan: "Bajo en grasas",
         macronutrientes: {
             "calorias": 200,
@@ -1221,7 +1221,7 @@ export const recipesMock = [
         id: 7,
         name: "Wok de Verduras con Tofu",
         type: "Plato Principal",
-        preparacion: "Una comida rápida y llena de nutrientes.",
+        description: "Una comida rápida y llena de nutrientes.",
        plan: "Alto en proteínas y vitaminas",
         macronutrientes: {
             "calorias": 300,
@@ -1237,7 +1237,7 @@ export const recipesMock = [
         id: 8,
         name: "Ensalada de Remolacha y Quinoa",
         type: "Ensalada",
-        preparacion: "Una ensalada fresca y llena de nutrientes.",
+        description: "Una ensalada fresca y llena de nutrientes.",
        plan: "Alto en fibra y hierro",
         macronutrientes: {
             "calorias": 250,
@@ -1253,7 +1253,7 @@ export const recipesMock = [
         id: 9,
         name: "Hummus con Bastones de Zanahoria",
         type: "Aperitivo",
-        preparacion: "Un snack saludable y fácil de preparar.",
+        description: "Un snack saludable y fácil de preparar.",
        plan: "Alto en fibra",
         macronutrientes: {
             "calorias": 180,
@@ -1269,7 +1269,7 @@ export const recipesMock = [
         id: 10,
         name: "Smoothie de Frutos Rojos",
         type: "Bebida",
-        preparacion: "Un batido refrescante y lleno de antioxidantes.",
+        description: "Un batido refrescante y lleno de antioxidantes.",
        plan: "Bajo en calorías",
         macronutrientes: {
             "calorias": 150,
@@ -1297,7 +1297,7 @@ export const recipesMock = [
 //     id: 11,
 //     name: "Pollo al Curry con Arroz Integral",
 //     type: "Plato principal",
-//     preparacion: "Cocción rápida en sartén y acompañamiento.",
+//     description: "Cocción rápida en sartén y acompañamiento.",
 //     plan: "Hiper Calorico",
 //     macronutrientes: {
 //         calorias: 550,
@@ -1313,7 +1313,7 @@ export const recipesMock = [
 //     id: 12,
 //     name: "Ensalada de Quinoa y Vegetales ",
 //     type: "Plato principal",
-//     preparacion: "Preparación sencilla",
+//     description: "Preparación sencilla",
 //     plan: "Vegetariano",
 //     macronutrientes: {
 //         calorias: 300,
@@ -1330,7 +1330,7 @@ export const recipesMock = [
 //     id: 13,
 //     name: "Budín de Chocolate Proteico",
 //     type: "Postre",
-//     preparacion: "Horneado y fácil de preparar.",
+//     description: "Horneado y fácil de preparar.",
 //     plan: "Hiper Proteico",
 //     macronutrientes: {
 //         calorias: 400,
@@ -1346,7 +1346,7 @@ export const recipesMock = [
 //     id: 14,
 //     name: "Wrap de Vegetales y Hummus",
 //     type: "Plato principal",
-//     preparacion: "Preparación sencilla y rápida.",
+//     description: "Preparación sencilla y rápida.",
 //     plan: "Vegetariano",
 //     macronutrientes: {
 //         calorias: 350,
@@ -1362,7 +1362,7 @@ export const recipesMock = [
 //     id: 15,
 //     name: "Batido Energético de Banana y Café",
 //     type: "Bebida",
-//     preparacion: "Rápida mezcla en licuadora.",
+//     description: "Rápida mezcla en licuadora.",
 //     plan: "Alto Calorico",
 //     macronutrientes: {
 //         calorias: 320,
@@ -1378,7 +1378,7 @@ export const recipesMock = [
 //     id: 16,
 //     name: "Chili de Lentejas",
 //     type: "Plato principal",
-//     preparacion: "Cocción a fuego lento.",
+//     description: "Cocción a fuego lento.",
 //     plan: "Vegano",
 //     macronutrientes: {
 //         calorias: 380,
@@ -1394,7 +1394,7 @@ export const recipesMock = [
 //     id: 17,
 //     name: "Omelette de Espinaca y Queso",
 //     type: "Desayuno",
-//     preparacion: "Cocción rápida en sartén.",
+//     description: "Cocción rápida en sartén.",
 //     plan: "Hiper Proteico",
 //     macronutrientes: {
 //         calorias: 280,
@@ -1410,7 +1410,7 @@ export const recipesMock = [
 //     id: 18,
 //     name: "Arroz con Pollo y Vegetales",
 //     type: "Plato principal",
-//     preparacion: "Cocción conjunta en una olla.",
+//     description: "Cocción conjunta en una olla.",
 //     plan: "Cardio Protector",
 //     macronutrientes: {
 //         calorias: 450,
@@ -1426,7 +1426,7 @@ export const recipesMock = [
 //     id: 19,
 //     name: "Pasta Integral con Pesto de Espinaca",
 //     type: "Plato principal",
-//     preparacion: "Preparación rápida y saludable.",
+//     description: "Preparación rápida y saludable.",
 //     plan: "Normo Calorico",
 //     macronutrientes: {
 //         calorias: 400,
@@ -1442,7 +1442,7 @@ export const recipesMock = [
 //     id: 20,
 //     name: "Galletas de Coco y Almendra",
 //     type: "Merienda",
-//     preparacion: "Preparación rápida.",
+//     description: "Preparación rápida.",
 //     plan: "Sin T.A.C.C.",
 //     macronutrientes: {
 //         calorias: 180,

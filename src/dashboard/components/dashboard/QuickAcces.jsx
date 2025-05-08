@@ -12,7 +12,7 @@ import { AddCircle, ListAlt, Description, Chat } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
-export const QuickAccess = () => {
+export const QuickAccess = ({onRecordatorio}) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -20,7 +20,8 @@ export const QuickAccess = () => {
     { icon: AddCircle, label: "Nueva Cita", tooltip: "Ir a crear una consulta", color: theme.palette.appointmentTypes.firstConsult, route: "/home/turnos/", },
     { icon: ListAlt, label: "Plan Nutricional", tooltip: "Ir a crear un plan nutricional", color: theme.palette.appointmentTypes.followUp, route: "/home/planes", },
     { icon: Description, label: "Reportes", tooltip: "Ir a reportes", color: theme.palette.appointmentTypes.control, route: "/home/reportes", },
-    { icon: Chat, label: "Enviar Recordatorio", tooltip: "Ir a turnos", color: theme.palette.appointmentTypes.reminder, route: "/home/turnos", },
+    { icon: Chat, label: "Enviar Recordatorio", tooltip: "Enviar recordatorio por email", color: theme.palette.appointmentTypes.reminder, onClick: () => onRecordatorio() }
+
   ];
 
   return (
@@ -54,7 +55,13 @@ export const QuickAccess = () => {
                       opacity: 0.8,
                     },
                   }}
-                  onClick={() => navigate(item.route)}
+                  onClick={() => {
+                    if (item.onClick) {
+                      item.onClick(); // ejecuta onRecordatorio
+                    } else if (item.route) {
+                      navigate(item.route);
+                    }
+                  }}
                 >
                   <IconButton
                     sx={{

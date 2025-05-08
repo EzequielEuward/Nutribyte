@@ -34,41 +34,26 @@ export const PatientPage = () => {
       cancelButtonText: "Cancelar"
     }).then((result) => {
       if (result.isConfirmed) {
-        handleConfirmDelete(patient.idPaciente); // Pasa el ID del paciente
+        handleConfirmDelete(patient.idPaciente); 
       }
     });
   };
 
-
-
-  // Función para confirmar la eliminación del paciente
   const handleConfirmDelete = async (idPaciente) => {
-    // Primer confirmación: intención general
-    const primerPaso = await Swal.fire({
+    const confirmacionFinal = await Swal.fire({
       title: "¿Deseás eliminar este paciente?",
       text: "Esta acción lo marcará como inactivo.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Sí, continuar",
-      cancelButtonText: "Cancelar",
-      reverseButtons: true
-    });
-
-    if (!primerPaso.isConfirmed) return;
-
-    // Segunda confirmación: seguridad final
-    const segundoPaso = await Swal.fire({
-      title: "¿Estás completamente seguro?",
-      text: "Esta acción no se puede deshacer fácilmente.",
-      icon: "warning",
-      showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
+      confirmButtonColor: "#b71c1c",
+      cancelButtonColor: "#aaa",
       reverseButtons: true
     });
-    if (!segundoPaso.isConfirmed) return;
-
-    // Si el usuario confirmó los dos pasos, se ejecuta la eliminación
+  
+    if (!confirmacionFinal.isConfirmed) return;
+  
     try {
       await dispatch(desactivarPaciente({ idPaciente })).unwrap();
       dispatch(listarPacientes());
@@ -78,6 +63,7 @@ export const PatientPage = () => {
       Swal.fire("Error", "Hubo un problema al desactivar el paciente.", "error");
     }
   };
+
 
   // Función para abrir el drawer y ver los detalles del paciente
   const handleViewPatient = (patient) => {
@@ -110,38 +96,58 @@ export const PatientPage = () => {
 
 
   const handleCreatePatient = async (patientData) => {
-    if (patientData.fechaNacimiento) {
-      patientData.fechaNacimiento = format(new Date(patientData.fechaNacimiento), "yyyy-MM-dd");
-    }
-
-    // Mostrar primero la confirmación
-    const result = await Swal.fire({
+    // Cerrás el modal para evitar conflicto visual
+    setFormOpen(false);
+  
+    await new Promise((res) => setTimeout(res, 200)); // Esperás a que cierre (importante)
+  
+    const pasoUno = await Swal.fire({
       title: "¿Estás seguro?",
-      text: `¿Deseás cargar al paciente ${patientData.nombre} ${patientData.apellido}?`,
+      text: "Vas a registrar un nuevo paciente en el sistema.",
       icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, continuar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#aaa",
+      reverseButtons: true
+    });
+  
+    if (!pasoUno.isConfirmed) {
+      setFormOpen(true); // si cancela, reabrís el formulario
+      return;
+    }
+  
+    const pasoDos = await Swal.fire({
+      title: "¿Deseás cargar este paciente?",
+      text: `Nombre: ${patientData.nombre} ${patientData.apellido}`,
+      icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, cargar",
       cancelButtonText: "Cancelar",
+      confirmButtonColor: "#b71c1c",
+      cancelButtonColor: "#aaa",
       reverseButtons: true
     });
-
-    if (!result.isConfirmed) {
-      return; // Si cancela, no se hace nada y el modal sigue abierto
+  
+    if (!pasoDos.isConfirmed) {
+      setFormOpen(true); // si cancela acá, también reabrís
+      return;
     }
-
-    // Si confirma, recién ahí enviamos y cerramos el modal
+  
+    // Confirmado → crear paciente
     try {
       await dispatch(crearPaciente(patientData)).unwrap();
       dispatch(listarPacientes());
       Swal.fire("Éxito", "Paciente creado correctamente.", "success");
-      setFormOpen(false); // cerrar modal SOLO después del éxito
     } catch (error) {
       console.error("Error al crear paciente:", error);
       Swal.fire("Error", "Hubo un problema al crear el paciente.", "error");
+      setFormOpen(true); // si falla, lo reabrís también
     }
   };
-
-
+  
+  
 
   const handleUpdatePatient = async (updatedData) => {
     try {

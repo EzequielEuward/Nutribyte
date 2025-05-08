@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   Box,
   Grid,
@@ -11,11 +11,17 @@ import {
   AccordionSummary,
   AccordionDetails,
   Button,
+  Tooltip,
+  Menu,
+  IconButton,
 } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 import { useForm, Controller } from 'react-hook-form';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useState } from 'react';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-export const ConsultaCreationForm = ({ onSubmit }) => {
+export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
   const { control, handleSubmit, formState: { errors } } = useForm();
 
   const handleValidatedSubmit = () => {
@@ -140,6 +146,18 @@ export const ConsultaCreationForm = ({ onSubmit }) => {
                     label="Antecedentes"
                     multiline
                     rows={3}
+                    helperText={
+                      paciente?.historiaClinica ? (
+                        <Tooltip title="Autoescribir" arrow>
+                          <Button
+                            size="small"
+                            onClick={() => field.onChange(paciente.historiaClinica)}
+                          >
+                            Usar historial clínico del paciente
+                          </Button>
+                        </Tooltip>
+                      ) : null
+                    }
                   />
                 )}
               />
@@ -151,15 +169,53 @@ export const ConsultaCreationForm = ({ onSubmit }) => {
                 name="tratamiento"
                 control={control}
                 defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="Tratamiento"
-                    multiline
-                    rows={3}
-                  />
-                )}
+                render={({ field }) => {
+                  const [anchorEl, setAnchorEl] = useState(null);
+                  const tratamientosPredefinidos = [
+                    "Dieta hipocalórica progresiva",
+                    "Plan hiperproteico con suplementación",
+                    "Control de hidratos post-entrenamiento",
+                    "Régimen bajo en grasas y sodio"
+                  ];
+
+                  const handleOpenMenu = (event) => {
+                    setAnchorEl(event.currentTarget);
+                  };
+
+                  const handleSelectTratamiento = (texto) => {
+                    field.onChange(texto);
+                    setAnchorEl(null);
+                  };
+
+                  return (
+                    <>
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label="Tratamiento"
+                        multiline
+                        rows={3}
+                        InputProps={{
+                          endAdornment: (
+                            <Tooltip title="Agregar opciones predefinidas" arrow>
+                              <IconButton onClick={handleOpenMenu}>
+                                <MoreVertIcon />
+                              </IconButton>
+                            </Tooltip>
+                          )
+                        }}
+                        helperText="Elegí un tratamiento desde el botón ⋮"
+                      />
+                      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
+                        {tratamientosPredefinidos.map((item, index) => (
+                          <MenuItem key={index} onClick={() => handleSelectTratamiento(item)}>
+                            {item}
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    </>
+                  );
+                }}
               />
             </Grid>
 
@@ -187,10 +243,16 @@ export const ConsultaCreationForm = ({ onSubmit }) => {
       {/* Acordeón de Anamnesis opcional */}
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6" sx={{ color: 'primary.main' }}>
-            Anamnesis (opcional)
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="h6" sx={{ color: 'primary.main' }}>
+              Mediciones Corporales (Anamnesis)
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'primary.main' }}>
+              Campo opcional
+            </Typography>
+          </Box>
         </AccordionSummary>
+
         <AccordionDetails>
           <Grid container spacing={3}>
             {/* Fecha Anamnesis */}
@@ -211,11 +273,17 @@ export const ConsultaCreationForm = ({ onSubmit }) => {
               />
             </Grid>
 
-            {/* Campos Antropométricos */}
+            {/* Mediciones Corporales */}
             <Grid item xs={12}>
-              <Typography variant="subtitle1" sx={{ mb: 2, color: 'text.secondary' }}>
-                Mediciones Corporales
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                <Typography variant="subtitle1" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+                  Mediciones Corporales
+                </Typography>
+                <InfoIcon fontSize="small" color="warning" />
+                <Typography variant="body2" color="text.secondary">
+                  Ingresá decimales con punto (.)
+                </Typography>
+              </Box>
             </Grid>
 
             {[
@@ -239,7 +307,14 @@ export const ConsultaCreationForm = ({ onSubmit }) => {
                       {...field}
                       fullWidth
                       label={getLabel(fieldName)}
-                      type="number"
+                      type="text"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(',', '.');
+                        if (!isNaN(val) || val === '') {
+                          field.onChange(val);
+                        }
+                      }}
+                      value={field.value}
                       InputProps={{ inputProps: { min: 0, step: 0.1 } }}
                     />
                   )}
@@ -273,7 +348,14 @@ export const ConsultaCreationForm = ({ onSubmit }) => {
                       {...field}
                       fullWidth
                       label={getLabel(fieldName)}
-                      type="number"
+                      type="text"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(',', '.');
+                        if (!isNaN(val) || val === '') {
+                          field.onChange(val);
+                        }
+                      }}
+                      value={field.value}
                       InputProps={{ inputProps: { min: 0, max: 50 } }}
                     />
                   )}
@@ -283,6 +365,7 @@ export const ConsultaCreationForm = ({ onSubmit }) => {
           </Grid>
         </AccordionDetails>
       </Accordion>
+
 
       <Button type="submit" variant="contained" color="secondary" sx={{ mt: 3 }}>
         Guardar Consulta Completa

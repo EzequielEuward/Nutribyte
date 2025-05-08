@@ -1,5 +1,7 @@
 export * from './DashboardPage';
 
+export * from './CalculadoraAntropometricaPage';
+
 export * from  './PatientPage';
 export * from './ConfigPage';
 export * from './SeguridadMedidas';

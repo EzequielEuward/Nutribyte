@@ -417,7 +417,7 @@ export const ConsultaPage = () => {
                   />
                   <CardContent>
                     <FormProvider {...methods}>
-                      <ConsultaCreationForm onSubmit={onSubmit} />
+                      <ConsultaCreationForm onSubmit={onSubmit} paciente={paciente} />
                     </FormProvider>
 
                   </CardContent>

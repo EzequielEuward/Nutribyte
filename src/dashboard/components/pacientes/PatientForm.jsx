@@ -1,6 +1,5 @@
-
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
@@ -17,6 +16,13 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
     estadoPaciente: "Registrado"
   });
 
+  const isFormValid = useMemo(() => {
+    const { dni, nombre, apellido, email, telefono, historialClinico, sexo } = formData;
+    return (
+      dni && nombre && apellido && email && telefono && historialClinico && sexo && !dniRepetido
+    );
+  }, [formData, dniRepetido]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "dni") {
@@ -31,9 +37,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSaveClick = () => {
     const { dni, nombre, apellido } = formData;
 
     if (!dni || !nombre || !apellido) {
@@ -41,16 +45,11 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
       return;
     }
 
-
     const dniIngresado = Number(dni);
-    const existe = pacientes.find(p => p.persona?.dni === dniIngresado);
+    const existe = pacientes.find((p) => p.persona?.dni === dniIngresado);
 
     if (existe) {
-      setDniRepetido(true); // activa el error en el campo
-      return;
-    }
-
-    if (dniRepetido) {
+      setDniRepetido(true);
       Swal.fire("DNI duplicado", "Este DNI ya está registrado. Por favor, ingresá uno diferente.", "error");
       return;
     }
@@ -68,7 +67,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       <DialogTitle>Registrar Nuevo Paciente</DialogTitle>
       <DialogContent>
-        <form onSubmit={handleSubmit}> {/* Aquí se captura el submit */}
+        <form> {/* Sin onSubmit */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
               <TextField
@@ -105,7 +104,6 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
               />
             </div>
 
-            {/* Campo de Fecha de Nacimiento comentado */}
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
               <TextField
                 label="Fecha de Nacimiento"
@@ -114,11 +112,10 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 onChange={handleChange}
                 type="date"
                 fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={{ shrink: true }}
               />
             </div>
+
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
               <TextField
                 select
@@ -133,6 +130,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 <MenuItem value="f">Femenino</MenuItem>
               </TextField>
             </div>
+
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
               <TextField
                 label="Email"
@@ -144,6 +142,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 required
               />
             </div>
+
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
               <TextField
                 select
@@ -161,6 +160,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 ))}
               </TextField>
             </div>
+
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
               <TextField
                 label="Teléfono"
@@ -190,7 +190,11 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
             <Button onClick={onClose} color="default">
               Cancelar
             </Button>
-            <Button color="primary" type="submit">
+            <Button
+              color="primary"
+              onClick={handleSaveClick}
+              disabled={!isFormValid}
+            >
               Guardar Paciente
             </Button>
           </DialogActions>

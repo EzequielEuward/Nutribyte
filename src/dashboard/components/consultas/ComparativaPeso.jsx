@@ -21,21 +21,18 @@ export const ComparativaPeso = ({ data }) => {
 
   const pesoActual = parseFloat(data.pesoActual) || 0;
   const pesoHabitual = parseFloat(data.pesoHabitual) || 0;
+  const talla = parseFloat(data.talla) || 0;
+  const tallaM = talla / 100;
+  const pesoIdeal = tallaM > 0 ? parseFloat((tallaM ** 2 * 22).toFixed(1)) : 0;
 
   const diferencia = pesoActual - pesoHabitual;
   const porcentaje = pesoHabitual > 0 ? ((diferencia / pesoHabitual) * 100).toFixed(1) : 0;
-  const tendencia =
-    diferencia > 0
-      ? 'aumento'
-      : diferencia < 0
-      ? 'pérdida'
-      : 'mantenimiento';
-  const descripcion =
-    diferencia !== 0
-      ? `${Math.abs(diferencia)} kg de ${tendencia} (${porcentaje}%)`
-      : 'Sin cambios en el peso';
+  const tendencia = diferencia > 0 ? 'aumento' : diferencia < 0 ? 'pérdida' : 'mantenimiento';
+  const descripcion = diferencia !== 0
+    ? `${Math.abs(diferencia)} kg de ${tendencia} (${porcentaje}%)`
+    : 'Sin cambios en el peso';
 
-  const maxY = Math.max(pesoActual, pesoHabitual) * 1.2 || 10;
+  const maxY = Math.max(pesoActual, pesoHabitual, pesoIdeal) * 1.2 || 10;
 
   const dataChart = {
     labels: ['Comparación de Peso'],
@@ -49,6 +46,11 @@ export const ComparativaPeso = ({ data }) => {
         label: 'Peso Habitual',
         backgroundColor: theme.palette.grey[500],
         data: [pesoHabitual],
+      },
+      {
+        label: 'Peso Ideal',
+        backgroundColor: theme.palette.success.main,
+        data: [pesoIdeal],
       },
     ],
   };
@@ -88,7 +90,10 @@ export const ComparativaPeso = ({ data }) => {
       <CardHeader
         title="Comparativa de Peso"
         subheader={
-          <Typography variant="body2" color={diferencia > 0 ? 'error.main' : diferencia < 0 ? 'primary.main' : 'text.secondary'}>
+          <Typography
+            variant="body2"
+            color={diferencia > 0 ? 'error.main' : diferencia < 0 ? 'primary.main' : 'text.secondary'}
+          >
             {descripcion}
           </Typography>
         }
@@ -101,5 +106,6 @@ export const ComparativaPeso = ({ data }) => {
     </Card>
   );
 };
+
 
 export default ComparativaPeso;

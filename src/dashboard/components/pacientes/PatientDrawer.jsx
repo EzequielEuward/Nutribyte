@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Drawer, List, ListItem, ListItemText, Avatar, Divider, Typography, IconButton, TextField, Button, MenuItem } from "@mui/material";
+import { Drawer, List, ListItem, ListItemText, Avatar, Divider, Typography, IconButton, TextField,Tooltip, Button, MenuItem } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import { format } from "date-fns"; // Para formatear la fecha
@@ -103,7 +103,7 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
         <Typography variant="h6" align="center">
           {selectedPatient?.persona?.nombre} {selectedPatient?.persona?.apellido}
           <IconButton onClick={handleEditClick} aria-label="editar" size="small">
-            {isEditing ? <CloseIcon fontSize="small" /> : <EditIcon fontSize="small" />}
+            {isEditing ? <Tooltip title="Cancelar Edición" arrow><CloseIcon fontSize="small" /></Tooltip> : <Tooltip title="Editar Paciete" arrow><EditIcon fontSize="small" /></Tooltip>}
           </IconButton>
           {isEditing && (
             <Typography variant="caption" color="textSecondary">

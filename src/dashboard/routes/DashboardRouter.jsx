@@ -5,6 +5,7 @@ import {
   CalendarPage, ConsultaPage, PlanesPage, RecipePage,
   ConfigPage, HistorialPeso, ConsumoPage, VersionPage,
   ControlDeSistemaPage, PlanSummaryPage, SeguridadMedidas, DetallePlan, ReportesPage,
+  CalculadoraAntropometricaPage,
 
 } from '../pages/';
 
@@ -37,6 +38,7 @@ export const DashboardRouter = () => {
       <Route path="turnos" element={<CalendarPage />} />
 
       <Route path="reportes" element={<ReportesPage />} />
+      <Route path="calculadora-antropometrica" element={<CalculadoraAntropometricaPage />} />
       
       {/* Solo los administradores pueden ver estas rutas */}
       {rol === "Administrador" && (
