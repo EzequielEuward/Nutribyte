@@ -15,8 +15,8 @@ IDEA: 💡
 ✅ ⁠Hacer que tenga un límite de pacientes sea 15 y que envie un mail si llego a 15 pacientes que cambie el plan
 🚧 hacer pestaña de reportes
 ⚠️ Agregar verificado en la tabla y que muestre si verificó el usuario mediante eMail
-❌ ⁠Hacer que el login pueda recuperar la contraseña
-🚧 Arreglar y hacer que ande la parte del formulario de cosultas por algo que tiraba error con getValues()
+🟨 ⁠Hacer que el login pueda recuperar la contraseña
+✅ Arreglar y hacer que ande la parte del formulario de cosultas por algo que tiraba error con getValues()
 ✅ Diseñar la parte de pagos y suscripciones
 ✅ Terminar de arreglar la imagen que empieza con hombre si es ==M o si es F que empiece con la mujer
 ✅- Optimizar donde se verian todos los alimentos
@@ -26,20 +26,18 @@ IDEA: 💡
 
 //HACER A LA TARDE
 ❌ Agregar usuario demo y que entre con el boton de probar sistema pero inabilitar todas las cosas que puede hacer
-❌ Darle mas colores a consulta
 ❌ Mejorar apenas entras la parte de Seguimiento
 ❌ Arreglar turnos 
 ❌ Poner una boton que sea tipo de alerta o nota de si tiene la 2FA y que este siempre activa la nota hasta que active 2FA que sea 3 dias que moleste
-❌ Agregar alertas al hacer el 2fa y hacer el boton mas grande y el qr mas grande
-❌ Ver que hacer en metricas
-❌ Poner un nuebo grafico en dashboard y sacar el de la torta
+✅ Agregar alertas al hacer el 2fa y hacer el boton mas grande y el qr mas grande
+❌ Poner un nuevo grafico en dashboard y sacar el de la torta
 ❌ Agregar en la pagina principal que segun el tipo de plan tenga como una pagina aparte con la informacion del plan
-❌ Ver que agregar en configuraciones para que no quede tan vacio. 
+🚧 Ver que agregar en configuraciones para que no quede tan vacio. 
 ❌ Hacer que en nutri ideas se puedan imprimir varias
 💡 Ver como queda en configuraciones si agrego la hora en la que trabaja y agregar como un reloj en el navbar para que vaya contando la cantidad de hora
 ❌ Hacer que tenga un boton para desactivar el 2FA (doble factor)
-❌ Agregar el mensaje de bienvenida predefinido en configpage
-❌ Hacer en el boton de cambiar de planes envie un email a software.sintacc@gmail.com para deir que quiere mejorar el plan actual
+✅ Agregar el mensaje de bienvenida predefinido en configpage
+✅ Hacer en el boton de cambiar de planes envie un email a software.sintacc@gmail.com para deir que quiere mejorar el plan actual
 ❌ Hacer que en el boton de probar ahora el sistema en la pestaña principal entre con el usuario demo
 
 //ME TIENE QUE PASAR LA MELI

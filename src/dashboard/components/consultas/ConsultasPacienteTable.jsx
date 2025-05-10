@@ -33,7 +33,7 @@ export const ConsultasPacienteTable = ({ handleMenuOpen, consultas = [] }) => {
         </TableHead>
         <TableBody>
           {consultas.map((c) => (
-            <TableRow key={c.id}>
+            <TableRow key={c.idConsulta}>
               <TableCell>
                 {c.fecha
                   ? new Date(c.fecha).toLocaleString()
@@ -51,7 +51,12 @@ export const ConsultasPacienteTable = ({ handleMenuOpen, consultas = [] }) => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Eliminar Consulta">
-                  <IconButton color="error" onClick={() => handleMenuOpen('delete', c)}>
+                  <IconButton
+                    color="error"
+                    onClick={() => {
+                      handleMenuOpen('delete', c);
+                    }}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>

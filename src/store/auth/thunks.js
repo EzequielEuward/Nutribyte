@@ -7,7 +7,7 @@ const api = axios.create({
     "Content-Type": "application/json",
     "Accept": "application/json",
   },
-  withCredentials: true,  
+  withCredentials: true,
 });
 
 
@@ -27,9 +27,9 @@ export const startLoginWithUsernameAndPassword = ({ username, password, codigo2F
       // ⚠️ Si requiere 2FA, detener login y retornar info
       if (data.requires2FA || data.result?.requires2FA) {
         console.log("🟠 Usuario requiere 2FA");
-      
+
         const usuario = data.result?.usuario || null;
-      
+
         return Promise.resolve({
           isSuccess: false,
           requires2FA: true,
@@ -44,11 +44,12 @@ export const startLoginWithUsernameAndPassword = ({ username, password, codigo2F
         console.error("🔴 No se recibió un ID de usuario válido o token faltante");
         throw new Error("Datos de sesión incompletos.");
       }
+      const requires2FA = user.twoFactorEnabled || false;
 
       dispatch(
         login({
           uid: user.idUsuario,
-          username,
+          username: user.userName || username,
           rol: user.rol || "",
           planUsuario: user.planUsuario || "",
           persona: {
@@ -61,11 +62,18 @@ export const startLoginWithUsernameAndPassword = ({ username, password, codigo2F
           matricula: user.matricula_Profesional || "",
           especialidad: user.especialidad || "",
           token,
+          requires2FA, // ✅ ahora sí refleja el valor real
         })
       );
 
       localStorage.setItem("authToken", token);
-      localStorage.setItem("userData", JSON.stringify(user));
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({
+          ...user,
+          requires2FA, // este viene de user.twoFactorEnabled
+        })
+      );
       localStorage.setItem("ultimaSesion", new Date().toLocaleString("es-AR"));
 
       return {
@@ -156,3 +164,21 @@ export const startLogout = () => {
   };
 };
 
+export const startVerificarCuenta = (token) => {
+  return async () => {
+    try {
+      const response = await api.get(`/verificar?token=${token}`);
+      return {
+        isSuccess: true,
+        message: response.data
+      };
+    } catch (error) {
+      const message = error.response?.data || "No se pudo conectar con el servidor.";
+      console.error("Error al verificar cuenta:", message);
+      return {
+        isSuccess: false,
+        message
+      };
+    }
+  };
+};

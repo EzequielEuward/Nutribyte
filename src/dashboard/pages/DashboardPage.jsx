@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { listarPacientes } from "../../store/patient";
 import { StatsCards, PendingAppointments, RecentAppointments, QuickAccess, PatientsSummary, TurnosCompletadosChart } from "../components/dashboard";
 import { DashboardLayout } from "../layout/DashboardLayout";
-import { Box, Dialog, DialogContent, DialogTitle, MenuItem, TextField, DialogActions, Button } from "@mui/material";
+import { Box, Dialog, DialogContent, DialogTitle, MenuItem, TextField, DialogActions, Button, Typography } from "@mui/material";
 import { listarTurnos } from "../../store/calendar";
 
 
@@ -16,12 +16,20 @@ export const DashboardPage = () => {
   const [recordatorioOpen, setRecordatorioOpen] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [pacienteSeleccionado, setPacienteSeleccionado] = useState("");
-
+  const [mensajeBienvenida, setMensajeBienvenida] = useState('');
 
   // Cargar los pacientes y turnos cuando se monta el componentef
   useEffect(() => {
     dispatch(listarPacientes());
     dispatch(listarTurnos());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(listarPacientes());
+    dispatch(listarTurnos());
+
+    const mensaje = localStorage.getItem('mensajeBienvenida') || "¡Bienvenido al sistema!";
+    setMensajeBienvenida(mensaje);
   }, [dispatch]);
 
   const handleAbrirRecordatorio = () => setRecordatorioOpen(true);
@@ -58,6 +66,9 @@ export const DashboardPage = () => {
 
   return (
     <DashboardLayout>
+      <Typography variant="h4" sx={{ mt: 2 }}>
+        {mensajeBienvenida}
+      </Typography>
       <Box p={2}>
         <StatsCards totalPacientes={totalPacientesActivos} turnosHoy={turnosHoy} />
 
@@ -66,7 +77,7 @@ export const DashboardPage = () => {
           <RecentAppointments turnos={turnosConPaciente} /> {/* Pasar turnos con pacientes como prop */}
         </Box>
 
-        <QuickAccess onRecordatorio={handleAbrirRecordatorio}/>
+        <QuickAccess onRecordatorio={handleAbrirRecordatorio} />
 
         <Box display="flex" flexWrap="wrap" gap={2} mt={2}>
           <Box sx={{ flex: 1 }}>
@@ -79,56 +90,56 @@ export const DashboardPage = () => {
         </Box>
       </Box>
       <Dialog open={recordatorioOpen} onClose={handleCerrarRecordatorio} maxWidth="sm" fullWidth>
-  <DialogTitle>Enviar Recordatorio por Email</DialogTitle>
-  <DialogContent>
-    <TextField
-      select
-      label="Paciente"
-      fullWidth
-      margin="normal"
-      value={pacienteSeleccionado}
-      onChange={(e) => setPacienteSeleccionado(e.target.value)}
-    >
-      {pacientesActivos.map((p) => (
-        <MenuItem key={p.idPaciente} value={p.idPaciente}>
-          {p.persona?.nombre} {p.persona?.apellido}
-        </MenuItem>
-      ))}
-    </TextField>
+        <DialogTitle>Enviar Recordatorio por Email</DialogTitle>
+        <DialogContent>
+          <TextField
+            select
+            label="Paciente"
+            fullWidth
+            margin="normal"
+            value={pacienteSeleccionado}
+            onChange={(e) => setPacienteSeleccionado(e.target.value)}
+          >
+            {pacientesActivos.map((p) => (
+              <MenuItem key={p.idPaciente} value={p.idPaciente}>
+                {p.persona?.nombre} {p.persona?.apellido}
+              </MenuItem>
+            ))}
+          </TextField>
 
-    <TextField
-      select
-      label="Mensajes Predefinidos"
-      fullWidth
-      margin="normal"
-      onChange={(e) => setMensaje(e.target.value)}
-      value=""
-    >
-      <MenuItem value="Hola, te recordamos que tenés una consulta programada. ¡Te esperamos!">
-        Recordatorio estándar
-      </MenuItem>
-      <MenuItem value="Te esperamos en tu consulta nutricional. Si tenés dudas, respondé este correo.">
-        Consulta confirmada
-      </MenuItem>
-      <MenuItem value="No olvides traer tus registros de alimentación. ¡Gracias por confiar en nosotros!">
-        Recomendación adicional
-      </MenuItem>
-    </TextField>
+          <TextField
+            select
+            label="Mensajes Predefinidos"
+            fullWidth
+            margin="normal"
+            onChange={(e) => setMensaje(e.target.value)}
+            value=""
+          >
+            <MenuItem value="Hola, te recordamos que tenés una consulta programada. ¡Te esperamos!">
+              Recordatorio estándar
+            </MenuItem>
+            <MenuItem value="Te esperamos en tu consulta nutricional. Si tenés dudas, respondé este correo.">
+              Consulta confirmada
+            </MenuItem>
+            <MenuItem value="No olvides traer tus registros de alimentación. ¡Gracias por confiar en nosotros!">
+              Recomendación adicional
+            </MenuItem>
+          </TextField>
 
-    <TextField
-      label="Mensaje personalizado"
-      fullWidth
-      multiline
-      rows={4}
-      value={mensaje}
-      onChange={(e) => setMensaje(e.target.value)}
-    />
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleCerrarRecordatorio} color="default">Cancelar</Button>
-    <Button onClick={handleEnviarRecordatorio} color="primary" disabled={!pacienteSeleccionado || !mensaje}>Enviar</Button>
-  </DialogActions>
-</Dialog>
+          <TextField
+            label="Mensaje personalizado"
+            fullWidth
+            multiline
+            rows={4}
+            value={mensaje}
+            onChange={(e) => setMensaje(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCerrarRecordatorio} color="default">Cancelar</Button>
+          <Button onClick={handleEnviarRecordatorio} color="primary" disabled={!pacienteSeleccionado || !mensaje}>Enviar</Button>
+        </DialogActions>
+      </Dialog>
 
     </DashboardLayout>
   );

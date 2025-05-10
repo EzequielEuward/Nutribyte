@@ -16,13 +16,14 @@ export const App = () => {
       dispatch(
         login({
           uid: user.idUsuario,
-          username: user.username,
+          username: user.username || user.userName,
           persona: user.persona,  
           rol: user.rol,
           planUsuario: user.planUsuario,
           matricula: user.matricula,
           especialidad: user.especialidad,
           token: authToken,
+          requires2FA: user.requires2FA || false,
         })
       );
     }

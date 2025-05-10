@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import {
     Box, Card, CardHeader, CardContent, Typography, Button, TextField, InputAdornment,
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
@@ -14,6 +15,7 @@ import {
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import DashboardLayout from "../layout/DashboardLayout";
+import Swal from "sweetalert2";
 
 // Datos de ejemplo para la tabla de pagos
 const pagosEjemplo = [
@@ -26,6 +28,9 @@ const pagosEjemplo = [
 ];
 
 export const PagosAndSuscripcionesPage = () => {
+
+    const { planUsuario } = useSelector((state) => state.auth);
+
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredPagos, setFilteredPagos] = useState(pagosEjemplo);
     const [filterAnchorEl, setFilterAnchorEl] = useState(null);
@@ -65,6 +70,21 @@ export const PagosAndSuscripcionesPage = () => {
     const clearFilters = () => {
         setSearchTerm("");
         setFilteredPagos(pagosEjemplo);
+    };
+
+    const handleQuieroCambiarPlan = () => {
+        if (planUsuario === "Elite") {
+            return Swal.fire({
+                icon: "info",
+                title: "Ya tenés el mejor plan",
+                text: "Estás usando el plan Elite, que ya es el plan más completo disponible.",
+            });
+        }
+
+        const subject = encodeURIComponent("Solicitud de cambio de plan");
+        const body = encodeURIComponent("Hola, quiero cambiar el plan a uno mejor. Gracias.");
+        const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=software.sintacc@gmail.com&su=${subject}&body=${body}`;
+        window.open(mailtoLink, '_blank');
     };
 
     return (
@@ -196,7 +216,7 @@ export const PagosAndSuscripcionesPage = () => {
                                 </Typography>
                                 <Typography color="text.secondary">Próximo cobro: 15 de noviembre, 2023</Typography>
                                 <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
-                                    <Button variant="outlined">Cambiar plan</Button>
+                                    <Button variant="outlined" onClick={handleQuieroCambiarPlan}>Quiero cambiar de plan</Button>
                                     <Button variant="outlined" color="error">Cancelar suscripción</Button>
                                 </Box>
                             </Box>
@@ -218,7 +238,7 @@ export const PagosAndSuscripcionesPage = () => {
                     </CardContent>
                 </Card>
             </Box>
-        </DashboardLayout>  
+        </DashboardLayout>
     );
 };
 

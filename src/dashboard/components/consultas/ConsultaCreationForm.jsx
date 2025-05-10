@@ -16,17 +16,16 @@ import {
   IconButton,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useFormContext } from 'react-hook-form';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Swal from "sweetalert2";
 
 export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
-  const { control, handleSubmit, formState: { errors } } = useForm();
 
-  const handleValidatedSubmit = () => {
-    const data = getValues();
-
+  const { control, handleSubmit, formState: { errors } } = useFormContext();
+  const handleValidatedSubmit = (data) => {
     const tieneAnamnesis = Object.entries(data).some(
       ([key, value]) =>
         key !== "fecha" &&
@@ -42,11 +41,15 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
     );
 
     if (tieneAnamnesis && (!data.tipoConsulta || data.tipoConsulta.trim() === "")) {
-      alert("Si cargás datos de anamnesis, también debés ingresar una consulta.");
+      Swal.fire({
+        icon: "warning",
+        title: "Falta tipo de consulta",
+        text: "Si cargás datos de anamnesis, también debés ingresar una consulta."
+      });
       return;
     }
-
-    onSubmit(data); // ahora sí lo mandamos
+    console.log("🧾 Datos enviados desde el formulario:", data);
+    onSubmit(data);
   };
   return (
     <Box component="form" onSubmit={handleSubmit(handleValidatedSubmit)}>
@@ -255,24 +258,6 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
 
         <AccordionDetails>
           <Grid container spacing={3}>
-            {/* Fecha Anamnesis */}
-            <Grid item xs={12} md={6}>
-              <Controller
-                name="fechaAnamnesis"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="Fecha de Anamnesis"
-                    type="datetime-local"
-                    InputLabelProps={{ shrink: true }}
-                  />
-                )}
-              />
-            </Grid>
-
             {/* Mediciones Corporales */}
             <Grid item xs={12}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>

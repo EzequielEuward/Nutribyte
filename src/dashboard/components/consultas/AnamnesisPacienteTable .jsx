@@ -1,6 +1,6 @@
 import {
   Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper,IconButton,
+  TableHead, TableRow, Paper, IconButton,
   Typography,
   Tooltip
 } from '@mui/material';
@@ -41,12 +41,12 @@ export const AnamnesisPacienteTable = ({ handleMenuOpen, anamnesis = [] }) => {
             <TableCell>Pliegues Pantorilla</TableCell>
             <TableCell>Acciones </TableCell>
 
-         
-            
+
+
           </TableRow>
         </TableHead>
         <TableBody>
-        {anamnesis.map((a) => (
+          {anamnesis.map((a) => (
             <TableRow key={a.idAnamnesis}>
               {/* Celdas con datos reales */}
               <TableCell>
@@ -68,7 +68,7 @@ export const AnamnesisPacienteTable = ({ handleMenuOpen, anamnesis = [] }) => {
               <TableCell>{a.pliegueAbdominal || '—'}</TableCell>
               <TableCell>{a.pliegueMuslo || '—'}</TableCell>
               <TableCell>{a.plieguePantorrilla || '—'}</TableCell>
-              
+
               {/* Celda de acciones DEBE ESTAR DENTRO DEL MAP */}
               <TableCell align="center">
                 <Tooltip title="Editar">
@@ -76,11 +76,7 @@ export const AnamnesisPacienteTable = ({ handleMenuOpen, anamnesis = [] }) => {
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Eliminar">
-                  <IconButton onClick={() => handleMenuOpen('delete', a)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
+
               </TableCell>
             </TableRow>
           ))}

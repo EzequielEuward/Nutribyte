@@ -74,55 +74,13 @@ export const crearConsulta = createAsyncThunk(
       const userId = auth?.uid;
       if (!userId) throw new Error("Usuario no autenticado");
 
-      const { anamnesis, ...consultaData } = payload;
-      let idAnamnesis = null;
-
-      if (anamnesis) {
-        const numericFields = [
-          'talla',
-          'pesoActual',
-          'pesoHabitual',
-          'circunferenciaBrazoRelajado',
-          'circunferenciaBrazo',
-          'circunferenciaAntebrazo',
-          'circunferenciaCintura',
-          'circunferenciaCinturaMaxima',
-          'circunferenciaPantorrilla',
-          'pliegueBiceps',
-          'pliegueTriceps',
-          'pliegueSubescapular',
-          'pliegueSupraespinal',
-          'pliegueAbdominal',
-          'pliegueMuslo',
-          'plieguePantorrilla'
-        ];
-
-        const hasInvalidValues = numericFields.some(field => {
-          const value = anamnesis[field];
-          return isNaN(value) || value < 0 || value > 1000;
-        });
-
-        if (hasInvalidValues) {
-          throw new Error('Valores antropométricos inválidos');
-        }
-
-        const respA = await axios.post(API_ANAMNESIS, {
-          ...anamnesis,
-          idPaciente: consultaData.idPaciente,
-          idUsuario: userId,
-        });
-        idAnamnesis = respA.data.idAnamnesis;
-      }
-
-      const consultaPayload = {
-        ...consultaData,
+      const payloadFinal = {
+        ...payload,
         idUsuario: userId,
-        idAnamnesis,
       };
 
-      // 5) POST de consulta
-      const respC = await axios.post(API_CONSULTA, consultaPayload);
-      return respC.data;
+      const resp = await axios.post(`${API_CONSULTA}`, payloadFinal);
+      return resp.data;
 
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -223,7 +181,7 @@ export const eliminarConsulta = createAsyncThunk(
       const userId = auth?.uid;
       if (!userId) throw new Error("Usuario no autenticado");
 
-      await axios.delete(`${API_CONSULTA}/${idConsulta}/${userId}`);
+      await axios.delete(`${API_CONSULTA}/${userId}/${idConsulta}`);
       return idConsulta;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || err.message);
@@ -270,6 +228,18 @@ export const obtenerAnamnesisCalculadaPorConsulta = createAsyncThunk(
     } catch (err) {
       console.error('❌ [THUNK] Error al obtener anamnesis calculada:', err.response?.data || err.message);
       return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+export const eliminarAnamnesis = createAsyncThunk(
+  "anamnesis/eliminarAnamnesis",
+  async (idAnamnesis, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${API_ANAMNESIS}/${idAnamnesis}`);
+      return idAnamnesis;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );

@@ -28,12 +28,17 @@ export const ConfigPage = () => {
     notificacionesDiarias: true,
     recordatoriosComidas: true,
     seguimientoAgua: true,
-    mensajeBienvenida: '¡Bienvenido a tu plan de nutrición personalizado!',
+    mensajeBienvenida: localStorage.getItem('mensajeBienvenida') || '¡Bienvenido a tu plan de nutrición personalizado!',
     mensajeMotivacional: '¡Sigue así! Cada día estás más cerca de tus objetivos.',
     seguimientoProgreso: false,
     horarioTrabajo: { inicio: '08:00', fin: '17:00' },
     tema: 'light',
   });
+
+  const handleGuardarMensajeBienvenida = () => {
+    localStorage.setItem('mensajeBienvenida', config.mensajeBienvenida);
+    Swal.fire("Guardado", "El mensaje de bienvenida fue actualizado correctamente.", "success");
+  };
 
   const [qrCodeImage, setQrCodeImage] = useState(null);
   const [code2FA, setCode2FA] = useState('');
@@ -62,6 +67,7 @@ export const ConfigPage = () => {
   };
 
   const handleSaveConfig = () => {
+    localStorage.setItem('mensajeBienvenida', config.mensajeBienvenida); // ← Guardamos
     console.log('Configuración guardada:', config);
     Swal.fire("Guardado", "La configuración se guardó correctamente.", "success");
   };
@@ -80,13 +86,35 @@ export const ConfigPage = () => {
   const handleVerificar2FA = async () => {
     const result = await dispatch(startVerify2FA({ idUsuario: userId, token: code2FA }));
     if (result?.isSuccess) {
+      // ✅ Actualizamos Redux
       dispatch(setRequires2FA(true));
-      setMensaje2FA('2FA verificado y activado correctamente');
+
+      // 💾 Reemplazamos en localStorage el userData completo
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const userDataActualizado = { ...userData, requires2FA: true };
+      localStorage.setItem("userData", JSON.stringify(userDataActualizado));
+
+
+      // ✅ Mensaje visual
+      Swal.fire({
+        icon: "success",
+        title: "Autenticación 2FA activada",
+        text: "Ya puedes disfrutar de mayor seguridad.",
+        timer: 2500,
+        showConfirmButton: false,
+      });
+
+      // ✅ Limpiamos UI
       setMostrar2FA(false);
       setQrCodeImage(null);
       setCode2FA('');
+      setMensaje2FA(null);
     } else {
-      setMensaje2FA('Código inválido. Intentá nuevamente.');
+      Swal.fire({
+        icon: "error",
+        title: "Código inválido",
+        text: "Verificá el código e intentá de nuevo.",
+      });
     }
   };
 
@@ -175,13 +203,18 @@ export const ConfigPage = () => {
                   onChange={(e) => handleInputChange('mensajeBienvenida', e.target.value)}
                   fullWidth
                 />
+                <Box sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                  <Button variant="outlined" onClick={handleGuardarMensajeBienvenida}>
+                    Guardar texto
+                  </Button>
+                </Box>
               </Grid>
 
               <Grid item xs={12}>
                 {tiene2FA ? (
                   <Alert severity="success">Ya tienes activado el doble factor de autenticación.</Alert>
                 ) : (
-                  <Button variant="contained" onClick={handleActivar2FA} sx={{width:300, height:80, backgroundColor:"primary", justifyContent:"center"}}>
+                  <Button variant="contained" onClick={handleActivar2FA} sx={{ width: 300, height: 80, backgroundColor: "primary", justifyContent: "center" }}>
                     Activar autenticación 2FA
                   </Button>
                 )}

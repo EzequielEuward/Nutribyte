@@ -27,6 +27,7 @@ export * from './ConsumoPage';
 export * from './ControlDeSistemaPage'
 export * from './VersionPage';
 export * from './ReportesPage';
+export * from './VerificarCuentaPage';
 
 
 

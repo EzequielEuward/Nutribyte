@@ -28,6 +28,8 @@ export const AppRouter = () => {
 
       {/* Otras rutas */}
       <Route path="/formulario-historial-peso" element={<FormularioHistorial />} />
+      
+      <Route path="/home/" element={status === 'authenticated' ? <DashboardRouter /> : <Navigate to="/auth/login" />} />
 
       {/* Redirigir rutas desconocidas */}
       <Route path="*" element={<Navigate to="/" />} />

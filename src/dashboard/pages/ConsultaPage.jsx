@@ -29,7 +29,7 @@ import {
   InformacionGeneralConsultaPage,
 } from "../components/consultas/";
 import { listarPacientes } from "../../store/patient";
-import { buscarPacientePorDni, crearConsulta, eliminarConsulta, listarAnamnesisPorPaciente, listarConsulta, modificarAnamnesis, modificarConsulta, obtenerPorIdAnamnesis } from "../../store/consultas";
+import { buscarPacientePorDni, crearConsulta, eliminarAnamnesis, eliminarConsulta, listarAnamnesisPorPaciente, listarConsulta, modificarAnamnesis, modificarConsulta, obtenerPorIdAnamnesis } from "../../store/consultas";
 import { FormProvider, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
@@ -94,6 +94,12 @@ export const ConsultaPage = () => {
     }
   }, [paciente]);
 
+  useEffect(() => {
+    if (activeTab === 'anamnesis' && paciente?.idPaciente) {
+      dispatch(listarAnamnesisPorPaciente(paciente.idPaciente));
+    }
+  }, [activeTab, paciente?.idPaciente, dispatch]);
+
   //Menú de acciones
   const openMenu = (event, consulta) => {
     setMenuAnchorEl(event.currentTarget);
@@ -132,6 +138,7 @@ export const ConsultaPage = () => {
           setIsAnamnesisModalOpen(true);
           break;
         case 'delete':
+          openDeleteAnamnesis(item);
           break;
         default:
           break;
@@ -173,6 +180,33 @@ export const ConsultaPage = () => {
     });
   };
 
+
+  const openDeleteAnamnesis = (anamnesis) => {
+    Swal.fire({
+      title: '¿Eliminar anamnesis?',
+      text: `¿Seguro que querés eliminar la anamnesis del ${new Date(anamnesis.fecha).toLocaleDateString()}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d32f2f',
+      cancelButtonColor: '#757575',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(eliminarAnamnesis(anamnesis.idAnamnesis)) // 🔁 esto depende de si ya tenés ese thunk
+          .unwrap()
+          .then(() => {
+            Swal.fire('¡Eliminada!', 'La anamnesis fue eliminada correctamente.', 'success');
+            dispatch(listarAnamnesisPorPaciente(paciente.idPaciente));
+          })
+          .catch(err => {
+            Swal.fire('Error', err || 'No se pudo eliminar la anamnesis', 'error');
+          });
+      }
+    });
+  };
+
   const buscarPaciente = () => {
     if (!/^[0-9]{7,8}$/.test(dni.trim())) {
       return alert('Ingrese un DNI válido (7 u 8 dígitos)');
@@ -196,7 +230,7 @@ export const ConsultaPage = () => {
     };
 
     const fechaConsulta = parseDate(data.fecha).toISOString();
-    const fechaAnamnesis = data.fechaAnamnesis ? parseDate(data.fechaAnamnesis).toISOString() : null;
+    const fechaAnamnesis = parseDate(data.fecha).toISOString();
 
     const anamnesisFields = {
       fecha: fechaAnamnesis,
@@ -237,13 +271,19 @@ export const ConsultaPage = () => {
       } : null
     };
 
+    console.log("📦 Payload enviado al thunk crearConsulta:", payload);
+
     dispatch(crearConsulta(payload))
       .unwrap()
       .then(() => {
-        alert('Consulta creada exitosamente');
+        Swal.fire({
+          icon: 'success',
+          title: 'Consulta creada',
+          text: 'La consulta fue registrada exitosamente.'
+        });
         methods.reset();
         dispatch(listarConsulta());
-        setStep('busqueda');
+        //setStep('busqueda');
         setDni('');
       })
       .catch(err => alert(`Error: ${err}`));
@@ -282,7 +322,7 @@ export const ConsultaPage = () => {
         }
       })).unwrap();
       dispatch(listarConsulta());
-      dispatch(listarAnamnesisPorPaciente(idPaciente));
+      dispatch(listarAnamnesisPorPaciente(paciente.idPaciente));
       setIsAnamnesisModalOpen(false);
       Swal.fire('Éxito', 'Anamnesis actualizada correctamente', 'success');
     } catch (error) {
@@ -312,10 +352,6 @@ export const ConsultaPage = () => {
             <Divider sx={{ my: 4 }} />
 
             <Grid container spacing={4}>
-
-
-
-
 
               {/* Últimas consultas */}
               <Grid item xs={12}>
