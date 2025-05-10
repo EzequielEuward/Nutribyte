@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FoodTable, FoodCards, FoodFilters } from "../components";
+import { FoodTable, FoodCards, FoodFilters  } from "../components";
 import { DashboardLayout } from "../layout/DashboardLayout";
 import { listarAlimentos } from "../../store/food/thunk";
 import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";

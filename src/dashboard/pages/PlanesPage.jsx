@@ -35,7 +35,7 @@ export const PlanesPage = () => {
   const [fechaFin, setFechaFin] = useState("");
   const [observaciones, setObservaciones] = useState("");
   const [alimentos, setAlimentos] = useState([]);
-  const [planSeleccionado, setPlanSeleccionado] = useState(1);
+  const [planSeleccionado, setPlanSeleccionado] = useState();
   const planData = planSeleccionado !== null ? planSeleccionado : planesInfo[0];
   const [planEnEdicion, setPlanEnEdicion] = useState(null);
 
@@ -71,8 +71,7 @@ export const PlanesPage = () => {
       });
   };
 
-  const pacienteAdaptado = paciente && paciente.persona
-    ? {
+  const pacienteAdaptado = paciente && paciente.persona ? {
       nombre: paciente.persona.nombre,
       apellido: paciente.persona.apellido,
       dni: paciente.persona.dni,
@@ -264,10 +263,7 @@ export const PlanesPage = () => {
               Información general
             </Typography>
             <Divider sx={{ mb: 3 }} />
-            <InformacionGeneralPlanes
-              planSeleccionado={planSeleccionado}
-              setPlanSeleccionado={setPlanSeleccionado}
-            />
+            <InformacionGeneralPlanes/>
           </>
         )}
 

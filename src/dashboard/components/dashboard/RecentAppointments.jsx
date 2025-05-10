@@ -1,10 +1,26 @@
-import { Card, CardContent, CardHeader, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, Box, useMediaQuery, useTheme } from "@mui/material";
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Chip,
+  Box,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 export const RecentAppointments = ({ turnos }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); 
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  // Accedemos a los colores del theme.appointmentTypes
+  // Colores según estado
   const statusColors = {
     Completado: {
       backgroundColor: theme.palette.appointmentTypes.control.background,
@@ -24,14 +40,22 @@ export const RecentAppointments = ({ turnos }) => {
     <Card variant="outlined">
       <CardHeader
         title={
-          <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
             Turnos Recientes
           </Typography>
         }
       />
       <CardContent>
-        {isMobile ? (
-          // Vista en dispositivos móviles
+        {turnos.length === 0 ? (
+          <Typography
+            variant="body1"
+            align="center"
+            sx={{ py: 4, color: theme.palette.text.secondary }}
+          >
+            No tenés ningún turno reciente.
+          </Typography>
+        ) : isMobile ? (
+          // Vista móvil
           <Box display="flex" flexDirection="column" gap={2}>
             {turnos.map((turno) => (
               <Box
@@ -68,7 +92,7 @@ export const RecentAppointments = ({ turnos }) => {
             ))}
           </Box>
         ) : (
-          // Vista en dispositivos grandes
+          // Vista escritorio
           <TableContainer>
             <Table>
               <TableHead>
@@ -99,8 +123,12 @@ export const RecentAppointments = ({ turnos }) => {
                 {turnos.map((turno) => (
                   <TableRow key={turno.idTurno}>
                     <TableCell>{turno.paciente}</TableCell>
-                    <TableCell>{new Date(turno.fechaInicio).toLocaleDateString()}</TableCell>
-                    <TableCell>{new Date(turno.fechaInicio).toLocaleTimeString()}</TableCell>
+                    <TableCell>
+                      {new Date(turno.fechaInicio).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(turno.fechaInicio).toLocaleTimeString()}
+                    </TableCell>
                     <TableCell>
                       <Chip
                         label={turno.estado}

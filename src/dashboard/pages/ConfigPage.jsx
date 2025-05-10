@@ -181,7 +181,7 @@ export const ConfigPage = () => {
                 {tiene2FA ? (
                   <Alert severity="success">Ya tienes activado el doble factor de autenticación.</Alert>
                 ) : (
-                  <Button variant="outlined" onClick={handleActivar2FA}>
+                  <Button variant="contained" onClick={handleActivar2FA} sx={{width:300, height:80, backgroundColor:"primary", justifyContent:"center"}}>
                     Activar autenticación 2FA
                   </Button>
                 )}

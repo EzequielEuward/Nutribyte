@@ -56,7 +56,7 @@ export const VersionPage = () => {
         setOpenModal(false);
         Swal.fire({
             title: "¡Versión actualizada a la ultima!",
-            text: "Oops tiene lal versión actualizada",
+            text: "Oops tiene la versión actualizada",
             icon: "warning",
         });
     };

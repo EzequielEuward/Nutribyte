@@ -6,13 +6,13 @@ import { useSelector } from 'react-redux';
 const drawerWidth = 280;
 
 export const DashboardLayout = ({ children }) => {
-  const { username, rol } = useSelector((state) => state.auth);
+  const { username, rol, planUsuario } = useSelector((state) => state.auth);
 
   return (
-    <AppTheme>
-      <Box sx={{ display: 'flex' }} className='animate__animated animate__fadeIn animate__faster'>
-        <Navbar drawerWidth={drawerWidth} username={username} rol={rol} />
-        <Sidebar drawerWidth={drawerWidth} username={username} rol ={rol} />
+    <AppTheme >
+      <Box sx={{ display: 'flex'}} className='animate__animated animate__fadeIn animate__faster' >
+        <Navbar drawerWidth={drawerWidth} username={username} rol={rol}  />
+        <Sidebar drawerWidth={drawerWidth} username={username} rol ={rol} planUsuario={planUsuario}/>
 
         <Box
           component='main'

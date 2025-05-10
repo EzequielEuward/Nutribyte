@@ -1,6 +1,7 @@
 export * from './DashboardPage';
 
 export * from './CalculadoraAntropometricaPage';
+export * from './PagosAndSuscripcionesPage';
 
 export * from  './PatientPage';
 export * from './ConfigPage';

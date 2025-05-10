@@ -129,15 +129,14 @@ export const FoodTable = ({ alimentos }) => {
 // Función para asignar colores a los grupos
 const getGroupColor = (group) => {
   const colors = {
-    Frutas: "#4caf50", // verde
-    Verduras: "#ff9800", // naranja
-    Cereales: "#2196f3", // azul
-    Lácteos: "#9c27b0", // púrpura
-    Carnes: "#f44336", // rojo
-    // Agrega otros grupos según sea necesario
+    Frutas: "#4caf50", 
+    Verduras: "#ff9800", 
+    Cereales: "#2196f3", 
+    Lácteos: "#9c27b0", 
+    Carnes: "#f44336",
   };
 
-  return colors[group] || "#607d8b"; // color por defecto
+  return colors[group] || "#607d8b";
 };
 
 export default FoodTable;

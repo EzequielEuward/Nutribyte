@@ -6,8 +6,7 @@ import { menuItems } from '../../mock/data/menuItems';
 import { useTheme } from '@emotion/react';
 import { useSelector } from 'react-redux';
 
-export const Sidebar = ({ drawerWidth = 280, username, rol }) => {
-
+export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
   const { isDarkMode } = useSelector(state => state.ui);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenus, setOpenMenus] = useState({});
@@ -31,10 +30,16 @@ export const Sidebar = ({ drawerWidth = 280, username, rol }) => {
 
   const linkColor = isDarkMode ? '#fff' : '#000';
 
+  const filteredMenuItems = menuItems.filter(item => {
+    if (rol !== "Administrador" && (item.text === "Versiones" || item.text === "Control de usuario")) {
+      return false;
+    }
+    if ((planUsuario === "premium" || planUsuario === "Premium" || planUsuario === "Basico" || planUsuario === "basico") && item.text === "Calculadora Antropometrica") {
+      return false;
+    }
+    return true;
+  });
 
-  const filteredMenuItems = rol === "Administrador"
-    ? menuItems
-    : menuItems.filter(item => item.text !== "Versiones" && item.text !== "Control de usuario");
 
 
   const drawerContent = (

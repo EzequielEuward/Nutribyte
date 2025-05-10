@@ -2,48 +2,37 @@ import { Box, Button, Card, CardContent, CardHeader, Typography } from "@mui/mat
 import { planesInfo } from "../../../mock/data/mockPlanesData";
 import { AccessAlarm } from "@mui/icons-material";
 
-export const InfoPlanes = ({ planSeleccionado }) => {
-  const plan = planesInfo[planSeleccionado] || {};
- 
+export const InfoPlanes = ({ plan }) => {
+  if (!plan) return null;
+
   return (
     <Box sx={{ flex: 1 }}>
       <Card sx={{ boxShadow: 3 }}>
         <CardHeader
           title={
             <Typography variant="h6" sx={{ fontSize: 24, fontWeight: 'bold' }}>
-              {plan.titulo || "Plan no encontrado"}
+              {plan.titulo || "asjdlkasjdlsa"}
             </Typography>
           }
           subheader={
             <Typography variant="body2" color="textSecondary">
-              {plan.descripcion || "Descripción no disponible"}
+              {plan.descripcion}
             </Typography>
           }
         />
 
-        {/* Contenido del plan */}
         <CardContent>
           <Box>
             {Array.isArray(plan.beneficios) && plan.beneficios.map((beneficio, index) => (
-              <Box
-                key={index}
-                sx={{
+              <Box key={index} sx={{ display: "flex", gap: 2, alignItems: "flex-start", mb: 2 }}>
+                <Box sx={{
+                  borderRadius: "50%",
+                  p: 1,
+                  backgroundColor: "#e0f7fa",
                   display: "flex",
-                  gap: 2,  
-                  alignItems: "flex-start",
-                  mb: 2,  
-                }}
-              >
-                <Box
-                  sx={{
-                    borderRadius: "50%",
-                    p: 1,
-                    backgroundColor: "#e0f7fa",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}>
                   <AccessAlarm sx={{ width: 20, height: 20, color: "#00796b" }} />
                 </Box>
 
@@ -58,11 +47,7 @@ export const InfoPlanes = ({ planSeleccionado }) => {
               </Box>
             ))}
 
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2 }}
-            >
+            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
               Más información
             </Button>
           </Box>
@@ -71,5 +56,6 @@ export const InfoPlanes = ({ planSeleccionado }) => {
     </Box>
   );
 };
+
 
 export default InfoPlanes;

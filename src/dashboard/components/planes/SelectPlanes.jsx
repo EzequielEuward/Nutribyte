@@ -1,37 +1,28 @@
-import { useState } from "react";
-import { Box, FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material";
+import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
-export const SelectPlanes = ({ setPlanActual }) => {
-  const [planSeleccionado, setPlanSeleccionado] = useState(10);
-
-  const handleChangePlan = (e) => {
-    const planValue = e.target.value;
-    setPlanSeleccionado(planValue);
-    setPlanActual(planValue);
-  };
-
+export const SelectPlanes = ({ value, onChange }) => {
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
         alignItems: { xs: "flex-start", md: "center" },
-        justifyContent: { xs: "flex-start", md: "flex-end" }, 
+        justifyContent: { xs: "flex-start", md: "flex-start" },
         padding: 2,
-        gap: 2, 
+        gap: 2,
       }}
     >
       <Box
         sx={{
-          minWidth: { xs: "100%", sm: "250px" }, 
+          minWidth: { xs: "100%", sm: "250px" },
           maxWidth: "300px",
         }}
       >
-        <FormControl fullWidth variant="outlined">
+        <FormControl fullWidth variant="outlined" size="small">
           <InputLabel>Seleccionar plan</InputLabel>
           <Select
-            value={planSeleccionado}
-            onChange={handleChangePlan}
+            value={value}
+            onChange={(e) => onChange(Number(e.target.value))}
             label="Seleccionar plan"
           >
             <MenuItem value={10}>Hiper Calórico</MenuItem>

@@ -9,11 +9,13 @@ import { limpiarPacienteSeleccionado } from "../../store/patient/";
 import { format } from "date-fns";
 
 import Swal from 'sweetalert2';
+import { enviarAlertaLimitePacientes } from "../../helpers/";
 
 export const PatientPage = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const { isLoading, error, pacientes, pacienteSeleccionado } = useSelector((state) => state.patients);
+  const { planUsuario, persona, username } = useSelector((state) => state.auth);
 
   const [formOpen, setFormOpen] = useState(false);
   const [showAnamnesis, setShowAnamnesis] = useState(false);
@@ -21,9 +23,8 @@ export const PatientPage = () => {
   const [deleteReason, setDeleteReason] = useState("");
   const [patientToDelete, setPatientToDelete] = useState(null);
 
-  // Función para manejar la eliminación de un paciente
   const handleDelete = (patient) => {
-    setPatientToDelete(patient); // Guarda el objeto completo del paciente
+    setPatientToDelete(patient);
 
     Swal.fire({
       title: "¿Estás seguro?",
@@ -34,7 +35,7 @@ export const PatientPage = () => {
       cancelButtonText: "Cancelar"
     }).then((result) => {
       if (result.isConfirmed) {
-        handleConfirmDelete(patient.idPaciente); 
+        handleConfirmDelete(patient.idPaciente);
       }
     });
   };
@@ -51,9 +52,9 @@ export const PatientPage = () => {
       cancelButtonColor: "#aaa",
       reverseButtons: true
     });
-  
+
     if (!confirmacionFinal.isConfirmed) return;
-  
+
     try {
       await dispatch(desactivarPaciente({ idPaciente })).unwrap();
       dispatch(listarPacientes());
@@ -64,6 +65,8 @@ export const PatientPage = () => {
     }
   };
 
+
+  const limitePacientesBasico = planUsuario?.toLowerCase() === "basico" && pacientes.length >= 15;
 
   // Función para abrir el drawer y ver los detalles del paciente
   const handleViewPatient = (patient) => {
@@ -77,7 +80,6 @@ export const PatientPage = () => {
     setDrawerOpen(false);
   };
 
-  // Función para cerrar la anamnesis
   const handleCloseAnamnesis = () => {
     setShowAnamnesis(false);
   };
@@ -85,22 +87,37 @@ export const PatientPage = () => {
   // Función para cerrar el drawer
   const handleCloseDrawer = () => {
     setDrawerOpen(false);
-    dispatch(limpiarPacienteSeleccionado()); // Limpia el paciente seleccionado en Redux
+    dispatch(limpiarPacienteSeleccionado());
   };
 
-  // Efecto para cargar la lista de pacientes al montar el componente
   useEffect(() => {
     dispatch(listarPacientes());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (limitePacientesBasico) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Límite alcanzado',
+        html: `
+        <strong>Ya registraste 15 pacientes con tu plan actual (<u>Básico</u>)</strong>.<br/>
+        Para continuar, actualizá a un plan superior.`,
+        confirmButtonText: 'Ver planes disponibles',
+        confirmButtonColor: '#b71c1c',
+        backdrop: true,
+      });
+
+      enviarAlertaLimitePacientes(persona.email, username, pacientes.length);
+    }
+  }, [limitePacientesBasico]);
 
 
   const handleCreatePatient = async (patientData) => {
     // Cerrás el modal para evitar conflicto visual
     setFormOpen(false);
-  
-    await new Promise((res) => setTimeout(res, 200)); // Esperás a que cierre (importante)
-  
+
+    await new Promise((res) => setTimeout(res, 200));
+
     const pasoUno = await Swal.fire({
       title: "¿Estás seguro?",
       text: "Vas a registrar un nuevo paciente en el sistema.",
@@ -112,12 +129,12 @@ export const PatientPage = () => {
       cancelButtonColor: "#aaa",
       reverseButtons: true
     });
-  
+
     if (!pasoUno.isConfirmed) {
-      setFormOpen(true); // si cancela, reabrís el formulario
+      setFormOpen(true);
       return;
     }
-  
+
     const pasoDos = await Swal.fire({
       title: "¿Deseás cargar este paciente?",
       text: `Nombre: ${patientData.nombre} ${patientData.apellido}`,
@@ -129,13 +146,12 @@ export const PatientPage = () => {
       cancelButtonColor: "#aaa",
       reverseButtons: true
     });
-  
+
     if (!pasoDos.isConfirmed) {
-      setFormOpen(true); // si cancela acá, también reabrís
+      setFormOpen(true)
       return;
     }
-  
-    // Confirmado → crear paciente
+
     try {
       await dispatch(crearPaciente(patientData)).unwrap();
       dispatch(listarPacientes());
@@ -146,14 +162,13 @@ export const PatientPage = () => {
       setFormOpen(true); // si falla, lo reabrís también
     }
   };
-  
-  
+
 
   const handleUpdatePatient = async (updatedData) => {
     try {
       await dispatch(actualizarPaciente(updatedData)).unwrap();
 
-      dispatch(listarPacientes()); // Opcional: refrescar la lista
+      dispatch(listarPacientes());
       Swal.fire("Éxito", "Paciente actualizado", "success");
     } catch (error) {
       Swal.fire("Error", "Error al actualizar", "error");
@@ -171,8 +186,9 @@ export const PatientPage = () => {
 
         <Box sx={{ display: "flex", justifyContent: "flex-start", marginBottom: "16px" }}>
           <Button
-            variant="contained"
+            variant={limitePacientesBasico ? "outlined" : "contained"}
             color="primary"
+            disabled={limitePacientesBasico}
             onClick={() => setFormOpen(true)}
             sx={{ fontSize: "1.2rem", padding: "12px 24px", width: "100%" }}
           >

@@ -1,34 +1,28 @@
 import { Box, Card, CardHeader, Typography, Tab, Tabs } from "@mui/material";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 
 export const GrupoAlimentosPlanes = ({ plan }) => {
   const [tabSeleccionada, setTabSeleccionada] = useState(0);
 
-  // Datos por defecto para prevenir errores
-  const planSeguro = plan || {
-    gruposAlimentos: [{
-      grupo: "Cargando...",
-      ejemplos: ["Datos no disponibles"]
-    }]
-  };
+  const grupos = Array.isArray(plan?.gruposAlimentos) ? plan.gruposAlimentos : [];
 
-  const grupos = Array.isArray(planSeguro.gruposAlimentos) 
-    ? planSeguro.gruposAlimentos 
-    : [];
+  // Reiniciar la tab si cambia el plan
+  useEffect(() => {
+    setTabSeleccionada(0);
+  }, [plan]);
 
   const handleTabChange = (event, newValue) => {
     setTabSeleccionada(newValue);
   };
 
   return (
-    <Box sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-      <Card sx={{ width: "100%" }}>
+    <Box sx={{ flex: 1 }}>
+      <Card sx={{ width: "100%", height: "100%" }}>
         <CardHeader
           title={
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Typography variant="h6">Grupos de alimentos</Typography>
-            </Box>
+            <Typography variant="h6" fontWeight={600}>
+              Grupos de alimentos
+            </Typography>
           }
         />
         <Box sx={{ p: 2 }}>
@@ -37,9 +31,7 @@ export const GrupoAlimentosPlanes = ({ plan }) => {
             onChange={handleTabChange}
             variant="scrollable"
             scrollButtons="auto"
-            TabIndicatorProps={{
-              style: { backgroundColor: "#1976d2" }
-            }}
+            TabIndicatorProps={{ style: { backgroundColor: "#1976d2" } }}
             sx={{
               "& .MuiTab-root": {
                 fontSize: "0.875rem",
@@ -47,18 +39,18 @@ export const GrupoAlimentosPlanes = ({ plan }) => {
                 color: "text.primary",
               },
               "& .Mui-selected": {
-                color: "text.primary",
+                color: "primary.main",
                 backgroundColor: "rgba(25, 118, 210, 0.1)",
                 borderRadius: "4px",
               },
-              "& .MuiTabs-scroller": {
-                borderBottom: "1px solid rgba(255, 255, 255, 0.12)"
-              }
+              borderBottom: "1px solid #e0e0e0",
             }}
           >
-            {grupos.map((grupo, index) => (
-              <Tab key={index} label={grupo.grupo || "Grupo sin nombre"} />
-            ))}
+            {grupos.length > 0
+              ? grupos.map((grupo, index) => (
+                  <Tab key={index} label={grupo.grupo || `Grupo ${index + 1}`} />
+                ))
+              : <Tab label="Sin datos" disabled />}
           </Tabs>
 
           {grupos[tabSeleccionada] && (
@@ -71,11 +63,11 @@ export const GrupoAlimentosPlanes = ({ plan }) => {
                 backgroundColor: "background.paper",
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: 500, mb: 1 }}>
-                {grupos[tabSeleccionada].grupo || "Grupo de alimentos"}
+              <Typography variant="subtitle1" fontWeight={500} sx={{ mb: 1 }}>
+                {grupos[tabSeleccionada].grupo}
               </Typography>
-              <ul>
-                {(grupos[tabSeleccionada].ejemplos || ["Ejemplos no disponibles"]).map((ejemplo, idx) => (
+              <ul style={{ paddingLeft: 20 }}>
+                {(grupos[tabSeleccionada].ejemplos || []).map((ejemplo, idx) => (
                   <li key={idx}>{ejemplo}</li>
                 ))}
               </ul>
