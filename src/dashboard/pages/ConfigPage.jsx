@@ -6,9 +6,8 @@ import {
 } from '@mui/material';
 import DashboardLayout from '../layout/DashboardLayout';
 import { useDispatch, useSelector } from 'react-redux';
-import { startGenerarQR2FA, startVerify2FA } from '../../store/auth/';
+import { startGenerarQR2FA, startVerify2FA, login } from '../../store/auth/';
 import Swal from 'sweetalert2';
-import { setRequires2FA } from '../../store/auth/authSlice';
 
 const ConfigSwitch = ({ label, description, checked, onChange }) => (
   <Box sx={{ marginBottom: 3 }}>
@@ -24,6 +23,9 @@ const ConfigSwitch = ({ label, description, checked, onChange }) => (
 );
 
 export const ConfigPage = () => {
+  const dispatch = useDispatch();
+  const { uid: userId, twoFactorEnabled } = useSelector((state) => state.auth);
+  const horarioGuardado = JSON.parse(localStorage.getItem("horarioTrabajo")) || { inicio: "08:00", fin: "17:00" };
   const [config, setConfig] = useState({
     notificacionesDiarias: true,
     recordatoriosComidas: true,
@@ -31,22 +33,19 @@ export const ConfigPage = () => {
     mensajeBienvenida: localStorage.getItem('mensajeBienvenida') || '¡Bienvenido a tu plan de nutrición personalizado!',
     mensajeMotivacional: '¡Sigue así! Cada día estás más cerca de tus objetivos.',
     seguimientoProgreso: false,
-    horarioTrabajo: { inicio: '08:00', fin: '17:00' },
+    horarioTrabajo: horarioGuardado,
     tema: 'light',
   });
-
-  const handleGuardarMensajeBienvenida = () => {
-    localStorage.setItem('mensajeBienvenida', config.mensajeBienvenida);
-    Swal.fire("Guardado", "El mensaje de bienvenida fue actualizado correctamente.", "success");
-  };
 
   const [qrCodeImage, setQrCodeImage] = useState(null);
   const [code2FA, setCode2FA] = useState('');
   const [mostrar2FA, setMostrar2FA] = useState(false);
   const [mensaje2FA, setMensaje2FA] = useState(null);
 
-  const dispatch = useDispatch();
-  const { uid: userId, requires2FA: tiene2FA } = useSelector((state) => state.auth);
+  const handleGuardarMensajeBienvenida = () => {
+    localStorage.setItem('mensajeBienvenida', config.mensajeBienvenida);
+    Swal.fire("Guardado", "El mensaje de bienvenida fue actualizado correctamente.", "success");
+  };
 
   const handleSwitchChange = (setting) => {
     const nuevoValor = !config[setting];
@@ -61,14 +60,12 @@ export const ConfigPage = () => {
 
   const handleInputChange = (setting, value) => {
     setConfig((prevConfig) => ({ ...prevConfig, [setting]: value }));
-    if (setting === 'horarioTrabajo') {
-      Swal.fire("Horario modificado", "Los cambios han sido registrados.", "success");
-    }
+
   };
 
   const handleSaveConfig = () => {
-    localStorage.setItem('mensajeBienvenida', config.mensajeBienvenida); // ← Guardamos
-    console.log('Configuración guardada:', config);
+    localStorage.setItem('mensajeBienvenida', config.mensajeBienvenida);
+    localStorage.setItem('horarioTrabajo', JSON.stringify(config.horarioTrabajo));
     Swal.fire("Guardado", "La configuración se guardó correctamente.", "success");
   };
 
@@ -85,17 +82,32 @@ export const ConfigPage = () => {
 
   const handleVerificar2FA = async () => {
     const result = await dispatch(startVerify2FA({ idUsuario: userId, token: code2FA }));
-    if (result?.isSuccess) {
-      // ✅ Actualizamos Redux
-      dispatch(setRequires2FA(true));
+    if (result?.isSuccess && result.usuario) {
+      const user = result.usuario;
+      dispatch(
+        login({
+          uid: user.idUsuario,
+          username: user.userName,
+          rol: user.rol,
+          planUsuario: user.planUsuario,
+          persona: {
+            nombre: user.persona?.nombre || "",
+            apellido: user.persona?.apellido || "",
+            email: user.persona?.email || "",
+            telefono: user.persona?.telefono || "",
+            sexoBiologico: user.persona?.sexoBiologico || "",
+          },
+          matricula: user.matricula_Profesional || "",
+          especialidad: user.especialidad || "",
+          token: result.token || "",
+          requires2FA: true,
+          twoFactorEnabled: !!user.twoFactorEnabled,
+        })
+      );
 
-      // 💾 Reemplazamos en localStorage el userData completo
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      const userDataActualizado = { ...userData, requires2FA: true };
-      localStorage.setItem("userData", JSON.stringify(userDataActualizado));
+      localStorage.setItem("authToken", result.token);
+      localStorage.setItem("userData", JSON.stringify(user));
 
-
-      // ✅ Mensaje visual
       Swal.fire({
         icon: "success",
         title: "Autenticación 2FA activada",
@@ -104,7 +116,6 @@ export const ConfigPage = () => {
         showConfirmButton: false,
       });
 
-      // ✅ Limpiamos UI
       setMostrar2FA(false);
       setQrCodeImage(null);
       setCode2FA('');
@@ -170,10 +181,13 @@ export const ConfigPage = () => {
                   type="time"
                   value={config.horarioTrabajo.inicio}
                   onChange={(e) =>
-                    handleInputChange('horarioTrabajo', {
-                      ...config.horarioTrabajo,
-                      inicio: e.target.value,
-                    })
+                    setConfig((prevConfig) => ({
+                      ...prevConfig,
+                      horarioTrabajo: {
+                        ...prevConfig.horarioTrabajo,
+                        inicio: e.target.value,
+                      },
+                    }))
                   }
                   fullWidth
                 />
@@ -185,10 +199,13 @@ export const ConfigPage = () => {
                   type="time"
                   value={config.horarioTrabajo.fin}
                   onChange={(e) =>
-                    handleInputChange('horarioTrabajo', {
-                      ...config.horarioTrabajo,
-                      fin: e.target.value,
-                    })
+                    setConfig((prevConfig) => ({
+                      ...prevConfig,
+                      horarioTrabajo: {
+                        ...prevConfig.horarioTrabajo,
+                        fin: e.target.value,
+                      },
+                    }))
                   }
                   fullWidth
                 />
@@ -211,10 +228,14 @@ export const ConfigPage = () => {
               </Grid>
 
               <Grid item xs={12}>
-                {tiene2FA ? (
+                {twoFactorEnabled ? (
                   <Alert severity="success">Ya tienes activado el doble factor de autenticación.</Alert>
                 ) : (
-                  <Button variant="contained" onClick={handleActivar2FA} sx={{ width: 300, height: 80, backgroundColor: "primary", justifyContent: "center" }}>
+                  <Button
+                    variant="contained"
+                    onClick={handleActivar2FA}
+                    sx={{ width: 300, height: 80, backgroundColor: "primary", justifyContent: "center" }}
+                  >
                     Activar autenticación 2FA
                   </Button>
                 )}

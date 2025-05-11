@@ -17,6 +17,7 @@ import { listarPacientes } from "../../store/patient";
 import { listarAlimentos } from "../../store/food";
 import { differenceInYears, addDays } from "date-fns";
 import Swal from 'sweetalert2';
+import ConsejosRapidos from "../components/consultas/ConsejosRapidos";
 
 
 export const PlanesPage = () => {
@@ -72,20 +73,20 @@ export const PlanesPage = () => {
   };
 
   const pacienteAdaptado = paciente && paciente.persona ? {
-      nombre: paciente.persona.nombre,
-      apellido: paciente.persona.apellido,
-      dni: paciente.persona.dni,
-      edad: differenceInYears(new Date(), new Date(paciente.persona.fechaNacimiento)),
-      altura: paciente.altura || 170,
-      peso: paciente.peso || 70,
-      sexo: paciente.persona.sexoBiologico === "m" ? "Masculino" : "Femenino",
-      nivelActividad: paciente.nivelActividad || "Media",
-      imc: paciente.imc || 24.2,
-      objetivos: paciente.objetivos || "Mantener peso y mejorar hábitos",
-      restricciones: paciente.restricciones || [],
-      alergias: paciente.alergias || [],
-      historialMedico: paciente.historialMedico || "",
-    }
+    nombre: paciente.persona.nombre,
+    apellido: paciente.persona.apellido,
+    dni: paciente.persona.dni,
+    edad: differenceInYears(new Date(), new Date(paciente.persona.fechaNacimiento)),
+    altura: paciente.altura || 170,
+    peso: paciente.peso || 70,
+    sexo: paciente.persona.sexoBiologico === "m" ? "Masculino" : "Femenino",
+    nivelActividad: paciente.nivelActividad || "Media",
+    imc: paciente.imc || 24.2,
+    objetivos: paciente.objetivos || "Mantener peso y mejorar hábitos",
+    restricciones: paciente.restricciones || [],
+    alergias: paciente.alergias || [],
+    historialMedico: paciente.historialMedico || "",
+  }
     : null;
 
   //POST DE PLANES
@@ -252,6 +253,9 @@ export const PlanesPage = () => {
 
         {step === "busqueda" && (
           <>
+            <Box sx={{mt:2}}>
+              <ConsejosRapidos />
+            </Box>
             <PatientSearchCard
               dni={dni}
               setDni={setDni}
@@ -263,12 +267,13 @@ export const PlanesPage = () => {
               Información general
             </Typography>
             <Divider sx={{ mb: 3 }} />
-            <InformacionGeneralPlanes/>
+            <InformacionGeneralPlanes />
           </>
         )}
 
         {step === "creacion" && paciente && (
           <>
+
             <PatientInfoCard paciente={pacienteAdaptado} onEdit={() => setStep("busqueda")} />
 
             <Box sx={{ mt: 4 }}>

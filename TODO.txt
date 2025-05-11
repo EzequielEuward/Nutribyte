@@ -8,43 +8,71 @@ IDEA: 💡
 
 --------------------TAREAS PARA MAÑANA--------------------
 ///BACKLOG DE TAREAS///
-
-
-//HACER A LA MAÑANA
-✅ Hacer que la calculadora antropometrica sea segun el tipo de plan de usuario
-✅ ⁠Hacer que tenga un límite de pacientes sea 15 y que envie un mail si llego a 15 pacientes que cambie el plan
+❌ HACER ABM DE COBRO DEL PACIENTE DUPLICAR TABLAS
+❌ Arreglar turnos 
+❌ Mejorar apenas entras la parte de Seguimiento
+❌ Hacer que en planes empieza con 0 
+❌ Hacer la seccion de reportes  
+❌ Mejorar <ConsejosRapidos/> tenga como un accordeon
+❌ Hacer que en nutri ideas se puedan imprimir varias
+❌ Poner un nuevo grafico en dashboard y sacar el de la torta
+❌ Agregar en la pagina principal que segun el tipo de plan tenga como una pagina aparte con la informacion del plan
+❌ Agregar el get de los pagos realizados por ese usuario
+❌ Arreglar bugs del localstore
+⚠️ En la pagina principal hacer que todo este justificado y este mas grande
+🚧 Ver que agregar en configuraciones para que no quede tan vacio. 
+🟨 En control de usuario hacer que tengan las ultimas modificaciones o algo historico
+🟨 Hacer que cobros dependiendo el estado mando un email.
 🚧 hacer pestaña de reportes
 ⚠️ Agregar verificado en la tabla y que muestre si verificó el usuario mediante eMail
 🟨 ⁠Hacer que el login pueda recuperar la contraseña
-✅ Arreglar y hacer que ande la parte del formulario de cosultas por algo que tiraba error con getValues()
-✅ Diseñar la parte de pagos y suscripciones
-✅ Terminar de arreglar la imagen que empieza con hombre si es ==M o si es F que empiece con la mujer
-✅- Optimizar donde se verian todos los alimentos
-✅ Arreglar planes apenas entras que se ve feo
-✅ Hacer que en el DashboardPage si no hay ningun turno pendiente hoy que diga, no hay ningun turno registrado para hoy 
-❌ Hacer que consejos rapidos ya sea en planes o consumo esten arriba y no abajo
+
+//HACER A LA MAÑANA
+
 
 //HACER A LA TARDE
-❌ Agregar usuario demo y que entre con el boton de probar sistema pero inabilitar todas las cosas que puede hacer
-❌ Mejorar apenas entras la parte de Seguimiento
-❌ Arreglar turnos 
-❌ Poner una boton que sea tipo de alerta o nota de si tiene la 2FA y que este siempre activa la nota hasta que active 2FA que sea 3 dias que moleste
-✅ Agregar alertas al hacer el 2fa y hacer el boton mas grande y el qr mas grande
-❌ Poner un nuevo grafico en dashboard y sacar el de la torta
-❌ Agregar en la pagina principal que segun el tipo de plan tenga como una pagina aparte con la informacion del plan
-🚧 Ver que agregar en configuraciones para que no quede tan vacio. 
-❌ Hacer que en nutri ideas se puedan imprimir varias
-💡 Ver como queda en configuraciones si agrego la hora en la que trabaja y agregar como un reloj en el navbar para que vaya contando la cantidad de hora
-❌ Hacer que tenga un boton para desactivar el 2FA (doble factor)
-✅ Agregar el mensaje de bienvenida predefinido en configpage
-✅ Hacer en el boton de cambiar de planes envie un email a software.sintacc@gmail.com para deir que quiere mejorar el plan actual
-❌ Hacer que en el boton de probar ahora el sistema en la pestaña principal entre con el usuario demo
+
 
 //ME TIENE QUE PASAR LA MELI
 ❗ Ver planesSummarysetp y lo otro y subir la imagen que paso meli
 ⚠️ Estadisticas de reportes
 ⚠️ Metricas de historial nutrional
 ⚠️ Que me pase los formularios 
+
+
+
+//ORGANIZACION DE LA PRESENTACION FINAL
+
+➡️ Presentacion de grupo sin tacc
+➡️ Mostrar problematica
+➡️ Analisis del mercado
+➡️ Estadisticas
+➡️ Caracteristicas del sector (donde se va a implementar y para quien esta destinado)
+➡️ Caracateristicas del sistema
+➡️ Tecnologias y el porque 
+➡️ Hablar de la seguridad con el 2FA
+➡️ Enfoque UX UI (responsivo)
+➡️ Precios de la propuesta
+➡️ Ciclo de vida del software o proyeto de vida 
+➡️ 
+➡️ Muestra del sistema
+➡️ Muestra Demo
+➡️ Propuesta de Valor: ¿Por Qué Elegirnos?
+➡️ Casos de Uso o Escenarios de Aplicación
+➡️ Benchmarking: ¿Qué Hace la Competencia?
+➡️ Ventajas Competitivas del Sistema
+➡️ Impacto Social o Beneficio Comunitario (en este caso, alimentación sin TACC)
+➡️ Escalabilidad y Futuras Funcionalidades
+➡️ Modelo de Negocio / Estrategia de Monetización
+➡️ Soporte y Mantenimiento Post Venta
+➡️ Estrategia de Marketing y Difusión
+➡️ Feedback de Usuarios o Pruebas de Usabilidad (si tienen)
+➡️ Evaluación de Riesgos y Plan de Contingencia
+➡️ Equipo de Trabajo y Roles del Proyecto
+➡️ Preguntas Frecuentes / Objeciones del Cliente y Cómo las Respondemos
+➡️ Conclusión: El Futuro del Software en este Sector
+
+
 
 
 
@@ -62,17 +90,14 @@ IDEA: 💡
 ✅ Vincular que me diga la cantidad de consultas que tengo en total y las consultas pendientes
 ✅ Cambiar el subtitulo de consulta anamnesis que diga "Seguimiento  médico del paciente"
 ✅ Cuando selecciono cada boton agregar una toolp a cada boton ya sea de planes y en otros componentes que use
-⚠️ En la pagina principal hacer que todo este justificado y este mas grande
 ✅ Cambiar nombre de generar informe y que me lleve a reportes que estaria creado
 
 //MAÑANA
 ✅ Terminar consumo
-🟨 Hacer que cobros dependiendo el estado mando un email.
 ✅ Arreglar que ande el localstore de la sesion para que figure el nombre que se borra cuando actualizo
 ✅ Validar el campo de que si tiene el dni repetido te diga antes de escribirlo
 ✅ Que te diga si de verdad quiere cargar al usuario dos swal en pacientes
 ✅ Hacer que si paso un mes del plano no se pueda editar  (outline button)
-🟨 En control de usuario hacer que tengan las ultimas modificaciones o algo historico
 ✅ Agregar lo de las calculadoras
 //TARDE
 ✅ Que en el form de Crear consulta se pueda hacer como una recomendacion de los antecedentes o el diagnostico si es que ya tiene
@@ -81,6 +106,24 @@ IDEA: 💡
 ✅ En nutriideas hacer que cada receta te deje imprimir. 
 ✅ En grafico de anamensis de "Comparativa de peso" agregar una columna mas con el peso recomendado / peso ideal
 
+//Mañana del otro otro dia
+✅ Hacer que la calculadora antropometrica sea segun el tipo de plan de usuario
+✅ ⁠Hacer que tenga un límite de pacientes sea 15 y que envie un mail si llego a 15 pacientes que cambie el plan
+✅ Arreglar y hacer que ande la parte del formulario de cosultas por algo que tiraba error con getValues()
+✅ Diseñar la parte de pagos y suscripciones
+✅ Terminar de arreglar la imagen que empieza con hombre si es ==M o si es F que empiece con la mujer
+✅ Optimizar donde se verian todos los alimentos
+✅ Arreglar planes apenas entras que se ve feo
+✅ Hacer que en el DashboardPage si no hay ningun turno pendiente hoy que diga, no hay ningun turno registrado para hoy 
+✅ Hacer que el boton de la lista de alimentos diga buscar alimentos, agregarle tooltips a la barra de busqueda avanzada y que desaparezca el otro boton con los filtros 
+✅ Hacer que consejos rapidos ya sea en planes o consumo esten arriba y no abajo
 
-
-
+//Tarde del otro otro dia
+✅ Poner una boton que sea tipo de alerta o nota de si tiene la 2FA y que este siempre activa la nota hasta que active 2FA que sea 3 dias que moleste
+✅ Agregar alertas al hacer el 2fa y hacer el boton mas grande y el qr mas grande
+✅ Ver como queda en configuraciones si agrego la hora en la que trabaja y agregar como un reloj en el navbar para que vaya contando la cantidad de hora
+✅ Hacer que tenga un boton para desactivar el 2FA (doble factor)
+✅ Agregar el mensaje de bienvenida predefinido en configpage
+✅ Hacer en el boton de cambiar de planes envie un email a software.sintacc@gmail.com para deir que quiere mejorar el plan actual
+✅ Agregar usuario demo y que entre con el boton de probar sistema pero inabilitar todas las cosas que puede hacer
+✅ Hacer que en el boton de probar ahora el sistema en la pestaña principal entre con el usuario demo

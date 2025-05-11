@@ -66,7 +66,10 @@ export const PatientPage = () => {
   };
 
 
-  const limitePacientesBasico = planUsuario?.toLowerCase() === "basico" && pacientes.length >= 15;
+  const esDemo = planUsuario?.toLowerCase() === "demo" ||"Demo";
+  const esBasicoYExcede = planUsuario?.toLowerCase() === "basico" && pacientes.length >= 15;
+
+  const limitePacientesBasico = esDemo || esBasicoYExcede;
 
   // Función para abrir el drawer y ver los detalles del paciente
   const handleViewPatient = (patient) => {
@@ -95,7 +98,7 @@ export const PatientPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (limitePacientesBasico) {
+    if (esBasicoYExcede) {
       Swal.fire({
         icon: 'warning',
         title: 'Límite alcanzado',
@@ -109,7 +112,7 @@ export const PatientPage = () => {
 
       enviarAlertaLimitePacientes(persona.email, username, pacientes.length);
     }
-  }, [limitePacientesBasico]);
+  }, [esBasicoYExcede]);
 
 
   const handleCreatePatient = async (patientData) => {

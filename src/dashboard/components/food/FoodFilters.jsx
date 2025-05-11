@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Paper,
   Grid,
@@ -8,10 +8,12 @@ import {
   IconButton,
   Box,
   Collapse,
+  Tooltip,
   Slider,
   Button,
 } from "@mui/material";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
+import debounce from "lodash.debounce";
 
 export const FoodFilters = ({ onFilterChange }) => {
   const [nombre, setNombre] = useState("");
@@ -26,6 +28,19 @@ export const FoodFilters = ({ onFilterChange }) => {
   const [fibraDietetica, setFibraDietetica] = useState([0, 50]);
   const [sodio, setSodio] = useState([0, 2000]);
   const [advancedOpen, setAdvancedOpen] = useState(false);
+
+  // ✅ Debounce para nombre
+  const debouncedNombreChange = useMemo(
+    () =>
+      debounce((value) => {
+        onFilterChange((prev) => ({ ...prev, nombre: value }));
+      }, 300),
+    [onFilterChange]
+  );
+
+  useEffect(() => {
+    return () => debouncedNombreChange.cancel();
+  }, [debouncedNombreChange]);
 
   const handleApplyFilters = () => {
     onFilterChange({
@@ -92,7 +107,11 @@ export const FoodFilters = ({ onFilterChange }) => {
             fullWidth
             label="Nombre"
             value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setNombre(value);
+              debouncedNombreChange(value);
+            }}
             variant="outlined"
           />
         </Grid>
@@ -112,17 +131,20 @@ export const FoodFilters = ({ onFilterChange }) => {
           </TextField>
         </Grid>
         <Grid item xs={12} sm={12} md={4} sx={{ textAlign: "right" }}>
-          <Box sx={{ mt: 2, textAlign: "right" }}>
-            <Button variant="contained" color="primary" onClick={handleApplyFilters}>
-             Busqueda avanzada
-            </Button>
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 1 }}>
+            <Tooltip title="Aplicar filtros avanzados">
+              <Button variant="contained" color="primary" onClick={handleApplyFilters}>
+                Aplicar filtros
+              </Button>
+            </Tooltip>
+            <Tooltip title="Mostrar/Ocultar filtros avanzados">
+              <IconButton onClick={() => setAdvancedOpen(!advancedOpen)}>
+                {advancedOpen ? <ExpandLess /> : <ExpandMore />}
+              </IconButton>
+            </Tooltip>
           </Box>
-          <IconButton onClick={() => setAdvancedOpen(!advancedOpen)}>
-            {advancedOpen ? <ExpandLess /> : <ExpandMore />}
-          </IconButton>
         </Grid>
       </Grid>
-
 
       <Collapse in={advancedOpen}>
         <Box sx={{ mt: 2 }}>
@@ -138,13 +160,6 @@ export const FoodFilters = ({ onFilterChange }) => {
             {renderRangeFilter("Sodio (mg)", sodio, setSodio, 0, 2000)}
           </Grid>
         </Box>
-        {/* Botón para aplicar filtros */}
-        <Box sx={{ mt: 2, textAlign: "right" }}>
-          <Button variant="contained" color="primary" onClick={handleApplyFilters}>
-            Aplicar filtros
-          </Button>
-        </Box>
-
       </Collapse>
     </Paper>
   );

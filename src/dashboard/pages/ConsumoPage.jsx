@@ -25,7 +25,7 @@ import { TablaConsumosPaciente, FormularioNuevoConsumo, ListaConsumosAccordion, 
 
 
 import { PatientSearchCard } from "../components/planes/"
-import { PatientInfoCardConsulta } from "../components/consultas/";
+import { ConsejosRapidos, PatientInfoCardConsulta } from "../components/consultas/";
 
 export const ConsumoPage = () => {
 
@@ -106,7 +106,7 @@ export const ConsumoPage = () => {
             await dispatch(crearConsumo(payload)).unwrap();
             Swal.fire("¡Guardado!", "El consumo fue registrado correctamente", "success");
             resetForm(); // limpia el formulario
-            dispatch(listarConsumosPorPaciente(paciente.idPaciente)); 
+            dispatch(listarConsumosPorPaciente(paciente.idPaciente));
         } catch (err) {
             Swal.fire("Error", err.message || "No se pudo registrar el consumo", "error");
         }
@@ -114,33 +114,33 @@ export const ConsumoPage = () => {
 
     const handleEditarConsumo = async ({ idConsumo, idPaciente, fecha, consumoAlimentos = [] }) => {
         const consumoPayload = {
-          idConsumo,
-          idPaciente,
-          fecha,
-          consumoAlimentos: consumoAlimentos.map((a) => ({
             idConsumo,
-            idAlimento: Number(a.idAlimento),
-            cantidad: Number(a.cantidad),
-          })),
+            idPaciente,
+            fecha,
+            consumoAlimentos: consumoAlimentos.map((a) => ({
+                idConsumo,
+                idAlimento: Number(a.idAlimento),
+                cantidad: Number(a.cantidad),
+            })),
         };
-      
+
         try {
-          await dispatch(editarConsumo({ idConsumo, consumo: consumoPayload })).unwrap();
-      
-          // 🔁 Esperá a que se actualice antes de cerrar el modal
-          const action = await dispatch(listarConsumosPorPaciente(idPaciente));
-          if (listarConsumosPorPaciente.fulfilled.match(action)) {
-            Swal.fire("Actualizado", "El consumo fue editado correctamente", "success");
-            setEditModalOpen(false);
-          } else {
-            throw new Error("No se pudo recargar la lista de consumos");
-          }
-      
+            await dispatch(editarConsumo({ idConsumo, consumo: consumoPayload })).unwrap();
+
+            // 🔁 Esperá a que se actualice antes de cerrar el modal
+            const action = await dispatch(listarConsumosPorPaciente(idPaciente));
+            if (listarConsumosPorPaciente.fulfilled.match(action)) {
+                Swal.fire("Actualizado", "El consumo fue editado correctamente", "success");
+                setEditModalOpen(false);
+            } else {
+                throw new Error("No se pudo recargar la lista de consumos");
+            }
+
         } catch (err) {
-          Swal.fire("Error", err.message || "No se pudo editar el consumo", "error");
+            Swal.fire("Error", err.message || "No se pudo editar el consumo", "error");
         }
-      };
-      
+    };
+
 
     //ELIMINAR CONSUMO
     const handleEliminarConsumo = (idConsumo) => {
@@ -176,6 +176,9 @@ export const ConsumoPage = () => {
 
                 {step === "busqueda" && (
                     <>
+                        <Box sx={{ mt: 2 }}>
+                            <ConsejosRapidos />
+                        </Box>
                         <Box sx={{ mt: 3 }}>
                             <PatientSearchCard
                                 dni={dni}

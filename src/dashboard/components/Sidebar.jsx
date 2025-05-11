@@ -34,7 +34,10 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
     if (rol !== "Administrador" && (item.text === "Versiones" || item.text === "Control de usuario")) {
       return false;
     }
-    if ((planUsuario === "premium" || planUsuario === "Premium" || planUsuario === "Basico" || planUsuario === "basico") && item.text === "Calculadora Antropometrica") {
+    if (
+      ["premium", "basico", "demo"].includes((planUsuario || "").toLowerCase()) &&
+      item.text === "Calculadora Antropometrica"
+    ) {
       return false;
     }
     return true;

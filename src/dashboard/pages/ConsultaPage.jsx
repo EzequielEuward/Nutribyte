@@ -338,6 +338,9 @@ export const ConsultaPage = () => {
         </Typography>
         {step === "busqueda" && (
           <>
+           <Box sx={{mt:2}}>
+              <ConsejosRapidos />
+            </Box>
             {/* Estadísticas rápidas */}
             <Box sx={{ mt: 3 }}>
               <InformacionGeneralConsultaPage consultas={consultas} />
@@ -365,8 +368,6 @@ export const ConsultaPage = () => {
                   </CardContent>
                 </Card>
               </Grid>
-              {/* Consejos rápidos */}
-              <ConsejosRapidos />
 
             </Grid>
           </>

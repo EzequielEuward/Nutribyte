@@ -4,6 +4,8 @@ import { FoodTable, FoodCards, FoodFilters  } from "../components";
 import { DashboardLayout } from "../layout/DashboardLayout";
 import { listarAlimentos } from "../../store/food/thunk";
 import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { useMemo } from "react";
+import debounce from "lodash.debounce"; 
 
 export const FoodPage = () => {
   const dispatch = useDispatch();
@@ -29,7 +31,10 @@ export const FoodPage = () => {
     setFilters(newFilters);
   };
 
-  const filteredAlimentos = alimentos.filter((food) => {
+
+
+const filteredAlimentos = useMemo(() => {
+  return alimentos.filter((food) => {
     const matchesNombre = food.nombre
       .toLowerCase()
       .includes(filters.nombre.toLowerCase());
@@ -42,6 +47,7 @@ export const FoodPage = () => {
 
     return matchesNombre && matchesGrupo && matchesCalorias && matchesProteinas;
   });
+}, [alimentos, filters]);
 
   return (
     <DashboardLayout>

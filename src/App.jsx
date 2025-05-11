@@ -10,24 +10,31 @@ export const App = () => {
   useEffect(() => {
     const userData = localStorage.getItem("userData");
     const authToken = localStorage.getItem("authToken");
-  
+
+    console.log("USER DATA:", userData);
+    console.log("TOKEN DEL USUARIO:", authToken);
+
     if (userData && authToken) {
       const user = JSON.parse(userData);
+      
+
       dispatch(
         login({
           uid: user.idUsuario,
           username: user.username || user.userName,
-          persona: user.persona,  
+          persona: user.persona,
           rol: user.rol,
           planUsuario: user.planUsuario,
-          matricula: user.matricula,
+          matricula: user.matricula_Profesional || user.matricula,
           especialidad: user.especialidad,
           token: authToken,
-          requires2FA: user.requires2FA || false,
+          requires2FA: user.requires2FA,
+          twoFactorEnabled: user.twoFactorEnabled === true || user.twoFactorEnabled === "true",
         })
       );
     }
   }, [dispatch]);
+
 
   return (
     <AppTheme>

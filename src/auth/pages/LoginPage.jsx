@@ -94,7 +94,6 @@ export const LoginPage = () => {
     }
   };
 
-
   return (
     <Box
       sx={{

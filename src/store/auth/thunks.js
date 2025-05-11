@@ -14,9 +14,12 @@ const api = axios.create({
 export const startLoginWithUsernameAndPassword = ({ username, password, codigo2FA }) => {
   return async (dispatch) => {
     dispatch(checkingCredentials());
+
     console.log("🟡 Iniciando login con:", { username, password, codigo2FA });
 
     try {
+      localStorage.removeItem("userData");
+      localStorage.removeItem("authToken");
       const payload = { username, password };
       if (codigo2FA) payload.codigo2FA = codigo2FA;
 
@@ -62,18 +65,16 @@ export const startLoginWithUsernameAndPassword = ({ username, password, codigo2F
           matricula: user.matricula_Profesional || "",
           especialidad: user.especialidad || "",
           token,
-          requires2FA, // ✅ ahora sí refleja el valor real
+          requires2FA,
+          twoFactorEnabled: !!user.twoFactorEnabled,
         })
       );
 
       localStorage.setItem("authToken", token);
-      localStorage.setItem(
-        "userData",
-        JSON.stringify({
-          ...user,
-          requires2FA, // este viene de user.twoFactorEnabled
-        })
-      );
+      localStorage.setItem("userData", JSON.stringify({
+        ...user,
+        twoFactorEnabled: !!user.twoFactorEnabled
+      }));
       localStorage.setItem("ultimaSesion", new Date().toLocaleString("es-AR"));
 
       return {
@@ -97,7 +98,7 @@ export const startActivate2FA = ({ idUsuario, token }) => {
 
       return {
         isSuccess: data.isSuccess,
-        token: data.result?.token || null,  // si tu backend devuelve un nuevo token tras validar
+        token: data.result?.token || null,
       };
     } catch (error) {
       console.error("Error al verificar 2FA:", error.response?.data || error.message);
@@ -138,10 +139,20 @@ export const startVerify2FA = ({ idUsuario, token }) => {
   return async () => {
     try {
       const { data } = await api.post(`/verificar-2fa`, { idUsuario, token });
+
+      const user = data.usuario;
+
+      // ✅ Guardar en localStorage el usuario actualizado
+      localStorage.setItem("userData", JSON.stringify({
+        ...user,
+        twoFactorEnabled: !!user.twoFactorEnabled
+      }));
+      console.log("🟢 userData guardado con 2FA:", user);
+
       return {
         isSuccess: true,
         token: data.token,
-        usuario: data.usuario
+        usuario: user,
       };
     } catch (error) {
       console.error("Error al verificar 2FA:", error.response?.data || error.message);
@@ -149,14 +160,16 @@ export const startVerify2FA = ({ idUsuario, token }) => {
     }
   };
 };
-
 // ✅ **Cerrar sesión corregido**
 export const startLogout = () => {
   return async (dispatch) => {
     try {
       localStorage.removeItem("authToken");
       localStorage.removeItem("userData");
+      localStorage.removeItem("ultimaSesion");
       sessionStorage.clear();
+      localStorage.removeItem("userData");
+      localStorage.removeItem("authToken");
       dispatch(logout());
     } catch (error) {
       console.error("Error al cerrar sesión:", error);

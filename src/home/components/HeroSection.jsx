@@ -1,7 +1,13 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Box, Typography, Button, Grid } from '@mui/material';
 import { styled, useTheme } from '@mui/system';
 import imgInicio from '../../assets/imagenInicio.png';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { startLoginWithUsernameAndPassword } from "../../store/auth";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 
 const HeroContainer = styled(Box)(({ theme }) => ({
     background: `linear-gradient(135deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`,
@@ -37,6 +43,47 @@ const HeroButton = styled(Button)(({ theme }) => ({
 
 export const HeroSection = () => {
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const { status } = useSelector(state => state.auth);
+    const navigate = useNavigate();
+    const MySwal = withReactContent(Swal);
+    useEffect(() => {
+        if (status === "authenticated") {
+            navigate("/home");
+        }
+    }, [status, navigate]);
+    const handleLoginDemo = async () => {
+        try {
+            MySwal.fire({
+                title: "Ingresando con cuenta demo...",
+                text: "Estamos preparando tu entorno de prueba.",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            const result = await dispatch(
+                startLoginWithUsernameAndPassword({
+                    username: "demo",
+                    password: "demo",
+                })
+            );
+            const resultData = result?.payload;
+            Swal.close();
+            if (resultData?.isSuccess) {
+            }
+        } catch (error) {
+            Swal.close();
+            Swal.fire({
+                icon: "error",
+                title: "Error de inicio de sesión demo",
+                text: error.message || "Algo salió mal al intentar ingresar.",
+            });
+        }
+    };
 
     return (
         <HeroContainer>
@@ -50,7 +97,9 @@ export const HeroSection = () => {
                         <Typography variant="h5" component="p" gutterBottom>
                             Facilita y agiliza las tareas del profesional con nuestro software especializado.
                         </Typography>
-                        <HeroButton variant="contained">Probarlo Ahora</HeroButton>
+                        <HeroButton variant="contained" onClick={handleLoginDemo}>
+                            Probarlo Ahora
+                        </HeroButton>
                     </HeroContent>
                 </Grid>
 

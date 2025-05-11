@@ -9,6 +9,7 @@ export const authSlice = createSlice({
     username: "",
     rol: "",
     planUsuario: "",
+    twoFactorEnabled: false,
     persona: {
       nombre: "",
       apellido: "",
@@ -36,6 +37,7 @@ export const authSlice = createSlice({
       state.especialidad = payload.especialidad;
       state.token = payload.token;
       state.requires2FA = payload.requires2FA || false;
+      state.twoFactorEnabled = payload.twoFactorEnabled || false;
       state.errorMessage = null;
     },
     logout: (state) => {
@@ -47,6 +49,8 @@ export const authSlice = createSlice({
       state.planUsuario = "";
       state.matricula = "";
       state.especialidad = "";
+      state.requires2FA = false;
+      state.twoFactorEnabled = false;
       state.persona = {
         nombre: "",
         apellido: "",
@@ -54,7 +58,6 @@ export const authSlice = createSlice({
         telefono: "",
         sexoBiologico: "",
       };
-      state.requires2FA = false;
       state.errorMessage = null;
     },
     setError: (state, { payload }) => {
