@@ -14,13 +14,15 @@ import {
   CobroParticularTable,
   NuevoCobroParticularDialog,
   DetallesCobroParticularesDialog,
-  EliminarCobroParticularDialog
+  EliminarCobroParticularDialog,
+  EditarCobroParticularDialog
 } from '../components/cobroParticulares';
 
 import {
   crearCobroParticular,
   obtenerCobrosPorUsuario,
-  eliminarCobroParticular
+  eliminarCobroParticular,
+  editarCobroParticular
 } from '../../store/cobroParticular/';
 
 import Swal from 'sweetalert2';
@@ -64,16 +66,39 @@ export const CobrosParticularesPage = () => {
       });
   };
 
-  const handleDeleteCobro = (idCobro) => {
-    dispatch(eliminarCobroParticular(idCobro))
+  const handleEditarCobro = (cobroEditado) => {
+    dispatch(editarCobroParticular(cobroEditado))
+      .unwrap()
+      .then(() => {
+        Swal.fire('Éxito', 'Cobro actualizado correctamente', 'success');
+        setOpenEditar(false);
+        dispatch(obtenerCobrosPorUsuario());
+      })
+      .catch((error) => {
+        console.error("❌ Error al editar cobro:", error);
+        const errorMsg = typeof error === 'string'
+          ? error
+          : error?.title || "Error desconocido al editar el cobro";
+
+        Swal.fire('Error', errorMsg, 'error');
+      });
+  };
+  const handleDeleteCobro = (cobroParticularId) => {
+    dispatch(eliminarCobroParticular(cobroParticularId))
       .unwrap()
       .then(() => {
         Swal.fire('Eliminado', 'El cobro fue eliminado correctamente.', 'success');
         setOpenEliminar(false);
         dispatch(obtenerCobrosPorUsuario());
       })
-      .catch(() => {
-        Swal.fire('Error', 'No se pudo eliminar el cobro.', 'error');
+      .catch((error) => {
+        console.error("❌ Error al eliminar cobro:", error);
+
+        const errorMsg = typeof error === 'string'
+          ? error
+          : error?.title || "Error desconocido al eliminar el cobro";
+
+        Swal.fire('Error', errorMsg, 'error');
       });
   };
 
@@ -135,6 +160,13 @@ export const CobrosParticularesPage = () => {
           open={openDetalles}
           onClose={() => setOpenDetalles(false)}
           cobro={selectedCobro}
+        />
+
+        <EditarCobroParticularDialog
+          open={openEditar}
+          onClose={() => setOpenEditar(false)}
+          cobro={selectedCobro}
+          onGuardar={handleEditarCobro}
         />
 
         <EliminarCobroParticularDialog

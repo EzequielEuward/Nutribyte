@@ -55,12 +55,29 @@ export const obtenerPacientesPorUsuario = createAsyncThunk(
   }
 );
 
+export const editarCobroParticular = createAsyncThunk(
+  'cobroParticular/editarCobroParticular',
+  async (cobroEditado, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${API_COBROPARTICULAR}/${cobroEditado.cobroPacienteId}`,
+        cobroEditado,
+        { headers: { "Content-Type": "application/json" } }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("❌ Error en PUT:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 export const eliminarCobroParticular = createAsyncThunk(
   'cobroParticular/eliminarCobroParticular',
-  async (idCobro, { rejectWithValue }) => {
+  async (cobroParticularId, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`${API_COBROPARTICULAR}/${idCobro}`);
-      return idCobro;
+      await axios.delete(`${API_COBROPARTICULAR}/${cobroParticularId}`);
+      return cobroParticularId;
     } catch (error) {
       console.error("❌ Error al eliminar cobro:", error.response?.data || error.message);
       return rejectWithValue(error.response?.data || error.message);

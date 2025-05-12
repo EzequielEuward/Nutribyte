@@ -9,14 +9,14 @@ export const EliminarCobroParticularDialog = ({ open, onClose, cobro, onDelete }
       <DialogContent>
         <Typography>
           ¿Estás seguro que deseas eliminar el cobro realizado al paciente{" "}
-          <strong>{cobro.pacienteNombre || `ID ${cobro.pacienteId}`}</strong> por un monto de <strong>${cobro.monto}</strong>?
+          <strong>{cobro.pacienteNombre || `DNI: ${cobro.paciente.persona.dni}`}</strong> por un monto de <strong>${cobro.monto}</strong>?
         </Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant="outlined">
           Cancelar
         </Button>
-        <Button onClick={() => onDelete(cobro.idCobro)} variant="contained" color="error">
+       <Button onClick={() => onDelete(cobro.cobroPacienteId)} variant="contained" color="error">
           Eliminar
         </Button>
       </DialogActions>

@@ -201,7 +201,7 @@ export const LoginPage = () => {
         <CardActions sx={{ justifyContent: 'center', flexDirection: 'column', textAlign: 'center' }}>
           <Typography variant="body2" color="textSecondary">
             ¿Olvidaste tu contraseña?{' '}
-            <a href="/" style={{ color: '#1976d2', textDecoration: 'none' }}>
+            <a href="/recuperarContraseña" style={{ color: '#1976d2', textDecoration: 'none' }}>
               Ingresa Aquí
             </a>
             <hr />

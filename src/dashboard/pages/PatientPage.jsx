@@ -65,11 +65,13 @@ export const PatientPage = () => {
     }
   };
 
+  const plan = username?.toLowerCase();
+  const esBasico = plan === "basico";
+  const esDemo = plan === "demo";
 
-  const esDemo = planUsuario?.toLowerCase() === "demo" ||"Demo";
-  const esBasicoYExcede = planUsuario?.toLowerCase() === "basico" && pacientes.length >= 15;
+  const superaLimiteBasico = esBasico && pacientes.length >= 15;
+  const deshabilitarBoton = esDemo || superaLimiteBasico;
 
-  const limitePacientesBasico = esDemo || esBasicoYExcede;
 
   // Función para abrir el drawer y ver los detalles del paciente
   const handleViewPatient = (patient) => {
@@ -98,7 +100,7 @@ export const PatientPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (esBasicoYExcede) {
+    if (superaLimiteBasico) {
       Swal.fire({
         icon: 'warning',
         title: 'Límite alcanzado',
@@ -112,7 +114,7 @@ export const PatientPage = () => {
 
       enviarAlertaLimitePacientes(persona.email, username, pacientes.length);
     }
-  }, [esBasicoYExcede]);
+  }, [superaLimiteBasico]);
 
 
   const handleCreatePatient = async (patientData) => {
@@ -189,9 +191,9 @@ export const PatientPage = () => {
 
         <Box sx={{ display: "flex", justifyContent: "flex-start", marginBottom: "16px" }}>
           <Button
-            variant={limitePacientesBasico ? "outlined" : "contained"}
+            variant={deshabilitarBoton ? "outlined" : "contained"}
             color="primary"
-            disabled={limitePacientesBasico}
+            disabled={deshabilitarBoton}
             onClick={() => setFormOpen(true)}
             sx={{ fontSize: "1.2rem", padding: "12px 24px", width: "100%" }}
           >

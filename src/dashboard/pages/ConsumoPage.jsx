@@ -21,7 +21,7 @@ import DashboardLayout from "../layout/DashboardLayout";
 import { listarPacientes } from "../../store/patient/";
 import { buscarPacientePorDni, listarConsumosPorUsuario, crearConsumo, eliminarConsumo, editarConsumo, listarConsumosPorPaciente } from "../../store/consumo/thunk";
 
-import { TablaConsumosPaciente, FormularioNuevoConsumo, ListaConsumosAccordion, FormularioEditarConsumo } from "../components/consumo/";
+import { TablaConsumosPaciente, FormularioNuevoConsumo, ListaConsumosAccordion, FormularioEditarConsumo, TablaConsumo } from "../components/consumo/";
 
 
 import { PatientSearchCard } from "../components/planes/"
@@ -46,7 +46,9 @@ export const ConsumoPage = () => {
     //Manejo de efectos
     useEffect(() => {
         dispatch(listarPacientes());
-        dispatch(listarConsumosPorUsuario());
+
+        dispatch(listarConsumosPorUsuario())
+
     }, [dispatch]);
 
     useEffect(() => {
@@ -198,9 +200,7 @@ export const ConsumoPage = () => {
                                         titleTypographyProps={{ variant: "h6" }}
                                     />
                                     <CardContent>
-                                        {/* Este componente mostrará todos los consumos (o por paciente si filtrás) */}
-                                        <h2>ACA IRIA OTRA COSA QUE HAY QUE VER QUE PONER</h2>z
-                                        {/* <TablaConsumosPaciente consumos={consumos} /> */}
+                                       <TablaConsumo consumos={consumos} />
                                     </CardContent>
                                 </Card>
                             </Grid>
@@ -259,7 +259,7 @@ export const ConsumoPage = () => {
                     onSubmit={handleEditarConsumo}
                 />
 
-                {isLoading && <Typography>Cargando...</Typography>}
+                {/* {isLoading && <Typography>Cargando...</Typography>} */}
                 {error && <Typography color="error">{error}</Typography>}
             </Container>
         </DashboardLayout>

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { obtenerCobrosPorUsuario, crearCobroParticular, eliminarCobroParticular } from './';
+import { obtenerCobrosPorUsuario, crearCobroParticular, eliminarCobroParticular, editarCobroParticular } from './';
 
 const initialState = {
     cobros: [],
@@ -54,6 +54,21 @@ export const cobroParticularSlice = createSlice({
                 state.cobros = state.cobros.filter(c => c.idCobro !== idEliminado);
             })
             .addCase(eliminarCobroParticular.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(editarCobroParticular.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(editarCobroParticular.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.cobros.findIndex(c => c.idCobro === action.payload.idCobro);
+                if (index !== -1) {
+                    state.cobros[index] = action.payload;
+                }
+            })
+            .addCase(editarCobroParticular.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

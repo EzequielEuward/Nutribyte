@@ -130,8 +130,11 @@ export const NuevoCobroParticularDialog = ({ open, onClose, handleGuardar }) => 
                                 {...register("estado")}
                             >
                                 <MenuItem value="Pendiente">Pendiente</MenuItem>
-                                <MenuItem value="Pagado">Pagado</MenuItem>
-                                <MenuItem value="Rechazado">Rechazado</MenuItem>
+                                <MenuItem value="Aprobado">Aprobado</MenuItem>
+                                <MenuItem value="Fallido">Rechazado</MenuItem>
+                                <MenuItem value="Reembolsado">Reembolsado</MenuItem>
+                                <MenuItem value="En proceso">En proceso</MenuItem>
+                                <MenuItem value="Cancelado">Cancelado</MenuItem>
                             </TextField>
                         </Grid>
                     </Grid>

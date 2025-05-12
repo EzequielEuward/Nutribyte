@@ -8,11 +8,11 @@ IDEA: 💡
 
 --------------------TAREAS PARA MAÑANA--------------------
 ///BACKLOG DE TAREAS///
-🚧 HACER ABM DE COBRO DEL PACIENTE DUPLICAR TABLAS
+✅ HACER ABM DE COBRO DEL PACIENTE DUPLICAR TABLAS
 🚧 hacer pestaña de reportes
 ❌ Mejorar apenas entras la parte de Seguimiento
 ❌ Poner un nuevo grafico en dashboard y sacar el de la torta
-❌ Agregar el get de los pagos realizados por ese usuario
+✅ Agregar el get de los pagos realizados por ese usuario
 ❌ Arreglar bugs del localstore
 ✅ Arreglar turnos 
 ✅ Hacer que en planes empieza con 0 
@@ -23,8 +23,8 @@ IDEA: 💡
 ✅ Ver que agregar en configuraciones para que no quede tan vacio. 
 🟨 En control de usuario hacer que tengan las ultimas modificaciones o algo historico
 🟨 Hacer que cobros dependiendo el estado mando un email.
-⚠️ Agregar verificado en la tabla y que muestre si verificó el usuario mediante eMail
-🟨 ⁠Hacer que el login pueda recuperar la contraseña
+✅ Agregar verificado en la tabla y que muestre si verificó el usuario mediante eMail
+✅ ⁠Hacer que el login pueda recuperar la contraseña
 
 //HACER A LA MAÑANA
 

@@ -14,32 +14,39 @@ export const FAQSection = () => {
 
             {[
                 {
-                    title: '¿ Qué es S.I.N TACC ?',
-                    content: 'S.I.N TACC es una herramienta que facilita la gestión nutricional para profesionales en el área de salud. Ofrece funcionalidades como la creación de dietas, seguimiento de pacientes y más.'
+                    title: '¿Qué es S.I.N TACC?',
+                    content:
+                        'S.I.N TACC es una plataforma diseñada para profesionales de la salud que permite gestionar de forma eficiente la información nutricional de sus pacientes. Ofrece funcionalidades como la creación de planes alimentarios, seguimiento personalizado, control de evolución y mucho más.'
                 },
                 {
                     title: '¿Cómo empiezo a usar la aplicación?',
-                    content: 'Para comenzar a usar S.I.N TACC, solo tienes que registrarte como profesional de la salud. Una vez registrado, podrás acceder a todas las funcionalidades para gestionar tus pacientes y crear dietas personalizadas.'
+                    content:
+                        'Para comenzar a utilizar S.I.N TACC, simplemente registrate como profesional de la salud. Una vez creado tu usuario, podrás acceder a todas las herramientas necesarias para gestionar pacientes, diseñar dietas y realizar seguimientos.'
                 },
                 {
                     title: '¿Cuáles son las formas de pago disponibles?',
-                    content: 'Cualquiera de las dos versiones se pueden abonar a través de una transferencia bancaria o por Mercado Pago. Pueden solicitar los datos para el pago a info@siscon.com.ar o info@sintacc.com'
+                    content:
+                        'Ambas versiones del sistema pueden abonarse mediante transferencia bancaria o a través de Mercado Pago. Para obtener los datos de pago, podés escribirnos a sintacc.software@gmail.com.'
                 },
                 {
-                    title: '¿Puedo dar de baja el usuario en cualquier momento?',
-                    content: 'Sí. No existe ningún tipo de contrato para los usuarios, se pueden dar de baja cuando quieran. Si después de un tiempo es necesario volver a trabajar, podemos activarlo nuevamente y trabajar con los datos cargados ya que estos no se pierden.'
+                    title: '¿Puedo dar de baja mi usuario en cualquier momento?',
+                    content:
+                        'Sí. No existe ningún tipo de contrato obligatorio. Podés dar de baja tu cuenta en el momento que desees. Si en el futuro decidís retomar, podrás reactivar tu cuenta y continuar trabajando con toda la información previamente cargada.'
                 },
                 {
-                    title: '¿SINTACC funciona con cualquier Sistema Operativo?',
-                    content: 'SINTACC en su versión web funciona con cualquier sistema operativo. Para utilizarlo solo debes tener un navegador web. Nosotros recomendamos Google Chrome.'
+                    title: '¿S.I.N TACC funciona en cualquier sistema operativo?',
+                    content:
+                        'Sí. La versión web de S.I.N TACC es compatible con todos los sistemas operativos. Solo necesitás un navegador web moderno para acceder. Recomendamos utilizar Google Chrome para una mejor experiencia.'
                 },
                 {
-                    title: '¿Puedo enviar información por E-mail?',
-                    content: 'Sí. El software permite enviar vía E-mail planes alimentarios, planillas para registro diario de alimentos, registro diario de alimentos y glucemia, registro diario de actividad física, curva de peso y otros archivos en formato Word o PDF que el profesional crea necesarios. También se pueden adjuntar recetas en formato PDF.'
+                    title: '¿Puedo enviar información por e-mail desde la plataforma?',
+                    content:
+                        'Sí. La plataforma permite enviar por correo electrónico distintos documentos como planes alimentarios, registros diarios de alimentos, glucemia o actividad física, curvas de peso, recetas y otros archivos en formato Word o PDF que el profesional considere necesarios.'
                 },
                 {
-                    title: '¿Que seguridad ofrece para proteger la seguridad de los datos del pacientes?',
-                    content: 'Ofrecemos metodo 2FA '
+                    title: '¿Qué medidas de seguridad ofrece S.I.N TACC para proteger los datos del paciente?',
+                    content:
+                        'S.I.N TACC cuenta con autenticación de doble factor (2FA) para mayor seguridad, y todos los datos se almacenan en servidores encriptados con acceso restringido exclusivamente al profesional autorizado.'
                 }
             ].map((faq, index) => (
                 <Accordion
