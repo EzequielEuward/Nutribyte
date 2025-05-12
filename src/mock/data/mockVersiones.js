@@ -103,6 +103,20 @@ export const getMockVersions = () => {
       shortDescription: "Actualización de medidas y métricas",
       longDescription:
         "Se actualizaron las medidas y métricas utilizadas en los cálculos, garantizando mayor precisión y confiabilidad en los resultados mostrados.",
-    }
+    },
+    {
+      id: "v1.4.7",
+      date: "2025-05-12",
+      time: "16:30",
+      author: "Euward Ezequiel",
+      authorAvatar: "/../../../assets/eze.jpg",
+      authorInitials: "EE",
+      changes: 4,
+      status: "stable",
+      shortDescription: "Primera versión estable de lanzamiento",
+      longDescription:
+        "Se agregaron nuevas modficaciónes y cambios en funcionamiento",
+    },
+
   ]);
 };

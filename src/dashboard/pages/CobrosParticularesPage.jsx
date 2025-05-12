@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Container, Card, CardHeader, CardContent, Button, Menu, MenuItem,
-  Typography, Box
-} from '@mui/material';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
+import { Container, Card, CardHeader, CardContent, Button, Menu, MenuItem, Typography, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import { DashboardLayout } from '../layout/DashboardLayout';
 import {
   CobroParticularTable,
   NuevoCobroParticularDialog,
   DetallesCobroParticularesDialog,
   EliminarCobroParticularDialog,
-  EditarCobroParticularDialog
+  EditarCobroParticularDialog,
 } from '../components/cobroParticulares';
 
 import {
@@ -24,11 +24,16 @@ import {
   eliminarCobroParticular,
   editarCobroParticular
 } from '../../store/cobroParticular/';
-
+import { useGenerarFacturaPDF } from '../../hooks/useGenerarFacturaPDF';
 import Swal from 'sweetalert2';
+
+
+
+
 
 export const CobrosParticularesPage = () => {
   const dispatch = useDispatch();
+  const { generarFacturaPDF } = useGenerarFacturaPDF();
   const { cobros, loading, error } = useSelector((state) => state.cobroParticular);
 
   const [selectedCobro, setSelectedCobro] = useState(null);
@@ -75,7 +80,6 @@ export const CobrosParticularesPage = () => {
         dispatch(obtenerCobrosPorUsuario());
       })
       .catch((error) => {
-        console.error("❌ Error al editar cobro:", error);
         const errorMsg = typeof error === 'string'
           ? error
           : error?.title || "Error desconocido al editar el cobro";
@@ -83,6 +87,7 @@ export const CobrosParticularesPage = () => {
         Swal.fire('Error', errorMsg, 'error');
       });
   };
+
   const handleDeleteCobro = (cobroParticularId) => {
     dispatch(eliminarCobroParticular(cobroParticularId))
       .unwrap()
@@ -92,8 +97,6 @@ export const CobrosParticularesPage = () => {
         dispatch(obtenerCobrosPorUsuario());
       })
       .catch((error) => {
-        console.error("❌ Error al eliminar cobro:", error);
-
         const errorMsg = typeof error === 'string'
           ? error
           : error?.title || "Error desconocido al eliminar el cobro";
@@ -145,6 +148,18 @@ export const CobrosParticularesPage = () => {
           <MenuItem onClick={() => { setSelectedCobro(menuCobro); setOpenEditar(true); handleMenuClose(); }}>
             <EditIcon sx={{ mr: 1 }} /> Editar
           </MenuItem>
+          <MenuItem
+            onClick={() => {
+              if (menuCobro) {
+                generarFacturaPDF(menuCobro);
+              } else {
+                Swal.fire("Error", "No se encontró el cobro seleccionado", "error");
+              }
+              handleMenuClose();
+            }}
+          >
+            <ReceiptIcon sx={{ mr: 1 }} /> Enviar comprobante
+          </MenuItem>
           <MenuItem onClick={() => { setSelectedCobro(menuCobro); setOpenEliminar(true); handleMenuClose(); }}>
             <DeleteIcon sx={{ mr: 1 }} /> Eliminar
           </MenuItem>
@@ -155,20 +170,17 @@ export const CobrosParticularesPage = () => {
           onClose={() => setOpenNuevoCobro(false)}
           handleGuardar={handleNewCobro}
         />
-
         <DetallesCobroParticularesDialog
           open={openDetalles}
           onClose={() => setOpenDetalles(false)}
           cobro={selectedCobro}
         />
-
         <EditarCobroParticularDialog
           open={openEditar}
           onClose={() => setOpenEditar(false)}
           cobro={selectedCobro}
           onGuardar={handleEditarCobro}
         />
-
         <EliminarCobroParticularDialog
           open={openEliminar}
           onClose={() => setOpenEliminar(false)}

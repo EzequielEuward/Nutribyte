@@ -3,9 +3,56 @@ import {
   Tabs, Tab, Box, Typography, Card, CardContent, CardHeader
 } from "@mui/material";
 import DashboardLayout from "../../layout/DashboardLayout";
+import { TurnosResumenChart, DistribucionTurnosMensualChart, ComparacionTurnosMesChart, PacientesPorSexoChart } from "../../components/reportes";
+import { useSelector } from "react-redux";
+import { differenceInMonths } from "date-fns";
+import { PatientsSummary } from "../dashboard";
 
 export const ReportesUsuarioPage = () => {
   const [tabIndex, setTabIndex] = useState(0);
+  const turnos = useSelector((state) => state.turnos.turnos || []);
+  const pacientes = useSelector((state) => state.patients.pacientes);
+
+  const pacientesActivos = pacientes.filter((paciente) => paciente.activo === true);
+  const totalPacientesActivos = pacientesActivos.length;
+
+  const obtenerResumenTurnos = (turnos) => {
+    const hoy = new Date();
+
+    const resumen = {
+      disponible: [0, 0, 0],
+      ocupado: [0, 0, 0],
+      cerrado: [0, 0, 0],
+      cancelado: [0, 0, 0],
+    };
+
+    turnos.forEach((turno) => {
+      const fecha = new Date(turno.fechaInicio);
+      const meses = differenceInMonths(hoy, fecha);
+      const estado = turno.estado?.toLowerCase().replace(/\s/g, "");
+
+
+      const indices = [
+        meses <= 1 ? 0 : null,
+        meses <= 6 ? 1 : null,
+        meses <= 12 ? 2 : null,
+      ];
+
+      indices.forEach((index, i) => {
+        if (index !== null) {
+          if (estado.includes("disponible")) resumen.disponible[i]++;
+          else if (estado.includes("ocupado")) resumen.ocupado[i]++;
+          else if (estado.includes("cerrado")) resumen.cerrado[i]++;
+          else if (estado.includes("cancelado")) resumen.cancelado[i]++;
+        }
+      });
+    });
+
+    return resumen;
+  };
+
+
+  const turnosData = obtenerResumenTurnos(turnos);
 
   return (
     <DashboardLayout>
@@ -16,35 +63,38 @@ export const ReportesUsuarioPage = () => {
         </Typography>
 
         <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ mb: 2 }}>
-          <Tab label="Turnos Cancelados" />
-          <Tab label="Pacientes Ausentes" />
-          <Tab label="Errores Comunes" />
+          <Tab label="Turnos" />
+          <Tab label="Pacientes" />
         </Tabs>
 
         {tabIndex === 0 && (
-          <Card>
-            <CardHeader title="Turnos Cancelados" subheader="Últimos 6 meses" />
-            <CardContent>
-              <Typography>Gráfico: Turnos Cancelados</Typography>
-            </CardContent>
-          </Card>
+          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+            <Box sx={{ flex: 1, minWidth: 320 }}>
+              <DistribucionTurnosMensualChart />
+            </Box>
+            <Box sx={{ flex: 1, minWidth: 320 }}>
+              <ComparacionTurnosMesChart />
+            </Box>
+            <Box sx={{ width: "100%" }}>
+              <TurnosResumenChart data={turnosData} />
+            </Box>
+          </Box>
         )}
+
         {tabIndex === 1 && (
-          <Card>
-            <CardHeader title="Pacientes Ausentes" subheader="Últimos 3 meses" />
-            <CardContent>
-              <Typography>Tabla: Pacientes Ausentes</Typography>
-            </CardContent>
-          </Card>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+            <Box sx={{ flex: 1, minWidth: 320 }}>
+              <Card>
+                <CardHeader title="Pacientes" subheader="Últimos 3 meses" />
+                <PatientsSummary pacientes={pacientesActivos} />
+              </Card>
+            </Box>
+            <Box sx={{ flex: 1, minWidth: 320 }}>
+              <PacientesPorSexoChart />
+            </Box>
+          </Box>
         )}
-        {tabIndex === 2 && (
-          <Card>
-            <CardHeader title="Errores del Sistema" subheader="Reportes frecuentes" />
-            <CardContent>
-              <Typography>Gráfico: Errores del Sistema</Typography>
-            </CardContent>
-          </Card>
-        )}
+
       </Box>
     </DashboardLayout>
   );

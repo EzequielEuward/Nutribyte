@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import {ReportesAdminPage,ReportesUsuarioPage} from '../components/reportes/';
+import { ReportesAdminPage, ReportesUsuarioPage } from '../components/reportes/';
 
 
 export const ReportesPage = () => {

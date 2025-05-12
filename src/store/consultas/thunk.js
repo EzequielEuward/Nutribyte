@@ -221,7 +221,7 @@ export const obtenerAnamnesisCalculadaPorConsulta = createAsyncThunk(
       if (!userId) {
         throw new Error("Usuario no autenticado");
       }
-      const url = `https://localhost:7041/api/Anamnesis/Calculado/${userId}/${idConsulta}`;
+      const url = `${API_ANAMNESIS}/Calculado/${userId}/${idConsulta}`;
       const { data } = await axios.get(url);
 
       return data;

@@ -17,7 +17,7 @@ export const DetallesCobroParticularesDialog = ({ open, onClose, cobro }) => {
           </Grid>
           <Grid item xs={6}>
             <Typography variant="subtitle2">Fecha:</Typography>
-            <Typography>{new Date(cobro.fecha).toLocaleDateString()}</Typography>
+            <Typography>{new Date(cobro.fechaCreacion).toLocaleDateString()}</Typography>
           </Grid>
           <Grid item xs={6}>
             <Typography variant="subtitle2">Monto:</Typography>

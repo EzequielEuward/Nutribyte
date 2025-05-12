@@ -10,7 +10,7 @@ IDEA: 💡
 ///BACKLOG DE TAREAS///
 ✅ HACER ABM DE COBRO DEL PACIENTE DUPLICAR TABLAS
 🚧 hacer pestaña de reportes
-❌ Mejorar apenas entras la parte de Seguimiento
+✅ Mejorar apenas entras la parte de Seguimiento
 ❌ Poner un nuevo grafico en dashboard y sacar el de la torta
 ✅ Agregar el get de los pagos realizados por ese usuario
 ❌ Arreglar bugs del localstore
@@ -26,6 +26,14 @@ IDEA: 💡
 ✅ Agregar verificado en la tabla y que muestre si verificó el usuario mediante eMail
 ✅ ⁠Hacer que el login pueda recuperar la contraseña
 
+❌ Arreglar turno darle la opcion de confirmar o no confirmar turno.
+❌ Hacer que cuando tenga una consulta creada me dispare el estado del paciente sea En tratamiento
+✅ Agregar que la imagen cuando descargo un plan salga eso de puño cerrado qsy 
+✅ Arreglar ahora el get (de anamensis)
+✅ Arreglar que me salga bien la informacion de planes summary
+✅ Hacer que ande descuento de cobro particulares
+❌ Hacer lo del iva 21% o 10.5% que tenga para selecionar nomas
+
 //HACER A LA MAÑANA
 
 
@@ -33,7 +41,6 @@ IDEA: 💡
 
 
 //ME TIENE QUE PASAR LA MELI
-❗ Ver planesSummarysetp y lo otro y subir la imagen que paso meli
 ⚠️ Estadisticas de reportes
 ⚠️ Metricas de historial nutrional
 ⚠️ Que me pase los formularios 

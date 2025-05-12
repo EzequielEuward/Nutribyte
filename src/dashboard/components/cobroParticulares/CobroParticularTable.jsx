@@ -48,7 +48,7 @@ export const CobroParticularTable = ({ cobros, handleMenuOpen }) => {
                   <TableCell>{nombre} {apellido}</TableCell>
                   <TableCell>{dni}</TableCell>
                   <TableCell>{new Date(cobro.fechaCreacion ?? new Date()).toLocaleDateString()}</TableCell>
-                  <TableCell>${cobro.monto?.toFixed(2) ?? '0.00'}</TableCell>
+                  <TableCell>${cobro.total?.toFixed(2) ?? '0.00'}</TableCell>
                   <TableCell>{cobro.metodoPago}</TableCell>
                   <TableCell>
                     <Chip label={cobro.estado ?? 'Sin estado'} color={getEstadoColor(cobro.estado)} />

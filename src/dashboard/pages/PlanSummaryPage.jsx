@@ -1,7 +1,7 @@
 // PlanSummaryPage.jsx
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, Grid, Typography, Divider, Button, Stack, Tooltip,IconButton  } from '@mui/material';
+import { Box, Grid, Typography, Divider, Button, Stack, Tooltip, IconButton } from '@mui/material';
 import { PlanSummaryStep, PlanChart, TablaComidaSummary } from '../components/planes/';
 import { DashboardLayout } from '../layout/DashboardLayout';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -47,6 +47,7 @@ export const PlanSummaryPage = () => {
       let heightLeft = imgHeight;
       let position = 0;
 
+      // Agregar el contenido principal
       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       heightLeft -= pdfHeight;
 
@@ -57,9 +58,22 @@ export const PlanSummaryPage = () => {
         heightLeft -= pdfHeight;
       }
 
-      pdf.save(`${plan.tipoPlan}_Resumen.pdf`);
+      // 👉 Agregar imagen al final
+      const finalImage = new Image();
+      finalImage.src = '/porciones.png'; 
+
+      finalImage.onload = () => {
+        const aspectRatio = finalImage.width / finalImage.height;
+        const imageWidth = pdfWidth;
+        const imageHeight = pdfWidth / aspectRatio;
+
+        pdf.addPage();
+        pdf.addImage(finalImage, 'PNG', 0, 10, imageWidth, imageHeight); 
+        pdf.save(`${plan.tipoPlan}_Resumen.pdf`);
+      };
     });
   };
+
   return (
     <DashboardLayout>
       <Box sx={{ p: 4 }}>
