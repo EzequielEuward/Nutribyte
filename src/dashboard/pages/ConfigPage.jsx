@@ -27,8 +27,6 @@ export const ConfigPage = () => {
   const { uid: userId, twoFactorEnabled } = useSelector((state) => state.auth);
   const horarioGuardado = JSON.parse(localStorage.getItem("horarioTrabajo")) || { inicio: "08:00", fin: "17:00" };
   const [config, setConfig] = useState({
-    notificacionesDiarias: true,
-    recordatoriosComidas: true,
     seguimientoAgua: true,
     mensajeBienvenida: localStorage.getItem('mensajeBienvenida') || '¡Bienvenido a tu plan de nutrición personalizado!',
     mensajeMotivacional: '¡Sigue así! Cada día estás más cerca de tus objetivos.',
@@ -149,21 +147,10 @@ export const ConfigPage = () => {
             sx={{ textAlign: 'center' }}
           />
           <CardContent>
+
             <ConfigSwitch
-              label="Notificaciones Diarias"
-              description="Recibe recordatorios diarios sobre tu plan"
-              checked={config.notificacionesDiarias}
-              onChange={() => handleSwitchChange('notificacionesDiarias')}
-            />
-            <ConfigSwitch
-              label="Recordatorios de Comidas"
-              description="Recibe alertas para tus horarios de comida"
-              checked={config.recordatoriosComidas}
-              onChange={() => handleSwitchChange('recordatoriosComidas')}
-            />
-            <ConfigSwitch
-              label="Seguimiento Automático de Progreso"
-              description="Habilita la recopilación de datos automáticamente para tus pacientes"
+              label="NutriReloj"
+              description="Habilita el reloj pomodoro para visualizar las horas faltantes"
               checked={config.seguimientoProgreso}
               onChange={() => handleSwitchChange('seguimientoProgreso')}
             />

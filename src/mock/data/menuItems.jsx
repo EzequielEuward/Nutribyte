@@ -4,7 +4,7 @@ import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import FlagIcon from '@mui/icons-material/Flag';
 const iconStyle = { color: "#6e6e6e" }; 
 import CalculateIcon from '@mui/icons-material/Calculate';
-
+import PaymentIcon from '@mui/icons-material/Payment';
 export const menuItems = [
   {
     text: "Inicio",
@@ -60,6 +60,11 @@ export const menuItems = [
     text: "Calculadora Antropometrica",
     icon: <CalculateIcon style={iconStyle}/>,
     link: "/home/calculadora-antropometrica"
+  },
+  {
+    text: "Pagos particulares",
+    icon: <PaymentIcon style={iconStyle}/>,
+    link: "/home/pagos-particulares"
   },
   {
     text: "Versiones",

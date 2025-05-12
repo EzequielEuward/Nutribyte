@@ -1,9 +1,19 @@
 import React from "react";
-import { Card, CardContent, CardActions, CardMedia, Typography, Button } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  CardMedia,
+  Typography,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Box
+} from "@mui/material";
 import html2pdf from "html2pdf.js";
 
-export const RecipeCard = ({ recipe, onOpenModal }) => {
-
+// 👇 Declarar la función con nombre
+const RecipeCardComponent = ({ recipe, onOpenModal, onToggleSelect, isSelected }) => {
   const handleDownloadPDF = () => {
     const name = recipe?.name || 'Receta';
     const plan = recipe?.plan || 'Sin plan';
@@ -24,22 +34,21 @@ export const RecipeCard = ({ recipe, onOpenModal }) => {
       <div style="text-align:center;margin-bottom:16px;">
         <img src="${imageUrl}" alt="Imagen de la receta" width="300" style="border-radius:8px;" crossorigin="anonymous"/>
       </div>
-    
+
       <div style="background-color:#e3f2fd;padding:10px 15px;border-radius:5px;">
         <h2 style="margin:0;color:#0d47a1;">${name}</h2>
         <h4 style="margin:5px 0 10px;color:#1976d2;">Plan: ${plan}</h4>
       </div>
-    
+
       <p><strong>Descripción:</strong> ${description}</p>
-    
+
       ${ingredients.length > 0
         ? `<h4 style="color:#2e7d32;">Ingredientes:</h4><ul style="padding-left:20px;">${ingredients.map(i => `<li>${i}</li>`).join('')}</ul>`
         : ''
       }
-    
+
       ${steps.length > 0
-        ? `<h4 style="color:#ef6c00;">Pasos:</h4>
-             <div>${steps.map((s, i) => `<p><strong>${i + 1})</strong> ${s}</p>`).join('')}</div>`
+        ? `<h4 style="color:#ef6c00;">Pasos:</h4><div>${steps.map((s, i) => `<p><strong>${i + 1})</strong> ${s}</p>`).join('')}</div>`
         : ''
       }
     `;
@@ -57,11 +66,9 @@ export const RecipeCard = ({ recipe, onOpenModal }) => {
   };
 
   return (
-    <Card style={{ width: "100%" }}>
+    <Card style={{ width: "100%", position: "relative" }}>
       <CardContent>
-        <Typography variant="h5" component="div">
-          {recipe?.name || 'Receta sin nombre'}
-        </Typography>
+        <Typography variant="h5">{recipe?.name || 'Receta sin nombre'}</Typography>
         <Typography variant="subtitle1" color="text.secondary">
           {recipe?.plan || 'Sin plan'}
         </Typography>
@@ -81,26 +88,41 @@ export const RecipeCard = ({ recipe, onOpenModal }) => {
         </Typography>
       </CardContent>
 
-      <CardActions sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <Button
-          size="small"
-          variant="contained"
-          sx={{ backgroundColor: "primary.main", color: "white", "&:hover": { backgroundColor: "primary.dark" } }}
-          onClick={() => onOpenModal(recipe)}
-        >
-          Ver detalles
-        </Button>
-        <Button
-          size="small"
-          variant="outlined"
-          color="secondary"
-          onClick={handleDownloadPDF}
-        >
-          Descargar PDF
-        </Button>
+      <CardActions sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            size="small"
+            variant="contained"
+            sx={{ backgroundColor: "primary.main", color: "white", "&:hover": { backgroundColor: "primary.dark" } }}
+            onClick={() => onOpenModal(recipe)}
+          >
+            Ver detalles
+          </Button>
+          <Button
+            size="small"
+            variant="outlined"
+            color="secondary"
+            onClick={handleDownloadPDF}
+          >
+            Descargar PDF
+          </Button>
+        </Box>
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isSelected}
+              onChange={onToggleSelect}
+              color="primary"
+            />
+          }
+          label="Seleccionar"
+        />
       </CardActions>
     </Card>
   );
 };
 
+// 👇 Usar memo correctamente
+export const RecipeCard = React.memo(RecipeCardComponent);
 export default RecipeCard;

@@ -12,7 +12,7 @@ import {
 import { es } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography, Tooltip } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import {
   listarTurnos,
@@ -66,23 +66,23 @@ export const CalendarPage = () => {
   const now = new Date();
   const defaultStart = format(now, "yyyy-MM-dd'T'HH:mm");
   const defaultEnd = format(addMinutes(now, 45), "yyyy-MM-dd'T'HH:mm");
-  
+
   const [formValues, setFormValues] = useState({
     title: "",
     motivo: "",
-    tipoConsulta:"",
+    tipoConsulta: "",
     start: defaultStart,
     end: defaultEnd,
     pacienteSeleccionado: "",
     estado: "pendiente",
   });
-  
+
 
   const safeToISOString = (value) => {
     const date = new Date(value);
     return isValid(date) ? date.toISOString() : "";
   };
-  
+
   const turnoModificado = {
     tipoConsulta: formValues.title,
     motivo: formValues.motivo,
@@ -91,27 +91,44 @@ export const CalendarPage = () => {
     idPaciente: parseInt(formValues.pacienteSeleccionado, 10),
     estado: formValues.estado,
   };
-  
+
 
   useEffect(() => {
     dispatch(listarTurnos());
     if (pacientes.length === 0) dispatch(listarPacientes());
-  }, [dispatch, uid]); 
+  }, [dispatch, uid]);
 
 
 
   const handleOpenModal = async (slotOrEvent) => {
     try {
+      const now = new Date();
+      const clickedDate = slotOrEvent.start || slotOrEvent;
+
+      // 🛑 Bloquear fechas pasadas
+      if (isValid(clickedDate) && clickedDate < now) {
+        Swal.fire("Fecha inválida", "No se puede asignar un turno en el pasado.", "warning");
+        return;
+      }
+
+      // 🛑 Bloquear sábados (6) y domingos (0)
+      const day = clickedDate.getDay();
+      if (day === 0 || day === 6) {
+        Swal.fire("Día no disponible", "No se permiten turnos en fines de semana.", "info");
+        return;
+      }
+
+      // 👇 Si es un evento existente
       if (slotOrEvent.id) {
         const turno = await dispatch(
           obtenerTurnoPorId({ idTurno: slotOrEvent.id, idUsuario: uid })
         ).unwrap();
-        
+
         const fechaInicio = parseISO(turno.fechaInicio);
         const fechaFin = parseISO(turno.fechaFin);
 
         if (!isValid(fechaInicio) || !isValid(fechaFin)) {
-          throw new Error('Fechas inválidas en el turno');
+          throw new Error("Fechas inválidas en el turno");
         }
 
         setFormValues({
@@ -124,6 +141,7 @@ export const CalendarPage = () => {
           idTurno: turno.idTurno,
         });
       } else {
+        // 👇 Nuevo turno
         const startDate = isValid(slotOrEvent.start) ? slotOrEvent.start : new Date();
         const endDate = addMinutes(startDate, 45);
 
@@ -137,12 +155,14 @@ export const CalendarPage = () => {
           idTurno: null,
         });
       }
+
       setOpenModal(true);
     } catch (error) {
       console.error("Error al abrir modal:", error);
       Swal.fire("Error", "No se pudo cargar el turno", "error");
     }
   };
+
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -152,7 +172,7 @@ export const CalendarPage = () => {
     const { name, value } = e.target;
     setFormValues(prev => {
       const newValues = { ...prev, [name]: value };
-      
+
       if (name === 'start') {
         try {
           const fechaInicio = parseISO(value);
@@ -173,9 +193,9 @@ export const CalendarPage = () => {
       console.error("No hay turno seleccionado para eliminar");
       return;
     }
-  
+
     handleCloseModal();
-  
+
     Swal.fire({
       title: "¿Estás seguro?",
       text: "Esta acción no se puede deshacer.",
@@ -193,8 +213,8 @@ export const CalendarPage = () => {
       },
     });
   };
-  
-  
+
+
   const handleEstadoChange = async (e, turno) => {
     const nuevoEstado = e.target.value;
     try {
@@ -205,47 +225,58 @@ export const CalendarPage = () => {
           nuevoEstado
         })
       ).unwrap();
-      
-      dispatch(listarTurnos()); 
+
+      dispatch(listarTurnos());
     } catch (error) {
       Swal.fire("Error", "Hubo un problema al actualizar el estado", "error");
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (formData) => {
     try {
-      if (!formValues.title || !formValues.start || !formValues.pacienteSeleccionado) {
+      if (!formData.title || !formData.start || !formData.pacienteSeleccionado) {
         throw new Error("Complete todos los campos obligatorios");
       }
-  
-      const fechaInicio = new Date(formValues.start);
-      if (!isValid(fechaInicio)) {
-        throw new Error("Fecha de inicio inválida");
-      }
-      const fechaFin = new Date(formValues.end);
-      if (!isValid(fechaFin)) {
-        throw new Error("Fecha de fin inválida");
-      }
-  
+
+      // 🔍 Log original capturado desde el input
+      console.log("🕐 Valor original desde input datetime-local:", formData.start);
+
+      // ⚠️ Aquí se interpreta como local pero toISOString() lo convierte a UTC
+      const fechaLocal = new Date(formData.start);
+
+      // 🧠 Reconstruimos como fecha LOCAL para evitar shift a UTC
+      const fechaInicio = new Date(
+        fechaLocal.getFullYear(),
+        fechaLocal.getMonth(),
+        fechaLocal.getDate(),
+        fechaLocal.getHours(),
+        fechaLocal.getMinutes()
+      );
+
+      // 🪵 Log resultado final que se va a guardar
+      console.log("📤 Fecha que se enviará al backend (ISO):", fechaInicio.toISOString());
+
       const turnoData = {
-        tipoConsulta: formValues.title,
-        motivo: formValues.motivo,
-        fechaInicio: fechaInicio.toISOString(),
-        fechaFin: fechaFin.toISOString(),
-        idPaciente: Number(formValues.pacienteSeleccionado),
-        estado: formValues.estado,
+        tipoConsulta: formData.title,
+        motivo: formData.motivo || "Consulta general",
+        fechaInicio: fechaInicio.toISOString(), // ya en hora correcta
+        idPaciente: Number(formData.pacienteSeleccionado),
+        estado: formData.estado || "pendiente",
       };
-  
-      if (formValues.idTurno) {
+
+      if (formData.idTurno) {
         await dispatch(modificarTurno({
-          idTurno: formValues.idTurno,
-          idUsuario: uid,
-          turnoModificado: turnoData
+          idTurno: formData.idTurno,
+          turnoModificado: {
+            ...turnoData,
+            fechaFin: addMinutes(fechaInicio, 45).toISOString(),
+          },
         })).unwrap();
       } else {
-        await dispatch(crearTurno({ ...turnoData, idUsuario: uid })).unwrap();
+        await dispatch(crearTurno(turnoData)).unwrap();
+        Swal.fire("Éxito", "Turno creado correctamente.", "success");
       }
-  
+
       handleCloseModal();
       dispatch(listarTurnos());
     } catch (error) {
@@ -253,13 +284,11 @@ export const CalendarPage = () => {
       Swal.fire("Error", error.message || "Error al guardar el turno", "error");
     }
   };
-  
 
   const eventos = turnos
     .filter(turno => turno.estado.toLowerCase() !== 'cancelado')
     .map(turno => {
       try {
-        // Usar parseISO en lugar de new Date
         const start = parseISO(turno.fechaInicio);
         const end = parseISO(turno.fechaFin);
 
@@ -268,12 +297,18 @@ export const CalendarPage = () => {
           return null;
         }
 
+        const nombre = turno.paciente?.persona?.nombre || 'Desconocido';
+        const apellido = turno.paciente?.persona?.apellido || '';
+        const estado = turno.estado;
+
         return {
           id: turno.idTurno,
-          title: `${turno.tipoConsulta} - ${turno.paciente?.nombre || 'Desconocido'} ${turno.paciente?.apellido || ''} [${turno.estado}]`,
+          titleShort: `${nombre} ${apellido}`.slice(0, 20), // para mostrar
+          titleFull: `${turno.tipoConsulta} - ${nombre} ${apellido} (DNI: ${turno.paciente?.persona?.dni || 'N/A'}) [${estado}]`, // para tooltip
           start,
           end,
-          estado: turno.estado
+          estado,
+          tipoConsulta: turno.tipoConsulta,
         };
       } catch (error) {
         console.error('Error procesando turno:', error);
@@ -283,30 +318,37 @@ export const CalendarPage = () => {
     .filter(event => event !== null);
 
   const getEventStyle = (event) => {
-    const mapping = {
-      disponible: "disponible",
-      "pendiente a confirmacion": "pendienteConfirmacion",
-      completado: "completado",
-      ocupado: "ocupado",
-      confirmado: "confirmado",
-      cancelado: "cancelado",
+    const tipo = event.tipoConsulta?.toLowerCase();
+
+    const tipoKeyMap = {
+      "primera consulta": "firstConsult",
+      "seguimiento": "followUp",
+      "revisión": "control",
+      "problema especifico": "reminder",
     };
 
-    const estadoKey = mapping[event.estado.toLowerCase()] || event.estado.toLowerCase();
-    const statusStyle =
-      currentTheme.palette.estadoTurnos[estadoKey] ||
-      { background: currentTheme.palette.background.paper, text: currentTheme.palette.text.primary };
+    const tipoKey = tipoKeyMap[tipo] || "default";
+
+    const tipoStyle = currentTheme.palette.appointmentTypes[tipoKey] || {
+      background: "#E0E0E0",
+      text: currentTheme.palette.text.primary,
+    };
 
     return {
       style: {
-        backgroundColor: statusStyle.background,
-        color: statusStyle.text,
+        backgroundColor: tipoStyle.background,
+        color: tipoStyle.text,
         borderRadius: "4px",
-        border: "none",
-        display: "block",
+        padding: "2px 4px",
+        fontSize: "0.8rem",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
       },
     };
   };
+
+
   return (
     <ThemeProvider theme={currentTheme}>
       <DashboardLayout>
@@ -315,7 +357,7 @@ export const CalendarPage = () => {
           sx={{
             fontSize: { xs: "1.2rem", sm: "1.5rem", md: "2rem" },
             fontWeight: "bold",
-            marginTop: 1, 
+            marginTop: 4,
           }}
         >
           Calendario de Turnos
@@ -323,23 +365,48 @@ export const CalendarPage = () => {
 
         {/* Contenedor principal que organiza los elementos */}
         <Box sx={{ width: "100%", padding: { xs: 2, sm: 4 }, display: "flex", flexDirection: "column", gap: 2 }}>
-          {/* Contenedor para el Calendario */}
           <Box sx={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
             {loading ? (
               <CircularProgress />
             ) : (
-              <Box sx={{ width: "100%", height: "100%" }}>
+              <Box
+                className={isDarkMode ? "calendar-dark" : "calendar-light"}
+                sx={{ width: "100%", height: "100%" }}
+              >
                 <Calendar
                   localizer={localizer}
                   events={eventos}
                   onSelectEvent={handleOpenModal}
                   onSelectSlot={handleOpenModal}
                   selectable
+                  dayPropGetter={(date) => {
+                    const day = date.getDay();
+                    const isWeekend = day === 0 || day === 6;
+                    return isWeekend
+                      ? { style: { backgroundColor: "#e6e6f6" } } // gris claro
+                      : {};
+                  }}
                   views={{ month: true, week: true, day: true }}
                   messages={messages}
                   popup
                   style={{ height: "100%", width: "100%" }}
                   eventPropGetter={getEventStyle}
+                  components={{
+                    event: ({ event }) => (
+                      <Tooltip title={event.titleFull}>
+                        <span style={{
+                          display: 'block',
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
+                          fontSize: '0.8rem',
+                          padding: '2px 4px',
+                        }}>
+                          {event.titleShort}
+                        </span>
+                      </Tooltip>
+                    )
+                  }}
                 />
               </Box>
             )}

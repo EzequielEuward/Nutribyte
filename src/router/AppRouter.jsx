@@ -5,10 +5,11 @@ import { AuthRouter } from '../auth/routes/AuthRouter';
 import { DashboardRouter } from '../dashboard/routes/DashboardRouter';
 import { FormularioHistorial } from '../helpers/FormularioHistorial';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
+import {PlanesContacto} from '../dashboard/pages/PlanesContacto';
 
 export const AppRouter = () => {
   // Obtener el estado de autenticación desde Redux
-  const { status } = useSelector((state) => state.auth); 
+  const { status } = useSelector((state) => state.auth);
 
   // Verificar si el estado es "checking" (cuando se está verificando la autenticación)
   if (status === 'checking') {
@@ -28,8 +29,11 @@ export const AppRouter = () => {
 
       {/* Otras rutas */}
       <Route path="/formulario-historial-peso" element={<FormularioHistorial />} />
-      
+
       <Route path="/home/" element={status === 'authenticated' ? <DashboardRouter /> : <Navigate to="/auth/login" />} />
+
+      <Route path='/planes/:nombrePlan' element={<PlanesContacto/>} />
+
 
       {/* Redirigir rutas desconocidas */}
       <Route path="*" element={<Navigate to="/" />} />

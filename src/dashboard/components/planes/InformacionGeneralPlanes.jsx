@@ -11,7 +11,7 @@ import {
 import { planesInfo } from "../../../mock/data/mockPlanesData";
 
 export const InformacionGeneralPlanes = () => {
-  const [planSeleccionado, setPlanSeleccionado] = useState(10); // valor inicial
+  const [planSeleccionado, setPlanSeleccionado] = useState(); // valor inicial
   const plan = planesInfo[planSeleccionado] || null;
 
   return (

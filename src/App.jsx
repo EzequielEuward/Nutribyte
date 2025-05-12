@@ -11,9 +11,6 @@ export const App = () => {
     const userData = localStorage.getItem("userData");
     const authToken = localStorage.getItem("authToken");
 
-    console.log("USER DATA:", userData);
-    console.log("TOKEN DEL USUARIO:", authToken);
-
     if (userData && authToken) {
       const user = JSON.parse(userData);
       

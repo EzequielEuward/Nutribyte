@@ -1,10 +1,12 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, Button, Typography, Grid, Box } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
-import { useTheme } from '@mui/material/styles';  
+import { useTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 export const PlanSection = () => {
-  const theme = useTheme(); 
+  const theme = useTheme();
+  const navigate = useNavigate();
 
   const plans = [
     { name: "Básico", price: "2.500", features: ["Pacientes limitados a 20", "Gestión de Turnos limitados a 30", "Funcionalidades básicas (Historia Clínica, Anamnesis, Métricas)", "Formulario de Seguimiento Semanal", "Planes Nutricionales limitados a 15", "Perzonalización de turnos vía e-mail", "Informes en pantalla", "Soporte básico", "Backup manual"] },
@@ -21,17 +23,17 @@ export const PlanSection = () => {
         <Grid container spacing={4} justifyContent="center" alignItems="stretch">
           {plans.map((plan, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card 
+              <Card
                 sx={{
-                  border: index === 1 ? `2px solid ${theme.palette.primary.main}` : 'none', 
+                  border: index === 1 ? `2px solid ${theme.palette.primary.main}` : 'none',
                   borderRadius: 2,
-                  height: '100%', 
+                  height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  transition: 'transform 0.3s ease', 
+                  transition: 'transform 0.3s ease',
                   '&:hover': {
-                    transform: 'scale(1.05)', 
-                    boxShadow: `0px 4px 20px ${theme.palette.primary.main}`, 
+                    transform: 'scale(1.05)',
+                    boxShadow: `0px 4px 20px ${theme.palette.primary.main}`,
                   },
                 }}
               >
@@ -46,7 +48,7 @@ export const PlanSection = () => {
                     <ul style={{ listStyle: 'none', padding: 0 }}>
                       {plan.features.map((feature, fIndex) => (
                         <li key={fIndex} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                          <CheckIcon sx={{ color: theme.palette.primary.main, marginRight: 1 }} /> 
+                          <CheckIcon sx={{ color: theme.palette.primary.main, marginRight: 1 }} />
                           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
                             {feature}
                           </Typography>
@@ -54,16 +56,17 @@ export const PlanSection = () => {
                       ))}
                     </ul>
                   </Box>
-                  <Button 
-                    fullWidth 
-                    variant="contained" 
-                    sx={{ 
-                      backgroundColor: theme.palette.primary.main, 
-                      '&:hover': { 
-                        backgroundColor: theme.palette.primary.dark 
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      backgroundColor: theme.palette.primary.main,
+                      '&:hover': {
+                        backgroundColor: theme.palette.primary.dark
                       },
                       marginTop: 'auto'
                     }}
+                    onClick={() => navigate(`/planes/${plan.name}`)}
                   >
                     Elegir Plan
                   </Button>

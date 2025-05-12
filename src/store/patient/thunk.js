@@ -3,7 +3,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_PACIENTE = "https://localhost:7041/api/Pacientes";
+const API_PACIENTE = "https://sintacc-api-deploy.azurewebsites.net/api/Pacientes";
 
 export const crearPaciente = createAsyncThunk(
   "pacientes/crear",

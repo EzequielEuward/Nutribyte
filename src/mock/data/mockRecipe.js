@@ -3832,7 +3832,7 @@ export const recipesMock = [
         image: "https://mejorconsalud.as.com/wp-content/uploads/2015/06/muffins-de-banana-500x334.jpg"
     },
     {
-        id: 150,
+        id: 250,
         name: "Provoleta Sin TACC a la Parrilla",
         type: "Aperitivo",
         preparacion: "Versión celíaca del clásico provolone grillado.",
@@ -3849,7 +3849,7 @@ export const recipesMock = [
     },
     
     {
-        id: 151,
+        id: 251,
         name: "Ensalada de Quinoa",
         type: "Ensalada",
         description: "Preparación rápida con ingredientes frescos.",
@@ -3865,7 +3865,7 @@ export const recipesMock = [
         image: "https://images.cookforyourlife.org/wp-content/uploads/2018/08/Quinoa-Tabbouleh-Salad-e1643842744790.jpg"
     },
     {
-        id: 152,
+        id: 252,
         name: "Milanesa de Soja con Puré",
         type: "Plato Principal",
         description: "Un clásico argentino en versión vegana.",
@@ -3881,7 +3881,7 @@ export const recipesMock = [
         image: "https://polleriakaserito.com/wp-content/uploads/2023/08/sojacomun.jpg"
     },
     {
-        id: 153,
+        id: 253,
         name: "Guiso de Lentejas Vegano",
         type: "Guiso",
         description: "Ideal para días fríos, bien nutritivo.",
@@ -3897,7 +3897,7 @@ export const recipesMock = [
         image: "https://www.clarin.com/img/2020/06/05/58WVOlTTF_0x750__1.jpg"
     },
     {
-        id: 154,
+        id: 254,
         name: "Tarta de Espinaca y Garbanzos",
         type: "Plato Principal",
         description: "Una tarta bien nutritiva y fácil de hacer.",
@@ -3913,7 +3913,7 @@ export const recipesMock = [
         image: "https://www.paulinacocina.net/wp-content/uploads/2015/08/1-P1090553.jpg"
     },
     {
-        id: 155,
+        id: 255,
         name: "Falafel al Horno",
         type: "Aperitivo",
         description: "Una opción saludable y llena de sabor.",
@@ -3929,7 +3929,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8_jsStdfeGy0hHWFc4W9kiqV16fNk3VtZQw&s"
     },
     {
-        id: 156,
+        id: 256,
         name: "Budín de Zapallo",
         type: "Postre",
         description: "Un postre liviano y nutritivo.",
@@ -3945,7 +3945,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk9EiN9uPXwL4d9qUM4yUqxbx7-ezH0ctY8w&s"
     },
     {
-        id: 157,
+        id: 257,
         name: "Wok de Verduras con Tofu",
         type: "Plato Principal",
         description: "Una comida rápida y llena de nutrientes.",
@@ -3961,7 +3961,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR03tKssE6suiNYVPYDSlFOU4H0QdaKDeKK9g&s"
     },
     {
-        id: 158,
+        id: 258,
         name: "Ensalada de Remolacha y Quinoa",
         type: "Ensalada",
         description: "Una ensalada fresca y llena de nutrientes.",
@@ -3977,7 +3977,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNNuP_Zz_Z70Ttq9sYIL0F1j9E-Ga3Ndo6wQ&s"
     },
     {
-        id: 159,
+        id: 259,
         name: "Hummus con Bastones de Zanahoria",
         type: "Aperitivo",
         description: "Un snack saludable y fácil de preparar.",
@@ -3993,7 +3993,7 @@ export const recipesMock = [
         image: "https://comedelahuerta.com/wp-content/uploads/2020/10/Hummus-de-garbanzo-con-zanahoria-500x500.jpg"
     },
     {
-        id: 160,
+        id: 260,
         name: "Smoothie de Frutos Rojos",
         type: "Bebida",
         description: "Un batido refrescante y lleno de antioxidantes.",
@@ -4009,7 +4009,7 @@ export const recipesMock = [
         image: "https://d36fw6y2wq3bat.cloudfront.net/recipes/smoothie-de-avena-y-frutos-del-bosque/900/smoothie-de-avena-y-frutos-del-bosque_version_1654056028.jpg"
     },
     {
-        id: 161,
+        id: 261,
         name: "Locro Vegano",
         type: "Guiso",
         description: "Versión sin carne del clásico argentino, ideal para el 25 de mayo.",
@@ -4025,7 +4025,7 @@ export const recipesMock = [
         image: "http://clarin.com/img/2019/05/08/dbXFDbB_B_600x338__1.jpg"
     },
     {
-        id: 162,
+        id: 262,
         name: "Matambre de Seitán",
         type: "Plato Principal",
         description: "Imitación del matambre vacuno, perfecto para asados veganos.",
@@ -4041,7 +4041,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8F8qqUpY9mb13ILamO1Kr6Imx7U8aDP4YPQ&s"
     },
     {
-        id: 163,
+        id: 263,
         name: "Empanadas de Soja Texturizada",
         type: "Aperitivo",
         description: "Relleno jugoso con cebolla caramelizada.",
@@ -4057,7 +4057,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLzQB8_yMLttUPLvAp1Cl8TPuoj4kJBvtbww&s"
     },
     {
-        id: 164,
+        id: 264,
         name: "Carbonada Vegana",
         type: "Guiso",
         description: "Guiso tradicional sin carne, con todo el sabor.",
@@ -4073,7 +4073,7 @@ export const recipesMock = [
         image: "https://www.cucinare.tv/wp-content/uploads/2021/06/carbonada.jpg"
     },
     {
-        id: 165,
+        id: 265,
         name: "Ñoquis de Papa y Espinaca",
         type: "Plato Principal",
         description: "Ñoquis verdes sin huevo, con salsa de tomates cherry.",
@@ -4089,7 +4089,7 @@ export const recipesMock = [
         image: "https://okdiario.com/img/2021/10/26/noquis-caseros-de-espinaca-y-patata-3.jpg"
     },
     {
-        id: 166,
+        id: 266,
         name: "Milanesa de Garbanzos",
         type: "Plato Principal",
         description: "Croccante por fuera, suave por dentro. Se puede freezar.",
@@ -4105,7 +4105,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLbozGLvpezRf3DLTAhBupdQ7mURudwbDCwQ&s"
     },
     {
-        id: 167,
+        id: 267,
         name: "Chipá de Mandioca",
         type: "Aperitivo",
         description: "Versión vegana del chipá paraguayo, sin queso.",
@@ -4121,7 +4121,7 @@ export const recipesMock = [
         image: "https://okdiario.com/img/2023/08/10/chipa-argentina-635x358.jpg"
     },
     {
-        id: 168,
+        id: 268,
         name: "Tarta de Puerro y Champiñones",
         type: "Plato Principal",
         description: "Masa integral con relleno cremoso (sin lácteos).",
@@ -4137,7 +4137,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdGzdMGAggywI6fZVlktWwMGfLgaBsp5O10A&s"
     },
     {
-        id: 169,
+        id: 269,
         name: "Ensalada de Palta y Porotos Negros",
         type: "Ensalada",
         description: "Mix de grasas saludables y proteína vegetal.",
@@ -4153,7 +4153,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV4hYO5ZcRxc8ph-kZcxzUzSLtWdKiWxxm1A&s"
     },
     {
-        id: 170,
+        id: 270,
         name: "Sorrentinos de Calabaza",
         type: "Plato Principal",
         description: "Pasta rellena con salsa de almendras.",
@@ -4169,7 +4169,7 @@ export const recipesMock = [
         image: "https://static.wixstatic.com/media/9c79ac_068eadd3922b48098471117b7ab2e27b~mv2.jpg/v1/fill/w_526,h_364,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/9c79ac_068eadd3922b48098471117b7ab2e27b~mv2.jpg"
     },
     {
-        id: 171,
+        id: 271,
         name: "Provoleta Vegana a la Parrilla",
         type: "Aperitivo",
         description: "Imita la provoleta derretida, ideal para asados.",
@@ -4185,7 +4185,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYKfc3LgRb4oGbq17woGb8-DsOe_VcBberIA&s"
     },
     {
-        id: 172,
+        id: 272,
         name: "Canelones de Espinaca y Ricotta Vegana",
         type: "Plato Principal",
         description: "Relleno cremoso con tofu y anacardos.",
@@ -4201,7 +4201,7 @@ export const recipesMock = [
         image: "https://resizer.glanacion.com/resizer/v2/canelones-de-T4FY5KRGIJDEXNRQVPYTUS3PPA.jpg?auth=4a7b239cc1b820e574c9695671db26abdbe9167ed6ca029125f6780100e05c9f&width=1280&height=854&quality=70&smart=true"
     },
     {
-        id: 173,
+        id: 273,
         name: "Choripán Vegano",
         type: "Aperitivo",
         description: "Versión con chorizo de seitán y chimichurri.",
@@ -4217,7 +4217,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuN4zXb74f3_tX8andfa7BqMnPiezZySSr-g&s"
     },
     {
-        id: 174,
+        id: 274,
         name: "Tuco con Lentejas",
         type: "Plato Principal",
         description: "Salsa espesa para pastas con proteína vegetal.",
@@ -4233,7 +4233,7 @@ export const recipesMock = [
         image: "https://assets.unileversolutions.com/v1/116783086.jpg"
     },
     {
-        id: 175,
+        id: 275,
         name: "Flan de Coco sin Huevo",
         type: "Postre",
         description: "Textura cremosa con caramelo de azúcar mascabo.",
@@ -4249,7 +4249,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtva3aosHkE2CPYl7Jk38e-EWgboEBjUOgEw&s"
     },
     {
-        id: 176,
+        id: 276,
         name: "Pizza de Polenta",
         type: "Plato Principal",
         description: "Base crocante sin harina, apta celíacos.",
@@ -4265,7 +4265,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpvPunnvaxFmkIdXDOjNzp0Mc9xnFX6gZA_g&s"
     },
     {
-        id: 177,
+        id: 277,
         name: "Panqueques de Avena",
         type: "Desayuno",
         description: "Sin harina refinada, se pueden hacer dulces o salados.",
@@ -4281,7 +4281,7 @@ export const recipesMock = [
         image: "https://www.recetasnestlecam.com/sites/default/files/srh_recipes/84cd4a5713e4036ca0b3b796400fda1b.jpg"
     },
     {
-        id: 178,
+        id: 278,
         name: "Albóndigas de Lentejas",
         type: "Plato Principal",
         description: "Textura firme gracias a la harina de garbanzos.",
@@ -4297,7 +4297,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs1TbdjbUHGh_O4jaEJBb4fDBYrmX1feb_6Q&s"
     },
     {
-        id: 179,
+        id: 279,
         name: "Ensalada Waldorf Vegana",
         type: "Ensalada",
         description: "Clásica versión sin mayonesa, con yogur de coco.",
@@ -4313,7 +4313,7 @@ export const recipesMock = [
         image: "https://alicante.com.ar/wp-content/uploads/2022/06/94_receta-1200x900.jpg"
     },
     {
-        id: 180,
+        id: 280,
         name: "Chocotorta Vegana",
         type: "Postre",
         description: "Sin queso crema ni dulce de leche, igual de rica.",
@@ -4330,7 +4330,7 @@ export const recipesMock = [
     },
     
     {
-        id: 181,
+        id: 281,
         name: "Ensalada de Quinoa y Garbanzos",
         type: "Ensalada",
         description: "Una ensalada fresca y llena de proteínas.",
@@ -4346,7 +4346,7 @@ export const recipesMock = [
         image: "https://lapalmerarosa.com/wp-content/uploads/2020/06/ensalada-de-quinoa-y-garbanzos-3.jpg"
     },
     {
-        id: 182,
+        id: 282,
         name: "Milanesas de Berenjena al Horno",
         type: "Plato Principal",
         description: "Una versión vegetariana de las clásicas milanesas.",
@@ -4362,7 +4362,7 @@ export const recipesMock = [
         image: "https://i.pinimg.com/736x/0b/ec/89/0bec89caa900068ca1a08a870ae461db.jpg"
     },
     {
-        id: 183,
+        id: 283,
         name: "Guiso de Lentejas con Verduras",
         type: "Guiso",
         description: "Un guiso nutritivo y lleno de sabor.",
@@ -4378,7 +4378,7 @@ export const recipesMock = [
         image: "https://content-cocina.lecturas.com/medio/2018/07/19/lentejas-con-verduras_00000000_240112110243_1200x1200.jpg"
     },
     {
-        id: 184,
+        id: 284,
         name: "Tarta de Espinaca y Queso",
         type: "Plato Principal",
         description: "Una tarta cremosa y llena de nutrientes.",
@@ -4394,7 +4394,7 @@ export const recipesMock = [
         image: "https://i.ytimg.com/vi/oqhqpVX1W8g/maxresdefault.jpg"
     },
     {
-        id: 185,
+        id: 285,
         name: "Falafel al Horno",
         type: "Aperitivo",
         description: "Una opción saludable y llena de sabor.",
@@ -4410,7 +4410,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWMOlfM8z39M-edsBkLZyN8s2Ix7dObqc8hw&s"
     },
     {
-        id: 186,
+        id: 286,
         name: "Budín de Zapallo",
         type: "Postre",
         description: "Un postre liviano y nutritivo.",
@@ -4426,7 +4426,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk9EiN9uPXwL4d9qUM4yUqxbx7-ezH0ctY8w&s"
     },
     {
-        id: 187,
+        id: 287,
         name: "Wok de Verduras con Tofu",
         type: "Plato Principal",
         description: "Una comida rápida y llena de nutrientes.",
@@ -4442,7 +4442,7 @@ export const recipesMock = [
         image: "https://7diasdesabor.com/wp-content/uploads/2023/03/salteado-de-vegetales-y-tofu-web.jpg"
     },
     {
-        id: 188,
+        id: 288,
         name: "Ensalada de Remolacha y Quinoa",
         type: "Ensalada",
         description: "Una ensalada fresca y llena de nutrientes.",
@@ -4458,7 +4458,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNNuP_Zz_Z70Ttq9sYIL0F1j9E-Ga3Ndo6wQ&s"
     },
     {
-        id: 189,
+        id: 289,
         name: "Hummus con Bastones de Zanahoria",
         type: "Aperitivo",
         description: "Un snack saludable y fácil de preparar.",
@@ -4474,7 +4474,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHQ-2iEXPivXyXX4tcmv9aXuOHVSaXdlMw2g&s"
     },
     {
-        id: 190,
+        id: 290,
         name: "Smoothie de Frutos Rojos",
         type: "Bebida",
         description: "Un batido refrescante y lleno de antioxidantes.",
@@ -4490,7 +4490,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt0kjJXbG0H5IMFEy7zzFgYXmULXq653dLAg&s"
     },
     {
-        id: 191,
+        id: 291,
         name: "Revuelto de Hongos con Tofu",
         type: "Plato Principal",
         description: "Ideal para una cena rápida y proteica.",
@@ -4506,7 +4506,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt67C5SEl9m1yBiyEHfmDU3wsZ_DerMDu-fA&s"
     },
     {
-        id: 192,
+        id: 292,
         name: "Ensalada César Vegana",
         type: "Ensalada",
         description: "Versión sin carne del clásico, con crotones caseros.",
@@ -4522,7 +4522,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTov1f_uHYCSHoOPli5IN8HffoM5tjlamC0fA&s"
     },
     {
-        id: 193,
+        id: 293,
         name: "Empanadas de Humita Light",
         type: "Aperitivo",
         description: "Tapa de empanada al horno, relleno cremoso.",
@@ -4538,7 +4538,7 @@ export const recipesMock = [
         image: "https://media.losandes.com.ar/p/e4d5ee2a2320dfd8a95625da100c92ef/adjuntos/368/imagenes/100/004/0100004380/1000x0/smart/la-increible-receta-las-empanadas-humita.jpg"
     },
     {
-        id: 194,
+        id: 294,
         name: "Curry de Garbanzos y Espinaca",
         type: "Guiso",
         description: "Sabores intensos con leche de coco light.",
@@ -4554,7 +4554,7 @@ export const recipesMock = [
         image: "https://comeviveviaja.com/wp-content/uploads/2020/04/Curry-de-garbanzos-y-espinacas.-Un-guiso-original-y-ra%CC%81pido.jpg"
     },
     {
-        id: 195,
+        id: 295,
         name: "Tortilla de Papa con Verduras",
         type: "Plato Principal",
         description: "Versión veggie de la tortilla clásica.",
@@ -4570,7 +4570,7 @@ export const recipesMock = [
         image: "https://i.ytimg.com/vi/0vCCayFwWUc/maxresdefault.jpg"
     },
     {
-        id: 196,
+        id: 296,
         name: "Bowl Mexicano Vegano",
         type: "Plato Principal",
         description: "Inspiración mexicana con quinoa y palta.",
@@ -4586,7 +4586,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiYaV7jp4YDFJ6pD1Nv7w5ywj9tNQ_g32GA&s"
     },
     {
-        id: 197,
+        id: 297,
         name: "Sopa Cremosa de Zapallo y Jengibre",
         type: "Sopa",
         description: "Textura sedosa con toque picante.",
@@ -4602,7 +4602,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9vqT8HtJDuZy2Y2E4E30iwRfeCoxsJFKm4g&s"
     },
     {
-        id: 198,
+        id: 298,
         name: "Pizza de Berenjena sin Harina",
         type: "Plato Principal",
         description: "Base de berenjena en lugar de masa.",
@@ -4618,7 +4618,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH1ctwSvjJmsqQZ7-xF3UxuPOK1YFlMqy3Qw&s"
     },
     {
-        id: 199,
+        id: 299,
         name: "Ensalada de Lentejas y Nueces",
         type: "Ensalada",
         description: "Mix de proteínas vegetales y crunch.",
@@ -4634,7 +4634,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyjuos5ss8swcDybf-6aP6D6LcjAB9vqVdJA&s"
     },
     {
-        id: 200,
+        id: 300,
         name: "Risotto de Hongos Integral",
         type: "Plato Principal",
         description: "Arroz yamaní con textura cremosa.",
@@ -4650,7 +4650,7 @@ export const recipesMock = [
         image: "https://www.infobae.com/resizer/v2/DRMSHWQG45GFLI4J6YLPSY62LY.jpg?auth=b9c775f2343d4e33d01794cdc8857989f80d3804409763fa55549cb00a86e57c&smart=true&width=350&height=233&quality=85"
     },
     {
-        id: 201,
+        id: 301,
         name: "Bombas de Quinoa y Espinaca",
         type: "Aperitivo",
         description: "Croquetas horneadas crujientes.",
@@ -4666,7 +4666,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8rzwwDYgHrXFO2tcofjj9GybxmhPXQFf8OQ&s"
     },
     {
-        id: 202,
+        id: 302,
         name: "Cazuela de Zapallitos",
         type: "Guiso",
         description: "Típico zapallito verde argentino.",
@@ -4682,7 +4682,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVfKMmOGt66Lp-RxANYkIHCCpq7iXLM_GEvg&s"
     },
     {
-        id: 203,
+        id: 303,
         name: "Tabule de Trigo Burgol",
         type: "Ensalada",
         description: "Clásico árabe con perejil fresco.",
@@ -4698,7 +4698,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnQtedKnKtP2WkHC8AbNgdGCQtqLVNcK5D-Q&s"
     },
     {
-        id: 204,
+        id: 304,
         name: "Medallones de Lentejas",
         type: "Plato Principal",
         description: "Hamburguesas veganas con buen hold.",
@@ -4714,7 +4714,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzio0p228UCBnD-jpD1uXLDES02dUrBKtr-A&s"
     },
     {
-        id: 205,
+        id: 305,
         name: "Tacos de Jaca Desmenuzada",
         type: "Plato Principal",
         description: "Imita la textura de carne mechada.",
@@ -4730,7 +4730,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSspbGbdhSdAVsByIuKTvAvvGnOVuu_sCjIJw&s"
     },
     {
-        id: 206,
+        id: 306,
         name: "Mousse de Chocolate con Aguacate",
         type: "Postre",
         description: "Postre cremoso sin azúcar añadido.",
@@ -4746,7 +4746,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG5ESWRZoxfUK0yWnnJ4lANXIDGcK9Hk6i9Q&s"
     },
     {
-        id: 207,
+        id: 307,
         name: "Enrollados de Berenjena con Ricotta",
         type: "Plato Principal",
         description: "Láminas de berenjena rellenas.",
@@ -4762,7 +4762,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz0V6-irLtPDdjMo6WoJfztbTCLnCdooN9oQ&s"
     },
     {
-        id: 208,
+        id: 308,
         name: "Ensalada de Repollo Morado y Manzana",
         type: "Ensalada",
         description: "Crunchy y ligeramente dulce.",
@@ -4778,7 +4778,7 @@ export const recipesMock = [
         image: "https://i.ytimg.com/vi/Dvovs0BtS-E/maxresdefault.jpg"
     },
     {
-        id: 209,
+        id: 309,
         name: "Frittata de Espárragos",
         type: "Plato Principal",
         description: "Torta salada sin tapa.",
@@ -4794,7 +4794,7 @@ export const recipesMock = [
         image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0PT60jSks71_eNEAmpN2xHJ2XzYvLsVRlIg&s"
     },
     {
-        id: 210,
+        id: 310,
         name: "Helado de Banana Vegano",
         type: "Postre",
         description: "Solo necesita un ingrediente base.",

@@ -29,6 +29,8 @@ export * from './VersionPage';
 export * from './ReportesPage';
 export * from './VerificarCuentaPage';
 
+export * from './PlanesContacto';
+export * from './PagosParticularesPage';
 
 
 

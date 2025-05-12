@@ -9,9 +9,9 @@ IDEA: 💡
 --------------------TAREAS PARA MAÑANA--------------------
 ///BACKLOG DE TAREAS///
 ❌ HACER ABM DE COBRO DEL PACIENTE DUPLICAR TABLAS
-❌ Arreglar turnos 
+✅ Arreglar turnos 
 ❌ Mejorar apenas entras la parte de Seguimiento
-❌ Hacer que en planes empieza con 0 
+✅ Hacer que en planes empieza con 0 
 ❌ Hacer la seccion de reportes  
 ❌ Mejorar <ConsejosRapidos/> tenga como un accordeon
 ❌ Hacer que en nutri ideas se puedan imprimir varias

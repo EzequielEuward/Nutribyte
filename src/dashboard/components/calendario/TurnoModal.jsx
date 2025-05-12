@@ -1,148 +1,178 @@
 import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    FormControl,
-    Button,
-    TextField,
-    Switch,
-    FormControlLabel,
-    Autocomplete
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  Button,
+  TextField,
+  Switch,
+  FormControlLabel,
+  Autocomplete
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 
 export const TurnoModal = ({
-    open,
-    onClose,
-    handleChange,
-    handleSave,
-    pacientes,
-    formValues,
-    handleDelete
+  open,
+  onClose,
+  handleSave,
+  pacientes,
+  formValues,
+  handleDelete,
 }) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      title: "",
+      motivo: "",
+      start: "",
+      estado: "pendiente",
+      pacienteSeleccionado: "",
+    },
+  });
 
-    // Función para extraer la etiqueta a mostrar
-    const getPacienteLabel = (paciente) => {
-        if (!paciente || !paciente.persona) return "";
-        return `${paciente.persona.nombre} ${paciente.persona.apellido} (DNI: ${paciente.persona.dni || "N/A"})`;
-    };
+  // 🔁 Cada vez que se abre el modal o cambian los formValues, reseteamos el formulario
+  useEffect(() => {
+    if (formValues) {
+      reset({
+        title: formValues.title || "",
+        motivo: formValues.motivo || "",
+        start: formValues.start || "",
+        estado: formValues.estado || "pendiente",
+        pacienteSeleccionado: formValues.pacienteSeleccionado || "",
+      });
+    }
+  }, [formValues, reset]);
 
-    // Manejar el cambio en Autocomplete: actualizamos el formValues con el id del paciente seleccionado.
-    const handlePacienteChange = (event, newValue) => {
-        handleChange({
-            target: {
-                name: "pacienteSeleccionado",
-                value: newValue ? newValue.idPaciente : ""
-            }
-        });
-    };
-
-    const pacienteSeleccionadoActual = pacientes.find(
-        (p) => p.idPaciente.toString() === formValues.pacienteSeleccionado
+  // 🧠 Paciente actual para el Autocomplete
+  const pacienteSeleccionadoActual =
+    pacientes.find(
+      (p) => p.idPaciente.toString() === watch("pacienteSeleccionado")
     ) || null;
 
-    return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>{formValues.title ? "Editar Turno" : "Nuevo Turno"}</DialogTitle>
-            <DialogContent>
-                {/* Campo de Autocomplete para seleccionar paciente */}
-                <FormControl fullWidth margin="normal">
-                    <Autocomplete
-                        options={pacientes}
-                        getOptionLabel={getPacienteLabel}
-                        value={pacienteSeleccionadoActual}
-                        onChange={handlePacienteChange}
-                        renderInput={(params) => (
-                            <TextField {...params} label="Paciente" variant="outlined" />
-                        )}
-                        noOptionsText="No se encontraron pacientes"
-                    />
-                </FormControl>
+  // 🧾 Enviar datos
+  const onSubmit = (data) => {
+    handleSave({
+      ...formValues,
+      ...data,
+    });
+  };
 
-                <FormControl fullWidth margin="normal">
-                    <TextField
-                        select
-                        label="Tipo de Consulta"
-                        name="title"
-                        value={formValues.title}
-                        onChange={handleChange}
-                        SelectProps={{
-                            native: true
-                        }}
-                        variant="outlined"
-                    >
-                        {/*ESTADOS DEL PACIENTE: Registrado, en evaluacion, en tratamiento, revaluacion , abandonado, completado, cerrado */}
-                        <option value="Primera consulta">Primera consulta</option>
-                        <option value="Seguimiento">Seguimiento</option>
-                        <option value="Revisión">Revisión</option>
-                        <option value="Problema especifico">Problema específico</option>
-                    </TextField>
-                </FormControl>
+  const getPacienteLabel = (paciente) => {
+    if (!paciente || !paciente.persona) return "";
+    return `${paciente.persona.nombre} ${paciente.persona.apellido} (DNI: ${paciente.persona.dni || "N/A"})`;
+  };
 
-                <TextField
-                    fullWidth
-                    margin="normal"
-                    label="Fecha de Inicio"
-                    type="datetime-local"
-                    name="start"
-                    value={formValues.start ? formValues.start.split('.')[0] : ''}  // Si es necesario eliminar milisegundos
-                    onChange={handleChange}
-                    InputLabelProps={{ shrink: true }}
-                />
-
-                <TextField
-                    label="Motivo de la consulta"
-                    name="motivo"
-                    value={formValues.motivo}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                    required
-                />
-
-                {/* El campo Fecha de Fin se calcula automáticamente */}
-
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={formValues.estado === 'confirmado'}
-                            onChange={(e) =>
-                                handleChange({
-                                    target: {
-                                        name: 'estado',
-                                        value: e.target.checked ? 'confirmado' : 'pendiente',
-                                    },
-                                })
-                            }
-                            name="estado"
-                            color="primary"
-                        />
-                    }
-                    label="Confirmado"
-                />
-
-            </DialogContent>
-            <DialogActions>
-                {formValues.idTurno && (
-                    <Button
-                        onClick={handleDelete}
-                        color="error"
-                        startIcon={<DeleteIcon />}
-                    >
-                        Eliminar
-                    </Button>
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>{formValues?.idTurno ? "Editar Turno" : "Nuevo Turno"}</DialogTitle>
+      <DialogContent>
+        {/* Paciente */}
+        <FormControl fullWidth margin="normal">
+          <Controller
+            name="pacienteSeleccionado"
+            control={control}
+            rules={{ required: "Debe seleccionar un paciente" }}
+            render={({ field }) => (
+              <Autocomplete
+                options={pacientes}
+                getOptionLabel={getPacienteLabel}
+                value={pacienteSeleccionadoActual}
+                onChange={(e, newValue) =>
+                  field.onChange(newValue ? newValue.idPaciente.toString() : "")
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Paciente"
+                    variant="outlined"
+                    error={!!errors.pacienteSeleccionado}
+                    helperText={errors.pacienteSeleccionado?.message}
+                  />
                 )}
+                noOptionsText="No se encontraron pacientes"
+              />
+            )}
+          />
+        </FormControl>
 
-                <Button onClick={onClose} color="secondary">
-                    Cancelar
-                </Button>
-                <Button onClick={handleSave} color="primary">
-                    Guardar
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
+        {/* Tipo de consulta */}
+        <TextField
+          select
+          label="Tipo de Consulta"
+          {...register("title", { required: "Este campo es obligatorio" })}
+          SelectProps={{ native: true }}
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          error={!!errors.title}
+          helperText={errors.title?.message}
+        >
+          <option value="">Seleccionar...</option>
+          <option value="Primera consulta">Primera consulta</option>
+          <option value="Seguimiento">Seguimiento</option>
+          <option value="Revisión">Revisión</option>
+          <option value="Problema especifico">Problema específico</option>
+        </TextField>
+
+        {/* Fecha */}
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Fecha de Inicio"
+          type="datetime-local"
+          {...register("start", { required: "Debe ingresar una fecha" })}
+          InputLabelProps={{ shrink: true }}
+          error={!!errors.start}
+          helperText={errors.start?.message}
+        />
+
+        {/* Motivo */}
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Motivo de la consulta"
+          {...register("motivo")}
+        />
+
+        {/* Estado (switch) */}
+        <FormControlLabel
+          control={
+            <Switch
+              checked={watch("estado") === "confirmado"}
+              onChange={(e) =>
+                setValue("estado", e.target.checked ? "confirmado" : "pendiente")
+              }
+              color="primary"
+            />
+          }
+          label="Confirmado"
+        />
+      </DialogContent>
+      <DialogActions>
+        {formValues?.idTurno && (
+          <Button onClick={handleDelete} color="error" startIcon={<DeleteIcon />}>
+            Eliminar
+          </Button>
+        )}
+        <Button onClick={onClose} color="secondary">
+          Cancelar
+        </Button>
+        <Button onClick={handleSubmit(onSubmit)} color="primary">
+          Guardar
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 };
 
 export default TurnoModal;

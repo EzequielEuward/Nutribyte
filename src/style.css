@@ -1,3 +1,40 @@
 html {
     scroll-behavior: smooth;
 }
+
+.calendar-dark .rbc-month-view,
+.calendar-dark .rbc-time-view,
+.calendar-dark .rbc-agenda-view {
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+}
+
+.calendar-dark .rbc-day-bg {
+    background-color: #1d1d1d;
+    border-color: #333;
+}
+
+.calendar-dark .rbc-time-slot {
+    background-color: #1a1a1a;
+    border-color: #333;
+}
+
+.calendar-dark .rbc-timeslot-group {
+    border-color: #444;
+}
+
+.calendar-dark .rbc-event {
+    border: none;
+}
+
+.calendar-dark .rbc-time-header-content,
+.calendar-dark .rbc-header {
+    background-color: #262626;
+    color: #ddd;
+    border-color: #444;
+}
+
+.calendar-light .rbc-header {
+    background-color: #f0f0f0;
+    color: #222;
+}

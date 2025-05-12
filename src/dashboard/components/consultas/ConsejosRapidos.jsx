@@ -1,26 +1,69 @@
-import { Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
-
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Box
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 
 export const ConsejosRapidos = () => {
-    return (
-        <>
-            <Grid item xs={12} md={6}>
-                <Card variant="outlined" sx={{ bgcolor: '#f5f5f5' }}>
-                    <CardHeader
-                        title="💡 Consejos Rápidos"
-                        titleTypographyProps={{ variant: 'h6' }}
-                    />
-                    <CardContent>
-                        <ul style={{ paddingLeft: 20 }}>
-                            <li><Typography>Usa el buscador por DNI para acceder rápido al historial</Typography></li>
-                            <li><Typography>Verifica siempre los datos antropométricos</Typography></li>
-                            <li><Typography>Revisa el historial antes de nueva consulta</Typography></li>
-                        </ul>
-                    </CardContent>
-                </Card>
-            </Grid>
-        </>
-    )
-}
+  return (
+    <Grid item xs={12} md={6}>
+      <Accordion
+        elevation={0}
+        sx={{
+          backgroundColor: 'rgba(240, 240, 240, 0.6)', // fondo gris semitransparente
+          borderRadius: 2,
+          border: '1px solid #e0e0e0',
+          backdropFilter: 'blur(2px)', // efecto vidrio suave
+        }}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h6" sx={{ color: '#555' }}>
+            💡 Consejos Rápidos
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <List>
+            <ListItem disableGutters>
+              <ListItemIcon>
+                <EmojiObjectsIcon color="warning" />
+              </ListItemIcon>
+              <ListItemText
+                primary="Usa el buscador por DNI para acceder rápido al historial"
+                primaryTypographyProps={{ sx: { fontSize: 14, color: '#333' } }}
+              />
+            </ListItem>
+            <ListItem disableGutters>
+              <ListItemIcon>
+                <EmojiObjectsIcon color="warning" />
+              </ListItemIcon>
+              <ListItemText
+                primary="Verifica siempre los datos antropométricos"
+                primaryTypographyProps={{ sx: { fontSize: 14, color: '#333' } }}
+              />
+            </ListItem>
+            <ListItem disableGutters>
+              <ListItemIcon>
+                <EmojiObjectsIcon color="warning" />
+              </ListItemIcon>
+              <ListItemText
+                primary="Revisa el historial antes de nueva consulta"
+                primaryTypographyProps={{ sx: { fontSize: 14, color: '#333' } }}
+              />
+            </ListItem>
+          </List>
+        </AccordionDetails>
+      </Accordion>
+    </Grid>
+  );
+};
 
 export default ConsejosRapidos;

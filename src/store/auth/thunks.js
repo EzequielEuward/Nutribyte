@@ -2,7 +2,7 @@ import axios from "axios";
 import { checkingCredentials, login, logout } from "./authSlice";
 
 const api = axios.create({
-  baseURL: "https://localhost:7041/api/Usuarios",
+  baseURL: "https://sintacc-api-deploy.azurewebsites.net/api/Usuarios",
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json",
@@ -15,21 +15,16 @@ export const startLoginWithUsernameAndPassword = ({ username, password, codigo2F
   return async (dispatch) => {
     dispatch(checkingCredentials());
 
-    console.log("🟡 Iniciando login con:", { username, password, codigo2FA });
-
     try {
       localStorage.removeItem("userData");
       localStorage.removeItem("authToken");
       const payload = { username, password };
       if (codigo2FA) payload.codigo2FA = codigo2FA;
 
-      console.log("🟢 Payload enviado al backend:", payload);
       const { data } = await api.post("/login", payload);
-      console.log("🟢 Respuesta del backend:", data);
 
       // ⚠️ Si requiere 2FA, detener login y retornar info
       if (data.requires2FA || data.result?.requires2FA) {
-        console.log("🟠 Usuario requiere 2FA");
 
         const usuario = data.result?.usuario || null;
 
@@ -147,7 +142,6 @@ export const startVerify2FA = ({ idUsuario, token }) => {
         ...user,
         twoFactorEnabled: !!user.twoFactorEnabled
       }));
-      console.log("🟢 userData guardado con 2FA:", user);
 
       return {
         isSuccess: true,
