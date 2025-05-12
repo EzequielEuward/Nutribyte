@@ -5,7 +5,8 @@ import { AuthRouter } from '../auth/routes/AuthRouter';
 import { DashboardRouter } from '../dashboard/routes/DashboardRouter';
 import { FormularioHistorial } from '../helpers/FormularioHistorial';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
-import {PlanesContacto} from '../dashboard/pages/PlanesContacto';
+import { PlanesContacto } from '../dashboard/pages/PlanesContacto';
+import { RouteTracker } from '../helpers';
 
 export const AppRouter = () => {
   // Obtener el estado de autenticación desde Redux
@@ -17,27 +18,30 @@ export const AppRouter = () => {
   }
 
   return (
-    <Routes>
-      {/* Ruta pública */}
-      <Route path="/" element={<HomePage />} />
+    <>
+      <RouteTracker />
+      <Routes>
+        {/* Ruta pública */}
+        <Route path="/" element={<HomePage />} />
 
-      {/* Rutas de autenticación */}
-      <Route path="/auth/*" element={status === 'authenticated' ? <Navigate to="/home" /> : <AuthRouter />} />
+        {/* Rutas de autenticación */}
+        <Route path="/auth/*" element={status === 'authenticated' ? <Navigate to="/home" /> : <AuthRouter />} />
 
-      {/* Ruta protegida con verificación de autenticación */}
-      <Route path="/home/*" element={status === 'authenticated' ? <DashboardRouter /> : <Navigate to="/auth/login" />} />
+        {/* Ruta protegida con verificación de autenticación */}
+        <Route path="/home/*" element={status === 'authenticated' ? <DashboardRouter /> : <Navigate to="/auth/login" />} />
 
-      {/* Otras rutas */}
-      <Route path="/formulario-historial-peso" element={<FormularioHistorial />} />
+        {/* Otras rutas */}
+        <Route path="/formulario-historial-peso" element={<FormularioHistorial />} />
 
-      <Route path="/home/" element={status === 'authenticated' ? <DashboardRouter /> : <Navigate to="/auth/login" />} />
+        <Route path="/home/" element={status === 'authenticated' ? <DashboardRouter /> : <Navigate to="/auth/login" />} />
 
-      <Route path='/planes/:nombrePlan' element={<PlanesContacto/>} />
+        <Route path='/planes/:nombrePlan' element={<PlanesContacto />} />
 
 
-      {/* Redirigir rutas desconocidas */}
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+        {/* Redirigir rutas desconocidas */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </>
   );
 };
 
