@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_CONSULTA = "https://localhost:7041/api/Consulta";
-const API_PACIENTES = "https://localhost:7041/api/Pacientes";
-const API_ANAMNESIS = "https://localhost:7041/api/Anamnesis";
+const API_CONSULTA = "https://sintacc-api-deploy.azurewebsites.net/api/Consulta";
+const API_PACIENTES = "https://sintacc-api-deploy.azurewebsites.net/api/Pacientes";
+const API_ANAMNESIS = "https://sintacc-api-deploy.azurewebsites.net/api/Anamnesis";
 
 
 export const listarConsulta = createAsyncThunk(

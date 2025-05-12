@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const API_USUARIO = "https://localhost:7041/api/Usuarios";
+const API_USUARIO = "https://sintacc-api-deploy.azurewebsites.net/api/Usuarios";
 
 // Thunk para obtener todos los usuarios
 export const ListarUsuarios = createAsyncThunk(

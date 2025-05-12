@@ -3,8 +3,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { addHours, addMinutes } from "date-fns";
 
-const API_TURNOS = "https://localhost:7041/api/Turnos";
-const API_PACIENTES = "https://localhost:7041/api/Pacientes";
+const API_TURNOS = "https://sintacc-api-deploy.azurewebsites.net/api/Turnos";
+const API_PACIENTES = "https://sintacc-api-deploy.azurewebsites.net/api/Pacientes";
 
 // Thunk para listar turnos (incluye datos de paciente embebidos)
 export const listarTurnos = createAsyncThunk(
@@ -13,7 +13,7 @@ export const listarTurnos = createAsyncThunk(
     try {
       const { auth } = getState();
       if (!auth?.uid) return rejectWithValue("Usuario no autenticado");
-
+      
       const response = await axios.get(`${API_TURNOS}/Usuario/${auth.uid}`);
 
       // Optimizar la obtención de pacientes

@@ -3,9 +3,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_PLAN = "https://localhost:7041/api/PlanAlimenticios";
-const API_PACIENTES ="https://localhost:7041/api/Pacientes";
-const API_ALIMENTOS = "https://localhost:7041/api/Alimentos";
+const API_PLAN = "https://sintacc-api-deploy.azurewebsites.net/api/PlanAlimenticios";
+const API_PACIENTES ="https://sintacc-api-deploy.azurewebsites.net/api/Pacientes";
+const API_ALIMENTOS = "https://sintacc-api-deploy.azurewebsites.net/api/Alimentos";
 
 export const crearPlanAlimenticio = createAsyncThunk(
   "planes/crearPlanAlimenticio",

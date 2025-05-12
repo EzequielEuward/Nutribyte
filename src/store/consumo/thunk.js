@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_CONSUMO = "https://localhost:7041/api/Consumo";
-const API_PACIENTES ="https://localhost:7041/api/Pacientes";
+const API_CONSUMO = "https://sintacc-api-deploy.azurewebsites.net/api/Consumo";
+const API_PACIENTES ="https://sintacc-api-deploy.azurewebsites.net/api/Pacientes";
 
 
 //Buscar paciente por dni pero de consumo

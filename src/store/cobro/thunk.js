@@ -2,8 +2,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_COBRO = "https://localhost:7041/api/Cobros";
-const API_USUARIO = "https://localhost:7041/api/Usuarios";
+const API_COBRO = "https://sintacc-api-deploy.azurewebsites.net/api/Cobros";
+const API_USUARIO = "https://sintacc-api-deploy.azurewebsites.net/api/Usuarios";
 
 export const listarCobros = createAsyncThunk(
     'cobro/fetchCobrosConUsuario',
