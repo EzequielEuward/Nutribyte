@@ -9,6 +9,7 @@ import { planSlice } from './plans/planSlice';
 import { cobroSlice } from './cobro/cobroSlice';
 import { consultaSlice } from './consultas/consultaSlice';
 import { consumoSlice } from './consumo/consumoSlice';
+import { cobroParticularSlice } from './cobroParticular';
 
 export const store = configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
     cobro: cobroSlice.reducer,
     consulta: consultaSlice.reducer,
     consumo: consumoSlice.reducer,
+    cobroParticular: cobroParticularSlice.reducer,
   },
 });

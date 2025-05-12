@@ -5,7 +5,7 @@ import {
   CalendarPage, ConsultaPage, PlanesPage, RecipePage,
   ConfigPage, HistorialPeso, ConsumoPage, VersionPage,
   ControlDeSistemaPage, PlanSummaryPage, SeguridadMedidas, DetallePlan, ReportesPage,
-  CalculadoraAntropometricaPage, PagosAndSuscripcionesPage, PagosParticularesPage
+  CalculadoraAntropometricaPage, PagosAndSuscripcionesPage, CobrosParticularesPage
 
 } from '../pages/';
 
@@ -40,7 +40,7 @@ export const DashboardRouter = () => {
 
       <Route path="reportes" element={<ReportesPage />} />
       <Route path="pagos-y-suscripciones" element={<PagosAndSuscripcionesPage />} />
-      <Route path="pagos-particulares" element={<PagosParticularesPage />} />
+      <Route path="pagos-particulares" element={<CobrosParticularesPage />} />
 
       {planUsuario === "Elite" && (
         <>
