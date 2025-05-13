@@ -80,6 +80,7 @@ export const ReportesAdminPage = () => {
                     <Tab label="Usuarios Registrados" />
                     <Tab label="En construcción" />
                     <Tab label="Seguimiento de Leads" />
+                    <Tab label="Estado del Hosting" />
                 </Tabs>
 
                 {tabIndex === 0 && (
@@ -110,7 +111,7 @@ export const ReportesAdminPage = () => {
                                 Visualizá las métricas de tráfico, visitas, sesiones o eventos desde Google Analytics.
                             </Typography>
                             <a
-                                href="https://analytics.google.com/analytics/web/?authuser=2#/p488851617/reports/intelligenthome?params=_u..nav%3Dmaui" 
+                                href="https://analytics.google.com/analytics/web/?authuser=2#/p488851617/reports/intelligenthome?params=_u..nav%3Dmaui"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -124,6 +125,60 @@ export const ReportesAdminPage = () => {
                                     fontWeight: 'bold'
                                 }}>
                                     Abrir Google Analytics
+                                </button>
+                            </a>
+                        </CardContent>
+                    </Card>
+                )}
+                {tabIndex === 3 && (
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h6">Estado del Hosting</Typography>
+                            <Typography variant="body2" sx={{ mb: 2 }}>
+                                Desde aquí podés acceder rápidamente al panel de administración del hosting tanto del frontend como del backend.
+                            </Typography>
+
+                            {/* Netlify */}
+                            <Typography variant="subtitle2" sx={{ mt: 2 }}>
+                                🌐 Frontend: Netlify
+                            </Typography>
+                            <a
+                                href="https://app.netlify.com/projects/sintaccapp/overview"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <button style={{
+                                    backgroundColor: '#00ad9f',
+                                    color: 'white',
+                                    padding: '8px 16px',
+                                    marginTop: 8,
+                                    border: 'none',
+                                    borderRadius: 6,
+                                    cursor: 'pointer'
+                                }}>
+                                    Ir al panel de Netlify
+                                </button>
+                            </a>
+
+                            {/* Azure */}
+                            <Typography variant="subtitle2" sx={{ mt: 4 }}>
+                                ☁️ Backend: Azure App Service
+                            </Typography>
+                            <a
+                                href="https://portal.azure.com/?Microsoft_Azure_Education_correlationId=fd23b25c-df1c-4e7f-a565-e5a2f98cf22c&Microsoft_Azure_Education_newA4E=true&Microsoft_Azure_Education_asoSubGuid=d8977ddc-93a1-4285-b9be-acf9c091f2f3#@Sintacc2025hotmail.onmicrosoft.com/resource/subscriptions/d8977ddc-93a1-4285-b9be-acf9c091f2f3/resourceGroups/Grupo_Tesis/providers/Microsoft.Sql/servers/sintacc/databases/SINTACC_Az/overview"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <button style={{
+                                    backgroundColor: '#007FFF',
+                                    color: 'white',
+                                    padding: '8px 16px',
+                                    marginTop: 8,
+                                    border: 'none',
+                                    borderRadius: 6,
+                                    cursor: 'pointer'
+                                }}>
+                                    Ir al portal de Azure
                                 </button>
                             </a>
                         </CardContent>
