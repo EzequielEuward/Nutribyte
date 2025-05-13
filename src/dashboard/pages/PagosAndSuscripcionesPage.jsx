@@ -112,9 +112,9 @@ export const PagosAndSuscripcionesPage = () => {
 
 
     const precioPlan =
-        planUsuario === "Basico" ? "2500" :
-            planUsuario === "Premium" ? "3500" :
-                planUsuario === "Elite" ? "5000" :
+        planUsuario === "Basico" ? "35.000" :
+            planUsuario === "Premium" ? "55.000" :
+                planUsuario === "Elite" ? "65.000" :
                     "0";
 
     return (

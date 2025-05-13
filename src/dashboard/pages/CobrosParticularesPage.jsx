@@ -132,8 +132,8 @@ export const CobrosParticularesPage = () => {
             {loading ? (
               <Typography variant="body1">Cargando cobros...</Typography>
             ) : error ? (
-              <Typography variant="body1" color="error">
-                Error: {error}
+              <Typography variant="body1" >
+                Error: Hubo un error
               </Typography>
             ) : (
               <CobroParticularTable cobros={cobros} handleMenuOpen={handleMenuOpen} />
@@ -145,22 +145,23 @@ export const CobrosParticularesPage = () => {
           <MenuItem onClick={() => { setSelectedCobro(menuCobro); setOpenDetalles(true); handleMenuClose(); }}>
             <VisibilityIcon sx={{ mr: 1 }} /> Ver detalles
           </MenuItem>
-          <MenuItem onClick={() => { setSelectedCobro(menuCobro); setOpenEditar(true); handleMenuClose(); }}>
-            <EditIcon sx={{ mr: 1 }} /> Editar
-          </MenuItem>
+
           <MenuItem
             onClick={() => {
-              if (menuCobro) {
-                generarFacturaPDF(menuCobro);
-              } else {
-                Swal.fire("Error", "No se encontró el cobro seleccionado", "error");
-              }
+              setSelectedCobro(menuCobro);
+              setOpenEditar(true);
               handleMenuClose();
             }}
+            disabled={menuCobro?.estado?.toLowerCase() === "aprobado"}
           >
+            <EditIcon sx={{ mr: 1 }} /> Editar
+          </MenuItem>
+
+          <MenuItem disabled>
             <ReceiptIcon sx={{ mr: 1 }} /> Enviar comprobante
           </MenuItem>
-          <MenuItem onClick={() => { setSelectedCobro(menuCobro); setOpenEliminar(true); handleMenuClose(); }}>
+
+          <MenuItem disabled>
             <DeleteIcon sx={{ mr: 1 }} /> Eliminar
           </MenuItem>
         </Menu>
