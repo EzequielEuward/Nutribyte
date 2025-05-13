@@ -31,7 +31,14 @@ export const lightTheme = createTheme({
       firstConsult: { background: '#EDE7F6', text: '#5E35B1' },
       followUp: { background: '#E3F2FD', text: '#1E88E5' },
       control: { background: '#E8F5E9', text: '#43A047' },
-      reminder: { background: '#FFF8E1', text: '#FF9800' },  // Fondo más claro y texto amarillo fuerte
+      reminder: { background: '#FFF8E1', text: '#FF9800' },
+    },
+    calendarStatus: {
+      pendiente: { background: '#FFEB3B', text: '#000' },
+      confirmado: { background: '#4CAF50', text: '#fff' },
+      cancelado: { background: '#f44336', text: '#fff' },
+      reprogramado: { background: '#2196F3', text: '#fff' },
+      completado: { background: '#9C27B0', text: '#fff' },
     },
     estadoTurnos: {
       disponible: { background: '#D1E8FF', text: '#1565C0' },

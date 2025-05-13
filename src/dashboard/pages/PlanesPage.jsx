@@ -18,11 +18,13 @@ import { listarAlimentos } from "../../store/food";
 import { differenceInYears, addDays } from "date-fns";
 import Swal from 'sweetalert2';
 import ConsejosRapidos from "../components/consultas/ConsejosRapidos";
+import { useTheme } from '@mui/material/styles';
 
 
 export const PlanesPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const { paciente, isLoading, error } = useSelector((state) => state.plan || {});
   const pacientesList = useSelector(state => state.patients.pacientes || []);
@@ -247,7 +249,7 @@ export const PlanesPage = () => {
   return (
     <DashboardLayout>
       <Container maxWidth="xl">
-        <Typography variant="h3" sx={{ mt: 2, color: "secondary.main" }}>
+        <Typography variant="h3" sx={{ mt: 2, color: "theme.palette.text.primary" }}>
           Gestión de Planes Alimenticios
         </Typography>
 
@@ -263,7 +265,7 @@ export const PlanesPage = () => {
               pacientesList={pacientesList}
             />
             <Divider sx={{ my: 4 }} />
-            <Typography variant="h4" sx={{ mt: 4 }}>
+            <Typography variant="h4" sx={{ mt: 4 , color:"theme.palette.text.primary"}}>
               Información general
             </Typography>
             <Divider sx={{ mb: 3 }} />

@@ -69,10 +69,17 @@ export const ConsumoPage = () => {
 
     const buscarPaciente = () => {
         const dniValido = dni.trim();
+
         if (!dniValido || !/^\d{7,8}$/.test(dniValido)) {
-            alert("Ingrese un DNI válido (7 u 8 dígitos)");
+            Swal.fire({
+                icon: 'warning',
+                title: 'DNI inválido',
+                text: 'Ingrese un DNI válido (7 u 8 dígitos)',
+                confirmButtonText: 'Aceptar'
+            });
             return;
         }
+
         dispatch(buscarPacientePorDni(dniValido))
             .unwrap()
             .then((pac) => {
@@ -81,10 +88,14 @@ export const ConsumoPage = () => {
             })
             .catch((error) => {
                 console.error("Error:", error);
-                alert(error.message || "Error buscando paciente");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al buscar paciente',
+                    text: error.message || "Ocurrió un error inesperado",
+                    confirmButtonText: 'Aceptar'
+                });
             });
     };
-
 
     //POST CONSUMO
     const handleCrearConsumo = async (data, resetForm) => {
@@ -200,7 +211,7 @@ export const ConsumoPage = () => {
                                         titleTypographyProps={{ variant: "h6" }}
                                     />
                                     <CardContent>
-                                       <TablaConsumo consumos={consumos} />
+                                        <TablaConsumo consumos={consumos} />
                                     </CardContent>
                                 </Card>
                             </Grid>

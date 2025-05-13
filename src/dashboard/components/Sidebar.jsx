@@ -1,6 +1,25 @@
-import React, { useState } from 'react';
-import { Box, Divider, Drawer, List, Toolbar, Typography, IconButton, ListItem, ListItemIcon, ListItemText, CssBaseline, AppBar, Collapse } from '@mui/material';
-import { Archive, Menu as MenuIcon, CalendarToday, ExpandMore, ExpandLess, ChevronRight } from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Divider,
+  Drawer,
+  List,
+  Toolbar,
+  Typography,
+  IconButton,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  CssBaseline,
+  Collapse,
+  useMediaQuery
+} from '@mui/material';
+import {
+  Menu as MenuIcon,
+  ExpandMore,
+  ExpandLess,
+  ChevronRight
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../../mock/data/menuItems';
 import { useTheme } from '@emotion/react';
@@ -14,10 +33,19 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
 
   const navigate = useNavigate();
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  useEffect(() => {
+    const handleMobileToggle = () => {
+      setMobileOpen(prev => !prev);
+    };
+    window.addEventListener('toggleSidebarMobile', handleMobileToggle);
+    return () => window.removeEventListener('toggleSidebarMobile', handleMobileToggle);
+  }, []);
 
   const handleClick = (menu) => {
     setOpenMenus(prevState => ({ ...prevState, [menu]: !prevState[menu] }));
@@ -26,6 +54,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
 
   const handleNavigate = (path) => {
     navigate(path);
+    setMobileOpen(false);
   };
 
   const linkColor = isDarkMode ? '#fff' : '#000';
@@ -42,8 +71,6 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
     }
     return true;
   });
-
-
 
   const drawerContent = (
     <Box
@@ -62,11 +89,13 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
         }
       }}
     >
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div">
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 2 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 'bold', textAlign: 'center', maxWidth: '90%', wordBreak: 'break-word' }}>
           {username}
         </Typography>
-      </Toolbar>
+        <Typography variant="caption" sx={{ opacity: 0.7, textAlign: 'center' }}>{rol}</Typography>
+      </Box>
+
       <Divider sx={{ backgroundColor: isDarkMode ? '#444' : '#ddd' }} />
 
       <List>
@@ -109,16 +138,6 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ display: { sm: 'none' }, backgroundColor: isDarkMode ? '#121212' : '#000' }}>
-        <Toolbar>
-          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" sx={{ color: isDarkMode }} noWrap component="div">
-            {rol}
-          </Typography>
-        </Toolbar>
-      </AppBar>
 
       <Drawer
         variant="permanent"
@@ -128,12 +147,16 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
             boxSizing: 'border-box',
             width: drawerWidth,
             backgroundColor: theme.palette.background.paper,
+            position: 'fixed', // ⬅️ Importante
+            height: '100vh',
+            zIndex: theme.zIndex.drawer,
           },
         }}
         open
       >
         {drawerContent}
       </Drawer>
+
       <Drawer
         variant="temporary"
         open={mobileOpen}
@@ -141,7 +164,11 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
         ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: 'block', sm: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, backgroundColor: isDarkMode ? '#121212' : '#fff' },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: drawerWidth,
+            backgroundColor: isDarkMode ? '#121212' : '#fff',
+          },
         }}
       >
         {drawerContent}

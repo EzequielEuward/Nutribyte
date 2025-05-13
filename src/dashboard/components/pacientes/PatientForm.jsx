@@ -66,10 +66,10 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       <DialogTitle>Registrar Nuevo Paciente</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ mt: 1 }}>
         <form> {/* Sin onSubmit */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
-            <div style={{ flex: "1 1 calc(50% - 16px)" }}>
+            <div style={{ flex: "1 1 calc(50% - 16px)", marginTop:"5px" }}>
               <TextField
                 label="DNI"
                 name="dni"
@@ -80,9 +80,16 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 required
                 error={dniRepetido}
                 helperText={dniRepetido ? "Este DNI ya pertenece a un paciente registrado." : ""}
+                sx={{
+                  '& .MuiInputLabel-root': {
+                    zIndex: 1,
+                    backgroundColor: 'white',
+                    paddingRight: '4px'
+                  }
+                }}
               />
             </div>
-            <div style={{ flex: "1 1 calc(50% - 16px)" }}>
+            <div style={{ flex: "1 1 calc(50% - 16px)" , marginTop:"5px"}}>
               <TextField
                 label="Apellido"
                 name="apellido"
@@ -175,7 +182,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
 
             <div style={{ flex: "1 1 100%" }}>
               <TextField
-                label="Historial Clínico"
+                label="Antecedentes"
                 name="historialClinico"
                 value={formData.historialClinico}
                 onChange={handleChange}

@@ -13,7 +13,7 @@ import { es } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { Box, CircularProgress, Typography, Tooltip } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, useTheme } from "@mui/material/styles";
 import {
   listarTurnos,
   crearTurno,
@@ -57,7 +57,7 @@ export const CalendarPage = () => {
   const dispatch = useDispatch();
   const { turnos, loading } = useSelector((state) => state.turnos);
   const { pacientes } = useSelector((state) => state.patients);
-  const currentTheme = isDarkMode ? darkTheme : lightTheme;
+  const theme = useTheme();
 
   const [openModal, setOpenModal] = useState(false);
   const [turnoSeleccionado, setTurnoSeleccionado] = useState(null);
@@ -238,28 +238,15 @@ export const CalendarPage = () => {
         throw new Error("Complete todos los campos obligatorios");
       }
 
-      // 🔍 Log original capturado desde el input
-      console.log("🕐 Valor original desde input datetime-local:", formData.start);
-
-      // ⚠️ Aquí se interpreta como local pero toISOString() lo convierte a UTC
       const fechaLocal = new Date(formData.start);
 
-      // 🧠 Reconstruimos como fecha LOCAL para evitar shift a UTC
-      const fechaInicio = new Date(
-        fechaLocal.getFullYear(),
-        fechaLocal.getMonth(),
-        fechaLocal.getDate(),
-        fechaLocal.getHours(),
-        fechaLocal.getMinutes()
-      );
-
-      // 🪵 Log resultado final que se va a guardar
-      console.log("📤 Fecha que se enviará al backend (ISO):", fechaInicio.toISOString());
+      // ✅ Ajuste horario manual UTC-3
+      const fechaInicioCorrigida = new Date(fechaLocal.getTime() - 3 * 60 * 60 * 1000);
 
       const turnoData = {
         tipoConsulta: formData.title,
         motivo: formData.motivo || "Consulta general",
-        fechaInicio: fechaInicio.toISOString(), // ya en hora correcta
+        fechaInicio: fechaInicioCorrigida.toISOString(),
         idPaciente: Number(formData.pacienteSeleccionado),
         estado: formData.estado || "pendiente",
       };
@@ -269,7 +256,7 @@ export const CalendarPage = () => {
           idTurno: formData.idTurno,
           turnoModificado: {
             ...turnoData,
-            fechaFin: addMinutes(fechaInicio, 45).toISOString(),
+            fechaFin: addMinutes(fechaInicioCorrigida, 45).toISOString(),
           },
         })).unwrap();
       } else {
@@ -284,6 +271,7 @@ export const CalendarPage = () => {
       Swal.fire("Error", error.message || "Error al guardar el turno", "error");
     }
   };
+
 
   const eventos = turnos
     .filter(turno => turno.estado.toLowerCase() !== 'cancelado')
@@ -318,20 +306,40 @@ export const CalendarPage = () => {
     .filter(event => event !== null);
 
   const getEventStyle = (event) => {
-    const tipo = event.tipoConsulta?.toLowerCase();
+    const { estado, tipoConsulta } = event;
+    const estadoLower = estado?.toLowerCase();
+    const tipoLower = tipoConsulta?.toLowerCase();
 
+    // Prioridad a estado del turno
+    const estadoColor = theme.palette.calendarStatus?.[estadoLower];
+
+    if (estadoColor) {
+      return {
+        style: {
+          backgroundColor: estadoColor.background,
+          color: estadoColor.text,
+          borderRadius: "4px",
+          padding: "2px 4px",
+          fontSize: "0.8rem",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        },
+      };
+    }
+
+    // Si no hay estado, usar tipoConsulta
     const tipoKeyMap = {
       "primera consulta": "firstConsult",
       "seguimiento": "followUp",
       "revisión": "control",
       "problema especifico": "reminder",
     };
+    const tipoKey = tipoKeyMap[tipoLower] || "default";
 
-    const tipoKey = tipoKeyMap[tipo] || "default";
-
-    const tipoStyle = currentTheme.palette.appointmentTypes[tipoKey] || {
+    const tipoStyle = theme.palette.appointmentTypes?.[tipoKey] || {
       background: "#E0E0E0",
-      text: currentTheme.palette.text.primary,
+      text: theme.palette.text.primary,
     };
 
     return {
@@ -350,86 +358,90 @@ export const CalendarPage = () => {
 
 
   return (
-    <ThemeProvider theme={currentTheme}>
-      <DashboardLayout>
-        <Typography
-          variant="h5"
-          sx={{
-            fontSize: { xs: "1.2rem", sm: "1.5rem", md: "2rem" },
-            fontWeight: "bold",
-            marginTop: 4,
-          }}
-        >
-          Calendario de Turnos
-        </Typography>
 
-        {/* Contenedor principal que organiza los elementos */}
-        <Box sx={{ width: "100%", padding: { xs: 2, sm: 4 }, display: "flex", flexDirection: "column", gap: 2 }}>
-          <Box sx={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-            {loading ? (
-              <CircularProgress />
-            ) : (
-              <Box
-                className={isDarkMode ? "calendar-dark" : "calendar-light"}
-                sx={{ width: "100%", height: "100%" }}
-              >
-                <Calendar
-                  localizer={localizer}
-                  events={eventos}
-                  onSelectEvent={handleOpenModal}
-                  onSelectSlot={handleOpenModal}
-                  selectable
-                  dayPropGetter={(date) => {
-                    const day = date.getDay();
-                    const isWeekend = day === 0 || day === 6;
-                    return isWeekend
-                      ? { style: { backgroundColor: "#e6e6f6" } } // gris claro
-                      : {};
-                  }}
-                  views={{ month: true, week: true, day: true }}
-                  messages={messages}
-                  popup
-                  style={{ height: "100%", width: "100%" }}
-                  eventPropGetter={getEventStyle}
-                  components={{
-                    event: ({ event }) => (
-                      <Tooltip title={event.titleFull}>
-                        <span style={{
-                          display: 'block',
-                          overflow: 'hidden',
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                          fontSize: '0.8rem',
-                          padding: '2px 4px',
-                        }}>
-                          {event.titleShort}
-                        </span>
-                      </Tooltip>
-                    )
-                  }}
-                />
-              </Box>
-            )}
-          </Box>
+    <DashboardLayout>
+      <Typography
+        variant="h5"
+        sx={{
+          fontSize: { xs: "1.2rem", sm: "1.5rem", md: "2rem" },
+          fontWeight: "bold",
+          marginTop: 4,
+        }}
+      >
+        Calendario de Turnos
+      </Typography>
 
-          {/* Tabla de Turnos */}
-          <Box sx={{ width: "100%" }}>
-            <CalendarTable turnos={turnos} handleEstadoChange={handleEstadoChange} />
-          </Box>
+      {/* Contenedor principal que organiza los elementos */}
+      <Box sx={{ width: "100%", padding: { xs: 2, sm: 4 }, display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Box
+              className={isDarkMode ? "calendar-dark" : "calendar-light"}
+              sx={{ width: "100%", height: "100%" }}
+            >
+              <Calendar
+                localizer={localizer}
+                events={eventos}
+                onSelectEvent={handleOpenModal}
+                onSelectSlot={handleOpenModal}
+                selectable
+                dayPropGetter={(date) => {
+                  const day = date.getDay();
+                  const isWeekend = day === 0 || day === 6;
+
+                  return isWeekend
+                    ? {
+                      style: {
+                        backgroundColor: isDarkMode ? "#2a2a2a" : "#d6d6d6",
+                      },
+                    }
+                    : {};
+                }}
+                views={{ month: true, week: true, day: true }}
+                messages={messages}
+                popup
+                style={{ height: "100%", width: "100%" }}
+                eventPropGetter={getEventStyle}
+                components={{
+                  event: ({ event }) => (
+                    <Tooltip title={event.titleFull}>
+                      <span style={{
+                        display: 'block',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                        fontSize: '0.8rem',
+                        padding: '2px 4px',
+                      }}>
+                        {event.titleShort}
+                      </span>
+                    </Tooltip>
+                  )
+                }}
+              />
+            </Box>
+          )}
         </Box>
 
-        {/* Modal para agregar/editar turnos */}
-        <TurnoModal
-          open={openModal}
-          onClose={handleCloseModal}
-          formValues={formValues}
-          handleChange={handleChange}
-          handleSave={handleSave}
-          handleDelete={handleDeleteTurno}
-          pacientes={pacientes}
-        />
-      </DashboardLayout>
-    </ThemeProvider>
+        {/* Tabla de Turnos */}
+        <Box sx={{ width: "100%" }}>
+          <CalendarTable turnos={turnos} handleEstadoChange={handleEstadoChange} />
+        </Box>
+      </Box>
+
+      {/* Modal para agregar/editar turnos */}
+      <TurnoModal
+        open={openModal}
+        onClose={handleCloseModal}
+        formValues={formValues}
+        handleChange={handleChange}
+        handleSave={handleSave}
+        handleDelete={handleDeleteTurno}
+        pacientes={pacientes}
+      />
+    </DashboardLayout>
   );
 };
 

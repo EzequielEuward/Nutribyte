@@ -8,12 +8,12 @@ export const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const userData = localStorage.getItem("userData");
-    const authToken = localStorage.getItem("authToken");
+    const userData = sessionStorage.getItem("userData");
+    const authToken = sessionStorage.getItem("authToken");
 
     if (userData && authToken) {
       const user = JSON.parse(userData);
-      
+
 
       dispatch(
         login({

@@ -30,7 +30,8 @@ export const ConfigPage = () => {
     seguimientoAgua: true,
     mensajeBienvenida: localStorage.getItem('mensajeBienvenida') || '¡Bienvenido a tu plan de nutrición personalizado!',
     mensajeMotivacional: '¡Sigue así! Cada día estás más cerca de tus objetivos.',
-    seguimientoProgreso: false,
+    seguimientoProgreso: JSON.parse(localStorage.getItem('seguimientoProgreso') || 'false'),
+    mensajeMotivacionalActivo: JSON.parse(localStorage.getItem('mostrarFrasesMotivacionales') || 'false'),
     horarioTrabajo: horarioGuardado,
     tema: 'light',
   });
@@ -50,20 +51,29 @@ export const ConfigPage = () => {
     setConfig((prev) => ({ ...prev, [setting]: nuevoValor }));
 
     if (setting === "seguimientoProgreso") {
-      localStorage.setItem("mostrarFrasesMotivacionales", JSON.stringify(!nuevoValor));
+      localStorage.setItem("seguimientoProgreso", JSON.stringify(nuevoValor));
+      window.dispatchEvent(new Event("actualizarConfiguracion"));
+      Swal.fire("Actualizado", `NutriReloj ${nuevoValor ? "activado" : "desactivado"}`, "success");
     }
 
-    Swal.fire("Actualizado", `Ya no podras ver más el boton de frases`, "success");
+    if (setting === "mensajeMotivacionalActivo") {
+      localStorage.setItem("mostrarFrasesMotivacionales", JSON.stringify(nuevoValor));
+      Swal.fire("Actualizado", `Mensajes motivacionales ${nuevoValor ? "activados" : "desactivados"}`, "success");
+    }
   };
-
   const handleInputChange = (setting, value) => {
     setConfig((prevConfig) => ({ ...prevConfig, [setting]: value }));
 
   };
 
   const handleSaveConfig = () => {
-    localStorage.setItem('mensajeBienvenida', config.mensajeBienvenida);
-    localStorage.setItem('horarioTrabajo', JSON.stringify(config.horarioTrabajo));
+    localStorage.setItem("mensajeBienvenida", config.mensajeBienvenida);
+    localStorage.setItem("horarioTrabajo", JSON.stringify(config.horarioTrabajo));
+
+    // 🔽 Estas 2 líneas eran lo que te faltaban
+    localStorage.setItem("seguimientoProgreso", JSON.stringify(config.seguimientoProgreso));
+    localStorage.setItem("mostrarFrasesMotivacionales", JSON.stringify(config.mensajeMotivacionalActivo));
+
     Swal.fire("Guardado", "La configuración se guardó correctamente.", "success");
   };
 
@@ -157,8 +167,8 @@ export const ConfigPage = () => {
             <ConfigSwitch
               label="Mensaje Motivacional"
               description="Activa/desactiva el mensaje diario para tus pacientes"
-              checked={config.seguimientoProgreso}
-              onChange={() => handleSwitchChange('seguimientoProgreso')}
+              checked={config.mensajeMotivacionalActivo}
+              onChange={() => handleSwitchChange('mensajeMotivacionalActivo')}
             />
 
             <Grid container spacing={2} sx={{ marginTop: 3 }}>

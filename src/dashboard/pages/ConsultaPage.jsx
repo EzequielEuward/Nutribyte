@@ -209,17 +209,40 @@ export const ConsultaPage = () => {
 
   const buscarPaciente = () => {
     if (!/^[0-9]{7,8}$/.test(dni.trim())) {
-      return alert('Ingrese un DNI válido (7 u 8 dígitos)');
+      Swal.fire({
+        icon: 'warning',
+        title: 'DNI inválido',
+        text: 'Ingrese un DNI válido (7 u 8 dígitos)',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
     }
+
     dispatch(buscarPacientePorDni(dni))
       .unwrap()
-      .then(pac => dispatch(listarAnamnesisPorPaciente(pac.idPaciente)))
+      .then(pac => {
+        dispatch(listarAnamnesisPorPaciente(pac.idPaciente));
+      })
+      .catch(error => {
+        console.error("Error al buscar paciente:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message || 'No se pudo buscar el paciente.',
+          confirmButtonText: 'Aceptar'
+        });
+      });
   };
-
   // Handle consulta creation
   const onSubmit = (data) => {
     if (!uid || !paciente?.idPaciente) {
-      return alert('Faltan datos de usuario o paciente');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Faltan datos',
+        text: 'Faltan datos de usuario o paciente para registrar la consulta.',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
     }
 
     const parseDate = (value) => {
@@ -270,24 +293,30 @@ export const ConsultaPage = () => {
         fecha: fechaAnamnesis
       } : null
     };
-
-    console.log("📦 Payload enviado al thunk crearConsulta:", payload);
-
     dispatch(crearConsulta(payload))
       .unwrap()
       .then(() => {
         Swal.fire({
           icon: 'success',
           title: 'Consulta creada',
-          text: 'La consulta fue registrada exitosamente.'
+          text: 'La consulta fue registrada exitosamente.',
+          confirmButtonText: 'Aceptar'
         });
         methods.reset();
         dispatch(listarConsulta());
-        //setStep('busqueda');
         setDni('');
       })
-      .catch(err => alert(`Error: ${err}`));
+      .catch(err => {
+        console.error("❌ Error al crear consulta:", err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al crear la consulta',
+          text: err?.message || 'Ocurrió un error inesperado',
+          confirmButtonText: 'Aceptar'
+        });
+      });
   };
+
   const handleUpdateConsulta = async (data) => {
     try {
       const payload = {
@@ -338,7 +367,7 @@ export const ConsultaPage = () => {
         </Typography>
         {step === "busqueda" && (
           <>
-           <Box sx={{mt:2}}>
+            <Box sx={{ mt: 2 }}>
               <ConsejosRapidos />
             </Box>
             {/* Estadísticas rápidas */}

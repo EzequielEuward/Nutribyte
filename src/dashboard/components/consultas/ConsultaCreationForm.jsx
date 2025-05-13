@@ -25,6 +25,7 @@ import Swal from "sweetalert2";
 export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
 
   const { control, handleSubmit, formState: { errors } } = useFormContext();
+
   const handleValidatedSubmit = (data) => {
     const tieneAnamnesis = Object.entries(data).some(
       ([key, value]) =>
@@ -40,14 +41,35 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
         typeof value === "number" && value > 0
     );
 
+    const tieneDatosConsulta = [
+      data.tipoConsulta,
+      data.motivoVisita,
+      data.diagnostico,
+      data.antecedente,
+      data.tratamiento,
+      data.observaciones
+    ].some((campo) => campo && campo.trim() !== "");
+
+    if (!tieneDatosConsulta && !tieneAnamnesis) {
+      Swal.fire({
+        icon: "warning",
+        title: "Consulta vacía",
+        text: "Debe ingresar los datos requeridos en la consulta o en la anamnesis para guardar.",
+        confirmButtonText: "Aceptar"
+      });
+      return;
+    }
+
     if (tieneAnamnesis && (!data.tipoConsulta || data.tipoConsulta.trim() === "")) {
       Swal.fire({
         icon: "warning",
         title: "Falta tipo de consulta",
-        text: "Si cargás datos de anamnesis, también debés ingresar una consulta."
+        text: "Si cargás datos de anamnesis, también debés ingresar una consulta.",
+        confirmButtonText: "Aceptar"
       });
       return;
     }
+
     console.log("🧾 Datos enviados desde el formulario:", data);
     onSubmit(data);
   };
@@ -156,7 +178,7 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                             size="small"
                             onClick={() => field.onChange(paciente.historiaClinica)}
                           >
-                            Usar historial clínico del paciente
+                            Usar historial de antecedentes del paciente
                           </Button>
                         </Tooltip>
                       ) : null

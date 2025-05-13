@@ -1,5 +1,6 @@
 import axios from "axios";
 import { checkingCredentials, login, logout } from "./authSlice";
+import { disableDarkMode } from "../ui/uiSlice";
 
 const api = axios.create({
   baseURL: "https://sintacc-api-deploy.azurewebsites.net/api/Usuarios",
@@ -65,12 +66,12 @@ export const startLoginWithUsernameAndPassword = ({ username, password, codigo2F
         })
       );
 
-      localStorage.setItem("authToken", token);
-      localStorage.setItem("userData", JSON.stringify({
+      sessionStorage.setItem("authToken", token);
+      sessionStorage.setItem("userData", JSON.stringify({
         ...user,
         twoFactorEnabled: !!user.twoFactorEnabled
       }));
-      localStorage.setItem("ultimaSesion", new Date().toLocaleString("es-AR"));
+      sessionStorage.setItem("ultimaSesion", new Date().toLocaleString("es-AR"));
 
       return {
         isSuccess: true,
@@ -138,7 +139,7 @@ export const startVerify2FA = ({ idUsuario, token }) => {
       const user = data.usuario;
 
       // ✅ Guardar en localStorage el usuario actualizado
-      localStorage.setItem("userData", JSON.stringify({
+      sessionStorage.setItem("userData", JSON.stringify({
         ...user,
         twoFactorEnabled: !!user.twoFactorEnabled
       }));
@@ -155,6 +156,7 @@ export const startVerify2FA = ({ idUsuario, token }) => {
   };
 };
 // ✅ **Cerrar sesión corregido**
+
 export const startLogout = () => {
   return async (dispatch) => {
     try {
@@ -162,15 +164,13 @@ export const startLogout = () => {
       localStorage.removeItem("userData");
       localStorage.removeItem("ultimaSesion");
       sessionStorage.clear();
-      localStorage.removeItem("userData");
-      localStorage.removeItem("authToken");
+      dispatch(disableDarkMode());
       dispatch(logout());
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
   };
 };
-
 export const startVerificarCuenta = (token) => {
   return async () => {
     try {

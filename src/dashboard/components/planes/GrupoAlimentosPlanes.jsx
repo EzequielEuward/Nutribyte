@@ -1,12 +1,12 @@
 import { Box, Card, CardHeader, Typography, Tab, Tabs } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useTheme } from "@mui/material/styles";
 
 export const GrupoAlimentosPlanes = ({ plan }) => {
   const [tabSeleccionada, setTabSeleccionada] = useState(0);
-
+  const theme = useTheme();
   const grupos = Array.isArray(plan?.gruposAlimentos) ? plan.gruposAlimentos : [];
 
-  // Reiniciar la tab si cambia el plan
   useEffect(() => {
     setTabSeleccionada(0);
   }, [plan]);
@@ -17,10 +17,10 @@ export const GrupoAlimentosPlanes = ({ plan }) => {
 
   return (
     <Box sx={{ flex: 1 }}>
-      <Card sx={{ width: "100%", height: "100%" }}>
+      <Card sx={{ width: "100%", height: "100%", backgroundColor: theme.palette.background.paper2 }}>
         <CardHeader
           title={
-            <Typography variant="h6" fontWeight={600}>
+            <Typography variant="h6" fontWeight={600} sx={{ color: theme.palette.text.primary }}>
               Grupos de alimentos
             </Typography>
           }
@@ -31,19 +31,21 @@ export const GrupoAlimentosPlanes = ({ plan }) => {
             onChange={handleTabChange}
             variant="scrollable"
             scrollButtons="auto"
-            TabIndicatorProps={{ style: { backgroundColor: "#1976d2" } }}
+            TabIndicatorProps={{
+              style: { backgroundColor: theme.palette.secondary.main }
+            }}
             sx={{
               "& .MuiTab-root": {
                 fontSize: "0.875rem",
                 textTransform: "none",
-                color: "text.primary",
+                color: theme.palette.text.primary,
               },
               "& .Mui-selected": {
-                color: "primary.main",
-                backgroundColor: "rgba(25, 118, 210, 0.1)",
+                color: theme.palette.secondary.main,
+                backgroundColor: theme.palette.background.paper,
                 borderRadius: "4px",
               },
-              borderBottom: "1px solid #e0e0e0",
+              borderBottom: `1px solid ${theme.palette.divider || theme.palette.custom.primary}`,
             }}
           >
             {grupos.length > 0
@@ -58,15 +60,15 @@ export const GrupoAlimentosPlanes = ({ plan }) => {
               sx={{
                 p: 2,
                 borderRadius: 2,
-                border: "1px solid #e0e0e0",
+                border: `1px solid ${theme.palette.custom.primary}`,
                 mt: 2,
-                backgroundColor: "background.paper",
+                backgroundColor: theme.palette.background.paper,
               }}
             >
-              <Typography variant="subtitle1" fontWeight={500} sx={{ mb: 1 }}>
+              <Typography variant="subtitle1" fontWeight={500} sx={{ mb: 1, color: theme.palette.text.primary }}>
                 {grupos[tabSeleccionada].grupo}
               </Typography>
-              <ul style={{ paddingLeft: 20 }}>
+              <ul style={{ paddingLeft: 20, color: theme.palette.text.secondary }}>
                 {(grupos[tabSeleccionada].ejemplos || []).map((ejemplo, idx) => (
                   <li key={idx}>{ejemplo}</li>
                 ))}

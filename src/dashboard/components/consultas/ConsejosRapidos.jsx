@@ -8,57 +8,54 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  useTheme,
   Box
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 
 export const ConsejosRapidos = () => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
   return (
     <Grid item xs={12} md={6}>
       <Accordion
         elevation={0}
         sx={{
-          backgroundColor: 'rgba(240, 240, 240, 0.6)', // fondo gris semitransparente
+          backgroundColor: isDark ? 'rgba(40, 40, 40, 0.6)' : 'rgba(240, 240, 240, 0.6)',
+          border: `1px solid ${isDark ? '#444' : '#e0e0e0'}`,
           borderRadius: 2,
-          border: '1px solid #e0e0e0',
-          backdropFilter: 'blur(2px)', // efecto vidrio suave
+          backdropFilter: 'blur(2px)',
         }}
       >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6" sx={{ color: '#555' }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: isDark ? '#fff' : '#555' }} />}>
+          <Typography variant="h6" sx={{ color: isDark ? '#fff' : '#555' }}>
             💡 Consejos Rápidos
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <List>
-            <ListItem disableGutters>
-              <ListItemIcon>
-                <EmojiObjectsIcon color="warning" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Usa el buscador por DNI para acceder rápido al historial"
-                primaryTypographyProps={{ sx: { fontSize: 14, color: '#333' } }}
-              />
-            </ListItem>
-            <ListItem disableGutters>
-              <ListItemIcon>
-                <EmojiObjectsIcon color="warning" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Verifica siempre los datos antropométricos"
-                primaryTypographyProps={{ sx: { fontSize: 14, color: '#333' } }}
-              />
-            </ListItem>
-            <ListItem disableGutters>
-              <ListItemIcon>
-                <EmojiObjectsIcon color="warning" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Revisa el historial antes de nueva consulta"
-                primaryTypographyProps={{ sx: { fontSize: 14, color: '#333' } }}
-              />
-            </ListItem>
+            {[
+              "Usa el buscador por DNI para acceder rápido al historial",
+              "Verifica siempre los datos antropométricos",
+              "Revisa el historial antes de nueva consulta"
+            ].map((text, index) => (
+              <ListItem key={index} disableGutters>
+                <ListItemIcon>
+                  <EmojiObjectsIcon sx={{ color: theme.palette.warning.main }} />
+                </ListItemIcon>
+                <ListItemText
+                  primary={text}
+                  primaryTypographyProps={{
+                    sx: {
+                      fontSize: 14,
+                      color: isDark ? theme.palette.text.primary : '#333',
+                    }
+                  }}
+                />
+              </ListItem>
+            ))}
           </List>
         </AccordionDetails>
       </Accordion>

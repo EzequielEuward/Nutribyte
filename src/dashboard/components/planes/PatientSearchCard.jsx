@@ -1,8 +1,10 @@
 import { useMemo } from "react";
 import { Card, CardHeader, CardContent, Grid, TextField, Button, Autocomplete } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useTheme } from "@mui/material/styles";
 
 export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] }) => {
+  const theme = useTheme();
 
   const filteredOptions = useMemo(() => {
     if (!dni.trim()) return [];
@@ -30,9 +32,10 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
               }
               inputValue={dni}
               onInputChange={(event, newInputValue) => {
-                setDni(newInputValue);
+                const soloNumeros = newInputValue.replace(/\D/g, '');
+                setDni(soloNumeros);
               }}
-              value={null} // ← esta línea es la clave para que no te reemplace el input con la opción completa
+              value={null}
               onChange={(event, selectedOption) => {
                 if (selectedOption) {
                   setDni(selectedOption.persona.dni.toString());
@@ -44,12 +47,36 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
                   label="DNI del paciente"
                   placeholder="Ingrese DNI del paciente"
                   fullWidth
+                  sx={{
+                    '& .MuiInputLabel-root': {
+                      color: theme.palette.text.secondary,
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                      color: theme.palette.text.secondary,
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      color: theme.palette.text.primary,
+                      '& fieldset': {
+                        borderColor: theme.palette.custom.primary,
+                      },
+                      '&:hover fieldset': {
+                        borderColor: theme.palette.secondary.main,
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: theme.palette.custom.primary,
+                      },
+                    },
+                    '& .MuiSvgIcon-root': {
+                      color: theme.palette.text.primary,
+                    },
+                  }}
                 />
               )}
             />
           </Grid>
           <Grid item>
             <Button
+              sx={{ color: "theme.palette.text.primary" }}
               variant="contained"
               onClick={onSearch}
               startIcon={<SearchIcon />}

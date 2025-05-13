@@ -22,17 +22,23 @@ export const darkTheme = createTheme({
       primary: "#ffffff",
       secondary: "#b0b0b0",
     },
-    // Agregamos la propiedad custom para dark mode
     custom: {
-      primary: "#7C8BA3", // Ejemplo: un color adaptado para dark mode
-      secondary: "#A8C686", // Ejemplo: otro color para dark mode
-      terteary: "#B8B8B8",  // Puedes ajustar según convenga
+      primary: "#7C8BA3", 
+      secondary: "#A8C686", 
+      terteary: "#B8B8B8",  
     },
     appointmentTypes: {
       firstConsult: { background: "#4B4453", text: "#E1BEE7" },
       followUp: { background: "#1E3A5F", text: "#BBDEFB" },
       control: { background: "#2E7D32", text: "#A5D6A7" },
       reminder: { background: '#F9A825', text: '#f5f5f5' },
+    },
+    calendarStatus: {
+      pendiente: { background: '#FFF176', text: '#000' },
+      confirmado: { background: '#81C784', text: '#000' },
+      cancelado: { background: '#EF5350', text: '#fff' },
+      reprogramado: { background: '#64B5F6', text: '#000' },
+      completado: { background: '#BA68C8', text: '#000' },
     },
     estadoTurnos: {
       programado: { background: '#102027', text: '#81D4FA' },

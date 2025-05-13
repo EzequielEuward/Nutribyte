@@ -17,7 +17,7 @@ export const QuickAccess = ({onRecordatorio}) => {
   const navigate = useNavigate();
 
   const quickAccessItems = [
-    { icon: AddCircle, label: "Nueva Cita", tooltip: "Ir a crear una consulta", color: theme.palette.appointmentTypes.firstConsult, route: "/home/turnos/", },
+    { icon: AddCircle, label: "Registro de paciente", tooltip: "Ir a crear una consulta", color: theme.palette.appointmentTypes.firstConsult, route: "/home/turnos/", },
     { icon: ListAlt, label: "Plan Nutricional", tooltip: "Ir a crear un plan nutricional", color: theme.palette.appointmentTypes.followUp, route: "/home/planes", },
     { icon: Description, label: "Reportes", tooltip: "Ir a reportes", color: theme.palette.appointmentTypes.control, route: "/home/reportes", },
     { icon: Chat, label: "Enviar Recordatorio", tooltip: "Enviar recordatorio por email", color: theme.palette.appointmentTypes.reminder, onClick: () => onRecordatorio() }

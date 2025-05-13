@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useTheme } from "@mui/material/styles";
+import { useTheme } from '@emotion/react';
 import { Typography, Box, Button, CircularProgress } from "@mui/material";
 import { DashboardLayout } from "../../dashboard/layout/DashboardLayout";
 import { PatientForm, PatientTable, PatientCard, PatientAnamnesis, PatientDrawer } from "../components";

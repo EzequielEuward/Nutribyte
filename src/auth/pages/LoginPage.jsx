@@ -89,7 +89,7 @@ export const LoginPage = () => {
       return Swal.fire({
         icon: 'error',
         title: 'Error de inicio de sesión',
-        text: error.message || 'Ocurrió un error inesperado al iniciar sesión.',
+        text: 'Ocurrió un error inesperado al iniciar sesión.',
       });
     }
   };

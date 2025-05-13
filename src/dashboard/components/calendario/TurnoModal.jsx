@@ -8,7 +8,8 @@ import {
   TextField,
   Switch,
   FormControlLabel,
-  Autocomplete
+  Autocomplete,
+  MenuItem
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect } from "react";
@@ -110,18 +111,17 @@ export const TurnoModal = ({
           select
           label="Tipo de Consulta"
           {...register("title", { required: "Este campo es obligatorio" })}
-          SelectProps={{ native: true }}
           variant="outlined"
           fullWidth
           margin="normal"
           error={!!errors.title}
           helperText={errors.title?.message}
         >
-          <option value="">Seleccionar...</option>
-          <option value="Primera consulta">Primera consulta</option>
-          <option value="Seguimiento">Seguimiento</option>
-          <option value="Revisión">Revisión</option>
-          <option value="Problema especifico">Problema específico</option>
+          <MenuItem value="">Seleccionar...</MenuItem>
+          <MenuItem value="Primera consulta">Primera consulta</MenuItem>
+          <MenuItem value="Seguimiento">Seguimiento</MenuItem>
+          <MenuItem value="Revisión">Revisión</MenuItem>
+          <MenuItem value="Problema especifico">Problema específico</MenuItem>
         </TextField>
 
         {/* Fecha */}

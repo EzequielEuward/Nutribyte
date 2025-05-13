@@ -33,7 +33,7 @@ export const NavBarHome = () => {
 
   const menuItems = [
     { text: "Inicio", link: "#hero" },
-    { text: "Planes", link: "#plans" },
+    { text: "Plan", link: "#plans" },
     { text: "Características", link: "#features" },
     { text: "Contáctanos", link: "#contact" },
     { text: "Preguntas", link: "#faq" },
