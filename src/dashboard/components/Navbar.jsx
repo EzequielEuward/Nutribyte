@@ -163,6 +163,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
 
             {/* 🔐 Alerta visual de 2FA */}
             {!twoFactorEnabled && (
+              <Tooltip title="Asegurate de activar doble factor para mejor visibildad y mayor seguridad" >
               <Box
                 onClick={() => navigate("/home/configuracion")}
                 sx={{
@@ -183,6 +184,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
               >
                 🔐 Activá el doble factor
               </Box>
+              </Tooltip>
             )}
 
             {mostrarFrases && (
