@@ -133,7 +133,7 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
             InputLabelProps={{ shrink: true }}
           />
           {/* Checkbox para mostrar turnos cancelados */}
-          <FormControlLabel
+          {/*<FormControlLabel
             control={
               <Checkbox
                 checked={mostrarCancelados}
@@ -141,7 +141,7 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
               />
             }
             label="Mostrar cancelados"
-          />
+          />*/}
           {/* Se pueden agregar más filtros aquí */}
         </Box>
       </Paper>
