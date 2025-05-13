@@ -33,6 +33,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import SecurityIcon from "@mui/icons-material/Security";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
+
 import { useWorkClock } from "../../helpers/";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -41,6 +42,7 @@ import { toggleDarkMode } from "../../store/ui/uiSlice";
 import { useQuotes } from "../../helpers/";
 import LogoBlanco from "../../assets/LogoBlanco.png";
 import LogoNegro from "../../assets/LogoNegro.png";
+import Swal from "sweetalert2";
 
 export const Navbar = ({ drawerWidth = 240, username, rol }) => {
   const theme = useTheme();
@@ -84,6 +86,8 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
     JSON.parse(localStorage.getItem("horarioTrabajo")) || { inicio: "08:00", fin: "17:00" }
   );
 
+
+
   useEffect(() => {
     const handleStorageChange = (e) => {
       if (e.key === "seguimientoProgreso") {
@@ -100,16 +104,16 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
   const { horasPasadas, horasTotales } = useWorkClock(horarioTrabajo.inicio, horarioTrabajo.fin);
 
   return (
-   <AppBar
-  position="fixed"
-  sx={{
-    width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` }, // 🧠 Esto evita que lo tape
-    ml: { sm: `${drawerWidth}px` },
-    zIndex: (theme) => theme.zIndex.drawer + 1,
-    backgroundColor: theme.palette.background.default,
-    boxShadow: "none",
-  }}
->
+    <AppBar
+      position="fixed"
+      sx={{
+        width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` }, // 🧠 Esto evita que lo tape
+        ml: { sm: `${drawerWidth}px` },
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        backgroundColor: theme.palette.background.default,
+        boxShadow: "none",
+      }}
+    >
       <Toolbar>
         <Box
           display="flex"
@@ -138,7 +142,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
             />
           </Box>
 
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" gap={1}>
             {!isMobile && nutriRelojActivo && (
               <Box sx={{ display: "flex", alignItems: "center", mx: 1 }}>
                 {Array.from({ length: horasTotales }).map((_, i) => (
@@ -150,10 +154,34 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
                 ))}
                 <Typography
                   variant="caption"
-                  sx={{ ml: 1, minWidth: 75, fontWeight: 600, color:theme.palette.text.primary }}
+                  sx={{ ml: 1, minWidth: 75, fontWeight: 600, color: theme.palette.text.primary }}
                 >
                   {horasPasadas}h / {horasTotales}h
                 </Typography>
+              </Box>
+            )}
+
+            {/* 🔐 Alerta visual de 2FA */}
+            {!twoFactorEnabled && (
+              <Box
+                onClick={() => navigate("/home/configuracion")}
+                sx={{
+                  backgroundColor: "#f44336",
+                  color: "white",
+                  fontSize: "0.75rem",
+                  fontWeight: "bold",
+                  px: 2,
+                  py: 0.5,
+                  borderRadius: "16px",
+                  cursor: "pointer",
+                  boxShadow: 2,
+                  whiteSpace: "nowrap",
+                  "&:hover": {
+                    backgroundColor: "#d32f2f",
+                  },
+                }}
+              >
+                🔐 Activá el doble factor
               </Box>
             )}
 

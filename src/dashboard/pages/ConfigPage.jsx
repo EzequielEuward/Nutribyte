@@ -24,7 +24,8 @@ const ConfigSwitch = ({ label, description, checked, onChange }) => (
 
 export const ConfigPage = () => {
   const dispatch = useDispatch();
-  const { uid: userId, twoFactorEnabled } = useSelector((state) => state.auth);
+  const { uid: userId, twoFactorEnabled, planUsuario } = useSelector((state) => state.auth);
+  console.log(planUsuario)
   const horarioGuardado = JSON.parse(localStorage.getItem("horarioTrabajo")) || { inicio: "08:00", fin: "17:00" };
   const [config, setConfig] = useState({
     seguimientoAgua: true,
@@ -137,6 +138,7 @@ export const ConfigPage = () => {
     }
   };
 
+
   return (
     <DashboardLayout>
       <Box
@@ -224,55 +226,62 @@ export const ConfigPage = () => {
                 </Box>
               </Grid>
 
-              <Grid item xs={12}>
-                {twoFactorEnabled ? (
-                  <Alert severity="success">Ya tienes activado el doble factor de autenticación.</Alert>
-                ) : (
-                  <Button
-                    variant="contained"
-                    onClick={handleActivar2FA}
-                    sx={{ width: 300, height: 80, backgroundColor: "primary", justifyContent: "center" }}
-                  >
-                    Activar autenticación 2FA
-                  </Button>
-                )}
-              </Grid>
+              {planUsuario?.toLowerCase() !== "demo" && (
+                <>
+                  <Grid item xs={12}>
+                    {twoFactorEnabled ? (
+                      <Alert severity="success">Ya tienes activado el doble factor de autenticación.</Alert>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        onClick={handleActivar2FA}
+                        sx={{ width: 300, height: 80, backgroundColor: "primary", justifyContent: "center" }}
+                      >
+                        Activar autenticación 2FA
+                      </Button>
+                    )}
+                  </Grid>
 
-              {mostrar2FA && qrCodeImage && (
-                <Grid item xs={12}>
-                  <Box sx={{ textAlign: 'center', my: 2 }}>
-                    <img
-                      src={`data:image/png;base64,${qrCodeImage}`}
-                      alt="Código QR"
-                      style={{ width: 200, height: 200 }}
-                    />
-                    <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-                      Escaneá este código con Google Authenticator o Contraseñas en caso de iOS y luego ingresá el código generado:
-                    </Typography>
-                  </Box>
-                  <TextField
-                    label="Código de verificación"
-                    value={code2FA}
-                    onChange={(e) => setCode2FA(e.target.value)}
-                    fullWidth
-                    sx={{ mt: 2 }}
-                  />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    onClick={handleVerificar2FA}
-                  >
-                    Verificar y Activar 2FA
-                  </Button>
-                </Grid>
+                  {mostrar2FA && qrCodeImage && (
+                    <Grid item xs={12}>
+                      <Box sx={{ textAlign: 'center', my: 2 }}>
+                        <img
+                          src={`data:image/png;base64,${qrCodeImage}`}
+                          alt="Código QR"
+                          style={{ width: 200, height: 200 }}
+                        />
+                        <Typography variant="caption" display="block" sx={{ mt: 1 }}>
+                          Escaneá este código con Google Authenticator o Contraseñas en caso de iOS y luego ingresá el código generado:
+                        </Typography>
+                      </Box>
+                      <TextField
+                        label="Código de verificación"
+                        value={code2FA}
+                        onChange={(e) => setCode2FA(e.target.value)}
+                        fullWidth
+                        sx={{ mt: 2 }}
+                      />
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        sx={{ mt: 2 }}
+                        onClick={handleVerificar2FA}
+                      >
+                        Verificar y Activar 2FA
+                      </Button>
+                    </Grid>
+                  )}
+
+                  {mensaje2FA && (
+                    <Grid item xs={12}>
+                      <Alert severity="info" sx={{ mt: 2 }}>{mensaje2FA}</Alert>
+                    </Grid>
+                  )}
+                </>
               )}
-              {mensaje2FA && (
-                <Grid item xs={12}>
-                  <Alert severity="info" sx={{ mt: 2 }}>{mensaje2FA}</Alert>
-                </Grid>
-              )}
+
+            
             </Grid>
           </CardContent>
           <CardActions sx={{ justifyContent: 'flex-end', paddingX: 3 }}>

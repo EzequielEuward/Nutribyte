@@ -33,11 +33,16 @@ export const LoginPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  const isExceptionUser = (user, pass) =>
+    (user === 'Admin' || user === 'Administradora') && pass === 'admin';
 
   const handleUsernameChange = (e) => {
     const value = e.target.value;
     setUsername(value);
-    if (value.length < 1 || value.length > 30) {
+
+    const exception = isExceptionUser(value, password);
+    if (!exception && (value.length < 1 || value.length > 30)) {
       setUsernameError('Debe tener entre 1 y 30 caracteres.');
     } else {
       setUsernameError('');
@@ -47,13 +52,14 @@ export const LoginPage = () => {
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setPassword(value);
-    if (value.length < 8 || value.length > 22) {
+
+    const exception = isExceptionUser(username, value);
+    if (!exception && (value.length < 8 || value.length > 22)) {
       setPasswordError('Debe tener entre 8 y 22 caracteres.');
     } else {
       setPasswordError('');
     }
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 

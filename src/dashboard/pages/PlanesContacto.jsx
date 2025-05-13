@@ -73,7 +73,7 @@ export const PlanesContacto = () => {
     const { nombrePlan } = useParams();
     const navigate = useNavigate();
     const plan = dataPlanes[nombrePlan];
-    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=software.sintacc@gmail.com&su=Quiero contratar el plan ${nombrePlan}&body=Hola, estoy interesado/a en contratar el plan ${nombrePlan} con un precio de $${plan.precio}/mes. Por favor, envíenme más información.`;
+    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=sintacc.software@gmail.com&su=Quiero contratar el plan ${nombrePlan}&body=Hola, estoy interesado/a en contratar el plan ${nombrePlan} con un precio de $${plan.precio}/mes. Por favor, envíenme más información.`;
     if (!plan) {
         return (
             <Box sx={{ padding: 4 }}>
