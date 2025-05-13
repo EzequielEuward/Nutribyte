@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button, TextField, Box, IconButton, CircularProgress, Typography } from '@mui/material';
 import { Send, Close } from '@mui/icons-material';
-import { mockRespuestas } from '../../../mock/data/mockRespuestas';  
+import { mockRespuestas } from '../../../mock/data/mockRespuestas';
 
 export const ChatInterface = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([]);
@@ -21,33 +21,33 @@ export const ChatInterface = ({ isOpen, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (input.trim()) {
-      setMessages((prevMessages) => [...prevMessages, { role: 'user', content: input }]);
-      setInput('');
-      setStatus('streaming');
 
-      // Buscar una respuesta mock basada en el input del usuario
-      let response = 'Estoy procesando tu mensaje mediante IA. Aguarde unos segundos. ☺️⏰';
+    if (!input.trim()) return;
 
-      // Buscar una respuesta en base al input
-      const match = mockRespuestas.find((responseObj) =>
-        input.toLowerCase().includes(responseObj.trigger.toLowerCase())
-      );
+    const userMessage = input.trim();
+    setMessages((prev) => [...prev, { role: 'user', content: userMessage }]);
+    setInput('');
+    setStatus('streaming');
 
-      // Si encontramos una coincidencia, usar la respuesta asociada
-      if (match) {
-        response = match.response;
-      }
+    // Normalizar input
+    const inputLower = userMessage.toLowerCase();
 
-      // Simulación de la respuesta del asistente
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { role: 'assistant', content: response },
-        ]);
-        setStatus('');
-      }, 1000);
-    }
+    // Buscar coincidencia
+    const match = mockRespuestas.find((responseObj) =>
+      responseObj.trigger &&
+      responseObj.trigger.some((trigger) =>
+        inputLower.includes(trigger.toLowerCase())
+      )
+    );
+
+    // Si no hay coincidencia, mostrar mensaje de error
+    const response = match
+      ? match.response
+      : "Lo siento, no entendí tu mensaje. Escribí 'inicio' para ver las opciones disponibles.";
+
+    // Respuesta rápida sin delay innecesario
+    setMessages((prev) => [...prev, { role: 'assistant', content: response }]);
+    setStatus('');
   };
 
   if (!isOpen) return null;

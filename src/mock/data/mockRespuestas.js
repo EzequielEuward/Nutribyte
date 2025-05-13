@@ -138,6 +138,7 @@ export const mockRespuestas = [
         triggers: ['ayuda', 'necesito ayuda', 'puedes ayudarme', 'soporte', 'ayudame'],
         response: '¡Hola! ¿En qué puedo ayudarte? Puedes preguntarme sobre planes alimenticios, recetas, consejos nutricionales y más.'
       },
+      
 
 
 ];

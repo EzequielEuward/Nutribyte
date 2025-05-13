@@ -28,9 +28,31 @@ export const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [requiere2FA, setRequiere2FA] = useState(false);
 
+  const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    setUsername(value);
+    if (value.length < 1 || value.length > 30) {
+      setUsernameError('Debe tener entre 1 y 30 caracteres.');
+    } else {
+      setUsernameError('');
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    if (value.length < 8 || value.length > 22) {
+      setPasswordError('Debe tener entre 8 y 22 caracteres.');
+    } else {
+      setPasswordError('');
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -131,8 +153,11 @@ export const LoginPage = () => {
               margin="normal"
               required
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleUsernameChange}
+              error={!!usernameError}
+              helperText={usernameError || 'Debe tener entre 1 y 30 caracteres'}
               placeholder="Usuario"
+              inputProps={{ maxLength: 30 }}
             />
             <TextField
               label="Contraseña"
@@ -141,8 +166,11 @@ export const LoginPage = () => {
               margin="normal"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
+              error={!!passwordError}
+              helperText={passwordError || 'Debe tener entre 8 y 22 caracteres'}
               placeholder="Ingresa tu contraseña"
+              inputProps={{ maxLength: 22 }}
               InputProps={{
                 endAdornment: (
                   <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">

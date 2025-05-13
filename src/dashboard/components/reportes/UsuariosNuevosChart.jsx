@@ -21,45 +21,40 @@ ChartJS.register(
     Title
 );
 
-const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'];
-
-const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Nuevos usuarios',
-            data: [5, 12, 8, 15, 9, 18],
-            fill: false,
-            borderColor: '#1976d2',
-            backgroundColor: '#1976d2',
-            tension: 0.3,
-        },
-    ],
-};
-
-const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top',
-        },
-        title: {
-            display: false,
-        },
-    },
-    scales: {
-        y: {
-            beginAtZero: true,
-        },
-    },
-};
-
-export const UsuariosNuevosChart = () => {
+export const UsuariosNuevosChart = ({ labels, data }) => {
     const theme = useTheme();
+
+    const chartData = {
+        labels,
+        datasets: [
+            {
+                label: 'Nuevos usuarios',
+                data,
+                fill: false,
+                borderColor: theme.palette.primary.main,
+                backgroundColor: theme.palette.primary.main,
+                tension: 0.3,
+            },
+        ],
+    };
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+    };
 
     return (
         <div style={{ height: 300 }}>
-            <Line data={data} options={options} />
+            <Line data={chartData} options={options} />
         </div>
     );
 };
