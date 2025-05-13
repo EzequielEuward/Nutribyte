@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 
 const dataPlanes = {
     Básico: {
-        precio: "2.500",
+        precio: "35.500",
         color: "#42a5f5",
         features: [
             "Pacientes limitados a 20",
@@ -31,7 +31,7 @@ const dataPlanes = {
         ]
     },
     Premium: {
-        precio: "3.500",
+        precio: "55.500",
         color: "#66bb6a",
         features: [
             "Pacientes ilimitados",
@@ -48,7 +48,7 @@ const dataPlanes = {
         ]
     },
     Elite: {
-        precio: "5.000",
+        precio: "65.000",
         color: "#ef5350",
         features: [
             "Pacientes ilimitados",

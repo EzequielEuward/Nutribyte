@@ -6,3 +6,4 @@ export * from './CaracteristicasSection';
 export * from './PlanSection';
 export * from './FooterSection';
 export * from './FAQSection';
+export * from './ScrollToTopButton';

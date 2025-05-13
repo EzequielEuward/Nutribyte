@@ -1,4 +1,5 @@
 import { AboutSection, HeroSection, NavBarHome, ContactFormSection, CaracterisitcasSection, PlanSection, FooterSection, FAQSection } from "../components";
+import {ScrollToTopButton} from "../components";
 
 
 export const HomePage = () => {
@@ -23,7 +24,7 @@ export const HomePage = () => {
       <section id="contact">
         <ContactFormSection />
       </section>
-      
+
       <section id="faq">
         <FAQSection />
       </section>
@@ -36,9 +37,9 @@ export const HomePage = () => {
         <FooterSection />
       </section>
 
+      <ScrollToTopButton /> {/* ⬅️ Botón flotante */}
     </>
   );
 };
-
 
 export default HomePage;
