@@ -105,6 +105,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
               button
               onClick={() => menu.submenus ? handleClick(menu.text) : handleNavigate(menu.link)}
               selected={selectedMenu === menu.text}
+                  sx={{cursor: 'pointer'}}
             >
               <ListItemIcon>{menu.icon}</ListItemIcon>
               <ListItemText primary={menu.text} />
@@ -117,7 +118,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
                     <ListItem
                       button
                       onClick={() => handleNavigate(submenu.link)}
-                      sx={{ pl: 4 }}
+                      sx={{ pl: 4 ,cursor: 'pointer'}}
                       key={subIndex}
                     >
                       <ListItemIcon>

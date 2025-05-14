@@ -1608,7 +1608,7 @@ export const recipesMock = [
         name: "Lomo al Malbec con Puré de Papas Nutritivo",
         type: "Plato Principal",
         description: "Corte premium con reducción de vino y puré enriquecido",
-        plan: "Hipercalórico (supervisado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 1100,
             proteinas: 60,
@@ -1624,7 +1624,7 @@ export const recipesMock = [
         name: "Risotto de Quesos con Panceta y Espinaca",
         type: "Plato Principal",
         description: "Cremosidad controlada con grasas saludables y vegetales",
-        plan: "Hipercalórico (adaptado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 900,
             proteinas: 30,
@@ -1640,7 +1640,7 @@ export const recipesMock = [
         name: "Batido Mega Energético con Avena y Semillas",
         type: "Desayuno/Post-entreno",
         description: "Combinación estratégica para ganancia muscular",
-        plan: "Hipercalórico (monitoreado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 750,
             proteinas: 35,
@@ -1656,7 +1656,7 @@ export const recipesMock = [
         name: "Tarta de Pollo y Choclo con Masa Integral",
         type: "Plato Principal",
         description: "Masa enriquecida con aceite de oliva y relleno proteico",
-        plan: "Hipercalórico (equilibrado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 850,
             proteinas: 45,
@@ -1672,7 +1672,7 @@ export const recipesMock = [
         name: "Wok de Carne, Arroz Yamaní y Vegetales",
         type: "Plato Principal",
         description: "Salteado alto en calorías con carbohidratos complejos",
-        plan: "Hipercalórico (controlado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 950,
             proteinas: 50,
@@ -1688,7 +1688,7 @@ export const recipesMock = [
         name: "Milanesa de Carne con Huevo Frito y Papas Pay",
         type: "Plato Principal",
         description: "Clásico argentino en versión hipercalórica controlada",
-        plan: "Hipercalórico (supervisado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 1100,
             proteinas: 65,
@@ -1704,7 +1704,7 @@ export const recipesMock = [
         name: "Pasta Integral con Salsa de Quesos y Nueces",
         type: "Plato Principal",
         description: "Combinación de carbohidratos complejos y grasas saludables",
-        plan: "Hipercalórico (adaptado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 950,
             proteinas: 35,
@@ -1720,7 +1720,7 @@ export const recipesMock = [
         name: "Ensalada César Hiperproteica con Pollo y Palta",
         type: "Ensalada",
         description: "Ensalada contundente con grasas saludables",
-        plan: "Hipercalórico (equilibrado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 850,
             proteinas: 55,
@@ -1736,7 +1736,7 @@ export const recipesMock = [
         name: "Sándwich de Carne Desmechada con Queso",
         type: "Merienda/Cena",
         description: "Versión enriquecida de sándwich tradicional",
-        plan: "Hipercalórico (controlado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 700,
             proteinas: 40,
@@ -1752,7 +1752,7 @@ export const recipesMock = [
         name: "Budín de Pan con Leche Condensada Light",
         type: "Postre",
         description: "Versión enriquecida pero con menos azúcar",
-        plan: "Hipercalórico (moderado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 600,
             proteinas: 15,
@@ -1768,7 +1768,7 @@ export const recipesMock = [
         name: "Trucha con Almendras y Puré de Zapallo",
         type: "Plato Principal",
         description: "Pescado graso con carbohidratos de bajo IG",
-        plan: "Hipercalórico (supervisado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 900,
             proteinas: 50,
@@ -1784,7 +1784,7 @@ export const recipesMock = [
         name: "Guiso de Lentejas con Chorizo Colorado",
         type: "Plato Principal",
         description: "Legumbres con carne magra para clima frío",
-        plan: "Hipercalórico (adaptado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 850,
             proteinas: 45,
@@ -1800,7 +1800,7 @@ export const recipesMock = [
         name: "Pizza de Harina de Garbanzos con Quesos",
         type: "Plato Principal",
         description: "Opción sin gluten y alta en proteínas",
-        plan: "Hipercalórico (especial)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 800,
             proteinas: 40,
@@ -1816,7 +1816,7 @@ export const recipesMock = [
         name: "Batido Nocturno de Caseína y Frutos Secos",
         type: "Colación",
         description: "Recuperación muscular durante el sueño",
-        plan: "Hipercalórico (especializado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 650,
             proteinas: 50,
@@ -1832,7 +1832,7 @@ export const recipesMock = [
         name: "Canelones de Ricotta y Espinaca con Salsa de Tomate",
         type: "Plato Principal",
         description: "Pasta rellena enriquecida con vegetales",
-        plan: "Hipercalórico (equilibrado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 950,
             proteinas: 45,
@@ -1848,7 +1848,7 @@ export const recipesMock = [
         name: "Alfajores de Maicena con Dulce de Leche Light",
         type: "Postre",
         description: "Versión reducida en azúcar del clásico argentino",
-        plan: "Hipercalórico (moderado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 500,
             proteinas: 8,
@@ -1864,7 +1864,7 @@ export const recipesMock = [
         name: "Cazuela de Mariscos con Arroz Integral",
         type: "Plato Principal",
         description: "Mariscos con carbohidratos complejos",
-        plan: "Hipercalórico (supervisado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 1000,
             proteinas: 60,
@@ -1880,7 +1880,7 @@ export const recipesMock = [
         name: "Tarta de Atún y Huevo con Masa de Avena",
         type: "Plato Principal",
         description: "Masa sin harina con doble proteína",
-        plan: "Hipercalórico (adaptado)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 750,
             proteinas: 50,
@@ -1896,7 +1896,7 @@ export const recipesMock = [
         name: "Helado Proteico de Banana y Cacao",
         type: "Postre",
         description: "Opción sin azúcar añadida",
-        plan: "Hipercalórico (saludable)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 400,
             proteinas: 25,
@@ -1912,7 +1912,7 @@ export const recipesMock = [
         name: "Empanadas de Carne con Masa de Harina de Garbanzos",
         type: "Plato Principal",
         description: "Versión alta en proteína y fibra",
-        plan: "Hipercalórico (especial)",
+        plan: "Hipercalórico",
         macronutrientes: {
             calorias: 850,
             proteinas: 45,

@@ -9,6 +9,7 @@ import { PlanesContacto } from '../dashboard/pages/PlanesContacto';
 import { RouteTracker } from '../helpers';
 import RecuperarPasswordPage from '../auth/pages/RecuperarContraseñaPage';
 import CambiarContraseñaPage from '../auth/pages/CambiarContraseñaPage';
+import VerificarCuentaPage from '../dashboard/pages/VerificarCuentaPage';
 
 export const AppRouter = () => {
   // Obtener el estado de autenticación desde Redux
@@ -35,6 +36,7 @@ export const AppRouter = () => {
         {/*Rutas para la recuperacion de la contraseña*/}
         <Route path="/recuperarContraseña" element={<RecuperarPasswordPage />} />
         <Route path="/recuperar" element={<CambiarContraseñaPage />} />
+        <Route path="/Verificar-Cuenta" element={<VerificarCuentaPage />} />
 
         {/* Otras rutas */}
         <Route path="/formulario-historial-peso" element={<FormularioHistorial />} />
