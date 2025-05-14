@@ -21,7 +21,7 @@ const RecuperarPasswordPage = () => {
     setError(null);
 
     try {
-      const response = await axios.post("https://sintacc-api-deploy.azurewebsites.net/api/Usuarios/recuperar-Contraseña", {
+      const response = await axios.post("https://sintacc-api-deploy.azurewebsites.net/api/Usuarios/recuperar-contraseña", {
         email,
       });
       setMensaje(response.data);
