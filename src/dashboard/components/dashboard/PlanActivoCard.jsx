@@ -119,11 +119,11 @@ export const PlanActivoCard = ({ planUsuario = "", fechaRenovacion, onCambiarPla
                             variant="contained"
                             color="secondary"
                             onClick={() => {
-                                setAccion("Degradar");
+                                setAccion("Cambiar");
                                 setOpenDialog(true);
                             }}
                         >
-                            Degradar plan
+                            Cambiar plan
                         </Button>
                     )}
 

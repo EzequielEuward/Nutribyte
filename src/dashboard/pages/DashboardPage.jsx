@@ -102,7 +102,8 @@ export const DashboardPage = () => {
           gap={2}
           mt={2}
         >
-          <ResumenPagosCard cobros={cobrosUsuario} loading={loading} />
+          <PatientsSummary pacientes={pacientesActivos} />
+
           <PlanActivoCard
             planUsuario={planUsuario}
             usuarioId={uid}

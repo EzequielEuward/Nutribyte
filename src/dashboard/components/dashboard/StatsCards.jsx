@@ -22,7 +22,7 @@ export const StatsCards = ({ totalPacientes, turnosHoy, rol, totalUsuarios }) =>
         color: "#1976D2",
       },
       {
-        title: "Usuarios Activos Hoy",
+        title: "Usuarios Activos",
         value: totalUsuarios, 
         icon: <CheckCircleIcon fontSize="large" />,
         color: "#388E3C",
