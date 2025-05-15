@@ -70,9 +70,16 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
       return;
     }
 
-    console.log("🧾 Datos enviados desde el formulario:", data);
     onSubmit(data);
   };
+
+  const validarFormatoDecimal = (valor, exactos = false) => {
+    const regexExacto = /^\d{1,3}\.\d{3}$/;
+    const regexFlexible = /^\d{1,3}(\.\d{1,3})?$/;
+    return exactos ? regexExacto.test(valor) : regexFlexible.test(valor);
+  };
+
+
   return (
     <Box component="form" onSubmit={handleSubmit(handleValidatedSubmit)}>
       {/* Sección Consulta */}
@@ -87,7 +94,6 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
               <Controller
                 name="fecha"
                 control={control}
-                defaultValue={new Date().toISOString().split('T')[0]}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -135,6 +141,9 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                     label="Motivo de Consulta"
                     multiline
                     rows={2}
+                    inputProps={{ maxLength: 180 }}
+                    error={!!errors.motivoVisita}
+                    helperText={errors.motivoVisita ? "Máximo 180 caracteres" : ""}
                   />
                 )}
               />
@@ -151,8 +160,10 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                     {...field}
                     fullWidth
                     label="Diagnóstico"
+                    inputProps={{ maxLength: 200 }}
                     multiline
                     rows={3}
+                    helperText={errors.diagnostico ? "Máximo 150 caracteres" : ""}
                   />
                 )}
               />
@@ -171,6 +182,7 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                     label="Antecedentes"
                     multiline
                     rows={3}
+                    inputProps={{ maxLength: 200 }}
                     helperText={
                       paciente?.historiaClinica ? (
                         <Tooltip title="Autoescribir" arrow>
@@ -194,6 +206,7 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                 name="tratamiento"
                 control={control}
                 defaultValue=""
+
                 render={({ field }) => {
                   const [anchorEl, setAnchorEl] = useState(null);
                   const tratamientosPredefinidos = [
@@ -218,6 +231,7 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                         {...field}
                         fullWidth
                         label="Tratamiento"
+                        inputProps={{ maxLength: 200 }}
                         multiline
                         rows={3}
                         InputProps={{
@@ -253,6 +267,7 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                 render={({ field }) => (
                   <TextField
                     {...field}
+                    inputProps={{ maxLength: 200 }}
                     fullWidth
                     label="Observaciones"
                     multiline
@@ -308,23 +323,38 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                 <Controller
                   name={fieldName}
                   control={control}
-                  defaultValue={0}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      label={getLabel(fieldName)}
-                      type="text"
-                      onChange={(e) => {
-                        const val = e.target.value.replace(',', '.');
-                        if (!isNaN(val) || val === '') {
-                          field.onChange(val);
-                        }
-                      }}
-                      value={field.value}
-                      InputProps={{ inputProps: { min: 0, step: 0.1 } }}
-                    />
-                  )}
+                  defaultValue=""
+                  render={({ field }) => {
+                    const val = field.value?.toString().replace(',', '.') || '';
+                    const mostrarError = val !== '' && !validarFormatoDecimal(val); // no exacto
+
+                    return (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label={getLabel(fieldName)}
+                        type="text"
+                        defaultValue=""
+                        onChange={(e) => {
+                          const newVal = e.target.value.replace(',', '.');
+                          if (newVal.length <= 7) {
+                            field.onChange(newVal);
+                          }
+                        }}
+                        value={val}
+                        error={mostrarError}
+                        helperText={mostrarError ? 'Usá el formato 123.456 (máx. 3 enteros y 3 decimales)' : ''}
+                        InputProps={{
+                          inputProps: {
+                            inputMode: 'decimal',
+                            maxLength: 7,
+                            pattern: '^[0-9]{1,3}(\\.[0-9]{1,3})?$',
+                            title: 'Formato requerido: hasta 3 enteros y hasta 3 decimales. Ej: 123.456'
+                          }
+                        }}
+                      />
+                    );
+                  }}
                 />
               </Grid>
             ))}
@@ -349,23 +379,35 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                 <Controller
                   name={fieldName}
                   control={control}
-                  defaultValue={0}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      label={getLabel(fieldName)}
-                      type="text"
-                      onChange={(e) => {
-                        const val = e.target.value.replace(',', '.');
-                        if (!isNaN(val) || val === '') {
-                          field.onChange(val);
-                        }
-                      }}
-                      value={field.value}
-                      InputProps={{ inputProps: { min: 0, max: 50 } }}
-                    />
-                  )}
+                  defaultValue=""
+                  render={({ field }) => {
+                    const val = field.value?.toString().replace(',', '.') || '';
+                    const mostrarError = val !== '' && !validarFormatoDecimal(val);
+
+                    return (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        label={getLabel(fieldName)}
+                        defaultValue=""
+                        type="text"
+                        onChange={(e) => {
+                          const newVal = e.target.value.replace(',', '.');
+                          field.onChange(newVal);
+                        }}
+                        value={val}
+                        error={mostrarError}
+
+                        InputProps={{
+                          inputProps: {
+                            inputMode: 'decimal',
+                            pattern: '[0-9]*[.]?[0-9]{0,3}',
+                            title: 'Hasta 3 enteros y 3 decimales. Ej: 123.456'
+                          }
+                        }}
+                      />
+                    );
+                  }}
                 />
               </Grid>
             ))}

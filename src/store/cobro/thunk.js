@@ -33,6 +33,7 @@ export const listarCobros = createAsyncThunk(
     }
 );
 
+
 export const crearCobro = createAsyncThunk(
     'cobro/crearCobro',
     async (nuevoCobro, { rejectWithValue }) => {
@@ -88,13 +89,13 @@ export const eliminarCobro = createAsyncThunk(
 );
 
 export const listarCobrosPorUsuario = createAsyncThunk(
-    'cobro/fetchCobrosPorUsuario',
-    async (idUsuario, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(`${API_COBRO}/${cobroId}/id/${idUsuario}`);
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(error.response?.data || error.message);
-        }
+  'cobro/fetchCobrosPorUsuario',
+  async (idUsuario, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_COBRO}/id/${idUsuario}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
     }
+  }
 );

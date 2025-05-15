@@ -34,41 +34,19 @@ export const PatientInfoCard = ({ paciente, onEdit }) => {
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body2">
-              <strong>Altura:</strong> {paciente.altura} cm
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant="body2">
-              <strong>Peso:</strong> {paciente.peso} kg
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant="body2">
               <strong>Sexo:</strong> {paciente.sexo}
             </Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body2">
-              <strong>Nivel de actividad:</strong> {paciente.nivelActividad}
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant="body2">
-              <strong>IMC:</strong> {paciente.imc}
+              <strong>Email:</strong> {paciente.email}
             </Typography>
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 2 }} />
-
-        {/* Objetivos */}
-        <Box mt={2}>
-          <Typography variant="subtitle1">Objetivos</Typography>
-          <Typography variant="body2">{paciente.objetivos}</Typography>
-        </Box>
-
+        {/* <Divider sx={{ my: 2 }} /> */}
         {/* Restricciones Alimenticias */}
-        <Box mt={2}>
+        {/* <Box mt={2}>
           <Typography variant="subtitle1">Restricciones alimenticias</Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
             {paciente.restricciones?.length > 0 ? (
@@ -79,7 +57,7 @@ export const PatientInfoCard = ({ paciente, onEdit }) => {
               <Typography variant="body2">Ninguna</Typography>
             )}
           </Box>
-        </Box>
+        </Box> */}
 
         {/* Alergias */}
         {paciente.alergias && paciente.alergias.length > 0 && (
@@ -97,7 +75,7 @@ export const PatientInfoCard = ({ paciente, onEdit }) => {
         {paciente.historialMedico && (
           <Box mt={2}>
             <Typography variant="subtitle1">Historial Médico</Typography>
-            <Typography variant="body2">{paciente.historialMedico}</Typography>
+            <Typography variant="body2">{paciente.hisotorialClinico}</Typography>
           </Box>
         )}
       </CardContent>

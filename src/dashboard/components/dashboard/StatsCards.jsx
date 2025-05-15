@@ -3,7 +3,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { isToday, parseISO } from "date-fns";
 
-export const StatsCards = ({ totalPacientes, turnosHoy }) => {
+export const StatsCards = ({ totalPacientes, turnosHoy, rol, totalUsuarios }) => {
   const turnosHoyFiltrados = (turnosHoy || []).filter((turno) => {
     const turnoFecha = parseISO(turno.fechaInicio);
     return isToday(turnoFecha) && turno.estado !== "cancelado";
@@ -11,10 +11,37 @@ export const StatsCards = ({ totalPacientes, turnosHoy }) => {
 
   const consultasHoy = turnosHoyFiltrados.length;
 
-  const stats = [
-    { title: "Total Pacientes Registrados", value: totalPacientes, icon: <PeopleIcon fontSize="large" />, color: "#1976D2" },
-    { title: "Consultas Hoy", value: consultasHoy, icon: <CheckCircleIcon fontSize="large" />, color: "#388E3C" },
-  ];
+  const esAdmin = rol?.toLowerCase() === "admin" || rol?.toLowerCase() === "administrador";
+
+  const stats = esAdmin
+    ? [
+      {
+        title: "Total Usuarios Registrados",
+        value: totalUsuarios,
+        icon: <PeopleIcon fontSize="large" />,
+        color: "#1976D2",
+      },
+      {
+        title: "Usuarios Activos Hoy",
+        value: totalUsuarios, 
+        icon: <CheckCircleIcon fontSize="large" />,
+        color: "#388E3C",
+      },
+    ]
+    : [
+      {
+        title: "Total Pacientes Registrados",
+        value: totalPacientes,
+        icon: <PeopleIcon fontSize="large" />,
+        color: "#1976D2",
+      },
+      {
+        title: "Consultas Hoy",
+        value: consultasHoy,
+        icon: <CheckCircleIcon fontSize="large" />,
+        color: "#388E3C",
+      },
+    ];
 
   return (
     <Box

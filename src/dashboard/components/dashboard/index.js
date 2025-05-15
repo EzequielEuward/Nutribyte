@@ -4,3 +4,6 @@ export * from './RecentAppointments';
 export * from './QuickAcces';
 export * from './PatientsSummary';
 export * from './TurnosCompletadoChart';
+export * from './PlanActivoCard';
+export * from './ResumenPagosCard';
+export * from './CancelarDegradarPlanDialog';

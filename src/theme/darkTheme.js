@@ -16,6 +16,7 @@ export const darkTheme = createTheme({
     background: {
       default: "#121212",
       paper: "#1d1d1d",
+      arrow: "#666666",
       paper2: "#292929",
     },
     text: {
@@ -23,9 +24,9 @@ export const darkTheme = createTheme({
       secondary: "#b0b0b0",
     },
     custom: {
-      primary: "#7C8BA3", 
-      secondary: "#A8C686", 
-      terteary: "#B8B8B8",  
+      primary: "#7C8BA3",
+      secondary: "#A8C686",
+      terteary: "#B8B8B8",
     },
     appointmentTypes: {
       firstConsult: { background: "#4B4453", text: "#E1BEE7" },

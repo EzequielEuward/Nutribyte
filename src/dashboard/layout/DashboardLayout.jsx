@@ -1,5 +1,5 @@
 import { Box, Toolbar, Typography } from '@mui/material';
-import { Sidebar, Navbar } from '../components';
+import { Sidebar, Navbar, TopLeftActionButton } from '../components';
 import { AppTheme } from '../../theme';
 import { useSelector } from 'react-redux';
 
@@ -23,6 +23,7 @@ export const DashboardLayout = ({ children }) => {
   return (
     <AppTheme>
       <Box sx={{ display: 'flex' }} className='animate__animated animate__fadeIn animate__faster'>
+
         <Navbar drawerWidth={drawerWidth} username={username} rol={rol} />
         <Sidebar drawerWidth={drawerWidth} username={username} rol={rol} planUsuario={planUsuario} />
 
@@ -40,6 +41,7 @@ export const DashboardLayout = ({ children }) => {
           }}
         >
           <Toolbar />
+
 
           {tiempoExcedido && (
             <Box
@@ -75,6 +77,7 @@ export const DashboardLayout = ({ children }) => {
 
           {!tiempoExcedido && children}
         </Box>
+        {/* <TopLeftActionButton /> */}
       </Box>
     </AppTheme>
   );

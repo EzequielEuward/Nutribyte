@@ -19,6 +19,7 @@ import { differenceInYears, addDays } from "date-fns";
 import Swal from 'sweetalert2';
 import ConsejosRapidos from "../components/consultas/ConsejosRapidos";
 import { useTheme } from '@mui/material/styles';
+import { PatientInfoCardConsulta } from "../components/consultas";
 
 
 export const PlanesPage = () => {
@@ -61,19 +62,35 @@ export const PlanesPage = () => {
 
   const buscarPaciente = () => {
     const dniValido = dni.trim();
+
     if (!dniValido || !/^\d{7,8}$/.test(dniValido)) {
-      alert("Ingrese un DNI válido (7 u 8 dígitos)");
+      Swal.fire({
+        text: "Ingrese un DNI válido (7 u 8 dígitos)",
+        icon: "warning",
+        timer: 2500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        position: "center",
+      });
       return;
     }
+
     dispatch(buscarPacientePorDni(dniValido))
       .unwrap()
       .then(() => setStep("creacion"))
       .catch((error) => {
         console.error("Error:", error);
-        alert(error.message || "Error buscando paciente");
+        Swal.fire({
+          text: error.message || "Paciente no encontrado. Prueba con otro DNI",
+          icon: "error",
+          timer: 2500,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          position: "top-end",
+          toast: true
+        });
       });
   };
-
   const pacienteAdaptado = paciente && paciente.persona ? {
     nombre: paciente.persona.nombre,
     apellido: paciente.persona.apellido,
@@ -147,9 +164,14 @@ export const PlanesPage = () => {
           title: 'Plan creado con éxito',
           text: 'El plan alimenticio ha sido guardado correctamente.',
           confirmButtonText: 'Ver resumen',
-        }).then(() => {
-          // navigate('resumen-plan', { state: { plan: response.plan, paciente } });
+        }).then(() => { 
+          setPlanType("Plan Estándar");
+          setFechaInicio("");
+          setFechaFin("");
+          setObservaciones("");
+          setAlimentos([]);
         });
+
       })
       .catch((err) => {
         Swal.fire({
@@ -255,7 +277,7 @@ export const PlanesPage = () => {
 
         {step === "busqueda" && (
           <>
-            <Box sx={{mt:2}}>
+            <Box sx={{ mt: 2 }}>
               <ConsejosRapidos />
             </Box>
             <PatientSearchCard
@@ -265,7 +287,7 @@ export const PlanesPage = () => {
               pacientesList={pacientesList}
             />
             <Divider sx={{ my: 4 }} />
-            <Typography variant="h4" sx={{ mt: 4 , color:"theme.palette.text.primary"}}>
+            <Typography variant="h4" sx={{ mt: 4, color: "theme.palette.text.primary" }}>
               Información general
             </Typography>
             <Divider sx={{ mb: 3 }} />
@@ -276,7 +298,8 @@ export const PlanesPage = () => {
         {step === "creacion" && paciente && (
           <>
 
-            <PatientInfoCard paciente={pacienteAdaptado} onEdit={() => setStep("busqueda")} />
+            <PatientInfoCardConsulta paciente={paciente}
+              onEdit={() => setStep("busqueda")} />
 
             <Box sx={{ mt: 4 }}>
               <Typography variant="h5" sx={{ mb: 2 }}>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Drawer, List, ListItem, ListItemText, Avatar, Divider, Typography, IconButton, TextField,Tooltip, Button, MenuItem } from "@mui/material";
+import { Drawer, List, ListItem, ListItemText, Avatar, Divider, Typography, IconButton, TextField, Tooltip, Button, MenuItem } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import { format } from "date-fns"; // Para formatear la fecha
@@ -27,37 +27,44 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === 'estadoPaciente' || name === 'historiaClinica') {
-      setEditedPatient(prev => ({
-        ...prev,
-        [name]: value
-      }));
+    const soloLetrasYNumeros = /^[a-zA-Z0-9\s]*$/;
+    const soloNumeros = /^[0-9]*$/;
+    const telefonoRegex = /^[0-9\s()+-]*$/;
+
+    if (["apellido", "nombre"].includes(name) && !soloLetrasYNumeros.test(value)) return;
+    if (name === "historiaClinica" && !soloLetrasYNumeros.test(value)) return;
+    if (name === "dni" && !soloNumeros.test(value)) return;
+    if (name === "telefono" && !telefonoRegex.test(value)) return;
+
+    if (name === "estadoPaciente" || name === "historiaClinica") {
+      setEditedPatient(prev => ({ ...prev, [name]: value }));
       return;
     }
 
-
-    if (name === 'fechaNacimiento') {
+    if (name === "fechaNacimiento") {
       const formattedDate = new Date(value).toISOString().split('T')[0];
       setEditedPatient(prev => ({
         ...prev,
-        persona: {
-          ...prev.persona,
-          [name]: formattedDate
-        }
+        persona: { ...prev.persona, [name]: formattedDate }
       }));
       return;
     }
 
     setEditedPatient(prev => ({
       ...prev,
-      persona: {
-        ...prev.persona,
-        [name]: value
-      }
+      persona: { ...prev.persona, [name]: value }
     }));
   };
 
   const handleSave = () => {
+
+    const year = new Date(editedPatient.persona.fechaNacimiento).getFullYear();
+    const currentYear = new Date().getFullYear();
+    if (isNaN(year) || year < 1900 || year > currentYear) {
+      Swal.fire("Fecha inválida", `El año debe estar entre 1900 y ${currentYear}`, "error");
+      return;
+    }
+
     const datosActualizados = {
       idPaciente: editedPatient.idPaciente,
       historiaClinica: editedPatient.historiaClinica,
@@ -94,6 +101,7 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
     return isNaN(parsedDate) ? "" : format(parsedDate, "yyyy-MM-dd");
   };
 
+
   return (
     <Drawer anchor="right" open={drawerOpen} onClose={handleCloseDrawer}>
       <List style={{ width: '350px', padding: '16px' }}>
@@ -115,7 +123,7 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
 
         <ListItem>
           <ListItemText primary="DNI" secondary={isEditing ? (
-            <TextField name="dni" value={editedPatient.persona?.dni || ""} onChange={handleInputChange} variant="outlined" fullWidth margin="dense" />
+            <TextField name="dni" value={editedPatient.persona?.dni || ""} onChange={handleInputChange} variant="outlined" fullWidth margin="dense" disabled inputProps={{ minLenght: 6, maxLenght: 8 }} />
           ) : (
             selectedPatient?.persona?.dni
           )} />
@@ -123,7 +131,7 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
 
         <ListItem>
           <ListItemText primary="Apellido" secondary={isEditing ? (
-            <TextField name="apellido" value={editedPatient.persona?.apellido || ""} onChange={handleInputChange} variant="outlined" fullWidth margin="dense" />
+            <TextField name="apellido" value={editedPatient.persona?.apellido || ""} helperText="Máximo 60 caracteres. No se permiten caracteres especiales" onChange={handleInputChange} variant="outlined" fullWidth margin="dense" inputProps={{ maxLength: 60 }} />
           ) : (
             selectedPatient?.persona?.apellido
           )} />
@@ -133,20 +141,20 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
 
         <ListItem>
           <ListItemText primary="Nombre" secondary={isEditing ? (
-            <TextField name="nombre" value={editedPatient.persona?.nombre || ""} onChange={handleInputChange} variant="outlined" fullWidth margin="dense" />
+            <TextField name="nombre" value={editedPatient.persona?.nombre || ""} helperText="Máximo 60 caracteres. No se permiten caracteres especiales" onChange={handleInputChange} variant="outlined" fullWidth margin="dense" inputProps={{ maxLength: 60 }} />
           ) : (
             selectedPatient?.persona?.nombre
           )} />
         </ListItem>
 
         <ListItem>
-          <ListItemText primary="Sexo" secondary={selectedPatient?.persona?.sexoBiologico === "m" ? "Masculino" : "Femenino"} />
+          <ListItemText primary="Sexo" secondary={selectedPatient?.persona?.sexoBiologico === "m" ? "Masculino" : "Femenino"} disable />
         </ListItem>
 
 
         <ListItem>
           <ListItemText primary="Email" secondary={isEditing ? (
-            <TextField name="email" value={editedPatient.persona?.email || ""} onChange={handleInputChange} variant="outlined" fullWidth margin="dense" />
+            <TextField name="email" value={editedPatient.persona?.email || ""} helperText="Máximo 50 caracteres" onChange={handleInputChange} variant="outlined" fullWidth margin="dense" />
           ) : (
             selectedPatient?.persona?.email
           )} />
@@ -160,6 +168,8 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
               variant="outlined"
               fullWidth
               margin="dense"
+              helperText="Se permiten +, - y paréntesis"
+              inputProps={{ maxLength: 15, inputMode: "numeric", pattern: "[0-9]*" }}
             />
           ) : (
             selectedPatient?.persona?.telefono

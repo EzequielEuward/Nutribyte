@@ -12,6 +12,8 @@ import {
   Tabs, Tab,
   CardContent,
   Button,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 
 import DashboardLayout from "../layout/DashboardLayout";
@@ -32,9 +34,12 @@ import { listarPacientes } from "../../store/patient";
 import { buscarPacientePorDni, crearConsulta, eliminarAnamnesis, eliminarConsulta, listarAnamnesisPorPaciente, listarConsulta, modificarAnamnesis, modificarConsulta, obtenerPorIdAnamnesis } from "../../store/consultas";
 import { FormProvider, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
+import { useTheme } from '@emotion/react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from "react-router-dom";
+import { ScrollToTopButton } from "../../home/components";
 
 export const ConsultaPage = () => {
   const dispatch = useDispatch();
@@ -42,7 +47,8 @@ export const ConsultaPage = () => {
   const { paciente, consultas, isLoading, error, currentAnamnesis, anamnesisList } = useSelector((state) => state.consulta);
   const pacientesList = useSelector(state => state.patients.pacientes || []);
   const formRef = useRef(null);
-
+  const theme = useTheme()
+  const navigate = useNavigate()
   const [dni, setDni] = useState('');
   const [step, setStep] = useState('busqueda');
 
@@ -57,23 +63,30 @@ export const ConsultaPage = () => {
   // flag para el modal de editar anamnesis y id de la anamnesis a cargar
   const [isAnamnesisModalOpen, setIsAnamnesisModalOpen] = useState(false);
 
+  const getLocalDatetimeMinusHours = (hours) => {
+    const date = new Date();
+    date.setHours(date.getHours() - hours);
+
+    const pad = (num) => String(num).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  };
   const methods = useForm({
     defaultValues: {
-      fecha: new Date().toISOString().slice(0, 16),
+      fecha: getLocalDatetimeMinusHours(0),
       tipoConsulta: '',
       motivoVisita: '',
       diagnostico: '',
       antecedente: '',
       tratamiento: '',
       observaciones: '',
-      fechaAnamnesis: new Date().toISOString().slice(0, 16) + ':00',
-      talla: 0,
-      pesoActual: 0,
-      pesoHabitual: 0,
-      circunferenciaBrazo: 0,
-      circunferenciaCintura: 0,
-      pliegueTriceps: 0,
-      pliegueAbdominal: 0,
+      fechaAnamnesis: getLocalDatetimeMinusHours(0) + ':00',
+      talla: '',
+      pesoActual: '',
+      pesoHabitual: '',
+      circunferenciaBrazo: '',
+      circunferenciaCintura: '',
+      pliegueTriceps: '',
+      pliegueAbdominal: '',
     }
   });
 
@@ -146,6 +159,8 @@ export const ConsultaPage = () => {
     }
   };
 
+
+
   const openDeleteModal = (consulta) => {
     Swal.fire({
       title: '¿Eliminar consulta?',
@@ -194,7 +209,7 @@ export const ConsultaPage = () => {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(eliminarAnamnesis(anamnesis.idAnamnesis)) // 🔁 esto depende de si ya tenés ese thunk
+        dispatch(eliminarAnamnesis(anamnesis.idAnamnesis))
           .unwrap()
           .then(() => {
             Swal.fire('¡Eliminada!', 'La anamnesis fue eliminada correctamente.', 'success');
@@ -256,7 +271,6 @@ export const ConsultaPage = () => {
     const fechaAnamnesis = parseDate(data.fecha).toISOString();
 
     const anamnesisFields = {
-      fecha: fechaAnamnesis,
       talla: Number(data.talla) || 0,
       pesoActual: Number(data.pesoActual) || 0,
       pesoHabitual: Number(data.pesoHabitual) || 0,
@@ -275,8 +289,7 @@ export const ConsultaPage = () => {
       plieguePantorrilla: Number(data.plieguePantorrilla) || 0
     };
 
-    const hasAnamnesis = Object.values(anamnesisFields)
-      .some(v => typeof v === 'number' ? v > 0 : !!v);
+    const hasAnamnesis = Object.values(anamnesisFields).some(val => val > 0);
 
     const payload = {
       fecha: fechaConsulta,
@@ -288,11 +301,17 @@ export const ConsultaPage = () => {
       observaciones: data.observaciones,
       idPlanAlimento: data.idPlanAlimento || null,
       idPaciente: paciente.idPaciente,
-      anamnesis: hasAnamnesis ? {
+    };
+
+    if (hasAnamnesis) {
+      payload.anamnesis = {
         ...anamnesisFields,
         fecha: fechaAnamnesis
-      } : null
-    };
+      };
+    } else {
+      payload.anamnesis = null; // O simplemente no agregarla según tu backend
+    }
+
     dispatch(crearConsulta(payload))
       .unwrap()
       .then(() => {
@@ -301,8 +320,48 @@ export const ConsultaPage = () => {
           title: 'Consulta creada',
           text: 'La consulta fue registrada exitosamente.',
           confirmButtonText: 'Aceptar'
+        }).then(() => {
+          Swal.fire({
+            icon: 'info',
+            title: 'Recordatorio',
+            html: `
+            <p>Tiene <strong>45 minutos</strong> para editar o eliminar esta consulta en caso de haber cometido un error.</p>
+            <p>Luego de ese plazo, la consulta quedará bloqueada automáticamente.</p>
+          `,
+            timer: 12000,
+            timerProgressBar: true,
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#1976d2'
+          });
         });
-        methods.reset();
+
+        methods.reset({
+          fecha: getLocalDatetimeMinusHours(0),
+          tipoConsulta: '',
+          motivoVisita: '',
+          diagnostico: '',
+          antecedente: '',
+          tratamiento: '',
+          observaciones: '',
+          fechaAnamnesis: getLocalDatetimeMinusHours(0),
+          talla: 0,
+          pesoActual: 0,
+          pesoHabitual: 0,
+          circunferenciaBrazoRelajado: 0,
+          circunferenciaBrazo: 0,
+          circunferenciaAntebrazo: 0,
+          circunferenciaCintura: 0,
+          circunferenciaCinturaMaxima: 0,
+          circunferenciaPantorrilla: 0,
+          pliegueBiceps: 0,
+          pliegueTriceps: 0,
+          pliegueSubescapular: 0,
+          pliegueSupraespinal: 0,
+          pliegueAbdominal: 0,
+          pliegueMuslo: 0,
+          plieguePantorrilla: 0
+        });
+
         dispatch(listarConsulta());
         setDni('');
       })
@@ -359,12 +418,19 @@ export const ConsultaPage = () => {
     }
   };
 
+
   return (
     <DashboardLayout>
       <Container maxWidth="xl">
+        <Tooltip title="Volver">
+          <IconButton sx={{ backgroundColor: theme.palette.background.arrow, mt: 2 }} onClick={() => navigate(-1)} color="primary">
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
         <Typography variant="h3" sx={{ mt: 2, color: "secondary.main" }}>
           Gestión de Consultas
         </Typography>
+
         {step === "busqueda" && (
           <>
             <Box sx={{ mt: 2 }}>
@@ -492,6 +558,7 @@ export const ConsultaPage = () => {
 
             </Grid>
             <Divider sx={{ my: 4 }}></Divider>
+            <ScrollToTopButton />
           </Box>
 
         )}
@@ -509,7 +576,9 @@ export const ConsultaPage = () => {
             onSave={handleUpdateAnamnesis}
           />
         )}
+
       </Container>
+
     </DashboardLayout>
   );
 };

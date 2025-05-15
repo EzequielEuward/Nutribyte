@@ -17,23 +17,47 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
   });
 
   const isFormValid = useMemo(() => {
-    const { dni, nombre, apellido, email, telefono, historialClinico, sexo } = formData;
+    const { dni, nombre, apellido, email, telefono, historialClinico, sexo, fechaNacimiento } = formData;
     return (
-      dni && nombre && apellido && email && telefono && historialClinico && sexo && !dniRepetido
+      dni &&
+      nombre &&
+      apellido &&
+      email &&
+      telefono &&
+      historialClinico &&
+      sexo &&
+      fechaNacimiento &&
+      !dniRepetido
     );
   }, [formData, dniRepetido]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    const soloLetrasYNumeros = /^[a-zA-Z0-9\s]*$/;
+    const soloNumeros = /^[0-9]*$/;
+
+    let newValue = value;
+
+    if (["nombre", "apellido", "historialClinico"].includes(name)) {
+      if (!soloLetrasYNumeros.test(value)) return;
+    }
+
     if (name === "dni") {
+      if (!soloNumeros.test(value)) return;
       const dniIngresado = Number(value);
       const existe = pacientes.find((p) => p.persona?.dni === dniIngresado);
       setDniRepetido(!!existe);
     }
 
+    if (name === "telefono") {
+      const telefonoRegex = /^[0-9\s()+-]*$/;
+      if (!telefonoRegex.test(value)) return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 
@@ -63,13 +87,18 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
     "Reevaluacion", "Abandonado", "Completado", "Cerrado"
   ]), []);
 
+  const currentYear = new Date().getFullYear();
+  const maxDate = `${currentYear}-12-31`;
+  const minDate = `1900-01-01`;
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       <DialogTitle>Registrar Nuevo Paciente</DialogTitle>
       <DialogContent sx={{ mt: 1 }}>
         <form> {/* Sin onSubmit */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
-            <div style={{ flex: "1 1 calc(50% - 16px)", marginTop:"5px" }}>
+            <div style={{ flex: "1 1 calc(50% - 16px)", marginTop: "5px" }}>
+
               <TextField
                 label="DNI"
                 name="dni"
@@ -78,8 +107,6 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 type="text"
                 fullWidth
                 required
-                error={dniRepetido}
-                helperText={dniRepetido ? "Este DNI ya pertenece a un paciente registrado." : ""}
                 sx={{
                   '& .MuiInputLabel-root': {
                     zIndex: 1,
@@ -87,9 +114,16 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                     paddingRight: '4px'
                   }
                 }}
+                inputProps={{ minLength: 6, maxLength: 8, inputMode: "numeric", pattern: "[0-9]*" }}
+                error={dniRepetido}
+                helperText={
+                  dniRepetido
+                    ? "Este DNI ya pertenece a un paciente registrado."
+                    : "Debe tener entre 6 y 8 dígitos"
+                }
               />
             </div>
-            <div style={{ flex: "1 1 calc(50% - 16px)" , marginTop:"5px"}}>
+            <div style={{ flex: "1 1 calc(50% - 16px)", marginTop: "5px" }}>
               <TextField
                 label="Apellido"
                 name="apellido"
@@ -97,6 +131,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 onChange={handleChange}
                 fullWidth
                 required
+                inputProps={{ maxLength: 60 }}
               />
             </div>
 
@@ -108,6 +143,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 onChange={handleChange}
                 fullWidth
                 required
+                inputProps={{ maxLength: 60 }}
               />
             </div>
 
@@ -119,6 +155,11 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 onChange={handleChange}
                 type="date"
                 fullWidth
+                required
+                inputProps={{
+                  min: minDate,
+                  max: maxDate
+                }}
                 InputLabelProps={{ shrink: true }}
               />
             </div>
@@ -147,6 +188,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 type="email"
                 fullWidth
                 required
+                inputProps={{ maxLength: 50 }}
               />
             </div>
 
@@ -177,6 +219,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 type="text"
                 fullWidth
                 required
+                inputProps={{ maxLength: 15, inputMode: "numeric", pattern: "[0-9]*" }}
               />
             </div>
 
@@ -190,6 +233,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 multiline
                 rows={4}
                 required
+                inputProps={{ maxLength: 500 }}
               />
             </div>
           </div>

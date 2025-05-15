@@ -1,28 +1,36 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { listarPacientes } from "../../store/patient";
-import { StatsCards, PendingAppointments, RecentAppointments, QuickAccess, PatientsSummary, TurnosCompletadosChart } from "../components/dashboard";
+import { StatsCards, PendingAppointments, RecentAppointments, QuickAccess, PatientsSummary, TurnosCompletadosChart, PlanActivoCard, ResumenPagosCard } from "../components/dashboard";
 import { DashboardLayout } from "../layout/DashboardLayout";
 import { Box, Dialog, DialogContent, DialogTitle, MenuItem, TextField, DialogActions, Button, Typography } from "@mui/material";
 import { listarTurnos } from "../../store/calendar";
-
+import { ListarUsuarios } from "../../store/user/thunk";
+import { listarCobrosPorUsuario } from "../../store/cobro";
+import ScrollToTopButton from "../../home/components/ScrollToTopButton";
 
 export const DashboardPage = () => {
   const dispatch = useDispatch();
   const pacientes = useSelector((state) => state.patients.pacientes);
   const turnosHoy = useSelector((state) => state.turnos.turnos);
-
+  const { uid, username, rol, planUsuario, twoFactorEnabled } = useSelector((state) => state.auth);
+  const { paciente, consultas, isLoading, error, currentAnamnesis, anamnesisList } = useSelector((state) => state.consulta);
+  const usuarios = useSelector((state) => state.user.users || []);
+  const { loading } = useSelector((state) => state.cobro); // ya no necesitás `cobros` globales
+  const cobrosUsuario = useSelector((state) => state.cobro.cobrosUsuario || []); // <-- esta línea es la que falta
   //ESTADOS
   const [recordatorioOpen, setRecordatorioOpen] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [pacienteSeleccionado, setPacienteSeleccionado] = useState("");
   const [mensajeBienvenida, setMensajeBienvenida] = useState('');
 
-  // Cargar los pacientes y turnos cuando se monta el componentef
   useEffect(() => {
-    dispatch(listarPacientes());
-    dispatch(listarTurnos());
-  }, [dispatch]);
+    if (uid) {
+      dispatch(listarCobrosPorUsuario(uid));
+    }
+  }, [dispatch, uid]);
+
+
 
   useEffect(() => {
     dispatch(listarPacientes());
@@ -32,12 +40,21 @@ export const DashboardPage = () => {
     setMensajeBienvenida(mensaje);
   }, [dispatch]);
 
+  useEffect(() => {
+    if (rol?.toLowerCase() === "admin" || rol?.toLowerCase() === "administrador") {
+      dispatch(ListarUsuarios());
+    }
+  }, [dispatch, rol]);
+
+
   const handleAbrirRecordatorio = () => setRecordatorioOpen(true);
   const handleCerrarRecordatorio = () => {
     setMensaje("");
     setPacienteSeleccionado("");
     setRecordatorioOpen(false);
   };
+
+
 
   const handleEnviarRecordatorio = () => {
     const paciente = pacientes.find(p => p.idPaciente === parseInt(pacienteSeleccionado));
@@ -70,7 +87,7 @@ export const DashboardPage = () => {
         {mensajeBienvenida}
       </Typography>
       <Box p={2}>
-        <StatsCards totalPacientes={totalPacientesActivos} turnosHoy={turnosHoy} />
+        <StatsCards totalPacientes={totalPacientesActivos} turnosHoy={turnosHoy} rol={rol} totalUsuarios={usuarios.length} />
 
         <Box display="grid" gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr" }} gap={2} mt={1}>
           <PendingAppointments turnos={turnosHoyFiltrados} />
@@ -79,14 +96,18 @@ export const DashboardPage = () => {
 
         <QuickAccess onRecordatorio={handleAbrirRecordatorio} />
 
-        <Box display="flex" flexWrap="wrap" gap={2} mt={2}>
-          <Box sx={{ flex: 1 }}>
-            {/* Pasar los pacientes activos como props */}
-            <PatientsSummary pacientes={pacientesActivos} />
-          </Box>
-          <Box sx={{ flex: 1 }}>
-            <TurnosCompletadosChart />
-          </Box>
+        <Box
+          display="grid"
+          gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr" }}
+          gap={2}
+          mt={2}
+        >
+          <ResumenPagosCard cobros={cobrosUsuario} loading={loading} />
+          <PlanActivoCard
+            planUsuario={planUsuario}
+            usuarioId={uid}
+            nombreUsuario={username}
+          />
         </Box>
       </Box>
       <Dialog open={recordatorioOpen} onClose={handleCerrarRecordatorio} maxWidth="sm" fullWidth>
@@ -140,7 +161,7 @@ export const DashboardPage = () => {
           <Button onClick={handleEnviarRecordatorio} color="primary" disabled={!pacienteSeleccionado || !mensaje}>Enviar</Button>
         </DialogActions>
       </Dialog>
-
+      <ScrollToTopButton />
     </DashboardLayout>
   );
 };

@@ -24,7 +24,12 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
           <Grid item xs>
             <Autocomplete
               freeSolo
-              options={filteredOptions}
+              options={pacientesList}
+              filterOptions={(options) =>
+                options.filter((p) =>
+                  p.persona.dni.toString().startsWith(dni.trim())
+                )
+              }
               getOptionLabel={(option) =>
                 typeof option === "object"
                   ? `${option.persona.dni} - ${option.persona.nombre} ${option.persona.apellido}`
@@ -33,7 +38,9 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
               inputValue={dni}
               onInputChange={(event, newInputValue) => {
                 const soloNumeros = newInputValue.replace(/\D/g, '');
-                setDni(soloNumeros);
+                if (soloNumeros.length <= 8) {
+                  setDni(soloNumeros);
+                }
               }}
               value={null}
               onChange={(event, selectedOption) => {
@@ -46,6 +53,13 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
                   {...params}
                   label="DNI del paciente"
                   placeholder="Ingrese DNI del paciente"
+                  inputProps={{
+                    ...params.inputProps,
+                    inputMode: "numeric",
+                    maxLength: 8,
+                    minLength: 7,
+                  }}
+                  helperText="Solo números. Entre 7 y 8 dígitos."
                   fullWidth
                   sx={{
                     '& .MuiInputLabel-root': {

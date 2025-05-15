@@ -9,13 +9,15 @@ import { PlanResumenStats } from '../components/planes/';
 import html2pdf from 'html2pdf.js';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRef } from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useTheme } from '@emotion/react';
 
 export const PlanSummaryPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const resumenRef = useRef();
+  const theme = useTheme();
 
   if (!state || !state.plan) {
     return (
@@ -60,7 +62,7 @@ export const PlanSummaryPage = () => {
 
       // 👉 Agregar imagen al final
       const finalImage = new Image();
-      finalImage.src = '/porciones.png'; 
+      finalImage.src = '/porciones.png';
 
       finalImage.onload = () => {
         const aspectRatio = finalImage.width / finalImage.height;
@@ -68,7 +70,7 @@ export const PlanSummaryPage = () => {
         const imageHeight = pdfWidth / aspectRatio;
 
         pdf.addPage();
-        pdf.addImage(finalImage, 'PNG', 0, 10, imageWidth, imageHeight); 
+        pdf.addImage(finalImage, 'PNG', 0, 10, imageWidth, imageHeight);
         pdf.save(`${plan.tipoPlan}_Resumen.pdf`);
       };
     });
@@ -80,7 +82,7 @@ export const PlanSummaryPage = () => {
         {/* Botón de descarga arriba */}
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
           <Tooltip title="Volver">
-            <IconButton onClick={() => navigate(-1)} color="primary">
+            <IconButton sx={{ backgroundColor: theme.palette.background.arrow }} onClick={() => navigate(-1)} color="primary">
               <ArrowBackIcon />
             </IconButton>
           </Tooltip>

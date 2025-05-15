@@ -15,6 +15,7 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
+  Tooltip,
 } from "@mui/material";
 import Swal from "sweetalert2";
 
@@ -90,22 +91,23 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
     }
     return dniCoincide && fechaCoincide;
   });
-
+  const capitalizar = (texto) =>
+    texto ? texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase() : "";
   // Si necesitás ordenar o filtrar adicionalmente, podés hacerlo a partir de filteredTurnos
   const turnosOrdenados = dniFilter
     ? [...filteredTurnos].sort((a, b) => {
-        const aCoincide = (a.paciente?.persona.dni || '')
-          .toString()
-          .toLowerCase()
-          .includes(dniFilter.toLowerCase());
-        const bCoincide = (b.paciente?.persona.dni || '')
-          .toString()
-          .toLowerCase()
-          .includes(dniFilter.toLowerCase());
-        if (aCoincide && !bCoincide) return -1;
-        if (!aCoincide && bCoincide) return 1;
-        return 0;
-      })
+      const aCoincide = (a.paciente?.persona.dni || '')
+        .toString()
+        .toLowerCase()
+        .includes(dniFilter.toLowerCase());
+      const bCoincide = (b.paciente?.persona.dni || '')
+        .toString()
+        .toLowerCase()
+        .includes(dniFilter.toLowerCase());
+      if (aCoincide && !bCoincide) return -1;
+      if (!aCoincide && bCoincide) return 1;
+      return 0;
+    })
     : filteredTurnos;
 
   return (
@@ -164,7 +166,13 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
               <TableCell>NOMBRE COMPLETO</TableCell>
               <TableCell>FECHA</TableCell>
               <TableCell>HORA</TableCell>
-              <TableCell>ESTADO</TableCell>
+              <TableCell>
+                ESTADO-
+                <Typography variant="caption" color="textSecondary">
+                  (click para cambiar)
+                </Typography>
+              </TableCell>
+              <TableCell>ASISTENCIA</TableCell>
               <TableCell>TIPO CONSULTA</TableCell>
               <TableCell>MOTIVO</TableCell>
             </TableRow>
@@ -183,21 +191,26 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
                   <TableCell>{fecha ? format(fecha, "dd/MM/yyyy") : ""}</TableCell>
                   <TableCell>{fecha ? format(fecha, "HH:mm") : ""}</TableCell>
                   <TableCell>
-                    <Box
-                      onClick={(event) => handleOpenMenu(event, turno)}
-                      sx={{
-                        display: "inline-block",
-                        padding: "4px 10px",
-                        borderRadius: "12px",
-                        backgroundColor: estadoOptions[estadoKey]?.background,
-                        color: estadoOptions[estadoKey]?.text,
-                        fontWeight: "bold",
-                        cursor: "pointer",
-                        textAlign: "center",
-                      }}
-                    >
-                      {turno.estado}
-                    </Box>
+                    <Tooltip title="Hacé clic para cambiar el estado del turno" arrow>
+                      <Box
+                        onClick={(event) => handleOpenMenu(event, turno)}
+                        sx={{
+                          display: "inline-block",
+                          padding: "4px 10px",
+                          borderRadius: "12px",
+                          backgroundColor: estadoOptions[estadoKey]?.background,
+                          color: estadoOptions[estadoKey]?.text,
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          textAlign: "center",
+                        }}
+                      >
+                        {capitalizar(turno.estado)}
+                      </Box>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell>
+                    {turno.asistencia === true ? "Sí" : turno.asistencia === false ? "No" : "N/A"}
                   </TableCell>
                   <TableCell>{turno.tipoConsulta}</TableCell>
                   <TableCell>{turno.motivo}</TableCell>
@@ -209,9 +222,21 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
       </TableContainer>
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-        {Object.keys(estadoOptions).map((estado) => (
-          <MenuItem key={estado} onClick={() => handleSelectEstado(estado)}>
-            {estado}
+        {Object.entries(estadoOptions).map(([estado, color]) => (
+          <MenuItem
+            key={estado}
+            onClick={() => handleSelectEstado(estado)}
+            sx={{
+              backgroundColor: color.background,
+              color: color.text,
+              fontWeight: 'bold',
+              '&:hover': {
+                backgroundColor: color.background,
+                opacity: 0.9,
+              },
+            }}
+          >
+            {estado.charAt(0).toUpperCase() + estado.slice(1)}
           </MenuItem>
         ))}
       </Menu>

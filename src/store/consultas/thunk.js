@@ -159,7 +159,6 @@ export const modificarAnamnesis = createAsyncThunk(
 export const obtenerPorIdAnamnesis = createAsyncThunk(
   "anamnesis/obtenerPorIdAnamnesis",
   async (idAnamnesis, { rejectWithValue }) => {
-    console.log("[7] Thunk obtenerPorIdAnamnesis - ID recibido:", idAnamnesis);
     try {
 
       const response = await axios.get(`${API_ANAMNESIS}/${idAnamnesis}`);

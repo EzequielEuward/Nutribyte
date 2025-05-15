@@ -3,6 +3,7 @@ import { listarCobros, crearCobro, actualizarCobro, eliminarCobro, listarCobrosP
 
 const initialState = {
   cobros: [],
+  cobrosUsuario: [],
   loading: false,
   error: null,
 };
@@ -68,7 +69,7 @@ export const cobroSlice = createSlice({
       })
       .addCase(listarCobrosPorUsuario.fulfilled, (state, action) => {
         state.loading = false;
-        state.cobros = action.payload;
+        state.cobrosUsuario = action.payload;
       })
       .addCase(listarCobrosPorUsuario.rejected, (state, action) => {
         state.loading = false;

@@ -74,7 +74,9 @@ export const PendingAppointments = ({ turnos }) => {
                   display="flex"
                   flexDirection={{ xs: "column", sm: "row" }}
                   justifyContent="space-between"
-                  alignItems="center"
+                  alignItems={{ xs: "flex-start", sm: "center" }}
+                  flexWrap="wrap"
+                  gap={1}
                   sx={{
                     p: 2,
                     borderBottom: `1px solid ${theme.palette.divider}`,

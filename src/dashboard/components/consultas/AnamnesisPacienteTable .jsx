@@ -15,7 +15,8 @@ export const AnamnesisPacienteTable = ({ handleMenuOpen, anamnesis = [] }) => {
         No hay registros de Anamnesis para este paciente
       </Typography>
     );
-  }
+  };
+
 
   return (
     <TableContainer component={Paper}>
@@ -71,12 +72,31 @@ export const AnamnesisPacienteTable = ({ handleMenuOpen, anamnesis = [] }) => {
 
               {/* Celda de acciones DEBE ESTAR DENTRO DEL MAP */}
               <TableCell align="center">
-                <Tooltip title="Editar">
-                  <IconButton onClick={() => handleMenuOpen('edit', a)}>
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
+                {(() => {
+                  const fechaCreacion = new Date(a.fecha);
+                  const ahora = new Date();
+                  const diferenciaHoras = (ahora - fechaCreacion) / (1000 * 60 * 60);
+                  const estaBloqueado = diferenciaHoras > 1;
 
+                  return (
+                    <>
+                      <Tooltip title={estaBloqueado ? "Edición deshabilitada (más de 1h)" : "Editar"}>
+                        <span>
+                          <IconButton onClick={() => handleMenuOpen('edit', a)} disabled={estaBloqueado}>
+                            <EditIcon />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                      {/* <Tooltip title={estaBloqueado ? "Eliminación deshabilitada (más de 1h)" : "Eliminar"}>
+                        <span>
+                          <IconButton onClick={() => handleMenuOpen('delete', a)} disabled={estaBloqueado}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </span>
+                      </Tooltip> */}
+                    </>
+                  );
+                })()}
               </TableCell>
             </TableRow>
           ))}

@@ -111,7 +111,7 @@ export const PlanCreationForm = ({
               />
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={12}>
               <Controller
                 name="observaciones"
                 control={control}

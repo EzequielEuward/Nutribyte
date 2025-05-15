@@ -50,7 +50,9 @@ export const InformacionGeneralConsultaPage = ({ consultas }) => {
             <Typography variant="h4" color="primary">
               {consultas.length}
             </Typography>
-            <Typography variant="caption">Total de consultas hechas</Typography>
+            <Typography variant="caption" sx={{ fontWeight: 500, color: 'text.secondary' }}>
+              Consultas totales hasta la fecha: <strong>{fechaHoy}</strong>
+            </Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -67,7 +69,9 @@ export const InformacionGeneralConsultaPage = ({ consultas }) => {
             <Typography variant="h4" color="success.main">
               {consultasHoy}
             </Typography>
-            <Typography variant="caption">Consultas hechas en {fechaHoy}</Typography>
+            <Typography variant="caption">
+              Consultas para el día: <strong>{fechaHoy}</strong>
+            </Typography>
           </CardContent>
         </Card>
       </Grid>

@@ -45,21 +45,35 @@ export const ConsultasPacienteTable = ({ handleMenuOpen, consultas = [] }) => {
               <TableCell>{c.observaciones || '—'}</TableCell>
               <TableCell>{c.planAlimenticio || 'No posee '}</TableCell>
               <TableCell align="center">
-                <Tooltip title="Editar Consulta">
-                  <IconButton onClick={() => handleMenuOpen('edit', c)}>
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Eliminar Consulta">
-                  <IconButton
-                    color="error"
-                    onClick={() => {
-                      handleMenuOpen('delete', c);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
+                {(() => {
+                  const fechaCreacion = new Date(c.fecha);
+                  const ahora = new Date();
+                  const diferenciaHoras = (ahora - fechaCreacion) / (1000 * 60 * 60);
+                  const estaBloqueado = diferenciaHoras > 1;
+
+                  return (
+                    <>
+                      <Tooltip title={estaBloqueado ? "Edición deshabilitada (más de 1h)" : "Editar Consulta"}>
+                        <span>
+                          <IconButton onClick={() => handleMenuOpen('edit', c)} disabled={estaBloqueado}>
+                            <EditIcon />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                      <Tooltip title={estaBloqueado ? "Eliminación deshabilitada (más de 1h)" : "Eliminar Consulta"}>
+                        <span>
+                          <IconButton
+                            onClick={() => handleMenuOpen('delete', c)}
+                            disabled={estaBloqueado}
+                            color="error"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    </>
+                  );
+                })()}
               </TableCell>
             </TableRow>
           ))}

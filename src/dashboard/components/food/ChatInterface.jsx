@@ -1,7 +1,29 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button, TextField, Box, IconButton, CircularProgress, Typography } from '@mui/material';
 import { Send, Close } from '@mui/icons-material';
-import { mockRespuestas } from '../../../mock/data/mockRespuestas';
+import { mockRespuestas } from '../../../mock/data/mockRespuestas';  
+
+// 🔍 Función para buscar el mejor match
+const findBestMatch = (input) => {
+  const inputLower = input.toLowerCase();
+
+  let bestMatch = null;
+  let longestTrigger = 0;
+
+  for (const responseObj of mockRespuestas) {
+    // ❗ Protección contra objetos sin trigger
+    if (!responseObj.trigger || !Array.isArray(responseObj.trigger)) continue;
+
+    for (const trigger of responseObj.trigger) {
+      if (inputLower.includes(trigger.toLowerCase()) && trigger.length > longestTrigger) {
+        bestMatch = responseObj;
+        longestTrigger = trigger.length;
+      }
+    }
+  }
+
+  return bestMatch;
+};
 
 export const ChatInterface = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([]);
@@ -21,33 +43,29 @@ export const ChatInterface = ({ isOpen, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (input.trim()) {
+      const userMessage = input.trim();
+      setMessages((prevMessages) => [...prevMessages, { role: 'user', content: userMessage }]);
+      setInput('');
+      setStatus('streaming');
 
-    if (!input.trim()) return;
+      // 🧠 Buscar la mejor respuesta
+      const match = findBestMatch(userMessage);
+      const defaultResponse = mockRespuestas.find(
+        r => Array.isArray(r.trigger) && r.trigger.includes('default')
+      );
 
-    const userMessage = input.trim();
-    setMessages((prev) => [...prev, { role: 'user', content: userMessage }]);
-    setInput('');
-    setStatus('streaming');
+      const response = match?.response || defaultResponse?.response || 'Estoy procesando tu mensaje...';
 
-    // Normalizar input
-    const inputLower = userMessage.toLowerCase();
-
-    // Buscar coincidencia
-    const match = mockRespuestas.find((responseObj) =>
-      responseObj.trigger &&
-      responseObj.trigger.some((trigger) =>
-        inputLower.includes(trigger.toLowerCase())
-      )
-    );
-
-    // Si no hay coincidencia, mostrar mensaje de error
-    const response = match
-      ? match.response
-      : "Lo siento, no entendí tu mensaje. Escribí 'inicio' para ver las opciones disponibles.";
-
-    // Respuesta rápida sin delay innecesario
-    setMessages((prev) => [...prev, { role: 'assistant', content: response }]);
-    setStatus('');
+      // ⏳ Simular respuesta del asistente
+      setTimeout(() => {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { role: 'assistant', content: response },
+        ]);
+        setStatus('');
+      }, 1000);
+    }
   };
 
   if (!isOpen) return null;

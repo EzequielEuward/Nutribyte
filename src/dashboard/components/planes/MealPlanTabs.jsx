@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -57,14 +58,16 @@ export const MealPlanTabs = ({ alimentos, setAlimentos, alimentosSugeridos }) =>
                   <TableCell>{food.proteinas}</TableCell>
                   <TableCell>{food.grasasTotales}</TableCell>
                   <TableCell>
-                    <Button
-                      variant="text"
-                      color="error"
-                      onClick={() => handleRemoveFood(food.idAlimento)}
-                    >
-                      <RemoveIcon />
-                    </Button>
-                   
+                    <Tooltip title="Eliminar alimento" arrow>
+                      <Button
+                        variant="text"
+                        color="error"
+                        onClick={() => handleRemoveFood(food.idAlimento)}
+                      >
+                        <RemoveIcon />
+                      </Button>
+                    </Tooltip>
+
                   </TableCell>
                 </TableRow>
               ))}

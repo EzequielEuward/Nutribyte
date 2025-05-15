@@ -1,4 +1,4 @@
-import { Box, Table, TableHead, TableRow,Typography, TableCell, TableBody, Chip, IconButton } from '@mui/material';
+import { Box, Table, TableHead, TableRow, Typography, TableCell, TableBody, Chip, IconButton } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 const getChipColorEstado = (estado) => {
@@ -30,7 +30,8 @@ export const TablaConsulta = ({ handleMenuOpen, consultas = [] }) => {
           <TableRow>
             <TableCell>DNI</TableCell>
             <TableCell>Fecha</TableCell>
-            <TableCell>Nombre Completo</TableCell>
+            <TableCell>Apellido</TableCell>
+            <TableCell>Nombre</TableCell>
             <TableCell>Diagnóstico</TableCell>
             <TableCell>Plan Alimenticio</TableCell>
           </TableRow>
@@ -43,7 +44,11 @@ export const TablaConsulta = ({ handleMenuOpen, consultas = [] }) => {
                 {row.fecha ? new Date(row.fecha).toLocaleDateString() : 'N/A'}
               </TableCell>
               <TableCell>
-                {`${row.paciente?.persona.nombre || ''} ${row.paciente?.persona.apellido || ''}`.trim() || 'N/A'}
+                {`${row.paciente?.persona.apellido || ''}`}
+              </TableCell>
+
+              <TableCell>
+                {`${row.paciente?.persona.nombre || ''}`}
               </TableCell>
 
               <TableCell>

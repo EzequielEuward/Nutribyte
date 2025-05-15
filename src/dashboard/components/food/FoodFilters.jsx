@@ -1,3 +1,4 @@
+// ✅ FoodFilters.jsx reconstruido
 import { useState, useEffect, useMemo } from "react";
 import {
   Paper,
@@ -15,21 +16,20 @@ import {
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import debounce from "lodash.debounce";
 
-export const FoodFilters = ({ onFilterChange }) => {
+export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
   const [nombre, setNombre] = useState("");
   const [grupo, setGrupo] = useState("");
-  const [calorias, setCalorias] = useState([0, 500]);
-  const [proteinas, setProteinas] = useState([0, 50]);
-  const [carbohidratos, setCarbohidratos] = useState([0, 100]);
-  const [azucares, setAzucares] = useState([0, 100]);
-  const [grasasTotales, setGrasasTotales] = useState([0, 50]);
-  const [grasasSaturadas, setGrasasSaturadas] = useState([0, 20]);
-  const [grasasInsaturadas, setGrasasInsaturadas] = useState([0, 50]);
-  const [fibraDietetica, setFibraDietetica] = useState([0, 50]);
-  const [sodio, setSodio] = useState([0, 2000]);
+  const [calorias, setCalorias] = useState(["", ""]);
+  const [proteinas, setProteinas] = useState(["", ""]);
+  const [carbohidratos, setCarbohidratos] = useState(["", ""]);
+  const [azucares, setAzucares] = useState(["", ""]);
+  const [grasasTotales, setGrasasTotales] = useState(["", ""]);
+  const [grasasSaturadas, setGrasasSaturadas] = useState([0, ""]);
+  const [grasasInsaturadas, setGrasasInsaturadas] = useState(["", ""]);
+  const [fibraDietetica, setFibraDietetica] = useState(["", ""]);
+  const [sodio, setSodio] = useState(["", ""]);
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
-  // ✅ Debounce para nombre
   const debouncedNombreChange = useMemo(
     () =>
       debounce((value) => {
@@ -38,9 +38,7 @@ export const FoodFilters = ({ onFilterChange }) => {
     [onFilterChange]
   );
 
-  useEffect(() => {
-    return () => debouncedNombreChange.cancel();
-  }, [debouncedNombreChange]);
+  useEffect(() => () => debouncedNombreChange.cancel(), [debouncedNombreChange]);
 
   const handleApplyFilters = () => {
     onFilterChange({
@@ -66,7 +64,7 @@ export const FoodFilters = ({ onFilterChange }) => {
         onChange={(e, newValue) => setValue(newValue)}
         valueLabelDisplay="auto"
         min={min}
-        max={max}
+        max={Math.min(max, 10000)}
       />
       <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
         <TextField
@@ -74,10 +72,15 @@ export const FoodFilters = ({ onFilterChange }) => {
           type="number"
           value={value[0]}
           onChange={(e) => {
-            const newMin = Number(e.target.value);
-            setValue([newMin, value[1]]);
+            const val = Math.max(min, Math.min(10000, +e.target.value || 0));
+            setValue([val, value[1]]);
           }}
-          inputProps={{ min, max }}
+          inputProps={{
+            min,
+            max: 10000,
+            inputMode: "numeric",
+            pattern: "[0-9]*",
+          }}
           variant="outlined"
           size="small"
           fullWidth
@@ -87,10 +90,15 @@ export const FoodFilters = ({ onFilterChange }) => {
           type="number"
           value={value[1]}
           onChange={(e) => {
-            const newMax = Number(e.target.value);
-            setValue([value[0], newMax]);
+            const val = Math.max(min, Math.min(10000, +e.target.value || 0));
+            setValue([value[0], val]);
           }}
-          inputProps={{ min, max }}
+          inputProps={{
+            min,
+            max: 10000,
+            inputMode: "numeric",
+            pattern: "[0-9]*",
+          }}
           variant="outlined"
           size="small"
           fullWidth
@@ -98,6 +106,7 @@ export const FoodFilters = ({ onFilterChange }) => {
       </Box>
     </Grid>
   );
+
 
   return (
     <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
@@ -108,9 +117,8 @@ export const FoodFilters = ({ onFilterChange }) => {
             label="Nombre"
             value={nombre}
             onChange={(e) => {
-              const value = e.target.value;
-              setNombre(value);
-              debouncedNombreChange(value);
+              setNombre(e.target.value);
+              debouncedNombreChange(e.target.value);
             }}
             variant="outlined"
           />
@@ -125,9 +133,11 @@ export const FoodFilters = ({ onFilterChange }) => {
             variant="outlined"
           >
             <MenuItem value="">Todos</MenuItem>
-            <MenuItem value="Frutas">Frutas</MenuItem>
-            <MenuItem value="Vegetales">Vegetales</MenuItem>
-            <MenuItem value="Proteínas">Proteínas</MenuItem>
+            {gruposDisponibles.map((g, idx) => (
+              <MenuItem key={idx} value={g}>
+                {g}
+              </MenuItem>
+            ))}
           </TextField>
         </Grid>
         <Grid item xs={12} sm={12} md={4} sx={{ textAlign: "right" }}>
@@ -149,7 +159,7 @@ export const FoodFilters = ({ onFilterChange }) => {
       <Collapse in={advancedOpen}>
         <Box sx={{ mt: 2 }}>
           <Grid container spacing={3}>
-            {renderRangeFilter("Calorías", calorias, setCalorias, 0, 500)}
+            {renderRangeFilter("Calorías", calorias, setCalorias, 0, 1000)}
             {renderRangeFilter("Proteínas (g)", proteinas, setProteinas, 0, 50)}
             {renderRangeFilter("Carbohidratos (g)", carbohidratos, setCarbohidratos, 0, 100)}
             {renderRangeFilter("Azúcares (g)", azucares, setAzucares, 0, 100)}

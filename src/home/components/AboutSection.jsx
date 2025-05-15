@@ -8,6 +8,7 @@ import DeveloperMeliImage from '../../assets/meli.jpg';
 import DeveloperAgusImage from '../../assets/agus.jpg';
 import placeholder from '../../assets/placeholder.png';
 
+
 export const AboutSection = () => {
   const developers = [
     {
@@ -56,7 +57,7 @@ export const AboutSection = () => {
   ];
 
   return (
-    <Box id="about" py={{ xs: 6, md: 12 }} textAlign="center">
+    <Box id="about" py={{ xs: 6, md: 12}} textAlign="center">
       <Container maxWidth="md">
         <Typography variant="h4" component="h2" fontWeight="bold" gutterBottom>
           Acerca de los desarrolladores

@@ -127,7 +127,7 @@ export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelet
                         </IconButton>
 
                         <IconButton onClick={() => handleOpenDeleteModal(patient)} aria-label="eliminar">
-                        <Tooltip title="Eliminar Paciente"arrow>
+                        <Tooltip title="Inhabilitar Paciente"arrow>
                           <DeleteIcon />
                           </Tooltip>
                         </IconButton>

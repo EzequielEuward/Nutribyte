@@ -15,8 +15,9 @@ export const lightTheme = createTheme({
       main: red.A400,
     },
     background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
+      default: '#f0f0f0',
+      paper: '#f5f5f5',
+       arrow: '#C0C0C0',
     },
     text: {
       primary: '#000000',

@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { useTheme } from '@emotion/react';
-import { Typography, Box, Button, CircularProgress } from "@mui/material";
+import { Typography, Box, Button, CircularProgress, Tooltip, IconButton } from "@mui/material";
 import { DashboardLayout } from "../../dashboard/layout/DashboardLayout";
 import { PatientForm, PatientTable, PatientCard, PatientAnamnesis, PatientDrawer } from "../components";
 import { useSelector, useDispatch } from "react-redux";
 import { actualizarPaciente, crearPaciente, desactivarPaciente, listarPacientes, obtenerPacientePorId } from "../../store/patient/";
 import { limpiarPacienteSeleccionado } from "../../store/patient/";
 import { format } from "date-fns";
-
+import { useTheme } from '@emotion/react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { enviarAlertaLimitePacientes } from "../../helpers/";
 
 export const PatientPage = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { isLoading, error, pacientes, pacienteSeleccionado } = useSelector((state) => state.patients);
   const { planUsuario, persona, username } = useSelector((state) => state.auth);
 
@@ -32,6 +34,7 @@ export const PatientPage = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
+      confirmButtonColor: "#b71c1c",
       cancelButtonText: "Cancelar"
     }).then((result) => {
       if (result.isConfirmed) {
@@ -182,6 +185,11 @@ export const PatientPage = () => {
 
   return (
     <DashboardLayout>
+      <Tooltip title="Volver">
+        <IconButton sx={{ backgroundColor: theme.palette.background.arrow, mt: 2 }} onClick={() => navigate(-1)} color="primary">
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
       <Box sx={{ padding: "16px" }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Gestión de Pacientes

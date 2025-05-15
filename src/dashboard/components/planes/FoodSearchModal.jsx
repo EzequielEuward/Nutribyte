@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button,
-  Box, CircularProgress, Alert, Checkbox, Typography, Divider, Paper
+  Box, CircularProgress, Alert, Checkbox, Typography, Divider, Paper,
+  Tooltip
 } from "@mui/material";
 import { obtenerAlimentos } from "../../../store/plans";
 import { FixedSizeList as VirtualList } from "react-window";
@@ -82,10 +83,12 @@ export const FoodSearchModal = ({
             Carbs: {food.carbohidratos}g | Proteínas: {food.proteinas}g | Grasas: {food.grasasTotales}g
           </Typography>
         </Box>
-        <Checkbox
-          checked={!!seleccionados[food.idAlimento]}
-          onChange={() => handleToggle(food.idAlimento)}
-        />
+        <Tooltip title="Agregar alimentos" arrow>
+          <Checkbox
+            checked={!!seleccionados[food.idAlimento]}
+            onChange={() => handleToggle(food.idAlimento)}
+          />
+        </Tooltip>
       </Box>
     );
   };
@@ -107,6 +110,7 @@ export const FoodSearchModal = ({
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             sx={{ mt: 2 }}
+            inputProps={{ maxLength: 60 }}
           />
         </Box>
 

@@ -8,31 +8,44 @@ IDEA: 💡
 
 --------------------TAREAS PARA MAÑANA--------------------
 ///BACKLOG DE TAREAS///
-✅ HACER ABM DE COBRO DEL PACIENTE DUPLICAR TABLAS
-🚧 hacer pestaña de reportes
-✅ Mejorar apenas entras la parte de Seguimiento
-❌ Poner un nuevo grafico en dashboard y sacar el de la torta
-✅ Agregar el get de los pagos realizados por ese usuario
-❌ Arreglar bugs del localstore
-✅ Arreglar turnos 
-✅ Hacer que en planes empieza con 0 
-✅ Mejorar <ConsejosRapidos/> tenga como un accordeon
-✅ Hacer que en nutri ideas se puedan imprimir varias
-✅ Agregar en la pagina principal que segun el tipo de plan tenga como una pagina aparte con la informacion del plan
-✅ En la pagina principal hacer que todo este justificado y este mas grande
-✅ Ver que agregar en configuraciones para que no quede tan vacio. 
-🟨 En control de usuario hacer que tengan las ultimas modificaciones o algo historico
-🟨 Hacer que cobros dependiendo el estado mando un email.
-✅ Agregar verificado en la tabla y que muestre si verificó el usuario mediante eMail
-✅ ⁠Hacer que el login pueda recuperar la contraseña
+✅ Poner primero pacientes y despues turnos
+✅ Hacer que en registrar paciente me deje poner 8 digitos de dni 8 o 7 digitos
+✅ Hacer que la fecha de registrar paciente sea obligatorio
+✅ Capear todo en registrar pacientes y editar pacientes
+✅ Cambiar color del boton de eliminar 
+✅ Cambiar tooltip de la tabla paciente de eliminar pacietne a inabilitar paciente
+✅ En consulta: En la tabla principal que es la primera que ves ordenar por DNI | FECHA | APELLIDO | NOMBRE | DIAGNOSTICO | PLAN ALIMENTICIO
+✅ Agregarle tooltip al alimento en la tabla
+✅ Capear filtro en aliemntos
+✅ Hacer que se limpie cuando ya creo el plan 
+✅ Cambiar alert a swet alert en planes
 
-❌ Arreglar turno darle la opcion de confirmar o no confirmar turno.
-❌ Hacer que cuando tenga una consulta creada me dispare el estado del paciente sea En tratamiento
-✅ Agregar que la imagen cuando descargo un plan salga eso de puño cerrado qsy 
-✅ Arreglar ahora el get (de anamensis)
-✅ Arreglar que me salga bien la informacion de planes summary
-✅ Hacer que ande descuento de cobro particulares
-❌ Hacer lo del iva 21% o 10.5% que tenga para selecionar nomas
+❌ hacer menu hamburgesa sidebar
+✅ Ver que poner en dashboard
+✅ Hacer que Total pacietes registrados para administrador muestre cantidad de usuarios registrados y cambiar el de consulta
+
+--Consulta--
+✅ Consulta: cambiar el cuadrito de conusultas totales registrada: de Total consultas hechas a la fecha de hoy 
+✅ Consulta: capear anamnesis 3 numeros para atras . 3 numeros para adelante todo en anamensis
+✅ Hacer que se limpie el formulario 
+✅ Agregar flechita en consulta cuando estoy cargando
+✅ Hacer que si paso una hora no se pueda editar mas la consulta y anamnesis
+✅ Preguntar 2 veces que si genera la consulta tiene 45 minutos para poder editar
+❌ Hacer que no pueda editar la fecha en esos 45 minutos
+✅ capear el editar anamneis tambien a 5 digitos
+
+---- En dashboardlayout agregar boton para volver para atras
+
+❌ En alimentos hacer que el filtro pueda buscar bien por grupo de aliemtnos
+❌ En Planes alimenticios alargar "observaciones" en la parte de crear plan 
+❌ Agregale un boton para que me lleve a cargar planes alimenticos
+❌ Hacer responsive la parte
+❌ Hacer que en la tabla turnos el usuario entienda que puede cambiar el turno desde ahi ;
+
+
+
+
+❌ Arreglar mock del chatbot
 
 //HACER A LA MAÑANA
 
@@ -133,3 +146,29 @@ IDEA: 💡
 ✅ Hacer en el boton de cambiar de planes envie un email a software.sintacc@gmail.com para deir que quiere mejorar el plan actual
 ✅ Agregar usuario demo y que entre con el boton de probar sistema pero inabilitar todas las cosas que puede hacer
 ✅ Hacer que en el boton de probar ahora el sistema en la pestaña principal entre con el usuario demo
+
+✅ HACER ABM DE COBRO DEL PACIENTE DUPLICAR TABLAS
+🚧 hacer pestaña de reportes
+✅ Mejorar apenas entras la parte de Seguimiento
+❌ Poner un nuevo grafico en dashboard y sacar el de la torta
+✅ Agregar el get de los pagos realizados por ese usuario
+❌ Arreglar bugs del localstore
+✅ Arreglar turnos 
+✅ Hacer que en planes empieza con 0 
+✅ Mejorar <ConsejosRapidos/> tenga como un accordeon
+✅ Hacer que en nutri ideas se puedan imprimir varias
+✅ Agregar en la pagina principal que segun el tipo de plan tenga como una pagina aparte con la informacion del plan
+✅ En la pagina principal hacer que todo este justificado y este mas grande
+✅ Ver que agregar en configuraciones para que no quede tan vacio. 
+🟨 En control de usuario hacer que tengan las ultimas modificaciones o algo historico
+🟨 Hacer que cobros dependiendo el estado mando un email.
+✅ Agregar verificado en la tabla y que muestre si verificó el usuario mediante eMail
+✅ ⁠Hacer que el login pueda recuperar la contraseña
+
+❌ Arreglar turno darle la opcion de confirmar o no confirmar turno.
+❌ Hacer que cuando tenga una consulta creada me dispare el estado del paciente sea En tratamiento
+✅ Agregar que la imagen cuando descargo un plan salga eso de puño cerrado qsy 
+✅ Arreglar ahora el get (de anamensis)
+✅ Arreglar que me salga bien la informacion de planes summary
+✅ Hacer que ande descuento de cobro particulares
+❌ Hacer lo del iva 21% o 10.5% que tenga para selecionar nomas

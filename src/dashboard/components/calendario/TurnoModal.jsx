@@ -9,7 +9,8 @@ import {
   Switch,
   FormControlLabel,
   Autocomplete,
-  MenuItem
+  MenuItem,
+  Typography
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect } from "react";
@@ -41,7 +42,6 @@ export const TurnoModal = ({
     },
   });
 
-  // 🔁 Cada vez que se abre el modal o cambian los formValues, reseteamos el formulario
   useEffect(() => {
     if (formValues) {
       reset({
@@ -145,18 +145,26 @@ export const TurnoModal = ({
         />
 
         {/* Estado (switch) */}
-        <FormControlLabel
-          control={
-            <Switch
-              checked={watch("estado") === "confirmado"}
-              onChange={(e) =>
-                setValue("estado", e.target.checked ? "confirmado" : "pendiente")
-              }
-              color="primary"
-            />
-          }
-          label="Confirmado"
-        />
+        <FormControl fullWidth margin="normal">
+          <FormControlLabel
+            control={
+              <Switch
+                checked={watch("estado") === "confirmado"}
+                onChange={(e) =>
+                  setValue("estado", e.target.checked ? "confirmado" : "pendiente")
+                }
+                color="primary"
+              />
+            }
+            label="¿Confirmó asistencia?"
+          />
+          <Typography
+            variant="body2"
+            sx={{ ml: 1, mt: -1, color: watch("estado") === "confirmado" ? "green" : "text.secondary" }}
+          >
+            {watch("estado") === "confirmado" ? "Sí confirmó asistencia" : "No confirmó asistencia"}
+          </Typography>
+        </FormControl>
       </DialogContent>
       <DialogActions>
         {formValues?.idTurno && (
