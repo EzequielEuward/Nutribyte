@@ -20,13 +20,11 @@ const CancelarDegradarPlanDialog = ({
     const handleEnviar = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(endpointSheetsURL, {
-                params: {
-                    usuarioId,
-                    planActual,
-                    accion,
-                    motivo,
-                },
+            const response = await axios.post(endpointSheetsURL, {
+                usuarioId,
+                planActual,
+                accion,
+                motivo,
             });
 
             if (response.data.success) {
@@ -56,7 +54,6 @@ const CancelarDegradarPlanDialog = ({
             setLoading(false);
         }
     };
-
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
             <DialogTitle>{accion} Plan</DialogTitle>
