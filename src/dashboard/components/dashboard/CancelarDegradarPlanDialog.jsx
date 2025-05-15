@@ -20,40 +20,46 @@ const CancelarDegradarPlanDialog = ({
     const handleEnviar = async () => {
         setLoading(true);
         try {
-            const response = await axios.post(endpointSheetsURL, {
-                usuarioId,
-                planActual,
-                accion,
-                motivo,
+            const formData = new URLSearchParams();
+            formData.append("usuarioId", usuarioId);
+            formData.append("planActual", planActual);
+            formData.append("accion", accion);
+            formData.append("motivo", motivo);
+
+            const response = await axios.post(endpointSheetsURL, formData, {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             });
 
             if (response.data.success) {
                 Swal.fire({
-                    icon: 'success',
-                    title: '¡Enviado!',
-                    text: 'El formulario fue registrado correctamente.',
-                    confirmButtonColor: '#3085d6'
+                    icon: "success",
+                    title: "¡Enviado!",
+                    text: "El formulario fue registrado correctamente.",
+                    confirmButtonColor: "#3085d6",
                 });
                 onClose();
-                setMotivo('');
+                setMotivo("");
             } else {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudo registrar el formulario. Intentá nuevamente.',
+                    icon: "error",
+                    title: "Error",
+                    text: "No se pudo registrar el formulario. Intentá nuevamente.",
                 });
             }
         } catch (error) {
-            console.error('Error al enviar al Google Sheets:', error);
+            console.error("Error al enviar al Google Sheets:", error);
             Swal.fire({
-                icon: 'error',
-                title: 'Error de conexión',
-                text: 'No se pudo conectar con Google Sheets.',
+                icon: "error",
+                title: "Error de conexión",
+                text: "No se pudo conectar con Google Sheets.",
             });
         } finally {
             setLoading(false);
         }
     };
+
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
             <DialogTitle>{accion} Plan</DialogTitle>
