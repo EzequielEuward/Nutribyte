@@ -36,15 +36,20 @@ IDEA: 💡
 
 ---- En dashboardlayout agregar boton para volver para atras
 
-❌ En alimentos hacer que el filtro pueda buscar bien por grupo de aliemtnos
+✅ En alimentos hacer que el filtro pueda buscar bien por grupo de aliemtnos
 ❌ En Planes alimenticios alargar "observaciones" en la parte de crear plan 
 ❌ Agregale un boton para que me lleve a cargar planes alimenticos
 ❌ Hacer responsive la parte
-❌ Hacer que en la tabla turnos el usuario entienda que puede cambiar el turno desde ahi ;
+✅ Hacer que en la tabla turnos el usuario entienda que puede cambiar el turno desde ahi ;
 
 
+---DEVOLUCION DEL GORDO ----
+❌ Cambiar por sexo por genero
+❌ Calendario agregar dias feriados para recomendar
+❌ Cambiar table
 
 
+❌ SE LA DEVOLVIO LA MELI A MELISA HAY PIQUE 
 ❌ Arreglar mock del chatbot
 
 //HACER A LA MAÑANA

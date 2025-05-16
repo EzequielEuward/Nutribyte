@@ -92,10 +92,10 @@ export const HeroSection = () => {
                 <Grid item xs={12} md={6} lg={5} xl={5} display="flex" justifyContent="center" sx={{ order: { xs: 2, md: 1 }, paddingRight: { lg: '2rem' } }}>
                     <HeroContent>
                         <Typography variant="h2" component="h1" fontWeight="bold" gutterBottom>
-                            <strong> Software de Nutrición</strong>
+                            <strong>Impulsá tu consulta nutricional</strong>
                         </Typography>
                         <Typography variant="h5" component="p" gutterBottom>
-                            Facilita y agiliza las tareas del profesional con nuestro software especializado.
+                            Gestioná planes, pacientes y seguimientos en un solo lugar. Más tiempo para tus pacientes, menos para la administración.
                         </Typography>
                         <HeroButton variant="contained" onClick={handleLoginDemo}>
                             Probarlo Ahora
