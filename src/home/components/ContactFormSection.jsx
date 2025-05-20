@@ -136,24 +136,7 @@ export const ContactFormSection = ({ onFormValidityChange }) => {
                     ¿Tienes alguna pregunta o sugerencia? No dudes en ponerte en contacto con nosotros.
                 </Typography>
                 <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-                    <TextField
-                        fullWidth
-                        label="Nombre"
-                        name="nombre"
-                        margin="normal"
-                        value={nombre}
-                        error={!!errors.nombre}
-                        inputProps={{ maxLength: 45 }}
-                        helperText={errors.nombre}
-                        onChange={(e) => {
-                            const input = e.target.value;
-                            if (/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/.test(input)) {
-                                setNombre(input);
-                                validateField("nombre", input);
-                            }
-                        }}
-                        onBlur={(e) => validateField("nombre", e.target.value)}
-                    />
+
                     <TextField
                         fullWidth
                         label="Apellido"
@@ -171,6 +154,24 @@ export const ContactFormSection = ({ onFormValidityChange }) => {
                             }
                         }}
                         onBlur={(e) => validateField("apellido", e.target.value)}
+                    />
+                    <TextField
+                        fullWidth
+                        label="Nombre"
+                        name="nombre"
+                        margin="normal"
+                        value={nombre}
+                        error={!!errors.nombre}
+                        inputProps={{ maxLength: 45 }}
+                        helperText={errors.nombre}
+                        onChange={(e) => {
+                            const input = e.target.value;
+                            if (/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/.test(input)) {
+                                setNombre(input);
+                                validateField("nombre", input);
+                            }
+                        }}
+                        onBlur={(e) => validateField("nombre", e.target.value)}
                     />
                     <TextField
                         fullWidth
