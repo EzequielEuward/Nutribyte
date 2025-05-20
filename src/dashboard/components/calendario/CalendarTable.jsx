@@ -19,6 +19,7 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
   const [selectedTurno, setSelectedTurno] = useState(null);
   const [dniFilter, setDniFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const [estadoFilter, setEstadoFilter] = useState("");
 
   const handleOpenMenu = (event, turno) => {
     setAnchorEl(event.currentTarget);
@@ -70,7 +71,6 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
 
   const filteredTurnos = turnos.filter((turno) => {
     const dni = turno.paciente?.persona?.dni?.toString() || "";
-
     const fechaTurno = new Date(turno.fechaInicio);
     const fechaFiltroValida = dateFilter ? new Date(dateFilter + "T00:00:00") : null;
 
@@ -78,9 +78,12 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
       ? fechaTurno.toDateString() === fechaFiltroValida.toDateString()
       : true;
 
+    const mismoEstado = estadoFilter ? turno.estado?.toLowerCase() === estadoFilter.toLowerCase() : true;
+
     return (
       dni.includes(dniFilter.toLowerCase()) &&
-      mismaFecha
+      mismaFecha &&
+      mismoEstado
     );
   });
 
@@ -174,6 +177,51 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
         </>
       ) : (
         <Paper sx={{ height: 500, width: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
+            <Grid container spacing={2} sx={{ mb: 2 }}>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  label="Filtrar por Fecha"
+                  type="date"
+                  size="small"
+                  fullWidth
+                  value={dateFilter}
+                  onChange={(e) => setDateFilter(e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  label="Filtrar por DNI"
+                  type="text"
+                  size="small"
+                  fullWidth
+                  value={dniFilter}
+                  onChange={(e) => setDniFilter(e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  select
+                  label="Filtrar por Estado"
+                  size="small"
+                  fullWidth
+                  value={estadoFilter}
+                  onChange={(e) => setEstadoFilter(e.target.value)}
+                >
+                  <MenuItem value="">Todos</MenuItem>
+                  {estadosDisponibles.map((estado) => (
+                    <MenuItem key={estado} value={estado}>
+                      {capitalizar(estado)}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+            </Grid>
+
+          </Box>
+
           <DataGrid
             rows={filteredTurnos.map((turno) => {
               const fecha = turno.fechaInicio ? new Date(turno.fechaInicio) : null;
