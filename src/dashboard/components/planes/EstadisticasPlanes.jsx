@@ -1,7 +1,21 @@
 import { Box, Typography, Card, CardContent, Divider, LinearProgress } from "@mui/material";
 import { FitnessCenter, Restaurant, EnergySavingsLeaf, LocalFireDepartment } from "@mui/icons-material";
 
-export const EstadisticasPlanes = () => {
+export const EstadisticasPlanes = ({ plan }) => {
+  if (!plan) return null;
+
+  const getValor = (clave) => {
+    const entrada = plan.estadisticasPlan?.find((e) => e.toLowerCase().includes(clave));
+    if (!entrada) return "-";
+    const match = entrada.match(/(\d+)/);
+    return match ? parseInt(match[1]) : "-";
+  };
+
+  const kcal = getValor("kcal");
+  const prote = getValor("prote");
+  const carbo = getValor("carbo");
+  const grasa = getValor("grasa");
+
   return (
     <Card sx={{ mt: 4, p: 2, height: "100%" }}>
       <CardContent>
@@ -9,93 +23,36 @@ export const EstadisticasPlanes = () => {
           Estadísticas del Plan
         </Typography>
         <Divider sx={{ mb: 3 }} />
-        
-        {/* Kcal Diarias */}
-        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-          <Box display="flex" alignItems="center" gap={1}>
-            <LocalFireDepartment color="error" />
-            <Typography variant="subtitle1">Kcal Diarias:</Typography>
+
+        {/* Generador de bloque */}
+        {[
+          { icon: <LocalFireDepartment color="error" />, label: "Kcal Diarias", value: kcal, color: "#ff7043" },
+          { icon: <FitnessCenter />, label: "Proteínas", value: prote, color: "#f39c12" },
+          { icon: <Restaurant color="success" />, label: "Carbohidratos", value: carbo, color: "#27ae60" },
+          { icon: <EnergySavingsLeaf color="warning" />, label: "Grasas", value: grasa, color: "#e67e22" },
+        ].map(({ icon, label, value, color }, i) => (
+          <Box key={i} sx={{ mb: 2 }}>
+            <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
+              <Box display="flex" alignItems="center" gap={1}>
+                {icon}
+                <Typography variant="subtitle1">{label}:</Typography>
+              </Box>
+              <Typography variant="h6">{value}{label === "Kcal Diarias" ? '' : 'g'}</Typography>
+            </Box>
+            <LinearProgress
+              variant="determinate"
+              value={Math.min((value / (label === "Kcal Diarias" ? 4000 : 400)) * 100, 100)}
+              sx={{
+                height: 8,
+                borderRadius: 5,
+                backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#555' : '#e0e0e0',
+                "& .MuiLinearProgress-bar": {
+                  backgroundColor: color,
+                }
+              }}
+            />
           </Box>
-          <Typography variant="h5" color="text.primary">2000</Typography>
-        </Box>
-        <LinearProgress 
-          variant="determinate" 
-          value={80} 
-          sx={{ 
-            mb: 3, 
-            height: 8, 
-            borderRadius: 5, 
-            backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#555' : '#e0e0e0', 
-            "& .MuiLinearProgress-bar": {
-              backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#ff6f61' : '#ff7043', 
-            }
-          }} 
-        />
-        
-        {/* Proteínas */}
-        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-          <Box display="flex" alignItems="center" gap={1}>
-            <FitnessCenter color="text.primary" />
-            <Typography variant="subtitle1">Proteínas:</Typography>
-          </Box>
-          <Typography variant="h5" color="text.primary">80g</Typography>
-        </Box>
-        <LinearProgress 
-          variant="determinate" 
-          value={70} 
-          sx={{ 
-            mb: 3, 
-            height: 8, 
-            borderRadius: 5, 
-            backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#555' : '#e0e0e0',
-            "& .MuiLinearProgress-bar": {
-              backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#f1c40f' : '#f39c12', 
-            }
-          }} 
-        />
-        
-        {/* Carbohidratos */}
-        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-          <Box display="flex" alignItems="center" gap={1}>
-            <Restaurant color="success" />
-            <Typography variant="subtitle1">Carbohidratos:</Typography>
-          </Box>
-          <Typography variant="h5" color="text.primary">250g</Typography>
-        </Box>
-        <LinearProgress 
-          variant="determinate" 
-          value={60} 
-          sx={{ 
-            mb: 3, 
-            height: 8, 
-            borderRadius: 5, 
-            backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#555' : '#e0e0e0',
-            "& .MuiLinearProgress-bar": {
-              backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#2ecc71' : '#27ae60', 
-            }
-          }} 
-        />
-        
-        {/* Grasas */}
-        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-          <Box display="flex" alignItems="center" gap={1}>
-            <EnergySavingsLeaf color="warning" />
-            <Typography variant="subtitle1">Grasas:</Typography>
-          </Box>
-          <Typography variant="h5" color="text.primary">50g</Typography>
-        </Box>
-        <LinearProgress 
-          variant="determinate" 
-          value={40} 
-          sx={{ 
-            height: 8, 
-            borderRadius: 5, 
-            backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#555' : '#e0e0e0',
-            "& .MuiLinearProgress-bar": {
-              backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#e67e22' : '#e74c3c', 
-            }
-          }} 
-        />
+        ))}
       </CardContent>
     </Card>
   );

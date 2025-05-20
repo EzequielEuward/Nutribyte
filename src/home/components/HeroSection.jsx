@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Box, Typography, Button, Grid } from '@mui/material';
+import { Box, Typography, Button, Tooltip, Grid } from '@mui/material';
 import { styled, useTheme } from '@mui/system';
 import imgInicio from '../../assets/imagenInicio.png';
 import { useDispatch, useSelector } from "react-redux";
@@ -97,9 +97,11 @@ export const HeroSection = () => {
                         <Typography variant="h5" component="p" gutterBottom>
                             Un sistema diseñado para profesionales que buscan precisión, agilidad y mejores resultados con sus pacientes.
                         </Typography>
-                        <HeroButton variant="contained" onClick={handleLoginDemo}>
-                            Probarlo Ahora
-                        </HeroButton>
+                        <Tooltip title="Prueba la cuenta demo" arrow>
+                            <HeroButton variant="contained" onClick={handleLoginDemo}>
+                                Probarlo Ahora
+                            </HeroButton>
+                        </Tooltip>
                     </HeroContent>
                 </Grid>
 

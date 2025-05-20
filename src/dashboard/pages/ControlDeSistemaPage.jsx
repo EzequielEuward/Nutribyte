@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Box, Container, Tabs, Tab, Typography } from '@mui/material';
-import { ControlDeUsuario, ControlDeCobro} from '../components/control de usuario/';
+import { ControlDeUsuario, ControlDeCobro } from '../components/control de usuario/';
 
 import { DashboardLayout } from '../layout/DashboardLayout';
+import { useTheme } from '@emotion/react';
 
 // Componente para el panel de cada tab
 function TabPanel({ children, value, index, ...other }) {
@@ -13,9 +14,10 @@ function TabPanel({ children, value, index, ...other }) {
   );
 }
 
+
 export const ControlDeSistemaPage = () => {
   const [globalTab, setGlobalTab] = useState(0);
-  
+const theme = useTheme();
 
   const handleGlobalTabChange = (e, newValue) => {
     setGlobalTab(newValue);
@@ -25,13 +27,26 @@ export const ControlDeSistemaPage = () => {
     <DashboardLayout>
       <Container >
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-          <Typography variant="h3" component="h1" sx={{mt:2}}>
+          <Typography variant="h3" component="h1" sx={{ mt: 2 }}>
             Gestión del Sistema
           </Typography>
         </Box>
         <Tabs value={globalTab} onChange={handleGlobalTabChange} sx={{ mb: 4 }}>
-          <Tab label="Control de Usuarios" />
-          <Tab label="Cobros" />
+          <Tab label="Control de Usuarios" sx={{
+            color: theme.palette.text.primary,
+            '&.Mui-selected': {
+              color: theme.palette.text.secondary,
+              fontWeight: 'bold',
+            },
+          }} />
+          <Tab label="Cobros"
+            sx={{
+              color: theme.palette.text.primary,
+              '&.Mui-selected': {
+                color: theme.palette.text.secondary,
+                fontWeight: 'bold',
+              },
+            }} />
         </Tabs>
 
         {/* Panel para Control de Usuarios */}

@@ -10,6 +10,8 @@ import { RouteTracker } from '../helpers';
 import RecuperarPasswordPage from '../auth/pages/RecuperarContraseñaPage';
 import CambiarContraseñaPage from '../auth/pages/CambiarContraseñaPage';
 import VerificarCuentaPage from '../dashboard/pages/VerificarCuentaPage';
+import TerminosCondicionesPage from '../dashboard/pages/TerminosCondicionesPage';
+import PoliticasDePrivacidadPage from '../dashboard/pages/PoliticasDePrivacidadPage';
 
 export const AppRouter = () => {
   // Obtener el estado de autenticación desde Redux
@@ -40,6 +42,9 @@ export const AppRouter = () => {
 
         {/* Otras rutas */}
         <Route path="/formulario-historial-peso" element={<FormularioHistorial />} />
+
+        <Route path="/terminos-y-condiciones" element={<TerminosCondicionesPage />} />
+        <Route path="/politica-de-privacidad" element={<PoliticasDePrivacidadPage />} />
 
         <Route path="/home/" element={status === 'authenticated' ? <DashboardRouter /> : <Navigate to="/auth/login" />} />
 

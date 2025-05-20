@@ -186,14 +186,6 @@ export const PlanesPage = () => {
   const handleEditForm = (planEditado) => {
     const idPlan = planEditado.idPlanAlimenticio || planEditado.idPlanAlimento;
 
-    console.log("🧪 ID del Plan a editar:", idPlan);
-    console.log("🧪 Payload:", planEditado);
-
-    console.log("🧪 Comparación de IDs:", {
-      idURL: idPlan,
-      idBody: planEditado.idPlanAlimenticio || planEditado.idPlanAlimento
-    });
-
     if (!idPlan) {
       Swal.fire({
         icon: "error",

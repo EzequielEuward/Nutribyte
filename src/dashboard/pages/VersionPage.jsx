@@ -28,12 +28,15 @@ import {
 import DashboardLayout from "../layout/DashboardLayout";
 import { getMockVersions } from "../../mock/data/mockVersiones";
 import Swal from "sweetalert2";
+import { useTheme } from "@emotion/react";
 
 export const VersionPage = () => {
     const [versions, setVersions] = useState([]);
     const [selectedVersion, setSelectedVersion] = useState(null);
     const [filter, setFilter] = useState("all");
     const [openModal, setOpenModal] = useState(false);
+
+    const theme = useTheme();
 
     // Carga los datos del mock al montar el componente
     useEffect(() => {
@@ -104,8 +107,24 @@ export const VersionPage = () => {
                             <Button
                                 variant="outlined"
                                 size="small"
-                                startIcon={<GitHubIcon sx={{ width: 16, height: 16 }} />}
+                                startIcon={
+                                    <GitHubIcon
+                                        sx={{
+                                            width: 16,
+                                            height: 16,
+                                            color: theme.palette.primary.main,
+                                        }}
+                                    />
+                                }
                                 onClick={handleGitHubClick}
+                                sx={{
+                                    color: theme.palette.text.primary,
+                                    borderColor: theme.palette.primary.main,
+                                    '&:hover': {
+                                        backgroundColor: theme.palette.secondary.main,
+                                        borderColor: theme.palette.primary.dark,
+                                    },
+                                }}
                             >
                                 Revisar Rama
                             </Button>
@@ -115,6 +134,14 @@ export const VersionPage = () => {
                                 size="small"
                                 startIcon={<CallMergeIcon sx={{ width: 16, height: 16 }} />}
                                 onClick={handleUpdateVersion}
+                                sx={{
+                                    color: theme.palette.text.primary,
+                                    borderColor: theme.palette.primary.main,
+                                    '&:hover': {
+                                        backgroundColor: theme.palette.secondary.main,
+                                        borderColor: theme.palette.primary.dark,
+                                    },
+                                }}
                             >
                                 Actualizar versión
                             </Button>
@@ -134,9 +161,10 @@ export const VersionPage = () => {
                 {/* Listado de versiones */}
                 <Box
                     sx={{
-                        border: "1px solid #ccc",
+                        border: `1px solid ${theme.palette.divider}`,
                         borderRadius: 2,
-                        backgroundColor: "#fff",
+                        backgroundColor: theme.palette.background.paper,
+                        color: theme.palette.text.primary,
                         p: 2,
                     }}
                 >
@@ -148,10 +176,13 @@ export const VersionPage = () => {
                                 sx={{
                                     p: 2,
                                     mb: 2,
-                                    border: "1px solid #ccc",
+                                    border: `1px solid ${theme.palette.divider}`,
                                     borderRadius: 2,
-                                    cursor: "pointer",
-                                    backgroundColor: isSelected ? "grey.100" : "white",
+
+                                    backgroundColor: isSelected
+                                        ? theme.palette.action.hover
+                                        : theme.palette.background.paper,
+                                    color: theme.palette.text.primary,
                                 }}
                                 onClick={() => handleVersionSelect(version.id)}
                             >
@@ -204,7 +235,7 @@ export const VersionPage = () => {
                                             <Box>
                                                 <Typography variant="caption">Fecha</Typography>
                                                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                                    <CalendarTodayIcon sx={{ width: 16, height: 16, color: "grey.600" }} />
+                                                    <CalendarTodayIcon sx={{ width: 16, height: 16, color: theme.palette.text.secondary }} />
                                                     <Typography variant="body2">{version.date}</Typography>
                                                 </Box>
                                             </Box>
@@ -234,12 +265,7 @@ export const VersionPage = () => {
                                             <Typography variant="body2">{version.longDescription}</Typography>
                                         </Box>
                                         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}>
-                                            <Button variant="outlined" size="small" startIcon={<SignpostIcon sx={{ width: 16, height: 16 }} />}>
-                                                Comparar
-                                            </Button>
-                                            <Button variant="contained" size="small" startIcon={<RotateLeftIcon sx={{ width: 16, height: 16 }} />}>
-                                                Restaurar
-                                            </Button>
+
                                         </Box>
                                     </Box>
                                 )}

@@ -52,7 +52,7 @@ export const MedicionesCardAnamnesis = ({ data }) => {
                 <TableCell align="right">{format(data.edad, ' años', 0)}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Sexo</TableCell>
+                <TableCell>Genero biologico</TableCell>
                 <TableCell align="right">{data.sexo || '—'}</TableCell>
               </TableRow>
               <TableRow>

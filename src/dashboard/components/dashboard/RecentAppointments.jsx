@@ -20,21 +20,34 @@ export const RecentAppointments = ({ turnos }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  // Colores según estado
-  const statusColors = {
-    Completado: {
-      backgroundColor: theme.palette.appointmentTypes.control.background,
-      color: theme.palette.appointmentTypes.control.text,
-    },
-    "En progreso": {
-      backgroundColor: theme.palette.appointmentTypes.followUp.background,
-      color: theme.palette.appointmentTypes.followUp.text,
-    },
-    Pendiente: {
-      backgroundColor: theme.palette.appointmentTypes.firstConsult.background,
-      color: theme.palette.appointmentTypes.firstConsult.text,
-    },
+
+  const hoy = new Date();
+  const haceDosSemanas = new Date();
+  haceDosSemanas.setDate(hoy.getDate() - 14);
+
+  const turnosFiltrados = turnos.filter(turno => {
+    const fechaTurno = new Date(turno.fechaInicio);
+    return fechaTurno >= haceDosSemanas && fechaTurno <= hoy;
+  });
+
+  const formatearFecha = (fechaStr) => {
+    const fecha = new Date(fechaStr);
+    return fecha.toLocaleDateString('es-AR'); // dd/mm/yyyy
   };
+
+  const formatearHora = (fechaStr) => {
+    const fecha = new Date(fechaStr);
+    return fecha.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+  };
+
+  const getColorByEstado = (estado) => {
+    const key = estado.toLowerCase();
+    const base = theme.palette.estadoTurnos[key] || { background: '#ccc' };
+    return {
+      backgroundColor: base.background,
+    };
+  };
+
 
   return (
     <Card variant="outlined">
@@ -57,7 +70,7 @@ export const RecentAppointments = ({ turnos }) => {
         ) : isMobile ? (
           // Vista móvil
           <Box display="flex" flexDirection="column" gap={2}>
-            {turnos.map((turno) => (
+            {turnosFiltrados.map((turno) => (
               <Box
                 key={turno.idTurno}
                 display="flex"
@@ -74,18 +87,18 @@ export const RecentAppointments = ({ turnos }) => {
                   Paciente: {turno.paciente}
                 </Typography>
                 <Typography variant="body2">
-                  Fecha: {new Date(turno.fechaInicio).toLocaleDateString()}
+                  Fecha: {formatearFecha(turno.fechaInicio)}
                 </Typography>
                 <Typography variant="body2">
-                  Hora: {new Date(turno.fechaInicio).toLocaleTimeString()}
+                  Hora: {formatearHora(turno.fechaInicio)}
                 </Typography>
                 <Chip
-                  label={turno.estado}
+                   label={turno.estado.charAt(0).toUpperCase() + turno.estado.slice(1).toLowerCase()}
                   sx={{
-                    ...statusColors[turno.estado],
+                    ...getColorByEstado(turno.estado),
+                    color: theme.palette.text.tertiary,
                     fontWeight: "bold",
                     borderRadius: 2,
-                    alignSelf: "start",
                   }}
                 />
               </Box>
@@ -120,20 +133,17 @@ export const RecentAppointments = ({ turnos }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {turnos.map((turno) => (
+                {turnosFiltrados.map((turno) => (
                   <TableRow key={turno.idTurno}>
                     <TableCell>{turno.paciente}</TableCell>
-                    <TableCell>
-                      {new Date(turno.fechaInicio).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell>
-                      {new Date(turno.fechaInicio).toLocaleTimeString()}
-                    </TableCell>
+                    <TableCell>{formatearFecha(turno.fechaInicio)}</TableCell>
+                    <TableCell>{formatearHora(turno.fechaInicio)}</TableCell>
                     <TableCell>
                       <Chip
-                        label={turno.estado}
+                        label={turno.estado.charAt(0).toUpperCase() + turno.estado.slice(1).toLowerCase()}
                         sx={{
-                          ...statusColors[turno.estado],
+                          ...getColorByEstado(turno.estado),
+                          color: theme.palette.text.tertiary,
                           fontWeight: "bold",
                           borderRadius: 2,
                         }}

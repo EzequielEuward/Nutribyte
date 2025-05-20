@@ -17,11 +17,12 @@ export const lightTheme = createTheme({
     background: {
       default: '#f0f0f0',
       paper: '#f5f5f5',
-       arrow: '#C0C0C0',
+      arrow: '#C0C0C0',
     },
     text: {
       primary: '#000000',
       secondary: '#333333',
+      tertiary: '#f7f7f7',
     },
     custom: {
       primary: '#4B5942',
@@ -34,19 +35,15 @@ export const lightTheme = createTheme({
       control: { background: '#E8F5E9', text: '#43A047' },
       reminder: { background: '#FFF8E1', text: '#FF9800' },
     },
-    calendarStatus: {
-      pendiente: { background: '#FFEB3B', text: '#000' },
-      confirmado: { background: '#4CAF50', text: '#fff' },
-      cancelado: { background: '#f44336', text: '#fff' },
-      reprogramado: { background: '#2196F3', text: '#fff' },
-      completado: { background: '#9C27B0', text: '#fff' },
-    },
     estadoTurnos: {
-      disponible: { background: '#D1E8FF', text: '#1565C0' },
-      pendienteConfirmacion: { background: '#FFF3E0', text: '#EF6C00' },
-      cancelado: { background: '#FFEBEE', text: '#D32F2F' },
-      confirmado: { background: '#E8F5E9', text: '#388E3C' },
-      completado: { background: '#E0F2F1', text: '#00695C' },
+      agendado: { background: '#1976d2', text: '#fff' }, 
+      ocupado: { background: '#f57c00', text: '#fff' },  
+      completado: { background: '#2e7d32', text: '#fff' },  
+      reprogramado: { background: '#6d4c41', text: '#fff' },
+      cancelado: { background: '#d32f2f', text: '#fff' },   
+
+      // confirmado:   { background: '#388e3c', text: '#fff' },
+      // no_asistio:   { background: '#616161', text: '#fff' },
     },
   },
 });

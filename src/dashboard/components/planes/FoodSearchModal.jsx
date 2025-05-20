@@ -8,6 +8,7 @@ import {
 import { obtenerAlimentos } from "../../../store/plans";
 import { FixedSizeList as VirtualList } from "react-window";
 import { FoodGroupFilter } from './';
+import { useTheme } from "@emotion/react";
 
 export const FoodSearchModal = ({
   open,
@@ -20,7 +21,7 @@ export const FoodSearchModal = ({
   const [searchText, setSearchText] = useState("");
   const [seleccionados, setSeleccionados] = useState({});
   const { alimentos, isLoadingAlimentos, errorAlimentos } = useSelector((state) => state.plan);
-
+  const theme = useTheme();
   useEffect(() => {
     if (open) {
       dispatch(obtenerAlimentos());
@@ -65,26 +66,48 @@ export const FoodSearchModal = ({
     return unicos.map(a => ({ ...a, gramos: 100 }));
   }, [seleccionados, alimentosSugeridos, filteredFoods]);
 
+
   const Row = ({ index, style }) => {
     const food = filteredFoods[index];
+    const isEven = index % 2 === 0;
     return (
       <Box
         style={style}
         display="flex"
         justifyContent="space-between"
         px={2}
-        py={1}
+        py={1.5}
         alignItems="center"
-        sx={{ borderBottom: "1px solid #f0f0f0", bgcolor: index % 2 === 0 ? "#fafafa" : "#fff" }}
+        sx={{
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          bgcolor: isEven
+            ? theme.palette.mode === 'light'
+              ? "#fafafa"
+              : "#2a2a2a"
+            : theme.palette.background.paper,
+          color: theme.palette.text.primary,
+        }}
       >
         <Box>
-          <Typography fontWeight={600}>{food.nombre}</Typography>
+          <Typography fontWeight={600} color="text.primary">
+            {food.nombre}
+          </Typography>
           <Typography variant="body2" color="text.secondary">
             Carbs: {food.carbohidratos}g | Proteínas: {food.proteinas}g | Grasas: {food.grasasTotales}g
           </Typography>
         </Box>
-        <Tooltip title="Agregar alimentos" arrow>
+        <Tooltip title="Agregar alimento" arrow>
           <Checkbox
+            size="small"
+            sx={{
+              color: theme.palette.text.secondary,
+              '&.Mui-checked': {
+                color: theme.palette.success.main,
+              },
+              '&:hover': {
+                backgroundColor: theme.palette.action.hover,
+              },
+            }}
             checked={!!seleccionados[food.idAlimento]}
             onChange={() => handleToggle(food.idAlimento)}
           />
@@ -95,7 +118,7 @@ export const FoodSearchModal = ({
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle sx={{ pb: 0, fontWeight: 'bold' }}>Buscar o seleccionar alimento</DialogTitle>
+      <DialogTitle sx={{ pb: 0, fontWeight: 'bold', color: theme.palette.text.primary, }}>Buscar o seleccionar alimento</DialogTitle>
       <DialogContent sx={{ pt: 1 }}>
         <Box sx={{ mb: 2 }}>
           <FoodGroupFilter
@@ -104,18 +127,32 @@ export const FoodSearchModal = ({
             onChange={setGrupoFiltro}
           />
           <TextField
-            fullWidth
             label="Buscar alimento por nombre"
             variant="outlined"
+            fullWidth
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            sx={{ mt: 2 }}
+            sx={{
+              mt: 2,
+              '& label.Mui-focused': {
+                color: theme.palette.custom.terteary,
+              },
+              '& .MuiOutlinedInput-root': {
+                '&.Mui-focused fieldset': {
+                  borderColor: theme.palette.custom.terteary,
+                },
+              },
+            }}
             inputProps={{ maxLength: 60 }}
           />
         </Box>
 
         {alimentosSugeridos.length > 0 && (
-          <Box mb={4}>
+          <Box mb={4} sx={{
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            bgcolor: theme.palette.background.default,
+            color: theme.palette.text.primary,
+          }}>
             <Typography variant="subtitle1" fontWeight={600} mb={1}>
               Alimentos sugeridos por tipo de plan
             </Typography>
@@ -129,7 +166,7 @@ export const FoodSearchModal = ({
                   sx={{ borderBottom: "1px solid #eee" }}
                 >
                   <Box>
-                    <Typography fontWeight={500}>{food.nombre}</Typography>
+                    <Typography fontWeight={500} color="text.primary">{food.nombre}</Typography>
                     <Typography variant="body2" color="text.secondary">
                       Carbs: {food.carbohidratos}g | Proteínas: {food.proteinas}g | Grasas: {food.grasasTotales}g
                     </Typography>
@@ -151,7 +188,31 @@ export const FoodSearchModal = ({
             <CircularProgress />
           </Box>
         ) : (
-          <Paper variant="outlined" sx={{ height: 300 }}>
+          <Paper
+            variant="outlined"
+            sx={{
+              height: 300,
+              overflow: "auto",
+              "&::-webkit-scrollbar": {
+                width: 8,
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: theme.palette.mode === "light" ? "#f0f0f0" : "#2c2c2c",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: theme.palette.mode === "light" ? "#bbb" : "#666",
+                borderRadius: 4,
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                backgroundColor: theme.palette.mode === "light" ? "#999" : "#888",
+              },
+              scrollbarWidth: "thin", // Firefox
+              scrollbarColor:
+                theme.palette.mode === "light"
+                  ? "#bbb #f0f0f0"
+                  : "#666 #2c2c2c",
+            }}
+          >
             <VirtualList
               height={300}
               itemCount={filteredFoods.length}
@@ -165,7 +226,7 @@ export const FoodSearchModal = ({
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={onClose} variant="outlined" color="secondary">
+        <Button onClick={onClose} variant="contained" color="error">
           Cancelar
         </Button>
         <Button

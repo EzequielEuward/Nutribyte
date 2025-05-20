@@ -25,7 +25,6 @@ const ConfigSwitch = ({ label, description, checked, onChange }) => (
 export const ConfigPage = () => {
   const dispatch = useDispatch();
   const { uid: userId, twoFactorEnabled, planUsuario } = useSelector((state) => state.auth);
-  console.log(planUsuario)
   const horarioGuardado = JSON.parse(localStorage.getItem("horarioTrabajo")) || { inicio: "08:00", fin: "17:00" };
   const [config, setConfig] = useState({
     seguimientoAgua: true,
@@ -281,7 +280,7 @@ export const ConfigPage = () => {
                 </>
               )}
 
-            
+
             </Grid>
           </CardContent>
           <CardActions sx={{ justifyContent: 'flex-end', paddingX: 3 }}>

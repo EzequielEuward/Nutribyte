@@ -1,47 +1,24 @@
 import { useState } from "react";
-import { format } from "date-fns";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Menu,
-  MenuItem,
-  Box,
-  TextField,
-  Typography,
-  FormControlLabel,
-  Checkbox,
-  Tooltip,
+  Box, Paper, Typography, TextField, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow, Menu, MenuItem, Tooltip, useMediaQuery,
+  Accordion, AccordionSummary, AccordionDetails, Grid
 } from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useTheme } from "@mui/material/styles";
 import Swal from "sweetalert2";
+import { DataGrid } from "@mui/x-data-grid";
 
-const normalizarEstado = (estado) => {
-  const estadoLimpio = estado.toLowerCase().replace(/\s/g, "");
-  switch (estadoLimpio) {
-    case "pendientedeconfirmación":
-      return "pendienteconfirmacion";
-    default:
-      return estadoLimpio;
-  }
-};
+const estadosDisponibles = ["agendado", "ocupado", "completado", "reprogramado", "cancelado"];
 
 export const CalendarTable = ({ turnos, handleEstadoChange }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedTurno, setSelectedTurno] = useState(null);
   const [dniFilter, setDniFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
-  const [mostrarCancelados, setMostrarCancelados] = useState(false); // Nuevo estado
-
-  const estadoOptions = {
-    disponible: { background: "#D1E8FF", text: "#1565C0" },
-    ocupado: { background: "#F3E5F5", text: "#8E24AA" },
-    cerrado: { background: "#E0F2F1", text: "#00695C" },
-    cancelado: { background: "#FFEBEE", text: "#D32F2F" },
-  };
 
   const handleOpenMenu = (event, turno) => {
     setAnchorEl(event.currentTarget);
@@ -53,14 +30,30 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
     setSelectedTurno(null);
   };
 
+  const formatearFecha = (fechaStr) => {
+    if (!fechaStr) return "";
+    const fecha = new Date(fechaStr);
+    return new Intl.DateTimeFormat('es-AR').format(fecha); // dd/mm/yyyy
+  };
+
+  const parseFechaDDMMYYYY = (str) => {
+    const [dd, mm, yyyy] = str.split('/').map(Number);
+    if (!dd || !mm || !yyyy) return null;
+    const fecha = new Date(yyyy, mm - 1, dd);
+    return (fecha.getDate() === dd && fecha.getMonth() === mm - 1 && fecha.getFullYear() === yyyy)
+      ? fecha
+      : null;
+  };
+
+
   const handleSelectEstado = (estado) => {
     if (selectedTurno) {
       Swal.fire({
-        title: "Confirmar cambio de estado",
-        text: `¿Deseas cambiar el estado a "${estado}"?`,
+        title: "¿Cambiar estado?",
+        text: `¿Confirmás cambiar el estado a "${estado}"?`,
         icon: "question",
         showCancelButton: true,
-        confirmButtonText: "Aceptar",
+        confirmButtonText: "Sí",
         cancelButtonText: "Cancelar",
       }).then((result) => {
         if (result.isConfirmed) {
@@ -72,176 +65,241 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
     handleCloseMenu();
   };
 
-  // Filtrado de turnos: excluye los cancelados si no se quiere verlos
-  const filteredTurnos = turnos.filter((turno) => {
-    // Excluir cancelados si el checkbox no está marcado
-    if (!mostrarCancelados && turno.estado.toLowerCase() === "cancelado") {
-      return false;
-    }
-
-    const dniCoincide = (turno.paciente?.persona?.dni || '')
-      .toString()
-      .toLowerCase()
-      .includes(dniFilter.toLowerCase());
-
-    let fechaCoincide = true;
-    if (dateFilter && turno.fechaInicio) {
-      const fechaTurno = format(new Date(turno.fechaInicio), "yyyy-MM-dd");
-      fechaCoincide = fechaTurno === dateFilter;
-    }
-    return dniCoincide && fechaCoincide;
-  });
   const capitalizar = (texto) =>
     texto ? texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase() : "";
-  // Si necesitás ordenar o filtrar adicionalmente, podés hacerlo a partir de filteredTurnos
-  const turnosOrdenados = dniFilter
-    ? [...filteredTurnos].sort((a, b) => {
-      const aCoincide = (a.paciente?.persona.dni || '')
-        .toString()
-        .toLowerCase()
-        .includes(dniFilter.toLowerCase());
-      const bCoincide = (b.paciente?.persona.dni || '')
-        .toString()
-        .toLowerCase()
-        .includes(dniFilter.toLowerCase());
-      if (aCoincide && !bCoincide) return -1;
-      if (!aCoincide && bCoincide) return 1;
-      return 0;
-    })
-    : filteredTurnos;
+
+  const filteredTurnos = turnos.filter((turno) => {
+    const dni = turno.paciente?.persona?.dni?.toString() || "";
+
+    const fechaTurno = new Date(turno.fechaInicio);
+    const fechaFiltroValida = dateFilter ? new Date(dateFilter + "T00:00:00") : null;
+
+    const mismaFecha = fechaFiltroValida
+      ? fechaTurno.toDateString() === fechaFiltroValida.toDateString()
+      : true;
+
+    return (
+      dni.includes(dniFilter.toLowerCase()) &&
+      mismaFecha
+    );
+  });
 
   return (
     <Box sx={{ p: 2 }}>
-      {/* Contenedor de filtros responsive */}
-      <Paper sx={{ p: 2, mb: 2, width: "100%" }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Filtros Avanzados
-        </Typography>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, alignItems: "center" }}>
-          <TextField
-            label="Buscar por DNI"
-            variant="outlined"
-            size="small"
-            value={dniFilter}
-            onChange={(e) => setDniFilter(e.target.value)}
-          />
-          <TextField
-            label="Seleccionar Fecha"
-            variant="outlined"
-            size="small"
-            type="date"
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
-            InputLabelProps={{ shrink: true }}
-          />
-          {/* Checkbox para mostrar turnos cancelados */}
-          {/*<FormControlLabel
-            control={
-              <Checkbox
-                checked={mostrarCancelados}
-                onChange={(e) => setMostrarCancelados(e.target.checked)}
-              />
-            }
-            label="Mostrar cancelados"
-          />*/}
-          {/* Se pueden agregar más filtros aquí */}
-        </Box>
-      </Paper>
 
-      {/* Contenedor de la tabla con scroll y encabezado sticky */}
-      <TableContainer
-        component={Paper}
-        sx={{
-          padding: 2,
-          maxHeight: "60vh",
-          overflowY: "auto",
-          // Para que el scroll se aplique solo a la tabla y no al layout general
-          "& .MuiTable-root": { minWidth: 600 },
-        }}
-      >
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>DNI</TableCell>
-              <TableCell>NOMBRE COMPLETO</TableCell>
-              <TableCell>FECHA</TableCell>
-              <TableCell>HORA</TableCell>
-              <TableCell>
-                ESTADO-
-                <Typography variant="caption" color="textSecondary">
-                  (click para cambiar)
+      <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }} >
+        Tabla de turnos
+      </Typography>
+
+
+      {isMobile ? (
+        <>
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Grid item xs={12}>
+              <TextField
+                label="Filtrar por Fecha"
+                type="date"
+                size="small"
+                fullWidth
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Filtrar por DNI"
+                type="text"
+                size="small"
+                fullWidth
+                value={dniFilter}
+                onChange={(e) => setDniFilter(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+          </Grid>
+          {filteredTurnos.map((turno) => {
+            const fecha = turno.fechaInicio ? new Date(turno.fechaInicio) : null;
+            const estadoKey = turno.estado?.toLowerCase().replace(/\s/g, "");
+            const color = theme.palette.estadoTurnos?.[estadoKey];
+
+            return (
+              <Accordion key={turno.idTurno} sx={{ mb: 1 }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography variant="subtitle2">
+                    {turno.paciente?.persona?.apellido} {turno.paciente?.persona?.nombre} - {formatearFecha(turno.fechaInicio)}
+                  </Typography>
+                </AccordionSummary>
+                <Typography variant="caption" sx={{ mb: 1, color: theme.palette.text.secondary }}>
+                  * Tocá el estado para editarlo
                 </Typography>
-              </TableCell>
-              <TableCell>ASISTENCIA</TableCell>
-              <TableCell>TIPO CONSULTA</TableCell>
-              <TableCell>MOTIVO</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {turnosOrdenados.map((turno) => {
+                <AccordionDetails>
+                  <Grid container spacing={1}>
+                    <Grid item xs={6}><strong>DNI:</strong> {turno.paciente?.persona?.dni}</Grid>
+                    <Grid item xs={6}><strong>Fecha:</strong> {formatearFecha(turno.fechaInicio)}</Grid>
+                    <Grid item xs={6}><strong>Hora:</strong> {fecha?.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}</Grid>
+
+                    <Grid item xs={6}><strong>Tipo:</strong> {turno.tipoConsulta}</Grid>
+                    <Grid item xs={12}><strong>Motivo:</strong> {turno.motivo}</Grid>
+                    <Grid item xs={12}>
+                      <Tooltip title="Cambiar estado">
+                        <Box
+                          onClick={(e) => handleOpenMenu(e, turno)}
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 0.5,
+                            px: 2,
+                            py: 0.5,
+                            borderRadius: "999px",
+                            backgroundColor: color?.background || "#ccc",
+                            color: color?.text || "#000",
+                            cursor: "pointer",
+                            textAlign: "center",
+                            fontWeight: 600,
+                            fontSize: "0.75rem",
+                            width: "fit-content",
+                            mx: "auto"
+                          }}
+                        >
+                          ✏️ {capitalizar(turno.estado)}
+                        </Box>
+                      </Tooltip>
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
+        </>
+      ) : (
+        <Paper sx={{ height: 500, width: '100%' }}>
+          <DataGrid
+            rows={filteredTurnos.map((turno) => {
               const fecha = turno.fechaInicio ? new Date(turno.fechaInicio) : null;
-              const estadoKey = normalizarEstado(turno.estado);
-              return (
-                <TableRow key={turno.idTurno}>
-                  <TableCell>{turno.paciente?.persona.dni || "N/A"}</TableCell>
-                  <TableCell>
-                    {turno.paciente?.apellido} {turno.paciente?.persona.nombre}{" "}
-                    {turno.paciente?.persona.apellido}
-                  </TableCell>
-                  <TableCell>{fecha ? format(fecha, "dd/MM/yyyy") : ""}</TableCell>
-                  <TableCell>{fecha ? format(fecha, "HH:mm") : ""}</TableCell>
-                  <TableCell>
-                    <Tooltip title="Hacé clic para cambiar el estado del turno" arrow>
+              return {
+                id: turno.idTurno,
+                dni: turno.paciente?.persona?.dni || "N/A",
+                apellido: turno.paciente?.persona?.apellido || "",
+                nombre: turno.paciente?.persona?.nombre || "",
+                fecha: formatearFecha(turno.fechaInicio),
+                hora: fecha?.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false }) || "",
+                estado: turno.estado,
+                tipo: turno.tipoConsulta,
+                motivo: turno.motivo,
+                rawTurno: turno,
+              };
+            })}
+            columns={[
+              { field: 'dni', headerName: 'DNI', width: 100 },
+              { field: 'apellido', headerName: 'Apellido', width: 130 },
+              { field: 'nombre', headerName: 'Nombre', width: 130 },
+              { field: 'fecha', headerName: 'Fecha', width: 110 },
+              { field: 'hora', headerName: 'Hora', width: 100 },
+              {
+                field: 'estado',
+                headerName: 'Estado',
+                width: 150,
+                renderCell: (params) => {
+                  const turno = params.row.rawTurno;
+                  const estadoKey = turno.estado?.toLowerCase().replace(/\s/g, "");
+                  const color = theme.palette.estadoTurnos?.[estadoKey];
+                  return (
+                    <Tooltip title="Cambiar estado">
                       <Box
-                        onClick={(event) => handleOpenMenu(event, turno)}
+                        onClick={(e) => handleOpenMenu(e, turno)}
                         sx={{
-                          display: "inline-block",
-                          padding: "4px 10px",
-                          borderRadius: "12px",
-                          backgroundColor: estadoOptions[estadoKey]?.background,
-                          color: estadoOptions[estadoKey]?.text,
-                          fontWeight: "bold",
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 0.5,
+                          px: 2,
+                          py: 0.5,
+                          borderRadius: "999px",
+                          backgroundColor: color?.background || "#ccc",
+                          color: color?.text || "#000",
                           cursor: "pointer",
                           textAlign: "center",
+                          fontWeight: 600,
+                          fontSize: "0.75rem",
+                          width: "fit-content",
+                          mx: "auto"
                         }}
                       >
-                        {capitalizar(turno.estado)}
+                        ✏️ {capitalizar(turno.estado)}
                       </Box>
                     </Tooltip>
-                  </TableCell>
-                  <TableCell>
-                    {turno.asistencia === true ? "Sí" : turno.asistencia === false ? "No" : "N/A"}
-                  </TableCell>
-                  <TableCell>{turno.tipoConsulta}</TableCell>
-                  <TableCell>{turno.motivo}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-        {Object.entries(estadoOptions).map(([estado, color]) => (
-          <MenuItem
-            key={estado}
-            onClick={() => handleSelectEstado(estado)}
-            sx={{
-              backgroundColor: color.background,
-              color: color.text,
-              fontWeight: 'bold',
-              '&:hover': {
-                backgroundColor: color.background,
-                opacity: 0.9,
+                  );
+                },
+              },
+              { field: 'tipo', headerName: 'Tipo', width: 130 },
+              { field: 'motivo', headerName: 'Motivo', width: 200 },
+            ]}
+            autoHeight
+            pageSizeOptions={[5, 10, 25]}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 10 },
               },
             }}
-          >
-            {estado.charAt(0).toUpperCase() + estado.slice(1)}
-          </MenuItem>
-        ))}
+            sx={{
+              border: 0,
+              fontSize: '0.85rem',
+              '& .MuiDataGrid-cell': {
+                py: 0.5,
+                px: 1,
+                lineHeight: 1.4,
+              },
+              '& .MuiDataGrid-columnHeaders': {
+                backgroundColor: theme.palette.grey[100],
+                fontWeight: 'bold',
+                fontSize: '0.8rem',
+                py: 1,
+              },
+              '& .MuiDataGrid-row': {
+                minHeight: 40,
+                maxHeight: 40,
+              },
+              '& .MuiDataGrid-virtualScroller': {
+                overflowX: 'hidden',
+              },
+              '& .MuiDataGrid-footerContainer': {
+                fontSize: '0.75rem',
+                justifyContent: 'space-between',
+                px: 2,
+              },
+            }}
+          />
+        </Paper>
+      )}
+
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
+        {estadosDisponibles.map((estado) => {
+          const color = theme.palette.estadoTurnos?.[estado];
+          return (
+            <MenuItem
+              key={estado}
+              onClick={() => handleSelectEstado(estado)}
+              sx={{
+                backgroundColor: color?.background,
+                color: color?.text,
+                borderRadius: "16px",
+                fontWeight: "bold",
+                m: 0.5,
+                px: 2,
+                "&:hover": {
+                  backgroundColor: color?.background,
+                  opacity: 0.85,
+                },
+              }}
+            >
+              {capitalizar(estado)}
+            </MenuItem>
+          );
+        })}
       </Menu>
     </Box>
   );
+
 };
 
 export default CalendarTable;

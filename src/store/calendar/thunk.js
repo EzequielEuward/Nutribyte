@@ -73,7 +73,7 @@ export const crearTurno = createAsyncThunk(
         asistencia: false,
         idPaciente: Number(nuevoTurno.idPaciente),
         idUsuario: auth.uid,
-        estado: "Pendiente de confirmación"
+        estado: "agendado"
       };
 
       console.log("📤 Enviando turno:", payload);

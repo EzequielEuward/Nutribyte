@@ -55,8 +55,6 @@ export const ControlDeUsuario = () => {
         setMenuUser(null);
     };
 
-    // Aquí puedes implementar las funciones para eliminar o cambiar el estado del usuario
-    // de manera local o incluso despachando otros thunks para actualizar el store.
 
     const handleDeleteUser = (userId) => {
         dispatch(EliminarUsuario(userId))

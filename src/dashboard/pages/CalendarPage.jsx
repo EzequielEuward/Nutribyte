@@ -12,7 +12,7 @@ import {
 import { es } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { Box, CircularProgress, Typography, Tooltip } from "@mui/material";
+import { Box, CircularProgress, Typography, Tooltip, useMediaQuery } from "@mui/material";
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import {
   listarTurnos,
@@ -25,8 +25,7 @@ import {
 import { listarPacientes } from "../../store/patient";
 import { TurnoModal, CalendarTable } from "../components/calendario/";
 import Swal from "sweetalert2";
-import { lightTheme } from "../../theme/lightTheme";
-import { darkTheme } from "../../theme/darkTheme";
+import { estadoTurno } from '../../constants/estadoTurno'
 
 const locales = { es };
 const localizer = dateFnsLocalizer({
@@ -58,7 +57,7 @@ export const CalendarPage = () => {
   const { turnos, loading } = useSelector((state) => state.turnos);
   const { pacientes } = useSelector((state) => state.patients);
   const theme = useTheme();
-
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [openModal, setOpenModal] = useState(false);
   const [turnoSeleccionado, setTurnoSeleccionado] = useState(null);
   const [turno, setTurno] = useState([]);
@@ -74,9 +73,8 @@ export const CalendarPage = () => {
     start: defaultStart,
     end: defaultEnd,
     pacienteSeleccionado: "",
-    estado: "pendiente",
+    estado: estadoTurno.AGENDADO,
   });
-
 
   const safeToISOString = (value) => {
     const date = new Date(value);
@@ -248,7 +246,7 @@ export const CalendarPage = () => {
         motivo: formData.motivo || "Consulta general",
         fechaInicio: fechaInicioCorrigida.toISOString(),
         idPaciente: Number(formData.pacienteSeleccionado),
-        estado: formData.estado || "pendiente",
+        estado: formData.estado || estadoTurno.AGENDADO,
       };
 
       if (formData.idTurno) {
@@ -259,10 +257,14 @@ export const CalendarPage = () => {
             fechaFin: addMinutes(fechaInicioCorrigida, 45).toISOString(),
           },
         })).unwrap();
+
+        Swal.fire("Turno editado", "El turno fue editado correctamente.", "success");
+
       } else {
         await dispatch(crearTurno(turnoData)).unwrap();
         Swal.fire("Éxito", "Turno creado correctamente.", "success");
       }
+      
 
       handleCloseModal();
       dispatch(listarTurnos());
@@ -274,7 +276,7 @@ export const CalendarPage = () => {
 
 
   const eventos = turnos
-    .filter(turno => turno.estado.toLowerCase() !== 'cancelado')
+    .filter(turno => turno.estado.toLowerCase() !== estadoTurno.CANCELADO)
     .map(turno => {
       try {
         const start = parseISO(turno.fechaInicio);
@@ -307,17 +309,18 @@ export const CalendarPage = () => {
 
   const getEventStyle = (event) => {
     const { estado, tipoConsulta } = event;
-    const estadoLower = estado?.toLowerCase();
-    const tipoLower = tipoConsulta?.toLowerCase();
 
-    // Prioridad a estado del turno
-    const estadoColor = theme.palette.calendarStatus?.[estadoLower];
+    // Normalizar la clave del estado
+    const estadoKey = estado?.toLowerCase().replace(/\s/g, '') || '';
 
-    if (estadoColor) {
+    // Obtener color del estado desde el theme
+    const colorEstado = theme.palette.estadoTurnos?.[estadoKey];
+
+    if (colorEstado) {
       return {
         style: {
-          backgroundColor: estadoColor.background,
-          color: estadoColor.text,
+          backgroundColor: colorEstado.background,
+          color: colorEstado.text,
           borderRadius: "4px",
           padding: "2px 4px",
           fontSize: "0.8rem",
@@ -328,14 +331,14 @@ export const CalendarPage = () => {
       };
     }
 
-    // Si no hay estado, usar tipoConsulta
+    // Fallback a tipo de consulta
     const tipoKeyMap = {
       "primera consulta": "firstConsult",
       "seguimiento": "followUp",
       "revisión": "control",
       "problema especifico": "reminder",
     };
-    const tipoKey = tipoKeyMap[tipoLower] || "default";
+    const tipoKey = tipoKeyMap[tipoConsulta?.toLowerCase()] || "default";
 
     const tipoStyle = theme.palette.appointmentTypes?.[tipoKey] || {
       background: "#E0E0E0",
@@ -356,30 +359,61 @@ export const CalendarPage = () => {
     };
   };
 
-
   return (
 
-    <DashboardLayout>
+    <DashboardLayout isMobile={isMobile}>
       <Typography
         variant="h5"
         sx={{
-          fontSize: { xs: "1.2rem", sm: "1.5rem", md: "2rem" },
+          fontSize: { xs: "1.3rem", sm: "1.7rem", md: "2.2rem" },
           fontWeight: "bold",
-          marginTop: 4,
+          textAlign: { xs: "center", sm: "left" },
+          my: { xs: 0, sm: 3 },
         }}
       >
         Calendario de Turnos
       </Typography>
 
       {/* Contenedor principal que organiza los elementos */}
-      <Box sx={{ width: "100%", padding: { xs: 2, sm: 4 }, display: "flex", flexDirection: "column", gap: 2 }}>
-        <Box sx={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <Box
+        sx={{
+          width: "100%",
+          padding: { xs: 1, sm: 4 },
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            height: isMobile ? "60vh" : "80vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            overflowX: isMobile ? "auto" : "unset",
+          }}
+        >
           {loading ? (
             <CircularProgress />
           ) : (
             <Box
               className={isDarkMode ? "calendar-dark" : "calendar-light"}
-              sx={{ width: "100%", height: "100%" }}
+              sx={{
+                width: "100%",
+                height: "100%",
+                "& .rbc-toolbar": {
+                  flexDirection: isMobile ? "column" : "row",
+                  gap: isMobile ? 1 : 0,
+                },
+                "& .rbc-toolbar button": {
+                  fontSize: isMobile ? "0.75rem" : "0.875rem",
+                  padding: isMobile ? "4px 8px" : "6px 12px",
+                },
+                "& .rbc-event": {
+                  fontSize: "0.7rem",
+                },
+              }}
             >
               <Calendar
                 localizer={localizer}
@@ -399,7 +433,7 @@ export const CalendarPage = () => {
                     }
                     : {};
                 }}
-                views={{ month: true, week: true, day: true }}
+                views={isMobile ? { month: true } : { month: true, week: true, day: true }}
                 messages={messages}
                 popup
                 style={{ height: "100%", width: "100%" }}
@@ -407,22 +441,25 @@ export const CalendarPage = () => {
                 components={{
                   event: ({ event }) => (
                     <Tooltip title={event.titleFull}>
-                      <span style={{
-                        display: 'block',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                        fontSize: '0.8rem',
-                        padding: '2px 4px',
-                      }}>
+                      <span
+                        style={{
+                          display: "block",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                          textOverflow: "ellipsis",
+                          fontSize: "0.8rem",
+                          padding: "2px 4px",
+                        }}
+                      >
                         {event.titleShort}
                       </span>
                     </Tooltip>
-                  )
+                  ),
                 }}
               />
             </Box>
           )}
+
         </Box>
 
         {/* Tabla de Turnos */}
@@ -441,7 +478,7 @@ export const CalendarPage = () => {
         handleDelete={handleDeleteTurno}
         pacientes={pacientes}
       />
-    </DashboardLayout>
+    </DashboardLayout >
   );
 };
 

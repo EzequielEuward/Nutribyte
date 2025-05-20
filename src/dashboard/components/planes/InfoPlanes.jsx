@@ -1,9 +1,16 @@
 import { Box, Button, Card, CardContent, CardHeader, Typography } from "@mui/material";
-import { planesInfo } from "../../../mock/data/mockPlanesData";
 import { AccessAlarm } from "@mui/icons-material";
 
 export const InfoPlanes = ({ plan }) => {
   if (!plan) return null;
+
+  // Adaptamos beneficiosSalud (array de strings) a [{ titulo, descripcion }]
+  const beneficios = Array.isArray(plan.beneficiosSalud)
+    ? plan.beneficiosSalud.map((b) => ({
+        titulo: b,
+        descripcion: "", // o podés poner algo genérico si querés
+      }))
+    : [];
 
   return (
     <Box sx={{ flex: 1 }}>
@@ -11,7 +18,7 @@ export const InfoPlanes = ({ plan }) => {
         <CardHeader
           title={
             <Typography variant="h6" sx={{ fontSize: 24, fontWeight: 'bold' }}>
-              {plan.titulo || "asjdlkasjdlsa"}
+              {plan.titulo || "Sin título"}
             </Typography>
           }
           subheader={
@@ -23,7 +30,7 @@ export const InfoPlanes = ({ plan }) => {
 
         <CardContent>
           <Box>
-            {Array.isArray(plan.beneficios) && plan.beneficios.map((beneficio, index) => (
+            {beneficios.map((beneficio, index) => (
               <Box key={index} sx={{ display: "flex", gap: 2, alignItems: "flex-start", mb: 2 }}>
                 <Box sx={{
                   borderRadius: "50%",
@@ -56,6 +63,5 @@ export const InfoPlanes = ({ plan }) => {
     </Box>
   );
 };
-
 
 export default InfoPlanes;

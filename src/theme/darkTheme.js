@@ -22,6 +22,7 @@ export const darkTheme = createTheme({
     text: {
       primary: "#ffffff",
       secondary: "#b0b0b0",
+      tertiary: '#f7f7f7',
     },
     custom: {
       primary: "#7C8BA3",
@@ -42,14 +43,15 @@ export const darkTheme = createTheme({
       completado: { background: '#BA68C8', text: '#000' },
     },
     estadoTurnos: {
-      programado: { background: '#102027', text: '#81D4FA' },
-      pendienteConfirmacion: { background: '#3E2723', text: '#FFCC80' },
-      reprogramado: { background: '#311B92', text: '#CE93D8' },
-      cancelado: { background: '#B71C1C', text: '#FFCDD2' },
-      confirmado: { background: '#1B5E20', text: '#A5D6A7' },
-      completado: { background: '#004D40', text: '#80CBC4' },
-      noAsistio: { background: '#BF360C', text: '#FFAB91' },
-    },
+      agendado: { background: '#0288D1', text: '#E1F5FE' },
+      ocupado: { background: '#F9A825', text: '#FFF8E1' },
+      completado: { background: '#2E7D32', text: '#A5D6A7' },
+      reprogramado: { background: '#7B1FA2', text: '#E1BEE7' },
+      cancelado: { background: '#C62828', text: '#FFCDD2' },
+
+      // confirmado:   { background: '#004D40', text: '#80CBC4' },
+      // noAsistio:    { background: '#BF360C', text: '#FFAB91' },
+    }
   },
 });
 

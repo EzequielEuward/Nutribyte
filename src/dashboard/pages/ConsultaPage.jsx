@@ -37,8 +37,8 @@ import Swal from "sweetalert2";
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import { useTheme } from '@emotion/react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ScrollToTopButton } from "../../home/components";
 
 export const ConsultaPage = () => {
@@ -423,11 +423,22 @@ export const ConsultaPage = () => {
     <DashboardLayout>
       <Container maxWidth="xl">
         <Tooltip title="Volver">
-          <IconButton sx={{ backgroundColor: theme.palette.background.arrow, mt: 2 }} onClick={() => navigate(-1)} color="primary">
+          <IconButton
+            onClick={() => navigate(-1)}
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.text.tertiary,
+              mt: 2,
+              '&:hover': {
+                backgroundColor: theme.palette.secondary.main,
+                color: theme.palette.text.tertiary,
+              },
+            }}
+          >
             <ArrowBackIcon />
           </IconButton>
         </Tooltip>
-        <Typography variant="h3" sx={{ mt: 2, color: "secondary.main" }}>
+        <Typography variant="h3" sx={{ mt: 2, color: "text.primary" }}>
           Gestión de Consultas
         </Typography>
 

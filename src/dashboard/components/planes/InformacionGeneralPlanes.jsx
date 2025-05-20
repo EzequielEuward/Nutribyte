@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Card, CardHeader, CardContent, Grid, Typography, Divider } from "@mui/material";
+import { Box, Card, CardHeader, CardContent, Grid, Typography, Divider, Tooltip, IconButton } from "@mui/material";
 import {
   SelectPlanes,
   InfoPlanes,
@@ -8,12 +8,17 @@ import {
   EstadisticasPlanes,
   TablaDeEquivalencias,
 } from "./";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { planesInfo } from "../../../mock/data/mockPlanesData";
 import { useTheme } from '@mui/material/styles';
+import { useNavigate } from "react-router-dom";
+import { ScrollToTopButton } from "../../../home/components";
+
 export const InformacionGeneralPlanes = () => {
-  const [planSeleccionado, setPlanSeleccionado] = useState(); // valor inicial
+  const [planSeleccionado, setPlanSeleccionado] = useState();
   const plan = planesInfo[planSeleccionado] || null;
   const theme = useTheme()
+  const navigate = useNavigate();
 
   return (
     <Box>
@@ -29,7 +34,7 @@ export const InformacionGeneralPlanes = () => {
               onChange={(nuevoValor) => {
                 setPlanSeleccionado(nuevoValor);
               }}
-              sx={{color: "theme.palette.text.primary"}}
+              sx={{ color: "theme.palette.text.primary" }}
             />
           </Box>
 
@@ -44,11 +49,11 @@ export const InformacionGeneralPlanes = () => {
 
           {/* Gráficos nutricionales */}
           <Grid container spacing={4} sx={{ mt: 2 }}>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12}>
               <MacronutrientesPlanes plan={plan} />
             </Grid>
-            <Grid item xs={12} md={4}>
-              <EstadisticasPlanes />
+            <Grid item xs={12}>
+              <EstadisticasPlanes plan={plan} />
             </Grid>
           </Grid>
 
@@ -61,6 +66,7 @@ export const InformacionGeneralPlanes = () => {
           </Box>
         </CardContent>
       </Card>
+      <ScrollToTopButton />
     </Box>
   );
 };

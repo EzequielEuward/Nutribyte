@@ -12,6 +12,8 @@ import {
     CardHeader,
     Tabs,
     Tab,
+    Tooltip,
+    IconButton,
 } from "@mui/material";
 import Swal from "sweetalert2";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,17 +22,22 @@ import DashboardLayout from "../layout/DashboardLayout";
 
 import { listarPacientes } from "../../store/patient/";
 import { buscarPacientePorDni, listarConsumosPorUsuario, crearConsumo, eliminarConsumo, editarConsumo, listarConsumosPorPaciente } from "../../store/consumo/thunk";
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { ScrollToTopButton } from "../../home/components";
 import { TablaConsumosPaciente, FormularioNuevoConsumo, ListaConsumosAccordion, FormularioEditarConsumo, TablaConsumo } from "../components/consumo/";
 
 
 import { PatientSearchCard } from "../components/planes/"
 import { ConsejosRapidos, PatientInfoCardConsulta } from "../components/consultas/";
+import { useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
 
 export const ConsumoPage = () => {
 
     const dispatch = useDispatch();
     const methods = useForm();
+    const theme = useTheme()
+    const navigate = useNavigate()
     const pacientesList = useSelector(state => state.patients.pacientes || []);
     const { consumos, isLoading, error } = useSelector((state) => state.consumo);
 
@@ -183,7 +190,23 @@ export const ConsumoPage = () => {
     return (
         <DashboardLayout>
             <Container maxWidth="xl">
-                <Typography variant="h3" sx={{ mt: 2, color: "secondary.main" }}>
+                <Tooltip title="Volver">
+                    <IconButton
+                        onClick={() => navigate(-1)}
+                        sx={{
+                            backgroundColor: theme.palette.primary.main,
+                            color: theme.palette.text.tertiary,
+                            mt: 2,
+                            '&:hover': {
+                                backgroundColor: theme.palette.secondary.main,
+                                color: theme.palette.text.tertiary,
+                            },
+                        }}
+                    >
+                        <ArrowBackIcon />
+                    </IconButton>
+                </Tooltip>
+                <Typography variant="h3" sx={{ mt: 2, color: theme.palette.text.primary, mb: 2 }}>
                     Seguimiento Nutricional
                 </Typography>
 
@@ -251,8 +274,11 @@ export const ConsumoPage = () => {
                             <Grid item xs={12}>
                                 <Card variant="outlined">
                                     <CardHeader
-                                        title="Nuevo Registro de Consumo"
-                                        titleTypographyProps={{ variant: "h6", color: "primary" }}
+                                        title={
+                                            <Typography variant="h6" color="text.primary">
+                                                Nuevo Registro de Consumo
+                                            </Typography>
+                                        }
                                     />
                                     <CardContent>
                                         <FormularioNuevoConsumo onSubmit={handleCrearConsumo} />
@@ -272,6 +298,7 @@ export const ConsumoPage = () => {
 
                 {/* {isLoading && <Typography>Cargando...</Typography>} */}
                 {error && <Typography color="error">{error}</Typography>}
+                <ScrollToTopButton />
             </Container>
         </DashboardLayout>
     );

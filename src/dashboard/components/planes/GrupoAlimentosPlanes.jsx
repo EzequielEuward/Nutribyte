@@ -5,7 +5,14 @@ import { useTheme } from "@mui/material/styles";
 export const GrupoAlimentosPlanes = ({ plan }) => {
   const [tabSeleccionada, setTabSeleccionada] = useState(0);
   const theme = useTheme();
-  const grupos = Array.isArray(plan?.gruposAlimentos) ? plan.gruposAlimentos : [];
+
+  // 🔧 Adaptar alimentosClave al formato esperado
+  const grupos = Array.isArray(plan?.alimentosClave)
+    ? plan.alimentosClave.map((g) => ({
+      grupo: g.grupo,
+      ejemplos: g.items,
+    }))
+    : [];
 
   useEffect(() => {
     setTabSeleccionada(0);
@@ -50,8 +57,8 @@ export const GrupoAlimentosPlanes = ({ plan }) => {
           >
             {grupos.length > 0
               ? grupos.map((grupo, index) => (
-                  <Tab key={index} label={grupo.grupo || `Grupo ${index + 1}`} />
-                ))
+                <Tab key={index} label={grupo.grupo || `Grupo ${index + 1}`} />
+              ))
               : <Tab label="Sin datos" disabled />}
           </Tabs>
 
@@ -80,5 +87,6 @@ export const GrupoAlimentosPlanes = ({ plan }) => {
     </Box>
   );
 };
+
 
 export default GrupoAlimentosPlanes;

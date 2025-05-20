@@ -9,13 +9,18 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField
+  TextField,
+  Tooltip
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FoodSearchModal from "../planes/FoodSearchModal";
+import { useTheme } from "@emotion/react";
 
 export const ConsumoAlimentosTable = ({ alimentos, setAlimentos }) => {
+
+  const theme = useTheme();
+
   const [openModal, setOpenModal] = useState(false);
 
   const handleAddSelectedFoods = (seleccionadosFinales) => {
@@ -64,13 +69,15 @@ export const ConsumoAlimentosTable = ({ alimentos, setAlimentos }) => {
                     />
                   </TableCell>
                   <TableCell>
-                    <Button
-                      color="error"
-                      variant="text"
-                      onClick={() => handleRemoveFood(a.idAlimento)}
-                    >
-                      <RemoveIcon />
-                    </Button>
+                    <Tooltip title="Sacar alimento de la lista" arrow>
+                      <Button
+                        color="error"
+                        variant="text"
+                        onClick={() => handleRemoveFood(a.idAlimento)}
+                      >
+                        <RemoveIcon />
+                      </Button>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
@@ -83,7 +90,7 @@ export const ConsumoAlimentosTable = ({ alimentos, setAlimentos }) => {
           fullWidth
           startIcon={<AddIcon />}
           onClick={() => setOpenModal(true)}
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, color: theme.palette.text.tertiary, backgroundColor: theme.palette.primary.main }}
         >
           Agregar alimento
         </Button>

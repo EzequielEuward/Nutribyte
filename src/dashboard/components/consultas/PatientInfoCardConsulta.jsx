@@ -1,17 +1,20 @@
+import { useTheme } from "@emotion/react";
 import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Divider, Button, Tooltip } from "@mui/material";
 import { differenceInYears, parseISO } from "date-fns";
 
 export const PatientInfoCardConsulta = ({ paciente, onEdit, actionButtons }) => {
+  const theme = useTheme();
+
   const persona = paciente
     ? paciente.persona || paciente
     : {
-        nombre: "Nombre",
-        apellido: "Apellido",
-        dni: "N/A",
-        fechaNacimiento: null,
-        email: "N/A",
-        telefono: "N/A",
-      };
+      nombre: "Nombre",
+      apellido: "Apellido",
+      dni: "N/A",
+      fechaNacimiento: null,
+      email: "N/A",
+      telefono: "N/A",
+    };
 
   const fechaNac = persona.fechaNacimiento
     ? new Date(persona.fechaNacimiento).toLocaleDateString()
@@ -26,10 +29,10 @@ export const PatientInfoCardConsulta = ({ paciente, onEdit, actionButtons }) => 
       <CardHeader
         title={`${persona.nombre} ${persona.apellido}`}
         subheader={`DNI: ${persona.dni}`}
-        
+
         action={
           <Tooltip title="Buscar otro paciente" arrow>
-            <Button variant="outlined" color="secondary" size="small" onClick={onEdit}>
+            <Button variant="outlined" sx={{ color: theme.palette.text.tertiary, backgroundColor:theme.palette.primary.main }} size="small" onClick={onEdit}>
               Cambiar paciente
             </Button>
           </Tooltip>

@@ -21,6 +21,7 @@ import ComparativaPeso from './ComparativaPeso';
 import GraficosCircunferencias from './GraficosCircunferencias';
 import GraficosPliegues from './GraficosPliegues';
 import { obtenerAnamnesisCalculadaPorConsulta } from '../../../store/consultas';
+import { useTheme } from '@emotion/react';
 
 export const FichaAnamnesis = ({
   open,
@@ -33,8 +34,9 @@ export const FichaAnamnesis = ({
 }) => {
 
   const dispatch = useDispatch();
+  const theme = useTheme();
   const { anamnesisCalculada, consultas } = useSelector(state => state.consulta);
-  
+
   const [tabValue, setTabValue] = useState(0);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [formData, setFormData] = useState({});
@@ -46,7 +48,7 @@ export const FichaAnamnesis = ({
     if (selectedAnamnesisId && consultas.length > 0) {
       const consultaVinculada = consultas.find(c => c.idAnamnesis === selectedAnamnesisId);
       if (consultaVinculada?.idConsulta) {
-       
+
         dispatch(obtenerAnamnesisCalculadaPorConsulta(consultaVinculada.idConsulta));
       } else {
       }
@@ -115,17 +117,46 @@ export const FichaAnamnesis = ({
             </FormControl>
           )}
 
-          <Tabs value={tabValue} onChange={handleTabChange} sx={{ mb: 2 }}>
-            <Tab label="Resumen" onClick={e => e.currentTarget.blur()} />
-            <Tab label="Circunferencias" onClick={e => e.currentTarget.blur()} />
-            <Tab label="Pliegues" onClick={e => e.currentTarget.blur()} />
-            <Tab label="Indicadores" onClick={e => e.currentTarget.blur()} />
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            allowScrollButtonsMobile
+            sx={{
+              mb: 2,
+              '& .MuiTab-root': {
+                minWidth: 'auto',
+                px: 2,
+                color: theme.palette.text.primary,
+              },
+              "& .Mui-selected": {
+                color: theme.palette.text.secondary,
+                backgroundColor: theme.palette.background.paper,
+                borderRadius: "4px",
+              },
+              borderBottom: `1px solid ${theme.palette.divider || theme.palette.custom.primary}`,
+            }}
+          >
+            <Tab label="Resumen" />
+            <Tab label="Circunferencias" />
+            <Tab label="Pliegues" />
+            <Tab label="Indicadores" />
           </Tabs>
 
           <Box sx={{ minHeight: 650, overflow: 'auto' }}>
             {tabValue === 0 && (
               <Box sx={{ display: 'grid', gap: 2 }}>
-                <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gap: 2,
+                    gridTemplateColumns: {
+                      xs: '1fr',
+                      sm: '1fr 1fr'
+                    }
+                  }}
+                >
                   <MedicionesCardAnamnesis data={formData} />
                   <ComparativaPeso data={formData} />
                 </Box>

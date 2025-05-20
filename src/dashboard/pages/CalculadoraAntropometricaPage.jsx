@@ -12,6 +12,7 @@ import {
   CardHeader,
 } from '@mui/material';
 import DashboardLayout from '../layout/DashboardLayout';
+import { useTheme } from '@mui/material/styles';
 
 export const CalculadoraAntropometricaPage = () => {
   const [datos, setDatos] = useState({
@@ -58,6 +59,8 @@ export const CalculadoraAntropometricaPage = () => {
       circCintura,
       circCadera,
     } = datos;
+
+
 
     const peso = parseFloat(datos.pesoActual.replace(',', '.'));
     let altura = parseFloat(datos.talla.replace(',', '.'));
@@ -119,47 +122,125 @@ export const CalculadoraAntropometricaPage = () => {
     });
   };
 
+  const theme = useTheme();
+
+
   return (
     <DashboardLayout>
-      <Box sx={{ p: 4 }}>
-        <Typography variant="h4" gutterBottom color="primary">
+      <Box sx={{ p: { xs: 2, md: 4 } }}>
+        <Typography variant="h4" gutterBottom color="primary" sx={{ color: theme.palette.text.primary }} >
           Calculadora Antropométrica
         </Typography>
 
-        <Box sx={{ mt: 3, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 2 }}>
+        <Box
+          sx={{
+            mt: 3,
+            backgroundColor: theme.palette.background.paper2 ?? theme.palette.background.paper,
+            borderRadius: 2,
+            boxShadow: 2,
+            color: theme.palette.text.primary,
+          }}
+        >
           <Tabs
             value={tabIndex}
             onChange={handleTabChange}
             variant="scrollable"
             scrollButtons="auto"
-            sx={{ borderBottom: 1, borderColor: 'divider', px: 2 }}
+            sx={{
+              borderBottom: 1,
+              borderColor: 'divider',
+              px: 2,
+            }}
+            TabIndicatorProps={{
+              style: {
+                backgroundColor: theme.palette.primary.main,
+              },
+            }}
           >
-            <Tab label="IMC" />
-            <Tab label="Calorías" />
-            <Tab label="Grasa Corporal" />
-            <Tab label="Índice Cintura-Cadera" />
+            <Tab
+              label="IMC"
+              sx={{
+                color: theme.palette.text.primary,
+                '&.Mui-selected': {
+                  color: theme.palette.text.secondary,
+                  fontWeight: 'bold',
+                },
+              }}
+            />
+            <Tab
+              label="Calorías"
+              sx={{
+                color: theme.palette.text.primary,
+                '&.Mui-selected': {
+                  color: theme.palette.text.secondary,
+                  fontWeight: 'bold',
+                },
+              }}
+            />
+            <Tab label="Grasa Corporal"
+              sx={{
+                color: theme.palette.text.primary,
+                '&.Mui-selected': {
+                  color: theme.palette.text.secondary,
+                  fontWeight: 'bold',
+                },
+              }} />
+            <Tab label="Índice Cintura-Cadera"
+              sx={{
+                color: theme.palette.text.primary,
+                '&.Mui-selected': {
+                  color: theme.palette.text.secondary,
+                  fontWeight: 'bold',
+                },
+              }} />
           </Tabs>
 
           <Box sx={{ p: 3 }}>
             {tabIndex === 0 && (
-              <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
-                <Typography variant="h6" gutterBottom color="primary">Calculadora de IMC</Typography>
+              <Paper
+                elevation={2}
+                sx={{
+                  p: { xs: 2, md: 3 },
+                  borderRadius: 2,
+                  backgroundColor: theme.palette.background.paper ?? theme.palette.background.paper,
+                  color: theme.palette.text.primary,
+                }}
+              >
+                <Typography variant="h6" gutterBottom color="primary" sx={{ color: theme.palette.text.primary }} >Calculadora de IMC</Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
-                    <TextField label="Peso (kg)" name="pesoActual" fullWidth value={datos.pesoActual} onChange={handleChange} />
+                    <TextField label="Peso (kg)" name="pesoActual" fullWidth value={datos.pesoActual} onChange={handleChange} inputProps={{ maxLength: 4 }} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField label="Talla (m)" name="talla" fullWidth value={datos.talla} onChange={handleChange} />
+                    <TextField label="Talla (m)" name="talla" fullWidth value={datos.talla} onChange={handleChange} inputProps={{ maxLength: 4 }} />
                   </Grid>
                 </Grid>
                 <Box textAlign="center" mt={3}>
-                  <Button variant="contained" size="large" onClick={() => {
-                    const peso = parseFloat(datos.pesoActual);
-                    const altura = parseFloat(datos.talla);
-                    if (!peso || !altura) return;
-                    const imc = Math.round((peso / Math.pow(altura, 2)) * 100) / 100;
-                    setResultado({ imc });
-                  }}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    onClick={() => {
+                      let peso = parseFloat(datos.pesoActual.toString().replace(',', '.'));
+                      let altura = parseFloat(datos.talla.toString().replace(',', '.'));
+
+                      if (isNaN(peso) || isNaN(altura) || altura <= 0) {
+                        setResultado({ imc: "Datos inválidos" });
+                        return;
+                      }
+
+                      if (altura > 10) altura = altura / 100; 
+
+                      const imc = Math.round((peso / (altura * altura)) * 100) / 100;
+                      const imcIdealMin = Math.round(18.5 * altura * altura * 100) / 100;
+                      const imcIdealMax = Math.round(24.9 * altura * altura * 100) / 100;
+
+                      setResultado({
+                        imc,
+                        PesoIdealMin: imcIdealMin,
+                        pesoIdealMax: imcIdealMax,
+                      });
+                    }}
+                  >
                     Calcular IMC
                   </Button>
                 </Box>
@@ -168,8 +249,8 @@ export const CalculadoraAntropometricaPage = () => {
 
             {tabIndex === 1 && (
               <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
-                <Typography variant="h6" gutterBottom color="primary">Calorías por Objetivo</Typography>
-                <TextField label="Peso Actual (kg)" name="pesoActual" fullWidth value={datos.pesoActual} onChange={handleChange} />
+                <Typography variant="h6" gutterBottom color="primary" sx={{ color: theme.palette.text.primary }} >Calorías por Objetivo</Typography>
+                <TextField label="Peso Actual (kg)" name="pesoActual" fullWidth value={datos.pesoActual} onChange={handleChange} inputProps={{ maxLength: 4 }} />
                 <Box textAlign="center" mt={3}>
                   <Button variant="contained" size="large" onClick={() => {
                     const peso = parseFloat(datos.pesoActual);
@@ -188,15 +269,15 @@ export const CalculadoraAntropometricaPage = () => {
 
             {tabIndex === 2 && (
               <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
-                <Typography variant="h6" gutterBottom color="primary">Grasa Corporal</Typography>
+                <Typography variant="h6" gutterBottom color="primary" sx={{ color: theme.palette.text.primary }} >Grasa Corporal</Typography>
                 <Grid container spacing={2}>
                   {["pliegueTriceps", "pliegueSubescapular", "pliegueBiceps", "pliegueSupraespinal"].map((campo) => (
                     <Grid item xs={12} sm={6} md={3} key={campo}>
-                      <TextField label={campo} name={campo} fullWidth value={datos[campo]} onChange={handleChange} />
+                      <TextField label={campo} name={campo} fullWidth value={datos[campo]} onChange={handleChange} inputProps={{ maxLength: 4 }} />
                     </Grid>
                   ))}
                   <Grid item xs={12} sm={6}>
-                    <TextField label="Peso Actual (kg)" name="pesoActual" fullWidth value={datos.pesoActual} onChange={handleChange} />
+                    <TextField label="Peso Actual (kg)" name="pesoActual" fullWidth value={datos.pesoActual} onChange={handleChange} inputProps={{ maxLength: 4 }} />
                   </Grid>
                 </Grid>
                 <Box textAlign="center" mt={3}>
@@ -218,13 +299,13 @@ export const CalculadoraAntropometricaPage = () => {
 
             {tabIndex === 3 && (
               <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
-                <Typography variant="h6" gutterBottom color="primary">Índice Cintura/Cadera</Typography>
+                <Typography variant="h6" gutterBottom color="primary" sx={{ color: theme.palette.text.primary }} >Índice Cintura/Cadera</Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
-                    <TextField label="Circ. Cintura (cm)" name="circCintura" fullWidth value={datos.circCintura} onChange={handleChange} />
+                    <TextField label="Circ. Cintura (cm)" name="circCintura" fullWidth value={datos.circCintura} onChange={handleChange} inputProps={{ maxLength: 4 }} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField label="Circ. Cadera (cm)" name="circCadera" fullWidth value={datos.circCadera} onChange={handleChange} />
+                    <TextField label="Circ. Cadera (cm)" name="circCadera" fullWidth value={datos.circCadera} onChange={handleChange} inputProps={{ maxLength: 4 }} />
                   </Grid>
                 </Grid>
                 <Box textAlign="center" mt={3}>
@@ -242,18 +323,46 @@ export const CalculadoraAntropometricaPage = () => {
           </Box>
 
           {resultado && (
-            <Card elevation={4} sx={{ mt: 4, borderRadius: 3, p: 2 }}>
-              <CardHeader title="Resultados" sx={{ bgcolor: 'primary.main', color: 'white', borderTopLeftRadius: 12, borderTopRightRadius: 12 }} />
+            <Card elevation={4} sx={{ mt: 4, borderRadius: 3, p: { xs: 2, md: 3 } }}>
+              <CardHeader
+                title="Resultados"
+                sx={{
+                  bgcolor: theme.palette.primary.main,
+                  color: theme.palette.primary.contrastText,
+                  borderTopLeftRadius: 12,
+                  borderTopRightRadius: 12,
+                }}
+              />
               <CardContent>
                 <Grid container spacing={2}>
-                  {Object.entries(resultado).map(([key, val]) => (
-                    <Grid item xs={12} sm={6} md={4} key={key}>
-                      <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
-                        <Typography variant="subtitle2" color="text.secondary">{key}</Typography>
-                        <Typography variant="h6" color="primary">{val}</Typography>
-                      </Paper>
-                    </Grid>
-                  ))}
+                  {Object.entries(resultado).map(([key, val]) => {
+                    const etiquetas = {
+                      imc: 'Índice de Masa Corporal',
+                      PesoIdealMin: 'Peso Ideal Mínimo',
+                      pesoIdealMax: 'Peso Ideal Máximo',
+                      caloriasPerder: 'Calorías para Perder Peso',
+                      caloriasMantener: 'Calorías para Mantener Peso',
+                      caloriasGanar: 'Calorías para Ganar Peso',
+                      grasaCorporal: '% de Grasa Corporal',
+                      masaGrasa: 'Masa Grasa (kg)',
+                      masaMagra: 'Masa Magra (kg)',
+                      sumaPliegues: 'Suma de Pliegues',
+                      porcentajeCirc: '% Circ. Media Brazo',
+                      cinturaCadera: 'Relación Cintura-Cadera',
+                    };
+                    return (
+                      <Grid item xs={12} sm={6} md={4} key={key}>
+                        <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
+                          <Typography variant="subtitle2" color="text.secondary">
+                            {etiquetas[key] || key}
+                          </Typography>
+                          <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
+                            {val}
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                    );
+                  })}
                 </Grid>
               </CardContent>
             </Card>

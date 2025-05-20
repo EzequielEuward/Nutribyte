@@ -129,6 +129,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
             )}
 
             <img
+              onClick={() => navigate("/home")}
               src={isDarkMode ? LogoBlanco : LogoNegro}
               alt="Logo"
               style={{
@@ -136,6 +137,8 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
                 height: isMobile ? "50px" : "90px",
                 objectFit: "contain",
                 opacity: 0,
+                cursor: "pointer",
+                marginLeft: isMobile ? 0 : "16px",
                 transition: "opacity 0.4s ease-in-out",
               }}
               onLoad={(e) => (e.target.style.opacity = 1)}
@@ -164,26 +167,26 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
             {/* 🔐 Alerta visual de 2FA */}
             {!twoFactorEnabled && (
               <Tooltip title="Asegurate de activar doble factor para mejor visibildad y mayor seguridad" >
-              <Box
-                onClick={() => navigate("/home/configuracion")}
-                sx={{
-                  backgroundColor: "#f44336",
-                  color: "white",
-                  fontSize: "0.75rem",
-                  fontWeight: "bold",
-                  px: 2,
-                  py: 0.5,
-                  borderRadius: "16px",
-                  cursor: "pointer",
-                  boxShadow: 2,
-                  whiteSpace: "nowrap",
-                  "&:hover": {
-                    backgroundColor: "#d32f2f",
-                  },
-                }}
-              >
-                🔐 Activá el doble factor
-              </Box>
+                <Box
+                  onClick={() => navigate("/home/configuracion")}
+                  sx={{
+                    backgroundColor: "#f44336",
+                    color: "white",
+                    fontSize: "0.75rem",
+                    fontWeight: "bold",
+                    px: 2,
+                    py: 0.5,
+                    borderRadius: "16px",
+                    cursor: "pointer",
+                    boxShadow: 2,
+                    whiteSpace: "nowrap",
+                    "&:hover": {
+                      backgroundColor: "#d32f2f",
+                    },
+                  }}
+                >
+                  🔐 Activá el doble factor
+                </Box>
               </Tooltip>
             )}
 

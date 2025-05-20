@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -22,6 +22,17 @@ export const NavBarHome = () => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Detectar si hizo scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleLoginClick = () => {
     navigate("/auth/login");
@@ -32,16 +43,20 @@ export const NavBarHome = () => {
   };
 
   const menuItems = [
-    { text: "Inicio", link: "#hero" },
-    { text: "Plan", link: "#plans" },
-    { text: "Características", link: "#features" },
-    { text: "Contáctanos", link: "#contact" },
-    { text: "Preguntas", link: "#faq" },
-    { text: "Acerca de", link: "#about" },
+    { text: "Inicio", id: "hero" },
+    { text: "Plan", id: "plans" },
+    { text: "Características", id: "features" },
+    { text: "Contáctanos", id: "contact" },
+    { text: "Preguntas", id: "faq" },
+    { text: "Acerca de", id: "about" },
   ];
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+      window.history.replaceState(null, "", window.location.pathname);
+    }
   };
 
   const linkStyles = (isSelected) => ({
@@ -52,6 +67,7 @@ export const NavBarHome = () => {
     borderRadius: "4px",
     backgroundColor: isSelected ? theme.palette.action.selected : "transparent",
     transition: "background-color 0.3s ease, color 0.3s ease",
+    cursor: "pointer",
     "&:hover": {
       backgroundColor: theme.palette.action.hover,
     },
@@ -59,63 +75,72 @@ export const NavBarHome = () => {
 
   return (
     <AppBar
-      position="sticky"
-      sx={{ backgroundColor: theme.palette.background.paper, color: theme.palette.text.primary }}
+      position="fixed"
+      elevation={isScrolled ? 4 : 0}
+      sx={{
+        backgroundColor: isScrolled
+          ? "rgba(255, 255, 255, 0.01)" 
+          : theme.palette.background.paper, // al inicio: blanco sólido
+        backdropFilter: isScrolled ? "blur(6px)" : "none",
+        transition: "background-color 0.3s ease, backdrop-filter 0.3s ease",
+        color: theme.palette.text.primary,
+      }}
     >
       <Container maxWidth="lg">
-        <Toolbar disableGutters>
-          <Box display="flex" mr={4}>
-            <a href="#hero" style={{ textDecoration: "none", color: theme.palette.primary.main }}>
-              <Typography variant="h6" fontWeight="bold">
-                <img
-                  src={LogoOficial}
-                  alt="Logo"
-                  style={{
-                    maxWidth: "500px",
-                    height: "80px",
-                    objectFit: "contain",
-                  }}
-                />
-              </Typography>
-            </a>
+        <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+          {/* LOGO */}
+          <Box display="flex" alignItems="center" sx={{ cursor: "pointer" }} onClick={() => scrollToSection("hero")}>
+            <img
+              src={LogoOficial}
+              alt="Logo"
+              style={{
+                maxWidth: "500px",
+                height: "80px",
+                objectFit: "contain",
+              }}
+            />
           </Box>
 
-          {/* Links en pantallas grandes */}
+          {/* LINKS - Desktop */}
           <Box display={{ xs: "none", md: "flex" }} ml={4}>
             {menuItems.map((item) => (
-              <a
+              <Box
                 key={item.text}
-                href={item.link}
-                onClick={() => handleCategoryClick(item.text)}
-                style={linkStyles(selectedCategory === item.text)}
+                onClick={() => {
+                  scrollToSection(item.id);
+                  setSelectedCategory(item.text);
+                }}
+                sx={linkStyles(selectedCategory === item.text)}
               >
                 <Typography variant="body1">{item.text}</Typography>
-              </a>
+              </Box>
             ))}
           </Box>
 
-          <Button
-            variant="contained"
-            sx={{
-              ml: "auto",
-              px: 3,
-              backgroundColor: theme.palette.secondary.main,
-              color: "white",
-              transition: "background-color 0.3s ease, transform 0.2s ease",
-              "&:hover": {
-                backgroundColor: theme.palette.secondary.dark,
-                transform: "scale(1.05)",
-              },
-              "&:active": {
-                transform: "scale(0.95)",
-              },
-            }}
-            onClick={handleLoginClick}
-          >
-            Iniciar sesión
-          </Button>
+          {/* LOGIN BUTTON */}
+          <Box display={{ xs: "none", md: "block" }} ml="auto">
+            <Button
+              variant="contained"
+              sx={{
+                px: 3,
+                backgroundColor: theme.palette.secondary.main,
+                color: "white",
+                transition: "background-color 0.3s ease, transform 0.2s ease",
+                "&:hover": {
+                  backgroundColor: theme.palette.secondary.dark,
+                  transform: "scale(1.05)",
+                },
+                "&:active": {
+                  transform: "scale(0.95)",
+                },
+              }}
+              onClick={handleLoginClick}
+            >
+              Iniciar sesión
+            </Button>
+          </Box>
 
-          {/* Menú hamburguesa */}
+          {/* HAMBURGER MENU - Mobile */}
           <IconButton
             color="inherit"
             aria-label="Toggle menu"
@@ -124,48 +149,43 @@ export const NavBarHome = () => {
           >
             <MenuIcon />
           </IconButton>
-
-          {/* Drawer para móvil */}
-          <Drawer
-            anchor="right"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            sx={{
-              "& .MuiDrawer-paper": {
-                width: 280,
-                backgroundColor: theme.palette.background.default,
-                color: theme.palette.text.primary,
-              },
-            }}
-          >
-            <List>
-              {menuItems.map((item) => (
-                <ListItem button key={item.text} onClick={handleDrawerToggle}>
-                  <a
-                    href={item.link}
-                    onClick={() => handleCategoryClick(item.text)}
-                    style={{
-                      textDecoration: "none",
-                      color: "inherit",
-                      width: "100%",
-                      padding: "0.5rem 1rem",
-                      display: "block",
-                    }}
-                  >
-                    <ListItemText primary={item.text} />
-                  </a>
-                </ListItem>
-              ))}
-              <ListItem button onClick={handleLoginClick}>
-                <ListItemText primary="Iniciar sesión" />
-              </ListItem>
-            </List>
-          </Drawer>
         </Toolbar>
       </Container>
+
+      {/* DRAWER */}
+      <Drawer
+        anchor="right"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 280,
+            backgroundColor: theme.palette.background.default,
+            color: theme.palette.text.primary,
+          },
+        }}
+      >
+        <List>
+          {menuItems.map((item) => (
+            <ListItem
+              button
+              key={item.text}
+              onClick={() => {
+                scrollToSection(item.id);
+                handleDrawerToggle();
+                setSelectedCategory(item.text);
+              }}
+            >
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
+          <ListItem button onClick={handleLoginClick}>
+            <ListItemText primary="Iniciar sesión" />
+          </ListItem>
+        </List>
+      </Drawer>
     </AppBar>
   );
 };
 
 export default NavBarHome;
- 

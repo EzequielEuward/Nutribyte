@@ -5,12 +5,11 @@ import LogoOficial from '../../assets/LogoBlanco.png';
 
 export const FooterSection = () => {
   const theme = useTheme();
-
   return (
     <footer
       style={{
         background: `linear-gradient(135deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`,
-        color: '#ffffff',  
+        color: '#ffffff',
         padding: '2rem 0',
       }}
     >
@@ -21,16 +20,25 @@ export const FooterSection = () => {
               <Typography variant="h5" gutterBottom>
                 Sobre
               </Typography>
-              <img 
-                src={LogoOficial} 
+              <img
+                onClick={() => {
+                  const section = document.getElementById('hero');
+                  if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                    window.history.replaceState(null, '', window.location.pathname);
+                  }
+                }}
+
+                src={LogoOficial}
                 alt="Logo"
                 style={{
-                  width: '200px',  // Ajusta el ancho del logo
-                  height: 'auto',  // Mantiene la proporción
+                  width: '200px',
+                  height: 'auto',
                   objectFit: 'contain',
-                  marginLeft: '1rem',  // Añadí espacio entre el texto y el logo
+                  marginLeft: '1rem',
                   marginBottom: '8px',
-                }} 
+                  cursor: "pointer",
+                }}
               />
             </Box>
             <Typography variant="body2">
@@ -44,7 +52,17 @@ export const FooterSection = () => {
             </Typography>
             <ul style={{ padding: 0, listStyle: 'none' }}>
               <li>
-                <Link href="#" color="inherit" underline="hover">Inicio</Link>
+                <Link href="/" color="inherit" underline="hover">Inicio</Link>
+              </li>
+              <li>
+                <Link href="/terminos-y-condiciones" color="inherit" underline="hover">
+                  Términos y Condiciones
+                </Link>
+              </li>
+              <li>
+                <Link href="/politica-de-privacidad" color="inherit" underline="hover">
+                  Politica de privacidad
+                </Link>
               </li>
               <li>
                 <Link href="#caracteristicas" color="inherit" underline="hover">Características</Link>

@@ -8,9 +8,12 @@ import {
   Typography
 } from "@mui/material";
 import { format } from "date-fns";
-import {ConsumoAlimentosTable} from "./"; 
+import { ConsumoAlimentosTable } from "./";
+import { useTheme } from "@emotion/react";
 
 export const FormularioNuevoConsumo = ({ onSubmit }) => {
+  const theme = useTheme();
+  
   const methods = useForm({
     defaultValues: {
       fecha: format(new Date(), 'yyyy-MM-dd'),

@@ -1,0 +1,51 @@
+✅ Justificación técnica y buenas prácticas en la organización de rutas
+
+🎯 1. Separación por dominios funcionales
+Las rutas están organizadas por secciones del sistema: pacientes, alimentos, progreso, reportes, etc.
+Esto se alinea con la arquitectura modular recomendada en aplicaciones SPA (Single Page Applications), donde cada dominio tiene independencia semántica y técnica.
+
+
+🎯 2. Claridad y legibilidad
+Las rutas están escritas con nombres cortos, legibles y semánticamente correctos. Esto permite que tanto programadores como usuarios finales puedan inferir el propósito de la URL.
+
+🧠 Ejemplo:
+
+"/paciente" en lugar de "/moduloPaciente/visualizacionPrincipal"
+"/planes/resumen-plan" comunica jerarquía funcional
+
+📚 Referencia:
+React Router Docs: https://reactrouter.com/en/main
+Nielsen Norman Group – UX Heuristics: https://www.nngroup.com/articles/ten-usability-heuristics/
+
+🎯 3. Uso de rutas anidadas cuando corresponde
+Aunque muchas rutas están al mismo nivel, aquellas que representan una jerarquía natural (como /progreso/historial-peso) utilizan rutas anidadas. Esto mejora el SEO interno, la navegación y la coherencia conceptual del sistema.
+
+📚 Referencia:
+React Router – Nested Routes
+Domain-Driven Design (DDD): Contextos delimitados en el diseño de software
+
+🎯 4. Rutas protegidas y condicionales
+Algunas rutas solo se muestran si el usuario tiene permisos específicos (rol === "Administrador") o un plan determinado 
+(planUsuario === "Elite"). Esto sigue las prácticas de autorización basada en roles (RBAC).
+
+
+🎯 5. Fallbacks y rutas por defecto
+Se implementa una ruta final (*) que redirige al usuario en caso de acceder a una ruta inválida, mejorando la UX y evitando errores de navegación.
+
+📚 Referencia:
+
+React Router – Not Found Routes
+
+📌 En resumen, el diseño:
+✅ Sigue principios de diseño modular
+✅ Usa rutas semánticas
+✅ Se adapta a permisos y planes
+✅ Es escalable, clara y mantenible
+
+🗂️ Alternativas justificadas pero no necesarias
+Tu profesor puede estar pensando en:
+
+centralización de rutas en un archivo paths.ts
+
+Optamos por no centralizar las rutas en un archivo de constantes debido al tamaño actual del sistema. Sin embargo, mantenemos 
+nombres legibles y estandarizados, con posibilidad de migrar a una configuración centralizada si el sistema escala.

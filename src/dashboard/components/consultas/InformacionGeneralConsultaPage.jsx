@@ -45,12 +45,12 @@ export const InformacionGeneralConsultaPage = ({ consultas }) => {
               <Box sx={iconStyle('primary.main')}>
                 <BarChartIcon fontSize="large" />
               </Box>
-              <Typography variant="h6">Consultas Totales Registradas</Typography>
+              <Typography variant="h6" >Consultas Totales Registradas</Typography>
             </Box>
-            <Typography variant="h4" color="primary">
+            <Typography variant="h4" color="text.primary">
               {consultas.length}
             </Typography>
-            <Typography variant="caption" sx={{ fontWeight: 500, color: 'text.secondary' }}>
+            <Typography variant="caption" >
               Consultas totales hasta la fecha: <strong>{fechaHoy}</strong>
             </Typography>
           </CardContent>

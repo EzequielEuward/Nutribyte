@@ -2,13 +2,13 @@ import { Box, Toolbar, Typography } from '@mui/material';
 import { Sidebar, Navbar, TopLeftActionButton } from '../components';
 import { AppTheme } from '../../theme';
 import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@mui/material';
 
 const drawerWidth = 280;
 
-export const DashboardLayout = ({ children }) => {
+export const DashboardLayout = ({ children, isMobile = false }) => {
   const { username, rol, planUsuario, twoFactorEnabled } = useSelector((state) => state.auth);
 
-  // 🔍 Lógica integrada (en lugar del helper)
   const userData = JSON.parse(localStorage.getItem("userData"));
   const fechaCreacion = userData?.fechaCreacion ? new Date(userData.fechaCreacion) : null;
   const hoy = new Date();
@@ -33,7 +33,7 @@ export const DashboardLayout = ({ children }) => {
             flexGrow: 1,
             width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` },
             marginLeft: { sm: `${drawerWidth}px` },
-            marginTop: { xs: 8, sm: 8, md: 4, lg: 2, xl: 1 },
+           paddingTop: { xs: 2, sm: 4 },
             padding: 1,
             position: 'relative',
             opacity: opacidad,

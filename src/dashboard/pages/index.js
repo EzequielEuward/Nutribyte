@@ -7,6 +7,8 @@ export * from  './PatientPage';
 export * from './ConfigPage';
 export * from './SeguridadMedidas';
 export * from './DetallePlan';
+export * from './TerminosCondicionesPage';
+export * from './PoliticasDePrivacidadPage';
 export * from './ProfilePage';
 
 // Alimentos
