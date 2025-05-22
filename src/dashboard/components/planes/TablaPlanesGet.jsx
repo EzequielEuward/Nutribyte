@@ -18,9 +18,11 @@ import { obtenerPlanesPorNutricionista } from "../../../store/plans";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useTheme } from "@emotion/react";
 
 export const TablaPlanesGet = ({ onViewPlan, onDeletePlan, onEditPlan }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const { planes, isLoading, error } = useSelector((state) => state.plan);
   const { paciente } = useSelector((state) => state.plan);
 
@@ -66,7 +68,7 @@ export const TablaPlanesGet = ({ onViewPlan, onDeletePlan, onEditPlan }) => {
                 <TableCell>{new Date(plan.fechaFin).toLocaleDateString()}</TableCell>
                 <TableCell>
                   <Tooltip title="Ver Plan" arrow>
-                    <IconButton onClick={() => onViewPlan(plan)} color="primary">
+                    <IconButton onClick={() => onViewPlan(plan)} sx={{ color: theme.palette.secondary.main }}>
                       <RemoveRedEyeIcon />
                     </IconButton>
                   </Tooltip>
@@ -75,16 +77,14 @@ export const TablaPlanesGet = ({ onViewPlan, onDeletePlan, onEditPlan }) => {
                     title={vencido ? "Este plan ya finalizó. Debe crear uno nuevo." : "Editar Plan"}
                     arrow
                   >
-                    <span>
-                      <IconButton
-                        color="secondary"
-                        onClick={() => onEditPlan(plan)}
-                        disabled={vencido}
-                        sx={{ opacity: vencido ? 0.4 : 1 }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </span>
+                    <IconButton
+                      onClick={() => onEditPlan(plan)}
+                      disabled={vencido}
+                      sx={{ color: "orange", opacity: vencido ? 0.4 : 1, }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+
                   </Tooltip>
 
                   <Tooltip title="Eliminar Plan" arrow>

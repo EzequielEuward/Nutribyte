@@ -47,7 +47,8 @@ export const CobroTable = ({ handleMenuOpen, cobros = [] }) => {
             <TableCell>Monto</TableCell>
             <TableCell>Estado</TableCell>
             <TableCell>Usuario</TableCell>
-            <TableCell>Nombre Completo</TableCell>
+            <TableCell>Apellido</TableCell>
+            <TableCell>Nombre</TableCell>
             <TableCell>Fecha de Pago</TableCell>
             <TableCell>Método de Pago</TableCell>
             <TableCell>Periodo Facturado</TableCell>
@@ -72,9 +73,10 @@ export const CobroTable = ({ handleMenuOpen, cobros = [] }) => {
                   <Chip label={cobro.estado} color={getChipColorEstado(cobro.estado)} />
                 </TableCell>
                 <TableCell>{cobro.usuario?.username || "Desconocido"}</TableCell>
+                <TableCell>{cobro.usuario.persona.apellido}</TableCell>
                 <TableCell>
                   {cobro.usuario && cobro.usuario.persona
-                    ? `${cobro.usuario.persona.nombre} ${cobro.usuario.persona.apellido}`
+                    ? `${cobro.usuario.persona.nombre} `
                     : "Desconocido"
                   }
                 </TableCell>

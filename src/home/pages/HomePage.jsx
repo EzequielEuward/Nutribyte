@@ -37,7 +37,7 @@ export const HomePage = () => {
         <FooterSection />
       </section>
 
-      <ScrollToTopButton /> {/* ⬅️ Botón flotante */}
+      <ScrollToTopButton /> 
     </>
   );
 };

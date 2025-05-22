@@ -26,7 +26,7 @@ export const DashboardRouter = () => {
 
       {/* 👨‍⚕️ Módulo Paciente */}
       <Route path="paciente" element={<PatientPage />} />
-      <Route path="diagnostico" element={<ConsultaPage />} />
+      <Route path="consultas" element={<ConsultaPage />} />
 
       {/* 🍽️ Módulo Alimentos y Planes */}
       <Route path="alimentos" element={<FoodPage />} />

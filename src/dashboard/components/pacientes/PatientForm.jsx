@@ -167,7 +167,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
               <TextField
                 select
-                label="Genero biológico"
+                label="Genero"
                 name="sexo"
                 value={formData.sexo}
                 onChange={handleChange}

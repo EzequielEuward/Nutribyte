@@ -150,6 +150,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
             backgroundColor: theme.palette.background.paper,
             position: 'fixed', // ⬅️ Importante
             height: '100vh',
+            overflow: 'hidden',
             zIndex: theme.zIndex.drawer,
           },
         }}

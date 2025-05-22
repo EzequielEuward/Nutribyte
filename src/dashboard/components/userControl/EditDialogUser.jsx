@@ -162,7 +162,7 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
                 </Grid>
                 <Grid item xs={6}>
                   <FormControl fullWidth>
-                    <InputLabel>Sexo Biológico</InputLabel>
+                    <InputLabel>Genero</InputLabel>
                     <Select
                       name="sexoBiologico"
                       value={persona.sexoBiologico}

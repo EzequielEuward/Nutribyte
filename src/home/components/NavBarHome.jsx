@@ -14,7 +14,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import LogoOficial from "../../assets/LogoOficial.png";
+import LogoOficial from "../../assets/NutribyteSB.png";
 import MenuIcon from "@mui/icons-material/Menu";
 
 export const NavBarHome = () => {
@@ -97,6 +97,7 @@ export const NavBarHome = () => {
                 maxWidth: "500px",
                 height: "80px",
                 objectFit: "contain",
+               
               }}
             />
           </Box>

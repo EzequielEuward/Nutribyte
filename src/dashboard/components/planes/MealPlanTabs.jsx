@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
   Tooltip,
+  useTheme,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -18,7 +19,7 @@ import FoodSearchModal from "./FoodSearchModal";
 
 export const MealPlanTabs = ({ alimentos, setAlimentos, alimentosSugeridos }) => {
   const [openModal, setOpenModal] = useState(false);
-
+  const theme = useTheme();
   const handleAddSelectedFoods = (seleccionadosFinales) => {
     const existentesIds = new Set(alimentos.map(a => a.idAlimento));
     const nuevosSinDuplicados = seleccionadosFinales
@@ -76,11 +77,13 @@ export const MealPlanTabs = ({ alimentos, setAlimentos, alimentosSugeridos }) =>
         </TableContainer>
 
         <Button
-          variant="outlined"
+          variant="contained"
           fullWidth
           startIcon={<AddIcon />}
           onClick={handleOpenModal}
-          sx={{ mt: 2 }}
+          sx={{ mt: 2 , color: theme.palette.text.primary, borderColor: theme.palette.primary.main,  '&:hover': {
+                  backgroundColor: theme.palette.secondary.main
+                } }}
         >
           Agregar alimento
         </Button>

@@ -37,8 +37,8 @@ export const UserFilters = ({ searchTerm, setSearchTerm, roleFilter, setRoleFilt
           >
             <MenuItem value="todos">Todos los roles</MenuItem>
             <MenuItem value="Administrador">Administrador</MenuItem>
-            <MenuItem value="Médico">Médico</MenuItem>
-            <MenuItem value="Enfermero">Enfermero</MenuItem>
+            <MenuItem value="Nutricionista">Nutricionista</MenuItem>
+            <MenuItem value="Demo">Demo</MenuItem>
           </Select>
         </FormControl>
       </Grid>

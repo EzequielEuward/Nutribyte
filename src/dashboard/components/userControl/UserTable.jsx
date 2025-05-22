@@ -23,7 +23,8 @@ export const UserTable = ({ handleMenuOpen, users }) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Usuario</TableCell>
-                        <TableCell>Nombre completo</TableCell>
+                        <TableCell>Apellido</TableCell>
+                        <TableCell>Nombre </TableCell>
                         <TableCell>Email</TableCell>
                         <TableCell>Rol</TableCell>
                         <TableCell>Matrícula</TableCell>
@@ -43,8 +44,9 @@ export const UserTable = ({ handleMenuOpen, users }) => {
                         users.map((user) => (
                             <TableRow key={user.idUsuario}>
                                 <TableCell>{user.username}</TableCell>
+                                <TableCell> {user.persona.apellido}</TableCell>
                                 <TableCell>
-                                    {user.persona.nombre} {user.persona.apellido}
+                                    {user.persona.nombre}
                                 </TableCell>
                                 <TableCell>{user.persona.email}</TableCell>
                                 <TableCell>
@@ -54,8 +56,8 @@ export const UserTable = ({ handleMenuOpen, users }) => {
                                             user.rol === 'Administrador'
                                                 ? 'error'
                                                 : user.rol === 'Nutricionista'
-                                                ? 'primary'
-                                                : 'secondary'
+                                                    ? 'primary'
+                                                    : 'secondary'
                                         }
                                     />
                                 </TableCell>
@@ -67,7 +69,7 @@ export const UserTable = ({ handleMenuOpen, users }) => {
                                     />
                                 </TableCell>
                                 <TableCell>
-                                    {user.planUsuario} 
+                                    {user.planUsuario}
                                 </TableCell>
                                 <TableCell align="right">
                                     <IconButton onClick={(e) => handleMenuOpen(e, user)}>

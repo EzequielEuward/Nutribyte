@@ -34,7 +34,7 @@ export const PlanResumenStats = ({ plan }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 3,  mb: 4, mt: 4 }}>
+    <Paper elevation={3} sx={{ p: 3, mb: 4, mt: 4, p: 3, borderRadius: 2, backgroundColor: '#f5f5f5', color: '#000' }}>
       <Typography variant="h6" gutterBottom>
         Estadísticas del Plan Alimenticio
       </Typography>

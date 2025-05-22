@@ -15,7 +15,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { startLoginWithUsernameAndPassword } from '../../store/auth/';
-import LogoOficial from '../../assets/LogoOficial.png';
+import LogoOficial from '../../assets/NutribyteSB.png';
 import CircularProgress from '@mui/material/CircularProgress';
 import Swal from 'sweetalert2';
 

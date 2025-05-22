@@ -22,7 +22,7 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
 
   return (
     <AppTheme>
-      <Box sx={{ display: 'flex' }} className='animate__animated animate__fadeIn animate__faster'>
+      <Box sx={{ display: 'flex', overflowX: 'hidden', overFlowY:'hidden' }} className='animate__animated animate__fadeIn animate__faster'  >
 
         <Navbar drawerWidth={drawerWidth} username={username} rol={rol} />
         <Sidebar drawerWidth={drawerWidth} username={username} rol={rol} planUsuario={planUsuario} />
@@ -33,7 +33,7 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
             flexGrow: 1,
             width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` },
             marginLeft: { sm: `${drawerWidth}px` },
-           paddingTop: { xs: 2, sm: 4 },
+            paddingTop: { xs: 2, sm: 4 },
             padding: 1,
             position: 'relative',
             opacity: opacidad,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, Typography, Link, Divider, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import LogoOficial from '../../assets/LogoBlanco.png';
+import LogoOficial from '../../assets/NutribyteSB.png';
 
 export const FooterSection = () => {
   const theme = useTheme();
@@ -84,7 +84,7 @@ export const FooterSection = () => {
               Contacto
             </Typography>
             <Typography variant="body2">
-              Email: <Link href="mailto:info@sintacc.com" color="inherit">sintacc.software@gmail.com</Link>
+              Email: <Link href="mailto:nutribite.software@gmail.com" color="inherit">nutribite.software@gmail.com</Link>
             </Typography>
             <Typography variant="body2">
               Teléfono: <Link href="tel:+5493512783658" color="inherit">(+54) 9 351 2783658</Link>
@@ -96,7 +96,7 @@ export const FooterSection = () => {
         <Divider sx={{ my: 4, backgroundColor: theme.palette.secondary.main }} />
 
         <Typography variant="body2" align="center">
-          &copy; {new Date().getFullYear()} SINTACC. Todos los derechos reservados.
+          &copy; {new Date().getFullYear()} NUTRIBITE. Todos los derechos reservados.
         </Typography>
       </Container>
     </footer>

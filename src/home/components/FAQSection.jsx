@@ -26,7 +26,7 @@ export const FAQSection = () => {
                 {
                     title: '¿Cuáles son las formas de pago disponibles?',
                     content:
-                        'Ambas versiones del sistema pueden abonarse mediante transferencia bancaria o a través de Mercado Pago. Para obtener los datos de pago, podés escribirnos a sintacc.software@gmail.com.'
+                        'Ambas versiones del sistema pueden abonarse mediante transferencia bancaria o a través de Mercado Pago. Para obtener los datos de pago, podés escribirnos a nutribite.software@gmail.com.'
                 },
                 {
                     title: '¿Puedo dar de baja mi usuario en cualquier momento?',

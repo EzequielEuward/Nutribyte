@@ -57,8 +57,8 @@ export const PlanChart = ({ alimentos }) => {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, height: 450 }}>
-            <Typography variant="subtitle1" gutterBottom>
+          <Paper sx={{ p: 2, height: 450 , backgroundColor: "#f5f5f5"}}>
+            <Typography variant="subtitle1" gutterBottom sx={{color: "#000"}}>
               Distribución de Macronutrientes
             </Typography>
             <Box sx={{ height: 350 }}>
@@ -67,11 +67,11 @@ export const PlanChart = ({ alimentos }) => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, height: 450 }}>
-            <Typography variant="subtitle1" gutterBottom>
+          <Paper sx={{ p: 2, height: 450 , backgroundColor: "#f5f5f5"}}>
+            <Typography variant="subtitle1" gutterBottom sx={{color: "#000"}}>
               Valores Totales del Plan
             </Typography>
-            <Box sx={{ height: 350 }}>
+            <Box sx={{ height: 350 ,}}>
               <Bar data={barData} options={chartOptions} />
             </Box>
           </Paper>

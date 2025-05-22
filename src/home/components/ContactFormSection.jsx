@@ -13,14 +13,15 @@ export const ContactFormSection = ({ onFormValidityChange }) => {
         e.preventDefault();
 
         if (validateForm()) {
-            const serviceId = "service_sqgvzyv";
-            const templateId = "template_2vneeai";
-            const publicKey = "Mo3yOmhJ4dF4wGsg5";
+            const serviceId = "service_h4trynq";
+            const templateId = "template_kfsw0kj";
+            const publicKey = "TUV-qDnUQB0ApBLDY";
 
             const formData = {
                 subject: `Consulta de ${nombre} ${apellido}`,
-                to_name: "Equipo de SINTACC",
-                from_name: `${nombre} ${apellido}`,
+                to_name: "Equipo de Nutribyte",
+                from_name: `${nombre}`,
+                from_surname: `${apellido}`,
                 from_email: email,
                 message: mensaje
             };
@@ -30,7 +31,7 @@ export const ContactFormSection = ({ onFormValidityChange }) => {
                 if (onFormValidityChange) onFormValidityChange(false);
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: `Se envió tu pregunta al mail de sintacc.software@gmail.com`,
+                    text: `Se envió tu pregunta al mail de nutribyte.software@gmail.com`,
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
                 }).then(() => {
@@ -124,7 +125,6 @@ export const ContactFormSection = ({ onFormValidityChange }) => {
 
         setErrors(prev => ({ ...prev, [name]: error }));
     };
-
 
     return (
         <Box id="contacto" py={{ xs: 6, md: 12 }} bgcolor="grey.100" textAlign="center">

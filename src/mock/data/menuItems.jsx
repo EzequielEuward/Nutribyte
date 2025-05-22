@@ -17,7 +17,7 @@ export const menuItems = [
     link: "/home/paciente",
     submenus: [
       { text: "Lista de pacientes", link: "/home/paciente/" },
-      { text: "Consulta", link: "/home/diagnostico" },
+      { text: "Consulta", link: "/home/consultas" },
     ],
   },
   {

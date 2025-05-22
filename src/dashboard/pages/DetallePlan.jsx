@@ -9,6 +9,7 @@ import {
   Chip,
   Box,
   Paper,
+  useTheme,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import { DashboardLayout } from "../layout/DashboardLayout";
@@ -72,6 +73,7 @@ export const DetallePlan = () => {
 
   const planUsuario = useSelector((state) => state.auth.planUsuario);
   const planKey = planUsuario?.trim();
+  const theme = useTheme();
   const planInfo = plans[planKey] || plans["Basico"];
   return (
     <DashboardLayout>
@@ -109,8 +111,9 @@ export const DetallePlan = () => {
               sx={{
                 p: 3,
                 mt: 4,
-                backgroundColor: "grey.100",
+                backgroundColor: theme.palette.background.paper,
                 borderRadius: 2,
+                border: `1px solid ${theme.palette.divider}`,
               }}
             >
               <Box
@@ -122,7 +125,9 @@ export const DetallePlan = () => {
                 }}
               >
                 <Box>
-                  <Typography variant="h6">¿Necesitás más funcionalidades?</Typography>
+                  <Typography variant="h6" color="text.primary">
+                    ¿Necesitás más funcionalidades?
+                  </Typography>
                   <Typography variant="body2" color="text.secondary" mt={0.5}>
                     Contactanos para conocer nuestros planes empresariales con características adicionales.
                   </Typography>
@@ -131,7 +136,7 @@ export const DetallePlan = () => {
                   variant="contained"
                   color="primary"
                   component="a"
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=sintacc.software@gmail.com&su=Consulta%20de%20soporte&body=Hola%20SINTACC,%0A%0ANecesito%20ayuda%20con..."
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=nutribyte.software@gmail.com&su=Consulta%20de%20soporte&body=Hola%20NUTRIBYTE,%0A%0ANecesito%20ayuda%20con...."
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{ ml: { md: "auto" }, mt: { xs: 1, md: 0 } }}

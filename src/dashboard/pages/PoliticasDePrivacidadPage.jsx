@@ -72,7 +72,7 @@ export const PoliticasDePrivacidadPage = () => {
         </Box>
 
         <Typography variant="body1" fontSize={18} mb={4}>
-          SINTACC respeta su privacidad y se compromete a protegerla. Esta política explica cómo recopilamos, usamos y
+          NUTRIBITE respeta su privacidad y se compromete a protegerla. Esta política explica cómo recopilamos, usamos y
           protegemos su información personal.
         </Typography>
 
@@ -103,8 +103,8 @@ export const PoliticasDePrivacidadPage = () => {
           </Typography>
           <Typography variant="body1">
             Si tiene preguntas sobre esta política, puede escribirnos a{' '}
-            <Link href="mailto:sintacc.software@gmail.com" color="primary">
-              sintacc.software@gmail.com
+            <Link href="mailto:nutribite.software@gmail.com" color="primary">
+              nutribite.software@gmail.com
             </Link>
             .
           </Typography>

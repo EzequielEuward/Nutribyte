@@ -42,7 +42,7 @@ export const DetailsDialogUser = ({ open, onClose, selectedUser }) => {
                             <Grid container spacing={2} sx={{ mt: 2 }}>
                                 <Grid item xs={6}><Typography variant="subtitle2" color="text.secondary">DNI</Typography><Typography>{selectedUser.persona.dni}</Typography></Grid>
                                 <Grid item xs={6}><Typography variant="subtitle2" color="text.secondary">Fecha de Nacimiento</Typography><Typography>{new Date(selectedUser.persona.fechaNacimiento).toLocaleDateString()}</Typography></Grid>
-                                <Grid item xs={6}><Typography variant="subtitle2" color="text.secondary">Sexo Biológico</Typography><Typography>{selectedUser.persona.sexoBiologico === 'M' ? 'Masculino' : 'Femenino'}</Typography></Grid>
+                                <Grid item xs={6}><Typography variant="subtitle2" color="text.secondary">Genero</Typography><Typography>{selectedUser.persona.sexoBiologico === 'M' ? 'Masculino' : 'Femenino'}</Typography></Grid>
                                 <Grid item xs={6}><Typography variant="subtitle2" color="text.secondary">Teléfono</Typography><Typography>{selectedUser.persona.telefono}</Typography></Grid>
                                 <Grid item xs={12}><Typography variant="subtitle2" color="text.secondary">Email</Typography><Typography>{selectedUser.persona.email}</Typography></Grid>
                                 <Typography variant="body1">

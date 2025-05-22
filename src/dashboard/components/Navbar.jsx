@@ -40,8 +40,8 @@ import { useNavigate } from "react-router-dom";
 import { startLogout } from "../../store/auth/";
 import { toggleDarkMode } from "../../store/ui/uiSlice";
 import { useQuotes } from "../../helpers/";
-import LogoBlanco from "../../assets/LogoBlanco.png";
-import LogoNegro from "../../assets/LogoNegro.png";
+import LogoBlanco from "../../assets/NutribyteSB.png";
+import LogoNegro from "../../assets/NutribyteSB.png";
 import Swal from "sweetalert2";
 
 export const Navbar = ({ drawerWidth = 240, username, rol }) => {
