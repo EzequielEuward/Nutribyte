@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Box, Typography, Button, Tooltip, Grid } from '@mui/material';
 import { styled, useTheme } from '@mui/system';
-import imgInicio from '../../assets/imagenInicio.png';
+import imgInicio from '../../assets/imagen.png';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { startLoginWithUsernameAndPassword } from "../../store/auth";
@@ -112,9 +112,10 @@ export const HeroSection = () => {
                         src={imgInicio}
                         alt="Vista de la aplicación"
                         sx={{
-                            width: '100%',
+                            width: '80%',
+                            marginTop: '90px',
                             height: 'auto',
-                            maxHeight: '100%',
+                            maxHeight: '80%',
                             objectFit: 'cover',
                             borderRadius: '8px',
                         }}
