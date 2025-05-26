@@ -17,7 +17,7 @@ import { DashboardLayout } from "../layout/DashboardLayout";
 const plans = {
   Basico: {
     nombre: "Básico",
-    precio: "$2.500 /mes",
+    precio: "$35.500 /mes",
     features: [
       "Pacientes limitados a 20",
       "Gestión de Turnos limitados a 30",
@@ -32,7 +32,7 @@ const plans = {
   },
   Premium: {
     nombre: "Premium",
-    precio: "$3.500 /mes",
+    precio: "$55.000 /mes",
     features: [
       "Pacientes ilimitados",
       "Gestión de Turnos ilimitados",
@@ -49,7 +49,7 @@ const plans = {
   },
   Elite: {
     nombre: "Elite",
-    precio: "$5.000 /mes",
+    precio: "$65.000 /mes",
     features: [
       "Pacientes ilimitados",
       "Gestión de Turnos ilimitados",

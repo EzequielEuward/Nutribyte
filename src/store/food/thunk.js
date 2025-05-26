@@ -15,10 +15,10 @@ export const listarAlimentos = createAsyncThunk(
   }
 );
 
-export const obtenerAlimentoPorId = createAsyncThunk ("alimentos/obtenerAlimentoPorId",
-    console.log("hola mundp")
-)
+// export const obtenerAlimentoPorId = createAsyncThunk ("alimentos/obtenerAlimentoPorId",
+//     console.log("a")
+// )
 
-export const crearAlimento = createAsyncThunk ("alimentos/obtenerId",
-    console.log("hola mundp")
-)
+// export const crearAlimento = createAsyncThunk ("alimentos/obtenerId",
+//     console.log("a")
+// )

@@ -43,7 +43,7 @@ export const AboutSection = () => {
       github: "https://github.com/LeoEuw",
       linkedin: "https://www.linkedin.com/in/leoeuw/",
       img: DeveloperAlejoImage,
-    },
+    },  
     {
       name: "Agustin Lopez",
       role: "Proyect Management",
@@ -63,7 +63,7 @@ export const AboutSection = () => {
           Acerca de los desarrolladores
         </Typography>
         <Typography variant="body1" color="textSecondary" maxWidth="sm" mx="auto" mb={4}>
-          S.I.N TACC fue desarrollada por un equipo de apasionados Analistas de Sistemas y Desarrolladores que trabajaron en conjunto para crear una herramienta que facilita la gestión nutricional de manera eficiente. El equipo detrás de esta solución incluye:
+          Nutribyte fue desarrollada por un equipo de apasionados Analistas de Sistemas y Desarrolladores que trabajaron en conjunto para crear una herramienta que facilita la gestión nutricional de manera eficiente. El equipo detrás de esta solución incluye:
         </Typography>
         <Grid container spacing={4} justifyContent="center">
           {developers.map((dev, index) => (

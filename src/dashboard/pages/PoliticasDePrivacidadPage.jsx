@@ -103,8 +103,8 @@ export const PoliticasDePrivacidadPage = () => {
           </Typography>
           <Typography variant="body1">
             Si tiene preguntas sobre esta política, puede escribirnos a{' '}
-            <Link href="mailto:nutribite.software@gmail.com" color="primary">
-              nutribite.software@gmail.com
+            <Link href="mailto:nutribyte.software@gmail.com" color="primary">
+              nutribyte.software@gmail.com
             </Link>
             .
           </Typography>

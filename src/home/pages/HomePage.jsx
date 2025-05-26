@@ -1,6 +1,18 @@
-import { AboutSection, HeroSection, NavBarHome, ContactFormSection, CaracterisitcasSection, PlanSection, FooterSection, FAQSection } from "../components";
-import {ScrollToTopButton} from "../components";
+import { motion } from "framer-motion";
+import {
+  AboutSection, HeroSection, NavBarHome, ContactFormSection,
+  CaracterisitcasSection, PlanSection, FooterSection,
+  FAQSection, NutritionistaCards, ScrollToTopButton, SliderSection,
+} from "../components";
 
+import {
+  fadeInTop,
+  fadeInBottom,
+  slideInLeft,
+  slideInRight,
+  fadeZoom,
+  fadeDelayed
+} from "../../constants/animations";
 
 export const HomePage = () => {
   return (
@@ -9,35 +21,42 @@ export const HomePage = () => {
         <NavBarHome />
       </header>
 
-      <section id="hero">
-        <HeroSection />
-      </section>
 
-      <section id="plans">
-        <PlanSection />
-      </section>
+      <HeroSection />
 
-      <section id="features">
+
+      <SliderSection />
+
+      <motion.section id="features" variants={slideInLeft} initial="hidden" whileInView="visible" viewport={{ once: true }}>
         <CaracterisitcasSection />
-      </section>
+      </motion.section>
 
-      <section id="contact">
+      <motion.section id="plans" variants={fadeInBottom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <PlanSection />
+      </motion.section>
+
+      <motion.section id="contact" variants={slideInRight}  whileInView="visible" viewport={{ once: true }}>
         <ContactFormSection />
-      </section>
+      </motion.section>
 
-      <section id="faq">
+
+      <motion.section id="faq" variants={fadeZoom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
         <FAQSection />
-      </section>
+      </motion.section>
 
-      <section id="about">
+      <motion.section id="about" variants={fadeInBottom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
         <AboutSection />
-      </section>
+      </motion.section>
 
-      <section id="about">
+      <motion.section id="nutritionists" variants={fadeDelayed} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+        <NutritionistaCards />
+      </motion.section>
+
+      <motion.section id="footer" variants={fadeInTop} initial="hidden" whileInView="visible" viewport={{ once: true }}>
         <FooterSection />
-      </section>
+      </motion.section>
 
-      <ScrollToTopButton /> 
+      <ScrollToTopButton />
     </>
   );
 };

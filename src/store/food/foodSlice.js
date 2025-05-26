@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { listarAlimentos, obtenerAlimentoPorId, crearAlimento } from "./thunk";
+import { listarAlimentos} from "./thunk";
 
 const storedFavorites = JSON.parse(localStorage.getItem("favoritos")) || [];
 
@@ -8,7 +8,7 @@ export const foodSlice = createSlice({
   initialState: {
     alimentos: [],
     alimento: null,
-    favoritos: storedFavorites, 
+    favoritos: storedFavorites,
     loading: false,
     error: null,
   },
@@ -41,30 +41,6 @@ export const foodSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(obtenerAlimentoPorId.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(obtenerAlimentoPorId.fulfilled, (state, action) => {
-        state.loading = false;
-        state.alimento = action.payload;
-      })
-      .addCase(obtenerAlimentoPorId.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(crearAlimento.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(crearAlimento.fulfilled, (state, action) => {
-        state.loading = false;
-        state.alimentos.push(action.payload);
-      })
-      .addCase(crearAlimento.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
   },
 });
 

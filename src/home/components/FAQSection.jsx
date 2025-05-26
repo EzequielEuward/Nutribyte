@@ -14,19 +14,19 @@ export const FAQSection = () => {
 
             {[
                 {
-                    title: '¿Qué es S.I.N TACC?',
+                    title: '¿Qué es NUTRIBYTE?',
                     content:
-                        'S.I.N TACC es una plataforma diseñada para profesionales de la salud que permite gestionar de forma eficiente la información nutricional de sus pacientes. Ofrece funcionalidades como la creación de planes alimentarios, seguimiento personalizado, control de evolución y mucho más.'
+                        'NUTRIBYTE es una plataforma diseñada para profesionales de la salud que permite gestionar de forma eficiente la información nutricional de sus pacientes. Ofrece funcionalidades como la creación de planes alimentarios, seguimiento personalizado, control de evolución y mucho más.'
                 },
                 {
                     title: '¿Cómo empiezo a usar la aplicación?',
                     content:
-                        'Para comenzar a utilizar S.I.N TACC, simplemente registrate como profesional de la salud. Una vez creado tu usuario, podrás acceder a todas las herramientas necesarias para gestionar pacientes, diseñar dietas y realizar seguimientos.'
+                        'Para comenzar a utilizar NUTRIBYTE, simplemente registrate como profesional de la salud. Una vez creado tu usuario, podrás acceder a todas las herramientas necesarias para gestionar pacientes, diseñar dietas y realizar seguimientos.'
                 },
                 {
                     title: '¿Cuáles son las formas de pago disponibles?',
                     content:
-                        'Ambas versiones del sistema pueden abonarse mediante transferencia bancaria o a través de Mercado Pago. Para obtener los datos de pago, podés escribirnos a nutribite.software@gmail.com.'
+                        'Ambas versiones del sistema pueden abonarse mediante transferencia bancaria o a través de Mercado Pago. Para obtener los datos de pago, podés escribirnos a nutribyte.software@gmail.com.'
                 },
                 {
                     title: '¿Puedo dar de baja mi usuario en cualquier momento?',
@@ -34,9 +34,9 @@ export const FAQSection = () => {
                         'Sí. No existe ningún tipo de contrato obligatorio. Podés dar de baja tu cuenta en el momento que desees. Si en el futuro decidís retomar, podrás reactivar tu cuenta y continuar trabajando con toda la información previamente cargada.'
                 },
                 {
-                    title: '¿S.I.N TACC funciona en cualquier sistema operativo?',
+                    title: '¿NUTRIBYTE funciona en cualquier sistema operativo?',
                     content:
-                        'Sí. La versión web de S.I.N TACC es compatible con todos los sistemas operativos. Solo necesitás un navegador web moderno para acceder. Recomendamos utilizar Google Chrome para una mejor experiencia.'
+                        'Sí. La versión web de NUTRIBYTE es compatible con todos los sistemas operativos. Solo necesitás un navegador web moderno para acceder. Recomendamos utilizar Google Chrome para una mejor experiencia.'
                 },
                 {
                     title: '¿Puedo enviar información por e-mail desde la plataforma?',
@@ -44,9 +44,9 @@ export const FAQSection = () => {
                         'Sí. La plataforma permite enviar por correo electrónico distintos documentos como planes alimentarios, registros diarios de alimentos, glucemia o actividad física, curvas de peso, recetas y otros archivos en formato Word o PDF que el profesional considere necesarios.'
                 },
                 {
-                    title: '¿Qué medidas de seguridad ofrece S.I.N TACC para proteger los datos del paciente?',
+                    title: '¿Qué medidas de seguridad ofrece NUTRIBYTE para proteger los datos del paciente?',
                     content:
-                        'S.I.N TACC cuenta con autenticación de doble factor (2FA) para mayor seguridad, y todos los datos se almacenan en servidores encriptados con acceso restringido exclusivamente al profesional autorizado.'
+                        'NUTRIBYTE cuenta con autenticación de doble factor (2FA) para mayor seguridad, y todos los datos se almacenan en servidores encriptados con acceso restringido exclusivamente al profesional autorizado.'
                 }
             ].map((faq, index) => (
                 <Accordion

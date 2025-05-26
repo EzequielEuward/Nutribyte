@@ -117,6 +117,19 @@ export const getMockVersions = () => {
       longDescription:
         "Se agregaron nuevas modficaciónes y cambios en funcionamiento",
     },
+      {
+      id: "v1.4.8",
+      date: "2025-05-12",
+      time: "16:30",
+      author: "Euward Ezequiel",
+      authorAvatar: "/../../../assets/eze.jpg",
+      authorInitials: "EE",
+      changes: 4,
+      status: "stable",
+      shortDescription: "Segunda versión estable de lanzamiento",
+      longDescription:
+        "Se agregaron nuevas modficaciónes y cambios en funcionamiento",
+    },
 
   ]);
 };

@@ -1,3 +1,39 @@
+//TODOS
+✅ Terminada
+🚧 En construcción
+❌ No empezada
+📌 Fija
+👀 Ver
+
+//Backlog de tareas
+✅ Agregar copilot en vscode
+✅ Instalar extenciones de google 
+✅ Sacar el proyecto que se armo al instalar unlighthouse (yarn remove unlighthouse)
+🚧 Buscar ideas de que se pone en el readme
+👀 Ver tema de pagos
+👀 Ver tema de cobros
+👀 Ver tema de medio de pago por tercero
+👀 Ver lo de followup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ✅ Justificación técnica y buenas prácticas en la organización de rutas
 
 🎯 1. Separación por dominios funcionales

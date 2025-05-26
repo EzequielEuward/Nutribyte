@@ -1,10 +1,20 @@
 import React from 'react';
-import { Container, Grid, Typography, Link, Divider, Box } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import {
+  Container,
+  Grid,
+  Typography,
+  Link,
+  Divider,
+  Box,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
 import LogoOficial from '../../assets/NutribyteSB.png';
 
 export const FooterSection = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <footer
       style={{
@@ -14,13 +24,24 @@ export const FooterSection = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={4}>
+        <Grid container spacing={4} alignItems="flex-start">
+          {/* Sección Sobre + Logo */}
           <Grid item xs={12} md={4}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: isMobile ? 'column' : 'row',
+                alignItems: isMobile ? 'center' : 'flex-start',
+                textAlign: isMobile ? 'center' : 'left',
+              }}
+            >
               <Typography variant="h5" gutterBottom>
                 Sobre
               </Typography>
-              <img
+              <Box
+                component="img"
+                src={LogoOficial}
+                alt="Logo"
                 onClick={() => {
                   const section = document.getElementById('hero');
                   if (section) {
@@ -28,75 +49,70 @@ export const FooterSection = () => {
                     window.history.replaceState(null, '', window.location.pathname);
                   }
                 }}
-
-                src={LogoOficial}
-                alt="Logo"
-                style={{
-                  width: '200px',
+                sx={{
+                  maxWidth: 150,
                   height: 'auto',
-                  objectFit: 'contain',
-                  marginLeft: '1rem',
-                  marginBottom: '8px',
-                  cursor: "pointer",
+                  mt: isMobile ? 1 : 0,
+                  ml: isMobile ? 0 : 2,
+                  cursor: 'pointer',
                 }}
               />
             </Box>
-            <Typography variant="body2">
+            <Typography variant="body2" mt={2}>
               Transformando vidas a través de la nutrición personalizada y el bienestar integral.
             </Typography>
           </Grid>
 
+          {/* Enlaces */}
           <Grid item xs={12} md={4}>
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h5" gutterBottom textAlign={isMobile ? 'center' : 'left'}>
               Enlaces rápidos
             </Typography>
-            <ul style={{ padding: 0, listStyle: 'none' }}>
-              <li>
-                <Link href="/" color="inherit" underline="hover">Inicio</Link>
-              </li>
-              <li>
-                <Link href="/terminos-y-condiciones" color="inherit" underline="hover">
-                  Términos y Condiciones
-                </Link>
-              </li>
-              <li>
-                <Link href="/politica-de-privacidad" color="inherit" underline="hover">
-                  Politica de privacidad
-                </Link>
-              </li>
-              <li>
-                <Link href="#caracteristicas" color="inherit" underline="hover">Características</Link>
-              </li>
-              <li>
-                <Link href="#planes" color="inherit" underline="hover">Planes</Link>
-              </li>
-              <li>
-                <Link href="#contacto" color="inherit" underline="hover">Contacto</Link>
-              </li>
-              <li>
-                <Link href="#FAQ" color="inherit" underline="hover">FAQ</Link>
-              </li>
-            </ul>
+            <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0, textAlign: isMobile ? 'center' : 'left' }}>
+              {[
+                { text: 'Inicio', href: '/' },
+                { text: 'Términos y Condiciones', href: '/terminos-y-condiciones' },
+                { text: 'Política de Privacidad', href: '/politica-de-privacidad' },
+                { text: 'Características', href: '#caracteristicas' },
+                { text: 'Planes', href: '#planes' },
+                { text: 'Contacto', href: '#contacto' },
+                { text: 'FAQ', href: '#FAQ' },
+              ].map((link, i) => (
+                <li key={i} style={{ marginBottom: 4 }}>
+                  <Link href={link.href} color="inherit" underline="hover">
+                    {link.text}
+                  </Link>
+                </li>
+              ))}
+            </Box>
           </Grid>
 
+          {/* Contacto */}
           <Grid item xs={12} md={4}>
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h5" gutterBottom textAlign={isMobile ? 'center' : 'left'}>
               Contacto
             </Typography>
-            <Typography variant="body2">
-              Email: <Link href="mailto:nutribite.software@gmail.com" color="inherit">nutribite.software@gmail.com</Link>
-            </Typography>
-            <Typography variant="body2">
-              Teléfono: <Link href="tel:+5493512783658" color="inherit">(+54) 9 351 2783658</Link>
-            </Typography>
+            <Box textAlign={isMobile ? 'center' : 'left'}>
+              <Typography variant="body2">
+                Email:{' '}
+                <Link href="mailto:nutribite.software@gmail.com" color="inherit">
+                  nutribite.software@gmail.com
+                </Link>
+              </Typography>
+              <Typography variant="body2">
+                Teléfono:{' '}
+                <Link href="tel:+5493512783658" color="inherit">
+                  (+54) 9 351 2783658
+                </Link>
+              </Typography>
+            </Box>
           </Grid>
-
         </Grid>
 
         <Divider sx={{ my: 4, backgroundColor: theme.palette.secondary.main }} />
 
         <Typography variant="body2" align="center">
-          &copy; {new Date().getFullYear()} NUTRIBITE. Todos los derechos reservados.
+          &copy; {new Date().getFullYear()} NUTRIBYTE. Todos los derechos reservados.
         </Typography>
       </Container>
     </footer>

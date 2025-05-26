@@ -38,7 +38,6 @@ export const VersionPage = () => {
 
     const theme = useTheme();
 
-    // Carga los datos del mock al montar el componente
     useEffect(() => {
         const fetchVersions = async () => {
             const data = await getMockVersions();
@@ -214,7 +213,7 @@ export const VersionPage = () => {
                                     <IconButton
                                         size="small"
                                         onClick={(e) => {
-                                            e.stopPropagation(); // Evita que se expanda al hacer click en el icono
+                                            e.stopPropagation(); 
                                         }}
                                     >
                                         <MoreHorizontal />

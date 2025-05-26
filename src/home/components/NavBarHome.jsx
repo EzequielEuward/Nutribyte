@@ -44,11 +44,13 @@ export const NavBarHome = () => {
 
   const menuItems = [
     { text: "Inicio", id: "hero" },
-    { text: "Plan", id: "plans" },
+    { text: "Explorar", id: "slider" },
     { text: "Características", id: "features" },
+    { text: "Planes", id: "plans" },
     { text: "Contáctanos", id: "contact" },
-    { text: "Preguntas", id: "faq" },
+    { text: "FAQ", id: "faq" },
     { text: "Acerca de", id: "about" },
+    { text: "Nutricionistas", id: "nutritionists" },
   ];
 
   const scrollToSection = (id) => {
@@ -79,7 +81,7 @@ export const NavBarHome = () => {
       elevation={isScrolled ? 4 : 0}
       sx={{
         backgroundColor: isScrolled
-          ? "rgba(255, 255, 255, 0.01)" 
+          ? "rgba(255, 255, 255, 0.01)"
           : theme.palette.background.paper, // al inicio: blanco sólido
         backdropFilter: isScrolled ? "blur(6px)" : "none",
         transition: "background-color 0.3s ease, backdrop-filter 0.3s ease",
@@ -87,7 +89,7 @@ export const NavBarHome = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+        <Toolbar disableGutters sx={{ justifyContent: "space-between", alignItems: "center", minHeight: { xs: 64, md: 80 } }}>
           {/* LOGO */}
           <Box display="flex" alignItems="center" sx={{ cursor: "pointer" }} onClick={() => scrollToSection("hero")}>
             <img
@@ -95,9 +97,8 @@ export const NavBarHome = () => {
               alt="Logo"
               style={{
                 maxWidth: "500px",
-                height: "80px",
+                height: "70px",
                 objectFit: "contain",
-               
               }}
             />
           </Box>
@@ -118,7 +119,18 @@ export const NavBarHome = () => {
             ))}
           </Box>
 
-          {/* LOGIN BUTTON */}
+          {/* HAMBURGER - Mobile */}
+          <Box display={{ xs: "flex", md: "none" }}>
+            <IconButton
+              color="inherit"
+              aria-label="Toggle menu"
+              onClick={handleDrawerToggle}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
+
+          {/* LOGIN BUTTON - Desktop */}
           <Box display={{ xs: "none", md: "block" }} ml="auto">
             <Button
               variant="contained"
@@ -140,16 +152,6 @@ export const NavBarHome = () => {
               Iniciar sesión
             </Button>
           </Box>
-
-          {/* HAMBURGER MENU - Mobile */}
-          <IconButton
-            color="inherit"
-            aria-label="Toggle menu"
-            onClick={handleDrawerToggle}
-            sx={{ display: { xs: "flex", md: "none" }, ml: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
         </Toolbar>
       </Container>
 
