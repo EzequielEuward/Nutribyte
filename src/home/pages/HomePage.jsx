@@ -22,10 +22,9 @@ export const HomePage = () => {
       </header>
 
 
-      <HeroSection />
+      <HeroSection id="hero"/>
 
-
-      <SliderSection />
+      <SliderSection id="slider" />
 
       <motion.section id="features" variants={slideInLeft} initial="hidden" whileInView="visible" viewport={{ once: true }}>
         <CaracterisitcasSection />

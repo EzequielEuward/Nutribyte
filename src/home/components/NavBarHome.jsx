@@ -24,7 +24,6 @@ export const NavBarHome = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Detectar si hizo scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
