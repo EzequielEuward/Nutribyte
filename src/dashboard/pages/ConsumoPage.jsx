@@ -272,8 +272,6 @@ export const ConsumoPage = () => {
                                 </Card>
                             </Grid>
 
-                            {/* Formulario para nuevo consumo */}
-                            {/* Formulario para nuevo consumo + botón de hábitos */}
                             <Grid item xs={12}>
                                 <Card variant="outlined">
                                     <CardHeader
@@ -294,7 +292,7 @@ export const ConsumoPage = () => {
                                                         Swal.fire("Atención", "Primero debes registrar un consumo para este paciente.", "warning");
                                                         return;
                                                     }
-                                                    const url = `http://localhost:5173/habitos-y-consumos?idUser=${idUser}&idPaciente=${paciente.idPaciente}&idConsumo=${ultimoConsumo.idConsumo}`;
+                                                    const url = `https://nutribyte.netlify.app/habitos-y-consumos?idUser=${idUser}&idPaciente=${paciente.idPaciente}&idConsumo=${ultimoConsumo.idConsumo}`;
                                                     navigator.clipboard.writeText(url);
                                                     window.open(url, "_blank");
                                                 }}
