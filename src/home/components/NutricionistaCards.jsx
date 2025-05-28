@@ -66,11 +66,13 @@ export const NutritionistaCards = () => {
 
                     <Grid container spacing={4} justifyContent="center">
                         {nutritionists.map((nutritionist) => (
-                            <Grid item xs={12} sm={6} md={4} key={nutritionist.id}>
+                            <Grid item xs={12} sm={6} md={4} key={nutritionist.id} sx={{ display: 'flex' }}>
                                 <Card
                                     sx={{
-                                        maxWidth: 300,
-                                        mx: 'auto',
+                                        width: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'space-between',
                                         transition: 'transform 0.3s',
                                         '&:hover': { transform: 'scale(1.03)' },
                                     }}

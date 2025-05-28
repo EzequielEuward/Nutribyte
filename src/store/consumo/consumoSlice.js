@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { listarConsumosPorUsuario, buscarPacientePorDni, obtenerConsumoPorId, listarConsumosPorPaciente, crearConsumo, editarConsumo, eliminarConsumo } from './thunk';
+import { listarConsumosPorUsuario, buscarPacientePorDni, obtenerConsumoPorId, listarConsumosPorPaciente, listarHabitosPorPaciente, crearConsumo, editarConsumo, crearConsumoHabito, eliminarConsumo } from './thunk';
 
 const initialState = {
   consumos: [],
@@ -51,6 +51,32 @@ const slice = createSlice({
       .addCase(editarConsumo.fulfilled, (state, action) => {
         const index = state.consumos.findIndex(c => c.idConsumo === action.payload.idConsumo);
         if (index >= 0) state.consumos[index] = action.payload;
+      })
+      .addCase(crearConsumoHabito.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(crearConsumoHabito.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (state.consumoSeleccionado) {
+          state.consumoSeleccionado.consumoHabitos = action.payload;
+        }
+      })
+      .addCase(crearConsumoHabito.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(listarHabitosPorPaciente.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(listarHabitosPorPaciente.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.habitos = action.payload;
+      })
+      .addCase(listarHabitosPorPaciente.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       })
       .addCase(eliminarConsumo.fulfilled, (state, action) => {
         state.consumos = state.consumos.filter(c => c.idConsumo !== action.payload);

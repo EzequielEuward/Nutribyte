@@ -21,10 +21,13 @@ export const HomePage = () => {
         <NavBarHome />
       </header>
 
+      <section id="hero">
+        <HeroSection />
+      </section>
 
-      <HeroSection id="hero"/>
-
-      <SliderSection id="slider" />
+      <section id="slider">
+        <SliderSection />
+      </section>
 
       <motion.section id="features" variants={slideInLeft} initial="hidden" whileInView="visible" viewport={{ once: true }}>
         <CaracterisitcasSection />
@@ -34,10 +37,9 @@ export const HomePage = () => {
         <PlanSection />
       </motion.section>
 
-      <motion.section id="contact" variants={slideInRight}  whileInView="visible" viewport={{ once: true }}>
+      <motion.section id="contact" variants={slideInRight} whileInView="visible" viewport={{ once: true }}>
         <ContactFormSection />
       </motion.section>
-
 
       <motion.section id="faq" variants={fadeZoom} initial="hidden" whileInView="visible" viewport={{ once: true }}>
         <FAQSection />

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'; // Importar useSelector
 import { HomePage } from '../home/pages/HomePage';
 import { AuthRouter } from '../auth/routes/AuthRouter';
 import { DashboardRouter } from '../dashboard/routes/DashboardRouter';
-import { FormularioHistorial } from '../helpers/FormularioHistorial';
+import { FormularioConsumoHabitos } from '../helpers/FormularioConsumoHabitos';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { PlanesContacto } from '../dashboard/pages/PlanesContacto';
 import { RouteTracker } from '../helpers';
@@ -41,7 +41,7 @@ export const AppRouter = () => {
         <Route path="/Verificar-Cuenta" element={<VerificarCuentaPage />} />
 
         {/* Otras rutas */}
-        <Route path="/formulario-historial-peso" element={<FormularioHistorial />} />
+        <Route path="/habitos-y-consumos" element={<FormularioConsumoHabitos />} />
 
         <Route path="/terminos-y-condiciones" element={<TerminosCondicionesPage />} />
         <Route path="/politica-de-privacidad" element={<PoliticasDePrivacidadPage />} />

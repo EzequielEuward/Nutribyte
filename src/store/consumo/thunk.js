@@ -2,7 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_CONSUMO = "https://sintacc-api-deploy.azurewebsites.net/api/Consumo";
-const API_PACIENTES ="https://sintacc-api-deploy.azurewebsites.net/api/Pacientes";
+const API_PACIENTES = "https://sintacc-api-deploy.azurewebsites.net/api/Pacientes";
+const API_CONSUMO_HABITOS = "https://localhost:7041/api/ConsumoHabitos";
 
 
 //Buscar paciente por dni pero de consumo
@@ -13,7 +14,7 @@ export const buscarPacientePorDni = createAsyncThunk(
       const { auth } = getState();
       if (!auth?.uid) return rejectWithValue("Usuario no autenticado");
 
-     
+
 
       const response = await axios.get(`${API_PACIENTES}/${auth.uid}/dni/${dni}`);
 
@@ -126,6 +127,33 @@ export const eliminarConsumo = createAsyncThunk(
 
       await axios.delete(`${API_CONSUMO}/${userId}/${idConsumo}`);
       return idConsumo;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+// Crear consumo de hábitos
+// POST 
+export const crearConsumoHabito = createAsyncThunk(
+  'consumoHabitos/crear',
+  async (habito, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(`${API_CONSUMO_HABITOS}`, habito);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+// GET
+export const listarHabitosPorPaciente = createAsyncThunk(
+  'consumoHabitos/listarPorPaciente',
+  async ({ idUser, idPaciente }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${API_CONSUMO_HABITOS}/Paciente/${idUser}/${idPaciente}`);
+      return data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }

@@ -40,6 +40,7 @@ export const ConsumoPage = () => {
     const navigate = useNavigate()
     const pacientesList = useSelector(state => state.patients.pacientes || []);
     const { consumos, isLoading, error } = useSelector((state) => state.consumo);
+    const { uid: idUser } = useSelector((state) => state.auth);
 
     //Manejo de estados
     const [dni, setDni] = useState("");
@@ -48,6 +49,7 @@ export const ConsumoPage = () => {
     const [activeTab, setActiveTab] = useState("consumos");
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [selectedConsumo, setSelectedConsumo] = useState(null);
+    const ultimoConsumo = consumos.length > 0 ? consumos[consumos.length - 1] : null;
 
 
     //Manejo de efectos
@@ -271,6 +273,7 @@ export const ConsumoPage = () => {
                             </Grid>
 
                             {/* Formulario para nuevo consumo */}
+                            {/* Formulario para nuevo consumo + botón de hábitos */}
                             <Grid item xs={12}>
                                 <Card variant="outlined">
                                     <CardHeader
@@ -282,6 +285,31 @@ export const ConsumoPage = () => {
                                     />
                                     <CardContent>
                                         <FormularioNuevoConsumo onSubmit={handleCrearConsumo} />
+
+                                        {/* 🔘 BOTÓN PARA COPIAR Y ABRIR FORMULARIO DE HÁBITOS */}
+                                        <Box display="flex" justifyContent="flex-end" mt={3}>
+                                            <IconButton
+                                                onClick={() => {
+                                                    if (!ultimoConsumo) {
+                                                        Swal.fire("Atención", "Primero debes registrar un consumo para este paciente.", "warning");
+                                                        return;
+                                                    }
+                                                    const url = `http://localhost:5173/habitos-y-consumos?idUser=${idUser}&idPaciente=${paciente.idPaciente}&idConsumo=${ultimoConsumo.idConsumo}`;
+                                                    navigator.clipboard.writeText(url);
+                                                    window.open(url, "_blank");
+                                                }}
+                                                color="primary"
+                                                sx={{
+                                                    bgcolor: '#e0f7fa',
+                                                    '&:hover': { bgcolor: '#b2ebf2' },
+                                                    px: 2,
+                                                    borderRadius: 2
+                                                }}
+                                            >
+                                                <AddIcon sx={{ mr: 1 }} />
+                                                <Typography variant="body2">Enviar Formulario de Hábitos</Typography>
+                                            </IconButton>
+                                        </Box>
                                     </CardContent>
                                 </Card>
                             </Grid>
