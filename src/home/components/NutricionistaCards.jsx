@@ -19,7 +19,7 @@ const nutritionists = [
         name: 'Lic. Pamela Guadalupe Cabral',
         specialty: 'Nutrición Clínica y Diabetes',
         matricula: 'MP 4657',
-        image: '/placeholder.svg?height=250&width=250',
+        image: 'https://i.imgur.com/jHFZNMj.png',
         description:
             'Especialista en psiconutrición y trastorno de la conducta alimentaria.',
         diplomatura: 'Diplomada en diabesidad, sobrepeso y obesidad',
