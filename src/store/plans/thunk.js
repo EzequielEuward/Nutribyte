@@ -139,3 +139,34 @@ export const eliminarPlanAlimenticio = createAsyncThunk(
     }
   }
 );
+
+export const obtenerUltimoPlanPorPaciente = createAsyncThunk(
+  "planes/obtenerUltimoPlanPorPaciente",
+  async ({ idPaciente }, { rejectWithValue, getState }) => {
+    try {
+      const { auth } = getState();
+      const idUsuario = auth?.uid;
+
+      if (!idUsuario) return rejectWithValue("Usuario no autenticado");
+
+      const response = await axios.get(`${API_PLAN}/${idUsuario}`);
+      const todosLosPlanes = response.data;
+
+      // Filtramos por paciente
+      const planesPaciente = todosLosPlanes.filter(p => p.idPaciente === idPaciente);
+
+      if (planesPaciente.length === 0) return null;
+
+      const ultimoPlan = planesPaciente.sort((a, b) => new Date(b.fechaInicio) - new Date(a.fechaInicio))[0];
+
+      return ultimoPlan;
+
+    } catch (error) {
+      return rejectWithValue(
+        typeof error.response?.data === "string"
+          ? error.response.data
+          : error.response?.data?.title || error.message
+      );
+    }
+  }
+);

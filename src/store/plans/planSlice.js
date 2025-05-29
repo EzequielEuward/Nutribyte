@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { crearPlanAlimenticio, buscarPacientePorDni, obtenerAlimentos, obtenerPlanesPorNutricionista, editarPlanAlimenticio, eliminarPlanAlimenticio } from "./thunk";
+import { crearPlanAlimenticio, buscarPacientePorDni, obtenerAlimentos, obtenerUltimoPlanPorPaciente, obtenerPlanesPorNutricionista, editarPlanAlimenticio, eliminarPlanAlimenticio } from "./thunk";
 
 const initialState = {
   paciente: null,
   plan: null,
-  planes: [], // Nuevo estado para almacenar todos los planes
+  planes: [],
+  ultimoPlan: null,
   alimentos: [],
   isLoading: false,
-  isLoadingPlanes: false, // Estado de carga específico para planes
+  isLoadingPlanes: false,
   isLoadingAlimentos: false,
   error: null,
-  errorPlanes: null, // Error específico para planes
+  errorPlanes: null,
   errorAlimentos: null,
 };
 
@@ -75,6 +76,18 @@ export const planSlice = createSlice({
       .addCase(obtenerAlimentos.rejected, (state, action) => {
         state.isLoadingAlimentos = false;
         state.errorAlimentos = action.payload || "Error al obtener alimentos";
+      })
+      .addCase(obtenerUltimoPlanPorPaciente.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(obtenerUltimoPlanPorPaciente.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.ultimoPlan = action.payload;
+      })
+      .addCase(obtenerUltimoPlanPorPaciente.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Error al obtener el último plan alimenticio";
       })
 
       .addCase(obtenerPlanesPorNutricionista.pending, (state) => {

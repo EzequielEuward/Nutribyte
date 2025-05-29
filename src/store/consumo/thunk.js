@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API_CONSUMO = "https://sintacc-api-deploy.azurewebsites.net/api/Consumo";
 const API_PACIENTES = "https://sintacc-api-deploy.azurewebsites.net/api/Pacientes";
-const API_CONSUMO_HABITOS = "https://localhost:7041/api/ConsumoHabitos";
+const API_CONSUMO_HABITOS = "https://sintacc-api-deploy.azurewebsites.net/api/ConsumoHabitos";
 
 
 //Buscar paciente por dni pero de consumo
@@ -134,18 +134,7 @@ export const eliminarConsumo = createAsyncThunk(
 );
 
 // Crear consumo de hábitos
-// POST 
-export const crearConsumoHabito = createAsyncThunk(
-  'consumoHabitos/crear',
-  async (habito, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.post(`${API_CONSUMO_HABITOS}`, habito);
-      return data;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || err.message);
-    }
-  }
-);
+
 
 // GET
 export const listarHabitosPorPaciente = createAsyncThunk(
@@ -154,6 +143,47 @@ export const listarHabitosPorPaciente = createAsyncThunk(
     try {
       const { data } = await axios.get(`${API_CONSUMO_HABITOS}/Paciente/${idUser}/${idPaciente}`);
       return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+// POST 
+export const crearConsumoHabito = createAsyncThunk(
+  'consumo/crearHabito',
+  async ({ idConsumo, habito }, { rejectWithValue }) => {
+    try {
+      const payload = { ...habito, idConsumo };
+      const { data } = await axios.post(`${API_CONSUMO_HABITOS}`, payload);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+export const listarConsumosConHabitos = createAsyncThunk(
+  'consumo/listarConHabitos',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const userId = auth?.uid;
+      if (!userId) throw new Error('Usuario no autenticado');
+
+      const { data: consumos } = await axios.get(`${API_CONSUMO}/Usuario/${userId}`);
+      const consumosConHabitos = await Promise.all(
+        consumos.map(async (consumo) => {
+          try {
+            const { data: habito } = await axios.get(`${API_CONSUMO_HABITOS}/byConsumo/${consumo.idConsumo}`);
+            return { ...consumo, consumoHabitos: habito };
+          } catch (error) {
+            return consumo;
+          }
+        })
+      );
+
+      return consumosConHabitos;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }

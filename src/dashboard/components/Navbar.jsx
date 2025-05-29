@@ -28,6 +28,7 @@ import {
   LightbulbOutlined,
   Menu as MenuIcon,
 } from "@mui/icons-material";
+import Diversity1Icon from '@mui/icons-material/Diversity1';
 import PaymentIcon from "@mui/icons-material/Payment";
 import InfoIcon from "@mui/icons-material/Info";
 import SecurityIcon from "@mui/icons-material/Security";
@@ -234,6 +235,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
             <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/informacion-planes")}><ListItemIcon><InfoIcon /></ListItemIcon><ListItemText primary="Información del plan" /></ListItemButton></ListItem>
             <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/medidas-de-seguridad")}><ListItemIcon><SecurityIcon /></ListItemIcon><ListItemText primary="Medidas de seguridad" /></ListItemButton></ListItem>
             <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/configuracion")}><ListItemIcon><SettingsOutlined /></ListItemIcon><ListItemText primary="Ajustes" /></ListItemButton></ListItem>
+            <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/respaldo-profesional")}><ListItemIcon><Diversity1Icon /></ListItemIcon><ListItemText primary="Aval nutricional" /></ListItemButton></ListItem>
             <ListItem disablePadding><ListItemButton onClick={handleLogout}><ListItemIcon><LogoutOutlined /></ListItemIcon><ListItemText primary="Cerrar sesión" /></ListItemButton></ListItem>
           </List>
         </Box>

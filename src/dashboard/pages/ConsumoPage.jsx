@@ -21,16 +21,20 @@ import AddIcon from "@mui/icons-material/Add";
 import DashboardLayout from "../layout/DashboardLayout";
 
 import { listarPacientes } from "../../store/patient/";
-import { buscarPacientePorDni, listarConsumosPorUsuario, crearConsumo, eliminarConsumo, editarConsumo, listarConsumosPorPaciente } from "../../store/consumo/thunk";
+import {
+    buscarPacientePorDni, listarConsumosPorUsuario, crearConsumo, eliminarConsumo, listarConsumosConHabitos, editarConsumo,
+    listarConsumosPorPaciente
+} from "../../store/consumo/thunk";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ScrollToTopButton } from "../../home/components";
-import { TablaConsumosPaciente, FormularioNuevoConsumo, ListaConsumosAccordion, FormularioEditarConsumo, TablaConsumo } from "../components/consumo/";
+import { TablaConsumosPaciente, FormularioNuevoConsumo, ListaConsumosAccordion, FormularioEditarConsumo, TablaConsumo, TablaUltimoPlan } from "../components/consumo/";
 
 
 import { PatientSearchCard } from "../components/planes/"
 import { ConsejosRapidos, PatientInfoCardConsulta } from "../components/consultas/";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
+import { obtenerUltimoPlanPorPaciente } from "../../store/plans";
 
 export const ConsumoPage = () => {
 
@@ -51,13 +55,9 @@ export const ConsumoPage = () => {
     const [selectedConsumo, setSelectedConsumo] = useState(null);
     const ultimoConsumo = consumos.length > 0 ? consumos[consumos.length - 1] : null;
 
-
-    //Manejo de efectos
     useEffect(() => {
         dispatch(listarPacientes());
-
-        dispatch(listarConsumosPorUsuario())
-
+        dispatch(listarConsumosConHabitos());
     }, [dispatch]);
 
     useEffect(() => {
@@ -92,8 +92,9 @@ export const ConsumoPage = () => {
         dispatch(buscarPacientePorDni(dniValido))
             .unwrap()
             .then((pac) => {
-                setPaciente(pac); // ✅ setear paciente
+                setPaciente(pac);
                 setStep("creacion");
+                dispatch(obtenerUltimoPlanPorPaciente({ idPaciente: pac.idPaciente }));
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -262,6 +263,18 @@ export const ConsumoPage = () => {
                                         titleTypographyProps={{ variant: "h5" }}
                                     />
                                     <CardContent>
+                                        <Grid item xs={12}>
+                                            <Card variant="outlined">
+                                                <CardHeader title="Último Plan Alimenticio del Paciente" />
+                                                <CardContent>
+                                                    <TablaUltimoPlan
+                                                        onViewPlan={(plan) => console.log("ver", plan)}
+                                                        onEditPlan={(plan) => console.log("editar", plan)}
+                                                        onDeletePlan={(idPlan) => console.log("eliminar", idPlan)}
+                                                    />
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
                                         <ListaConsumosAccordion
                                             consumos={consumos}
                                             onEdit={handleOpenEdit}
@@ -283,16 +296,12 @@ export const ConsumoPage = () => {
                                     />
                                     <CardContent>
                                         <FormularioNuevoConsumo onSubmit={handleCrearConsumo} />
-
+                                        {/* //ESTE BOTON NO IRIA */}
                                         {/* 🔘 BOTÓN PARA COPIAR Y ABRIR FORMULARIO DE HÁBITOS */}
                                         <Box display="flex" justifyContent="flex-end" mt={3}>
                                             <IconButton
                                                 onClick={() => {
-                                                    if (!ultimoConsumo) {
-                                                        Swal.fire("Atención", "Primero debes registrar un consumo para este paciente.", "warning");
-                                                        return;
-                                                    }
-                                                    const url = `https://nutribyte.netlify.app/habitos-y-consumos?idUser=${idUser}&idPaciente=${paciente.idPaciente}&idConsumo=${ultimoConsumo.idConsumo}`;
+                                                    const url = `http://localhost:5173/habitos-y-consumos?idUser=${idUser}&idPaciente=${paciente.idPaciente}&idConsumo=${consumo.idConsumo}`;
                                                     navigator.clipboard.writeText(url);
                                                     window.open(url, "_blank");
                                                 }}
@@ -301,11 +310,12 @@ export const ConsumoPage = () => {
                                                     bgcolor: '#e0f7fa',
                                                     '&:hover': { bgcolor: '#b2ebf2' },
                                                     px: 2,
-                                                    borderRadius: 2
+                                                    borderRadius: 2,
+                                                    mt: 1
                                                 }}
                                             >
                                                 <AddIcon sx={{ mr: 1 }} />
-                                                <Typography variant="body2">Enviar Formulario de Hábitos</Typography>
+                                                <Typography variant="body2">Formulario de Hábitos</Typography>
                                             </IconButton>
                                         </Box>
                                     </CardContent>

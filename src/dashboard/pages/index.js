@@ -10,6 +10,7 @@ export * from './DetallePlan';
 export * from './TerminosCondicionesPage';
 export * from './PoliticasDePrivacidadPage';
 export * from './ProfilePage';
+export * from './NutricionistasPage';
 
 // Alimentos
 export * from './FoodPage';

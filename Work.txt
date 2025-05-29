@@ -15,8 +15,12 @@
 👀 Ver tema de medio de pago por tercero
 👀 Ver lo de followup
 
-
-
+📌 Hacer que traiga el ultimo plan alimenticio. 
+📌 Hacer checklist y que concatene texto para enviar
+📌 Agregar que esta hecho por nutricionistas. 
+📌 Hacer que tenga un boton para mostrar los graficos
+📌  Que me traiga el ultimo plan nautricional correspondiente a ese paciente en forma de tabla
+📌 QUe en consumo  
 
 
 

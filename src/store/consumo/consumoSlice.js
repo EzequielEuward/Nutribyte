@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { listarConsumosPorUsuario, buscarPacientePorDni, obtenerConsumoPorId, listarConsumosPorPaciente, listarHabitosPorPaciente, crearConsumo, editarConsumo, crearConsumoHabito, eliminarConsumo } from './thunk';
+import { listarConsumosPorUsuario, buscarPacientePorDni, obtenerConsumoPorId, listarConsumosPorPaciente, listarConsumosConHabitos, listarHabitosPorPaciente, crearConsumo, editarConsumo, crearConsumoHabito, eliminarConsumo } from './thunk';
 
 const initialState = {
   consumos: [],
@@ -78,8 +78,17 @@ const slice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
-      .addCase(eliminarConsumo.fulfilled, (state, action) => {
-        state.consumos = state.consumos.filter(c => c.idConsumo !== action.payload);
+      .addCase(listarConsumosConHabitos.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(listarConsumosConHabitos.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.consumos = action.payload;
+      })
+      .addCase(listarConsumosConHabitos.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   }
 });

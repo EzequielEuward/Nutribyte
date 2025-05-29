@@ -7,7 +7,7 @@ import {
   ConfigPage, HistorialPeso, ConsumoPage, VersionPage,
   ControlDeSistemaPage, PlanSummaryPage, SeguridadMedidas,
   DetallePlan, ReportesPage, CalculadoraAntropometricaPage,
-  PagosAndSuscripcionesPage, CobrosParticularesPage
+  PagosAndSuscripcionesPage, CobrosParticularesPage, NutritionistasPage
 } from '../pages/';
 
 export const DashboardRouter = () => {
@@ -23,6 +23,7 @@ export const DashboardRouter = () => {
       <Route path="configuracion" element={<ConfigPage />} />
       <Route path="medidas-de-seguridad" element={<SeguridadMedidas />} />
       <Route path="informacion-planes" element={<DetallePlan planUsuario={planUsuario} />} />
+      <Route path="respaldo-profesional" element={<NutritionistasPage />} />
 
       {/* 👨‍⚕️ Módulo Paciente */}
       <Route path="paciente" element={<PatientPage />} />
