@@ -301,7 +301,7 @@ export const ConsumoPage = () => {
                                         <Box display="flex" justifyContent="flex-end" mt={3}>
                                             <IconButton
                                                 onClick={() => {
-                                                    const url = `http://localhost:5173/habitos-y-consumos?idUser=${idUser}&idPaciente=${paciente.idPaciente}&idConsumo=${consumo.idConsumo}`;
+                                                    const url = `https://nutribyte.netlify.app/habitos-y-consumos?idUser=${idUser}&idPaciente=${paciente.idPaciente}&idConsumo=${consumo.idConsumo}`;
                                                     navigator.clipboard.writeText(url);
                                                     window.open(url, "_blank");
                                                 }}
