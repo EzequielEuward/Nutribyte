@@ -24,6 +24,9 @@ export const lightTheme = createTheme({
       secondary: '#333333',
       tertiary: '#f7f7f7',
     },
+    hover: {
+      primary: '#BFBFBF'
+    },
     custom: {
       primary: '#4B5942',
       secondary: '#8FB339',
@@ -36,16 +39,53 @@ export const lightTheme = createTheme({
       reminder: { background: '#FFF8E1', text: '#FF9800' },
     },
     estadoTurnos: {
-      agendado: { background: '#1976d2', text: '#fff' }, 
-      ocupado: { background: '#f57c00', text: '#fff' },  
-      completado: { background: '#2e7d32', text: '#fff' },  
+      agendado: { background: '#1976d2', text: '#fff' },
+      ocupado: { background: '#f57c00', text: '#fff' },
+      completado: { background: '#2e7d32', text: '#fff' },
       reprogramado: { background: '#6d4c41', text: '#fff' },
-      cancelado: { background: '#d32f2f', text: '#fff' },   
+      cancelado: { background: '#d32f2f', text: '#fff' },
 
       // confirmado:   { background: '#388e3c', text: '#fff' },
       // no_asistio:   { background: '#616161', text: '#fff' },
     },
   },
-});
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: 'outlined',
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#ffffff',
+          borderRadius: 8,
+          border: '1px solid #ccc',
+          '&:hover': {
+            borderColor: '#1976d2',
+            boxShadow: '0 0 0 2px rgba(25, 118, 210, 0.1)',
+          },
+          '&.Mui-focused': {
+            borderColor: '#1976d2',
+            boxShadow: '0 0 0 2px rgba(25, 118, 210, 0.25)',
+          },
+        },
+        input: {
+          padding: '12px',
+          color: '#000',
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: '#444',
+          fontWeight: 500,
+        },
+      },
+    },
+  },
+})
+  ;
 
 export default lightTheme;

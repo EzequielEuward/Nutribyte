@@ -135,11 +135,11 @@ export const FoodSearchModal = ({
             sx={{
               mt: 2,
               '& label.Mui-focused': {
-                color: theme.palette.custom.terteary,
+                color: theme.palette.text.primary, // o theme.palette.primary.main
               },
               '& .MuiOutlinedInput-root': {
                 '&.Mui-focused fieldset': {
-                  borderColor: theme.palette.custom.terteary,
+                  borderColor: theme.palette.text.primary, // o theme.palette.primary.main
                 },
               },
             }}

@@ -229,7 +229,18 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
 
           <Divider />
 
-          <List>
+          <List
+            sx={{
+              '& .MuiListItem-root': {
+                '&:hover': {
+                  backgroundColor: theme.palette.hover?.primary || theme.palette.action.hover,
+                },
+              },
+              '& a': {
+                textDecoration: 'none',
+              }
+            }}
+          >
             <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/perfil")}><ListItemIcon><PersonOutlined /></ListItemIcon><ListItemText primary="Perfil" /></ListItemButton></ListItem>
             <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/pagos-y-suscripciones")}><ListItemIcon><PaymentIcon /></ListItemIcon><ListItemText primary="Pagos y suscripciones" /></ListItemButton></ListItem>
             <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/informacion-planes")}><ListItemIcon><InfoIcon /></ListItemIcon><ListItemText primary="Información del plan" /></ListItemButton></ListItem>

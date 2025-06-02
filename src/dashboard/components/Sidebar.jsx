@@ -80,7 +80,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
         color: theme.palette.text.primary,
         '& .MuiListItem-root': {
           '&:hover': {
-            backgroundColor: isDarkMode ? '#333' : '#f0f0f0',
+            backgroundColor: isDarkMode ? '#333' : '#BFBFBF',
           },
         },
         '& a': {

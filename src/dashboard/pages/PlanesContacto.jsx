@@ -13,6 +13,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const dataPlanes = {
     Básico: {
@@ -69,11 +70,25 @@ const dataPlanes = {
     }
 };
 
+const handleMercadoPago = async () => {
+    window.location.href = "https://www.youtube.com/watch?v=-50NdPawLVY";
+    //   try {
+    //     const res = await axios.post('https://www.youtube.com/watch?v=-50NdPawLVY', {
+    //       plan: nombrePlan,
+    //       precio: parseFloat(plan.precio.replace('.', '').replace(',', '.'))
+    //     });
+    //     window.location.href = res.data.init_point;
+    //   } catch (err) {
+    //     console.error('Error al generar el pago', err);
+    //     alert('Hubo un error al iniciar el pago.');
+    //   }
+};
+
 export const PlanesContacto = () => {
     const { nombrePlan } = useParams();
     const navigate = useNavigate();
     const plan = dataPlanes[nombrePlan];
-    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=nutribite.software@gmail.com&su=Quiero contratar el plan ${nombrePlan}&body=Hola, estoy interesado/a en contratar el plan ${nombrePlan} con un precio de $${plan.precio}/mes. Por favor, envíenme más información.`;
+    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=nutribyte.software@gmail.com&su=Quiero contratar el plan ${nombrePlan}&body=Hola, estoy interesado/a en contratar el plan ${nombrePlan} con un precio de $${plan.precio}/mes. Por favor, envíenme más información.`;
     if (!plan) {
         return (
             <Box sx={{ padding: 4 }}>
@@ -135,12 +150,9 @@ export const PlanesContacto = () => {
                                 '&:hover': { backgroundColor: `${plan.color}cc` }
                             }}
                             fullWidth
-                            component="a"
-                            href={gmailLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            onClick={handleMercadoPago}
                         >
-                            Contratar ahora
+                            Pagar con Mercado Pago
                         </Button>
 
                         <Button

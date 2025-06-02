@@ -24,6 +24,9 @@ export const darkTheme = createTheme({
       secondary: "#b0b0b0",
       tertiary: '#f7f7f7',
     },
+    hover: {
+      primary: '#333'
+    },
     custom: {
       primary: "#7C8BA3",
       secondary: "#A8C686",
@@ -52,6 +55,42 @@ export const darkTheme = createTheme({
       // confirmado:   { background: '#004D40', text: '#80CBC4' },
       // noAsistio:    { background: '#BF360C', text: '#FFAB91' },
     }
+  },
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: 'outlined',
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#1d1d1d',
+          borderRadius: 8,
+          border: '1px solid #444',
+          '&:hover': {
+            borderColor: '#888',
+            boxShadow: '0 0 0 2px rgba(255,255,255,0.05)',
+          },
+          '&.Mui-focused': {
+            borderColor: '#ffffff',
+            boxShadow: '0 0 0 2px rgba(255,255,255,0.2)',
+          },
+        },
+        input: {
+          padding: '12px',
+          color: '#fff',
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: '#ccc',
+          fontWeight: 500,
+        },
+      },
+    },
   },
 });
 
