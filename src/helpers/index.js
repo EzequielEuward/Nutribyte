@@ -4,3 +4,4 @@ export * from './verificarEstado2FA';
 export * from './useWorkClock';
 export * from './RouteTracker';
 export * from './exportarPacientes';
+export * from './FormularioConsumoHabitos';

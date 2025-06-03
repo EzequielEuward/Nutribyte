@@ -96,10 +96,17 @@ export const ListaConsumosAccordion = ({ consumos = [], onEdit, onDelete, onAdd 
                       {[
                         { label: 'Semana', value: consumo.consumoHabitos.semana },
                         { label: 'Comidas Diarias', value: consumo.consumoHabitos.comidasDiarias },
-                        { label: 'Colaciones Semanales', value: consumo.consumoHabitos.colacionesSemanales },
-                        { label: 'Bebidas Azucaradas', value: consumo.consumoHabitos.bebidasAzucaradas },
+                        { label: 'Colaciones Diarias', value: consumo.consumoHabitos.colacionesDiarias },
+                        { label: 'Bebidas', value: consumo.consumoHabitos.bebidas },
                         { label: 'Lácteos', value: consumo.consumoHabitos.lacteos },
+                        { label: 'Cereales', value: consumo.consumoHabitos.cereales },
+                        { label: 'Proteínas', value: consumo.consumoHabitos.proteinas },
                         { label: 'Semillas', value: consumo.consumoHabitos.semillas },
+                        { label: 'Frutas', value: consumo.consumoHabitos.frutas },
+                        { label: 'Aceites y Grasas', value: consumo.consumoHabitos.aceitesGrasas },
+                        { label: 'Condimentos', value: consumo.consumoHabitos.condimentos },
+                        { label: 'Dulces', value: consumo.consumoHabitos.dulces },
+                        { label: 'Extras', value: consumo.consumoHabitos.extras },
                         { label: 'Observaciones', value: consumo.consumoHabitos.observaciones },
                       ].map(({ label, value }, index) => (
                         <TableRow key={index}>
@@ -146,7 +153,7 @@ export const ListaConsumosAccordion = ({ consumos = [], onEdit, onDelete, onAdd 
                       borderRadius: 2,
                     }}
                     onClick={() => {
-                      const url = `https://nutribyte.netlify.app/habitos-y-consumos?idUser=${idUser}&idPaciente=${consumo.idPaciente}&idConsumo=${consumo.idConsumo}`;
+                      const url = `http://nutribyte.netlify.app/habitos-y-consumos?idUser=${idUser}&idPaciente=${consumo.idPaciente}&idConsumo=${consumo.idConsumo}`;
                       navigator.clipboard.writeText(url);
                       window.open(url, "_blank");
                     }}
