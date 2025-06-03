@@ -8,12 +8,15 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  Box
+  Box,
+  useTheme,
 } from "@mui/material";
 import html2pdf from "html2pdf.js";
 
-// 👇 Declarar la función con nombre
 const RecipeCardComponent = ({ recipe, onOpenModal, onToggleSelect, isSelected }) => {
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
+
   const handleDownloadPDF = () => {
     const name = recipe?.name || 'Receta';
     const plan = recipe?.plan || 'Sin plan';
@@ -34,19 +37,15 @@ const RecipeCardComponent = ({ recipe, onOpenModal, onToggleSelect, isSelected }
       <div style="text-align:center;margin-bottom:16px;">
         <img src="${imageUrl}" alt="Imagen de la receta" width="300" style="border-radius:8px;" crossorigin="anonymous"/>
       </div>
-
       <div style="background-color:#e3f2fd;padding:10px 15px;border-radius:5px;">
         <h2 style="margin:0;color:#0d47a1;">${name}</h2>
         <h4 style="margin:5px 0 10px;color:#1976d2;">Plan: ${plan}</h4>
       </div>
-
       <p><strong>Descripción:</strong> ${description}</p>
-
       ${ingredients.length > 0
         ? `<h4 style="color:#2e7d32;">Ingredientes:</h4><ul style="padding-left:20px;">${ingredients.map(i => `<li>${i}</li>`).join('')}</ul>`
         : ''
       }
-
       ${steps.length > 0
         ? `<h4 style="color:#ef6c00;">Pasos:</h4><div>${steps.map((s, i) => `<p><strong>${i + 1})</strong> ${s}</p>`).join('')}</div>`
         : ''
@@ -66,10 +65,38 @@ const RecipeCardComponent = ({ recipe, onOpenModal, onToggleSelect, isSelected }
   };
 
   return (
-    <Card style={{ width: "100%", position: "relative" }}>
+    <Card
+      sx={{
+        width: "100%",
+        maxWidth: 400,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        position: "relative",
+        margin: "auto",
+        boxShadow: 10,
+        border: `2px solid ${isDarkMode ? "#555" : "#ccc"}`,
+        borderRadius: 3,
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
+      }}
+    >
       <CardContent>
-        <Typography variant="h5">{recipe?.name || 'Receta sin nombre'}</Typography>
-        <Typography variant="subtitle1" color="text.secondary">
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            mb: 0.5,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 2,
+            overflow: "hidden",
+          }}
+        >
+          {recipe?.name || 'Receta sin nombre'}
+        </Typography>
+        <Typography variant="subtitle2" color="text.secondary">
           {recipe?.plan || 'Sin plan'}
         </Typography>
       </CardContent>
@@ -79,50 +106,93 @@ const RecipeCardComponent = ({ recipe, onOpenModal, onToggleSelect, isSelected }
         height="192"
         image={recipe?.image || '/placeholder.jpg'}
         alt={recipe?.name || 'imagen'}
-        style={{ borderRadius: "4px" }}
+        sx={{
+          objectFit: "cover",
+          width: "100%",
+          maxHeight: { xs: 160, sm: 192 },
+        }}
       />
 
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 3,
+            overflow: "hidden"
+          }}
+        >
           {recipe?.description || 'Sin descripción disponible.'}
         </Typography>
       </CardContent>
 
-      <CardActions sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            size="small"
-            variant="contained"
-            sx={{ backgroundColor: "primary.main", color: "white", "&:hover": { backgroundColor: "primary.dark" } }}
-            onClick={() => onOpenModal(recipe)}
-          >
-            Ver detalles
-          </Button>
-          <Button
-            size="small"
-            variant="outlined"
-            color="secondary"
-            onClick={handleDownloadPDF}
-          >
-            Descargar PDF
-          </Button>
-        </Box>
-
+      <Box sx={{ px: 2, pb: 1 }}>
         <FormControlLabel
           control={
             <Checkbox
               checked={isSelected}
               onChange={onToggleSelect}
               color="primary"
+              size="small"
             />
           }
-          label="Seleccionar"
+          label={<Typography variant="caption">Seleccionar</Typography>}
+          sx={{
+            alignSelf: "flex-start",
+            m: 0
+          }}
         />
+      </Box>
+
+      <CardActions
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 1,
+          mt: "auto",
+          px: 2,
+          pb: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            gap: 1,
+            width: { xs: "100%", sm: "auto" },
+            flexGrow: 1,
+          }}
+        >
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            sx={{
+              width: { xs: "100%", sm: "auto" },
+            }}
+            onClick={() => onOpenModal(recipe)}
+          >
+            Ver detalles
+          </Button>
+
+          <Button
+            size="small"
+            variant="outlined"
+            color="secondary"
+            onClick={handleDownloadPDF}
+            sx={{ width: { xs: "100%", sm: "auto" } }}
+          >
+            Descargar PDF
+          </Button>
+        </Box>
       </CardActions>
     </Card>
   );
 };
 
-// 👇 Usar memo correctamente
 export const RecipeCard = React.memo(RecipeCardComponent);
 export default RecipeCard;

@@ -3,39 +3,39 @@ import { red } from '@mui/material/colors';
 
 export const darkTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: 'dark',
     primary: {
-      main: "#262254",
+      main: '#262254',
     },
     secondary: {
-      main: "#543884",
+      main: '#543884',
     },
     error: {
       main: red.A400,
     },
     background: {
-      default: "#121212",
-      paper: "#1d1d1d",
-      arrow: "#666666",
-      paper2: "#292929",
+      default: '#121212',
+      paper: '#1d1d1d',
+      arrow: '#666666',
+      paper2: '#292929',
     },
     text: {
-      primary: "#ffffff",
-      secondary: "#b0b0b0",
+      primary: '#ffffff',
+      secondary: '#b0b0b0',
       tertiary: '#f7f7f7',
     },
     hover: {
-      primary: '#333'
+      primary: '#333',
     },
     custom: {
-      primary: "#7C8BA3",
-      secondary: "#A8C686",
-      terteary: "#B8B8B8",
+      primary: '#7C8BA3',
+      secondary: '#A8C686',
+      terteary: '#B8B8B8',
     },
     appointmentTypes: {
-      firstConsult: { background: "#4B4453", text: "#E1BEE7" },
-      followUp: { background: "#1E3A5F", text: "#BBDEFB" },
-      control: { background: "#2E7D32", text: "#A5D6A7" },
+      firstConsult: { background: '#4B4453', text: '#E1BEE7' },
+      followUp: { background: '#1E3A5F', text: '#BBDEFB' },
+      control: { background: '#2E7D32', text: '#A5D6A7' },
       reminder: { background: '#F9A825', text: '#f5f5f5' },
     },
     calendarStatus: {
@@ -51,10 +51,7 @@ export const darkTheme = createTheme({
       completado: { background: '#2E7D32', text: '#A5D6A7' },
       reprogramado: { background: '#7B1FA2', text: '#E1BEE7' },
       cancelado: { background: '#C62828', text: '#FFCDD2' },
-
-      // confirmado:   { background: '#004D40', text: '#80CBC4' },
-      // noAsistio:    { background: '#BF360C', text: '#FFAB91' },
-    }
+    },
   },
   components: {
     MuiTextField: {
@@ -88,6 +85,20 @@ export const darkTheme = createTheme({
         root: {
           color: '#ccc',
           fontWeight: 500,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#1e1e1e',
+          borderRadius: '12px',
+          border: '1px solid #444',
+          boxShadow: '0px 4px 20px rgba(255,255,255,0.06)',
+          transition: 'box-shadow 0.3s ease',
+          '&:hover': {
+            boxShadow: '0px 6px 24px rgba(255,255,255,0.12)',
+          },
         },
       },
     },

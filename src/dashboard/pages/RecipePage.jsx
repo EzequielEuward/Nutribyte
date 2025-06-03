@@ -157,26 +157,29 @@ export const RecipePage = () => {
             ))}
           </Select>
         </FormControl>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleDownloadSelectedRecipes}
-          disabled={selectedRecipesIds.length === 0}
-          sx={{
-            position: 'fixed',
-            bottom: 80,
-            right: 24,
-            zIndex: 1300,
-            boxShadow: 4,
-            borderRadius: 2,
-            px: 3,
-            py: 1.5
-          }}
-        >
-          Descargar seleccionadas
-        </Button>
+        {selectedRecipesIds.length > 0 && (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleDownloadSelectedRecipes}
+            sx={{
+              position: 'fixed',
+              bottom: isChatOpen ? 44 : 90,
+              right: isChatOpen ? 88 : 24,
+              zIndex: 1300,
+              boxShadow: 4,
+              borderRadius: 2,
+              px: { xs: 2, sm: 3 },
+              py: { xs: 1, sm: 1.5 },
+              fontSize: { xs: "0.75rem", sm: "0.875rem" },
+              transition: 'all 0.3s ease-in-out'
+            }}
+          >
+            Descargar seleccionadas
+          </Button>
+        )}
       </Box>
+
 
       {filteredRecipes.length === 0 && (
         <Box sx={{ textAlign: "center", mt: 2 }}>
@@ -186,14 +189,19 @@ export const RecipePage = () => {
         </Box>
       )}
 
-      <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2} p={2}>
+      <Box
+        display="grid"
+        gridTemplateColumns={{
+          xs: '1fr',
+          sm: 'repeat(auto-fill, minmax(250px, 1fr))'
+        }}
+        gap={2}
+        p={2}
+      >
         {filteredRecipes.map((recipe) => (
           <Box
             key={recipe.id}
-            flex="1 1 calc(25% - 16px)"
-            maxWidth="calc(25% - 16px)"
-            minWidth="250px"
-            boxSizing="border-box"
+            sx={{ height: "100%" }}
           >
             <RecipeCard
               recipe={recipe}

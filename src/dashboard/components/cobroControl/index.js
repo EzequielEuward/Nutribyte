@@ -4,3 +4,4 @@ export * from './CobroTable';
 export * from './EditDialogCobro';
 export * from './NewCobroDialog';
 export * from './DetailsDialogCobro';
+export * from './CheckoutBricks';

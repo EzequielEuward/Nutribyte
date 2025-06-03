@@ -25,7 +25,7 @@ export const lightTheme = createTheme({
       tertiary: '#f7f7f7',
     },
     hover: {
-      primary: '#BFBFBF'
+      primary: '#BFBFBF',
     },
     custom: {
       primary: '#4B5942',
@@ -44,9 +44,6 @@ export const lightTheme = createTheme({
       completado: { background: '#2e7d32', text: '#fff' },
       reprogramado: { background: '#6d4c41', text: '#fff' },
       cancelado: { background: '#d32f2f', text: '#fff' },
-
-      // confirmado:   { background: '#388e3c', text: '#fff' },
-      // no_asistio:   { background: '#616161', text: '#fff' },
     },
   },
   components: {
@@ -84,8 +81,21 @@ export const lightTheme = createTheme({
         },
       },
     },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: '0px 4px 20px rgba(0,0,0,0.15)',
+          borderRadius: '12px',
+          border: '2px solid #ccc',
+          transition: 'box-shadow 0.3s ease',
+          '&:hover': {
+            boxShadow: '0px 2px 2px rgba(0,0,0,0.25)',
+          },
+        },
+      },
+    },
   },
-})
-  ;
+});
 
 export default lightTheme;
+  

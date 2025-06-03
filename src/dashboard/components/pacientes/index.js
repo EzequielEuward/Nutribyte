@@ -4,6 +4,7 @@ export * from './PatientForm';
 export * from './PatientCard';
 export * from './PatientDrawer';
 export * from './PatientAnamnesis';
+export * from './ImportadorPacientes';
 
 export * from './BuscarPacienteDiagnostico';
 export * from './InformacionPersonalDiagnostico';
