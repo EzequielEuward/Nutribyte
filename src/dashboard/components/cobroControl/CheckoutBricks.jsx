@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const CheckoutBricks = ({ monto }) => {
+export const CheckoutBricks = ({ monto, nombrePlan }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,19 +31,33 @@ export const CheckoutBricks = ({ monto }) => {
           console.log("Brick listo");
         },
         onSubmit: async (formData) => {
-          console.log("👉 Datos a enviar al backend:", formData);
+          const datosConPlan = {
+            ...formData,
+            plan: nombrePlan
+          };
+
+          console.log("👉 Datos a enviar al backend:", datosConPlan);
+
           try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros/generar-link-pago`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros/procesar-pago`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
               },
-              body: JSON.stringify(formData)
+              body: JSON.stringify(datosConPlan)
             });
+
             const result = await response.json();
             console.log("Resultado del backend:", result);
+
+            if (result.status === "approved") {
+              alert("✅ ¡Pago aprobado con éxito!");
+            } else {
+              alert(`❌ Pago rechazado: ${result.status_detail}`);
+            }
           } catch (error) {
             console.error("Error al enviar al backend:", error);
+            alert("❌ Error al procesar el pago.");
           }
         },
         onError: (error) => {
@@ -52,7 +66,7 @@ export const CheckoutBricks = ({ monto }) => {
         }
       }
     });
-  }, [monto]);
+  }, [monto, nombrePlan]);
 
   return (
     <>
@@ -68,5 +82,6 @@ export const CheckoutBricks = ({ monto }) => {
     </>
   );
 };
+
 
 export default CheckoutBricks;

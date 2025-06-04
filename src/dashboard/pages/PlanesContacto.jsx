@@ -229,7 +229,10 @@ export const PlanesContacto = () => {
                         </IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
-                        <CheckoutBricks monto={parseFloat(plan.precio.replace('.', '').replace(',', '.'))} />
+                        <CheckoutBricks
+                            monto={parseFloat(plan.precio.replace('.', '').replace(',', '.'))}
+                            nombrePlan={nombrePlan}
+                        />
                     </DialogContent>
                 </Dialog>
             </Box>
