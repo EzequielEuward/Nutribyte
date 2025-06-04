@@ -19,12 +19,27 @@
 📌 Hacer checklist y que concatene texto para enviar
 📌 Agregar que esta hecho por nutricionistas. 
 📌 Hacer que tenga un boton para mostrar los graficos
-📌  Que me traiga el ultimo plan nautricional correspondiente a ese paciente en forma de tabla
+📌 Que me traiga el ultimo plan nautricional correspondiente a ese paciente en forma de tabla
 📌 QUe en consumo  
 
+--MATINA--
+👀 Terminar MERCADO PAGO y ver el tema de facturas
+👀 Terminar formulario 
+👀 Cambiar los extra en el formulario por lo que me va a pasar la meli
+👀 Cambiar los tonos de las tablas
+👀 En consumo cambiar donde dice Alimentos Consumidos
+👀 Cambiar imagenes 
 
 
+LEONEL: 
+👀 Cambiar conmigo mercado pago algunos parametros
+👀 Cambiar los INT de ConsumoHabitos por STRING menos SEMANA
+👀 Ir viendo eso de generar facturas no validas como factura si no como comprobante de pago
 
+
+Le dijimos a Mariel
+👀 Que vamos a tener listo la ppt el Martes
+👀 Presentarle la carpeta casi lista 
 
 
 
