@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import emailjs from '@emailjs/browser';
 
-export const CheckoutBricks = ({ monto, nombrePlan }) => {
+export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
@@ -50,25 +50,17 @@ export const CheckoutBricks = ({ monto, nombrePlan }) => {
             const result = await response.json();
 
             if (result.status === "approved") {
-              // 👉 Enviar mail con EmailJS
               await emailjs.send("service_h4trynq", "template_eyj0jve", {
-                nombre: formData.cardholderName || "No especificado",
-                email: result.payer?.email || "No disponible",
-                telefono: formData.phoneNumber || "No disponible",
-                dni: "No capturado",  // Lo podés reemplazar si lo tenés disponible
+                nombre: persona?.nombre || "No especificado",
+                apellido: persona?.apellido || "No especificado",
+                email: persona?.email || "No disponible",
+                telefono: persona?.telefono || "No disponible",
+                dni: persona?.dni || "No capturado",
                 plan: nombrePlan,
-                monto: result.transaction_amount,
+                monto: monto,
                 transaction_id: result.id || "No disponible",
                 estado: result.status || "No disponible"
               }, "TUV-qDnUQB0ApBLDY");
-
-              await Swal.fire({
-                title: "¡Pago exitoso!",
-                text: "Gracias por tu compra. Serás redirigido a la confirmación.",
-                icon: "success",
-                confirmButtonText: "Continuar",
-                confirmButtonColor: "#66bb6a"
-              });
 
               navigate("/gracias", {
                 state: {
@@ -103,7 +95,7 @@ export const CheckoutBricks = ({ monto, nombrePlan }) => {
         },
       }
     });
-  }, [monto, nombrePlan]);
+  }, [monto, nombrePlan, personaId, persona]);
 
   return (
     <>
