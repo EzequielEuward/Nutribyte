@@ -13,6 +13,8 @@ export const CheckoutBricks = ({ monto }) => {
       locale: "es-AR"
     });
 
+    console.log("API_URL:", import.meta.env.VITE_API_URL);
+
     mp.bricks().create("cardPayment", "cardPaymentBrick_container", {
       initialization: {
         amount: monto,
@@ -31,7 +33,7 @@ export const CheckoutBricks = ({ monto }) => {
         onSubmit: async (formData) => {
           console.log("👉 Datos a enviar al backend:", formData);
           try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/Cobros/generar-link-pago`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros/generar-link-pago`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
@@ -46,6 +48,7 @@ export const CheckoutBricks = ({ monto }) => {
         },
         onError: (error) => {
           console.error("Error en el Brick:", error);
+          alert(`Error en Mercado Pago: ${error.message}`);
         }
       }
     });
