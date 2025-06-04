@@ -126,7 +126,7 @@ export const PlanesContacto = () => {
         },
         {
             name: "sexoBiologico",
-            label: "Sexo (M/F)",
+            label: "Genero (M/F)",
             rules: {
                 required: "Este campo es obligatorio",
                 pattern: {
