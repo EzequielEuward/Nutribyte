@@ -12,7 +12,7 @@ import CambiarContraseñaPage from '../auth/pages/CambiarContraseñaPage';
 import VerificarCuentaPage from '../dashboard/pages/VerificarCuentaPage';
 import TerminosCondicionesPage from '../dashboard/pages/TerminosCondicionesPage';
 import PoliticasDePrivacidadPage from '../dashboard/pages/PoliticasDePrivacidadPage';
-
+import { GraciasPage } from '../dashboard/pages/GraciasPage';
 export const AppRouter = () => {
   // Obtener el estado de autenticación desde Redux
   const { status } = useSelector((state) => state.auth);
@@ -39,6 +39,7 @@ export const AppRouter = () => {
         <Route path="/recuperarContraseña" element={<RecuperarPasswordPage />} />
         <Route path="/recuperar" element={<CambiarContraseñaPage />} />
         <Route path="/Verificar-Cuenta" element={<VerificarCuentaPage />} />
+        <Route path="/gracias" element={<GraciasPage />} />
 
         {/* Otras rutas */}
         <Route path="/habitos-y-consumos" element={<FormularioConsumoHabitos />} />

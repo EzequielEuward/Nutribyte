@@ -11,6 +11,8 @@ export * from './TerminosCondicionesPage';
 export * from './PoliticasDePrivacidadPage';
 export * from './ProfilePage';
 export * from './NutricionistasPage';
+export * from './GraciasPage';
+
 
 // Alimentos
 export * from './FoodPage';

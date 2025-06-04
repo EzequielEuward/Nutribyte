@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import emailjs from '@emailjs/browser';
 
 export const CheckoutBricks = ({ monto, nombrePlan }) => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,34 +40,67 @@ export const CheckoutBricks = ({ monto, nombrePlan }) => {
             plan: nombrePlan
           };
 
-          console.log("👉 Datos a enviar al backend:", datosConPlan);
-
           try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros/procesar-pago`, {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify(datosConPlan)
             });
 
             const result = await response.json();
-            console.log("Resultado del backend:", result);
 
             if (result.status === "approved") {
-              alert("✅ ¡Pago aprobado con éxito!");
+              // 👉 Enviar mail con EmailJS
+              await emailjs.send("service_h4trynq", "template_eyj0jve", {
+                nombre: formData.cardholderName || "No especificado",
+                email: result.payer?.email || "No disponible",
+                telefono: formData.phoneNumber || "No disponible",
+                dni: "No capturado",  // Lo podés reemplazar si lo tenés disponible
+                plan: nombrePlan,
+                monto: result.transaction_amount,
+                transaction_id: result.id || "No disponible",
+                estado: result.status || "No disponible"
+              }, "TUV-qDnUQB0ApBLDY");
+
+              await Swal.fire({
+                title: "¡Pago exitoso!",
+                text: "Gracias por tu compra. Serás redirigido a la confirmación.",
+                icon: "success",
+                confirmButtonText: "Continuar",
+                confirmButtonColor: "#66bb6a"
+              });
+
+              navigate("/gracias", {
+                state: {
+                  plan: nombrePlan,
+                  email: result.payer?.email || "No disponible",
+                  monto: result.transaction_amount
+                }
+              });
             } else {
-              alert(`❌ Pago rechazado: ${result.status_detail}`);
+              Swal.fire({
+                title: "Pago rechazado",
+                text: `Detalle: ${result.status_detail}`,
+                icon: "error",
+                confirmButtonText: "Cerrar",
+                confirmButtonColor: "#d33"
+              });
             }
           } catch (error) {
             console.error("Error al enviar al backend:", error);
-            alert("❌ Error al procesar el pago.");
+            Swal.fire({
+              title: "Error",
+              text: "Hubo un problema al procesar el pago.",
+              icon: "error",
+              confirmButtonText: "Cerrar",
+              confirmButtonColor: "#d33"
+            });
           }
         },
         onError: (error) => {
           console.error("Error en el Brick:", error);
           alert(`Error en Mercado Pago: ${error.message}`);
-        }
+        },
       }
     });
   }, [monto, nombrePlan]);
@@ -82,6 +119,5 @@ export const CheckoutBricks = ({ monto, nombrePlan }) => {
     </>
   );
 };
-
 
 export default CheckoutBricks;
