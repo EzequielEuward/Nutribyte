@@ -124,14 +124,17 @@ export const FormularioConsumoHabitos = () => {
     }
   });
 
-  
+
 
   useEffect(() => {
     const fetchHabitoExistente = async () => {
       if (!idUser || !idPaciente || !idConsumo) return;
 
       try {
-        const { data } = await axios.get(`https://sintacc-api-deploy.azurewebsites.net/api/ConsumoHabitos/paciente/${idPaciente}?idUsuario=${idUser}`);
+        const { data } = await axios.get(
+          `https://sintacc-api-deploy.azurewebsites.net/api/ConsumoHabitos/paciente/${idPaciente}?idUsuario=${idUser}`,
+          { withCredentials: true }
+        );
         const existente = data.find((h) => Number(h.idConsumo) === Number(idConsumo));
 
         if (existente) {
@@ -204,11 +207,19 @@ export const FormularioConsumoHabitos = () => {
 
     try {
       if (modoEdicion && idConsumoHabitos) {
-        await axios.put(`https://sintacc-api-deploy.azurewebsites.net/api/ConsumoHabitos/${idConsumoHabitos}`, payload);
+        await axios.put(
+          `https://sintacc-api-deploy.azurewebsites.net/api/ConsumoHabitos/${idConsumoHabitos}`,
+          payload,
+          { withCredentials: true }
+        );
         Swal.fire("Actualizado", "Los hábitos fueron actualizados correctamente", "success")
           .then(() => window.history.back());
       } else {
-        await axios.post("https://sintacc-api-deploy.azurewebsites.net/api/ConsumoHabitos", payload);
+        await axios.post(
+          "https://sintacc-api-deploy.azurewebsites.net/api/ConsumoHabitos",
+          payload,
+          { withCredentials: true }
+        );
         Swal.fire("Guardado", "Los hábitos fueron registrados correctamente", "success")
           .then(() => window.history.back());
       }
