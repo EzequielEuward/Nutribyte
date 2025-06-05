@@ -153,7 +153,7 @@ export const ListaConsumosAccordion = ({ consumos = [], onEdit, onDelete, onAdd 
                       borderRadius: 2,
                     }}
                     onClick={() => {
-                      const url = `https://nutribyte.netlify.app/habitos-y-consumos?idUser=${idUser}&idPaciente=${consumo.idPaciente}&idConsumo=${consumo.idConsumo}`;
+                      const url = `http://nutribyte.netlify.app/habitos-y-consumos?idUser=${idUser}&idPaciente=${consumo.idPaciente}&idConsumo=${consumo.idConsumo}`;
                       navigator.clipboard.writeText(url);
                       window.open(url, "_blank");
                     }}

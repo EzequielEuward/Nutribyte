@@ -22,7 +22,7 @@ import planesImage from '../../assets/screens/planes.png';
 import consumoImage from '../../assets/screens/consumo.png';
 
 const HeroContainer = styled(Box)(({ theme }) => ({
-  background: `linear-gradient(135deg, #5B2C6F 20%, #7D3C98 100%)`,
+  background: `linear-gradient(135deg, #5B2C6F 20%, #262254 100%)`,
   color: '#fff',
   minHeight: '100vh',
   display: 'flex',
