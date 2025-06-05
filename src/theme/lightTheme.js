@@ -94,8 +94,44 @@ export const lightTheme = createTheme({
         },
       },
     },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgb(236, 231, 224)', 
+          color: '#1a1a1a',           
+          borderBottom: '1px solid #d0d0d0',
+          fontSize: '0.95rem',
+        },
+        head: {
+          backgroundColor: 'rgb(241, 241, 248)',
+          color: '#000000',
+          fontWeight: 600,
+          fontSize: '1rem',
+        },
+      },
+    },
+
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: '#eeeeee',
+          },
+        },
+      },
+    },
+    MuiTableContainer: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#ffffff',
+          borderRadius: '12px',
+          boxShadow: '-8px 3px 14px rgba(0, 0, 0, 0.15)', // ← sombra izquierda
+          overflow: 'hidden',
+          marginBottom: '24px',
+        },
+      },
+    },
   },
 });
 
 export default lightTheme;
-  

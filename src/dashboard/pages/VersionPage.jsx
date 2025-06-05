@@ -134,7 +134,7 @@ export const VersionPage = () => {
                                 startIcon={<CallMergeIcon sx={{ width: 16, height: 16 }} />}
                                 onClick={handleUpdateVersion}
                                 sx={{
-                                    color: theme.palette.text.primary,
+                                    color: "white",
                                     borderColor: theme.palette.primary.main,
                                     '&:hover': {
                                         backgroundColor: theme.palette.secondary.main,

@@ -3,6 +3,7 @@ import {
   AboutSection, HeroSection, NavBarHome, ContactFormSection,
   CaracterisitcasSection, PlanSection, FooterSection,
   FAQSection, NutritionistaCards, ScrollToTopButton, SliderSection,
+  ServicesSection,
 } from "../components";
 
 import {
@@ -27,6 +28,10 @@ export const HomePage = () => {
 
       <section id="slider">
         <SliderSection />
+      </section>
+
+      <section id="services">
+        <ServicesSection />
       </section>
 
       <motion.section id="features" variants={slideInLeft} initial="hidden" whileInView="visible" viewport={{ once: true }}>

@@ -9,3 +9,4 @@ export * from './FAQSection';
 export * from './ScrollToTopButton';
 export * from './NutricionistaCards';
 export * from './SliderSection';
+export * from './ServiceSection';

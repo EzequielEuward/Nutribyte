@@ -99,7 +99,7 @@ export const getMockVersions = () => {
       authorAvatar: "/placeholder.svg?height=40&width=40",
       authorInitials: "EE",
       changes: 4,
-      status: "prerelease",
+      status: "obsolete",
       shortDescription: "Actualización de medidas y métricas",
       longDescription:
         "Se actualizaron las medidas y métricas utilizadas en los cálculos, garantizando mayor precisión y confiabilidad en los resultados mostrados.",
@@ -112,7 +112,7 @@ export const getMockVersions = () => {
       authorAvatar: "/../../../assets/eze.jpg",
       authorInitials: "EE",
       changes: 4,
-      status: "stable",
+      status: "obsolete",
       shortDescription: "Primera versión estable de lanzamiento",
       longDescription:
         "Se agregaron nuevas modficaciónes y cambios en funcionamiento",
@@ -125,10 +125,23 @@ export const getMockVersions = () => {
       authorAvatar: "/../../../assets/eze.jpg",
       authorInitials: "EE",
       changes: 4,
-      status: "stable",
+      status: "obsolete",
       shortDescription: "Segunda versión estable de lanzamiento",
       longDescription:
         "Se agregaron nuevas modficaciónes y cambios en funcionamiento",
+    },
+       {
+      id: "v1.4.9",
+      date: "2025-06-5",
+      time: "16:30",
+      author: "Euward Ezequiel",
+      authorAvatar: "/../../../assets/eze.jpg",
+      authorInitials: "EE",
+      changes: 8,
+      status: "prerelease",
+      shortDescription: "Modificaciones en UX/UI y agregado de nuevas funcionalidades",
+      longDescription:
+        "Se agregaron nuevas modficaciónes y cambios en el diseño. Se agrego mercado pago a la hora de pagar en modo sandbox",
     },
 
   ]);

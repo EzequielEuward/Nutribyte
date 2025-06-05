@@ -7,13 +7,13 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const slides = [
     {
-        title: "Planificá tu nutrición",
-        description: "Diseñá planes alimenticios personalizados para cada paciente.",
+        title: "Control de anamnesis y antropometría",
+        description: "Registro detallado de la historia clínica y medidas corporales de tus pacientes. Todo en un solo lugar.",
         image: "/slider2.png",
     },
     {
-        title: "Seguimiento en tiempo real",
-        description: "Monitoreá el progreso y ajustá los planes según evolución.",
+        title: "UX/UI amigable",
+        description: "Interfaz intuitiva para una experiencia fluida y eficiente. Con nuestro modo oscuro, cuidamos tu vista.",
         image: "/slider1.png",
     },
 ];
@@ -87,7 +87,7 @@ export const SliderSection = () => {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting && sliderRef.current) {
-                    sliderRef.current.slickGoTo(0); // Forzar recálculo cuando aparece
+                    sliderRef.current.slickGoTo(0); 
                 }
             },
             { threshold: 0.3 }
@@ -98,7 +98,6 @@ export const SliderSection = () => {
 
         return () => observer.disconnect();
     }, []);
-    // 🔄 Forzar resize para corregir desajustes en mobile
     useEffect(() => {
         setTimeout(() => {
             window.dispatchEvent(new Event("resize"));

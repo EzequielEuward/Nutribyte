@@ -176,7 +176,26 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
           })}
         </>
       ) : (
-        <Paper sx={{ height: 500, width: '100%' }}>
+        <Paper
+          sx={{
+            height: 500,
+            width: '100%',
+            borderRadius: 3,
+            border: isMobile
+              ? 'none'
+              : theme.palette.mode === 'dark'
+                ? '1px solid #444'
+                : '1px solid #ddd',
+            boxShadow: isMobile
+              ? 'none'
+              : theme.palette.mode === 'dark'
+                ? '0px 6px 20px rgba(0,0,0,0.4), 0px 2px 6px rgba(0,0,0,0.2)'
+                : '0px 6px 24px rgba(0,0,0,0.15), 0px 2px 8px rgba(0,0,0,0.05)',
+            backgroundColor:
+              theme.palette.mode === 'dark' ? '#1e1e1e' : '#fafafa',
+            transition: 'all 0.3s ease',
+          }}
+        >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
             <Grid container spacing={2} sx={{ mb: 2 }}>
               <Grid item xs={12} sm={4}>

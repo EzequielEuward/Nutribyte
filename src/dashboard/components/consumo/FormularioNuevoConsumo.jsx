@@ -56,7 +56,7 @@ export const FormularioNuevoConsumo = ({ onSubmit }) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography variant="h6" sx={{ mt: 2,mb:2, color: theme.palette.primary.main }}>
+            <Typography variant="h6" sx={{ mt: 2,mb:2, color: theme.palette.text.primary }}>
               Alimentos Consumidos
             </Typography>
             <ConsumoAlimentosTable
