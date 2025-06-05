@@ -65,7 +65,7 @@ export const ServicesSection = () => {
         <Box id="servicios" sx={{ py: { xs: 8, md: 12 }, backgroundColor: '#ffffff' }}>
             <Container maxWidth="lg">
                 <Typography variant="h3" align="center" gutterBottom sx={{ color: theme.palette.text.primary }}>
-                    Nuestros Planes
+                    Nuestros servicios
                 </Typography>
 
                 <Grid container spacing={4}>
