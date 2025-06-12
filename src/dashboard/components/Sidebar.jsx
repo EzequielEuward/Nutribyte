@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Divider,
+  CssBaseline,
   Drawer,
   List,
-  Toolbar,
   Typography,
-  IconButton,
   ListItem,
   ListItemIcon,
   ListItemText,
-  CssBaseline,
   Collapse,
-  useMediaQuery
+  useMediaQuery,
+  ListItemButton,
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
   ExpandMore,
   ExpandLess,
   ChevronRight
@@ -24,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../../mock/data/menuItems';
 import { useTheme } from '@emotion/react';
 import { useSelector } from 'react-redux';
+import logo from '../../assets/NutribyteSB.png';
 
 export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
   const { isDarkMode } = useSelector(state => state.ui);
@@ -34,10 +32,13 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const drawerTextColor = isDarkMode
+    ? theme.palette.text.primary
+    : theme.palette.text.tertiary;
 
   useEffect(() => {
     const handleMobileToggle = () => {
@@ -48,7 +49,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
   }, []);
 
   const handleClick = (menu) => {
-    setOpenMenus(prevState => ({ ...prevState, [menu]: !prevState[menu] }));
+    setOpenMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
     setSelectedMenu(menu);
   };
 
@@ -57,18 +58,9 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
     setMobileOpen(false);
   };
 
-  const linkColor = isDarkMode ? '#fff' : '#000';
-
   const filteredMenuItems = menuItems.filter(item => {
-    if (rol !== "Administrador" && (item.text === "Versiones" || item.text === "Control de usuario")) {
-      return false;
-    }
-    if (
-      ["premium", "basico", "demo"].includes((planUsuario || "").toLowerCase()) &&
-      item.text === "Calculadora Antropometrica"
-    ) {
-      return false;
-    }
+    if (rol !== "Administrador" && (item.text === "Versiones" || item.text === "Control de usuario")) return false;
+    if (["premium", "basico", "demo"].includes((planUsuario || "").toLowerCase()) && item.text === "Calculadora Antropometrica") return false;
     return true;
   });
 
@@ -76,55 +68,117 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
     <Box
       sx={{
         width: drawerWidth,
-        backgroundColor: theme.palette.background.paper,
-        color: theme.palette.text.primary,
+        height: '100%',
+        backgroundColor: theme.palette.primary.sidebar,
+        color: drawerTextColor,
         '& .MuiListItem-root': {
           '&:hover': {
-            backgroundColor: isDarkMode ? '#333' : '#BFBFBF',
+          backgroundColor: isDarkMode ? '#333' : 'rgba(139, 195, 74, 0.25)',
           },
         },
         '& a': {
           textDecoration: 'none',
-          color: linkColor,
+          color: drawerTextColor,
         }
       }}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 2 }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 'bold', textAlign: 'center', maxWidth: '90%', wordBreak: 'break-word' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          py: 2,
+          backgroundColor: theme.palette.primary.sidebar,
+        }}
+      >
+        <Box
+          component="img"
+          src={logo}
+          alt="Logo"
+          sx={{
+            height: 90,
+            width: 'auto',
+            mb: 1,
+            display: 'block',
+            '@media (max-width:600px)': {
+              height: 40,
+            },
+          }}
+        />
+        <Typography variant="subtitle2" sx={{
+          fontWeight: 'bold',
+          textAlign: 'center',
+          maxWidth: '90%',
+          wordBreak: 'break-word',
+          color: drawerTextColor,
+        }}>
           {username}
         </Typography>
-        <Typography variant="caption" sx={{ opacity: 0.7, textAlign: 'center' }}>{rol}</Typography>
+        <Typography variant="caption" sx={{
+          opacity: 0.7,
+          textAlign: 'center',
+          color: drawerTextColor,
+        }}>
+          {rol}
+        </Typography>
       </Box>
 
-      <Divider sx={{ backgroundColor: isDarkMode ? '#444' : '#ddd' }} />
-
-      <List>
+      <List sx={{ backgroundColor: theme.palette.primary.sidebar }}>
         {filteredMenuItems.map((menu, index) => (
           <React.Fragment key={index}>
-            <ListItem
-              button
-              onClick={() => menu.submenus ? handleClick(menu.text) : handleNavigate(menu.link)}
-              selected={selectedMenu === menu.text}
-                  sx={{cursor: 'pointer'}}
-            >
-              <ListItemIcon>{menu.icon}</ListItemIcon>
-              <ListItemText primary={menu.text} />
-              {menu.submenus && (openMenus[menu.text] ? <ExpandLess /> : <ExpandMore />)}
+            <ListItem disablePadding>
+              <ListItemButton
+                selected={selectedMenu === menu.text}
+                onClick={() => menu.submenus ? handleClick(menu.text) : handleNavigate(menu.link)}
+                sx={{
+                  backgroundColor: theme.palette.primary.sidebar,
+                  '&.Mui-selected': {
+                    backgroundColor: theme.palette.action.selected,
+                  },
+                  '&.Mui-selected:hover': {
+                    backgroundColor: theme.palette.action.hover,
+                  },
+                  '&:hover': {
+                    backgroundColor: theme.palette.hover.primary,
+                  }
+                }}
+              >
+                <ListItemIcon sx={{ color: drawerTextColor }}>
+                  {menu.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={menu.text}
+                  primaryTypographyProps={{ style: { color: drawerTextColor } }}
+                />
+                {menu.submenus && (
+                  openMenus[menu.text]
+                    ? <ExpandLess sx={{ color: drawerTextColor }} />
+                    : <ExpandMore sx={{ color: drawerTextColor }} />
+                )}
+              </ListItemButton>
             </ListItem>
+
             {menu.submenus && (
               <Collapse in={openMenus[menu.text]} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
+                <List component="div" disablePadding sx={{ backgroundColor: theme.palette.primary.sidebar }}>
                   {menu.submenus.map((submenu, subIndex) => (
                     <ListItem
                       button
                       onClick={() => handleNavigate(submenu.link)}
-                      sx={{ pl: 4 ,cursor: 'pointer'}}
+                      sx={{
+                        pl: 4,
+                        cursor: 'pointer',
+                        backgroundColor: theme.palette.primary.sidebar,
+                      }}
                       key={subIndex}
                     >
                       <ListItemIcon>
-                        <ChevronRight color="action" />
+                        <ChevronRight sx={{ color: drawerTextColor }} />
                       </ListItemIcon>
-                      <ListItemText primary={submenu.text} />
+                      <ListItemText
+                        primary={submenu.text}
+                        primaryTypographyProps={{ style: { color: drawerTextColor } }}
+                      />
                     </ListItem>
                   ))}
                 </List>
@@ -147,11 +201,11 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: drawerWidth,
-            backgroundColor: theme.palette.background.paper,
-            position: 'fixed', // ⬅️ Importante
+            position: 'fixed',
             height: '100vh',
             overflow: 'hidden',
             zIndex: theme.zIndex.drawer,
+            backgroundColor: theme.palette.primary.sidebar,
           },
         }}
         open
@@ -169,7 +223,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: drawerWidth,
-            backgroundColor: isDarkMode ? '#121212' : '#fff',
+            backgroundColor: theme.palette.primary.sidebar,
           },
         }}
       >

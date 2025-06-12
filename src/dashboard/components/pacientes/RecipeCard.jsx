@@ -176,7 +176,7 @@ const RecipeCardComponent = ({ recipe, onOpenModal, onToggleSelect, isSelected }
             }}
             onClick={() => onOpenModal(recipe)}
           >
-            Ver detalles
+            Ver receta
           </Button>
 
           <Button

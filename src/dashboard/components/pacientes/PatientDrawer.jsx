@@ -148,7 +148,7 @@ export const PatientDrawer = ({ drawerOpen, setDrawerOpen, selectedPatient }) =>
         </ListItem>
 
         <ListItem>
-          <ListItemText primary="Genero" secondary={selectedPatient?.persona?.sexoBiologico === "m" ? "Masculino" : "Femenino"} disable />
+          <ListItemText primary="Género" secondary={selectedPatient?.persona?.sexoBiologico === "m" ? "Masculino" : "Femenino"} disable />
         </ListItem>
 
 

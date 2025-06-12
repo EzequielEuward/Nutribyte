@@ -17,6 +17,7 @@ export const darkTheme = createTheme({
       default: '#121212',
       paper: '#1d1d1d',
       arrow: '#666666',
+      sidebar: '#1e1e1e',
       paper2: '#292929',
     },
     text: {
@@ -44,6 +45,15 @@ export const darkTheme = createTheme({
       cancelado: { background: '#EF5350', text: '#fff' },
       reprogramado: { background: '#64B5F6', text: '#000' },
       completado: { background: '#BA68C8', text: '#000' },
+    },
+    quickacces: {
+      verdeAgua: { background: '#008080', text: '#fff' },
+      amarilloFuerte: { background: '#FFA500', text: '#fff' },
+      violetaFuerte: { background: '#800080', text: '#fff' },
+      violetaClaro: { background: '#6A3381', text: '#fff' },
+      verdeManzana: { background: '#008000', text: '#fff' },
+      naranja: { background: '#FF7538', text: '#fff' },
+
     },
     estadoTurnos: {
       agendado: { background: '#0288D1', text: '#E1F5FE' },

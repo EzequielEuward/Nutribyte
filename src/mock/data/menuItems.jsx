@@ -2,7 +2,7 @@ import { Person, Fastfood, BarChart, CalendarToday, Home } from '@mui/icons-mate
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import FlagIcon from '@mui/icons-material/Flag';
-const iconStyle = { color: "#6e6e6e" };
+const iconStyle = { color: "#ffff" };
 import CalculateIcon from '@mui/icons-material/Calculate';
 import PaymentIcon from '@mui/icons-material/Payment';
 export const menuItems = [

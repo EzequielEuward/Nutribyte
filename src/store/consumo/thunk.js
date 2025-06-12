@@ -155,9 +155,12 @@ export const crearConsumoHabito = createAsyncThunk(
   async ({ idConsumo, habito }, { rejectWithValue }) => {
     try {
       const payload = { ...habito, idConsumo };
+      console.log("📤 creando hábito nutricional", payload);
       const { data } = await axios.post(`${API_CONSUMO_HABITOS}`, payload);
+      console.log("✅ hábito creado", data);
       return data;
     } catch (err) {
+      console.error("❌ error al crear hábito nutricional", err);
       return rejectWithValue(err.response?.data?.message || err.message);
     }
   }

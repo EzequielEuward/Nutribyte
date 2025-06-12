@@ -21,14 +21,14 @@ import turnosImage from '../../assets/screens/turnos.png';
 import planesImage from '../../assets/screens/planes.png';
 import consumoImage from '../../assets/screens/consumo.png';
 
-const HeroContainer = styled(Box)(({ theme }) => ({
-  background: `linear-gradient(135deg, #5B2C6F 20%, #262254 100%)`,
-  color: '#fff',
+const HeroContainer = styled(Box)(() => ({
+  background: 'linear-gradient(135deg, #2b2d42 20%, #7E57C2 80%)',
+  color: '#ffffff',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: theme.spacing(10, 2, 6, 2),
+  padding: '80px 16px',
 }));
 
 const HeroContent = styled(Box)(({ theme }) => ({
@@ -37,16 +37,25 @@ const HeroContent = styled(Box)(({ theme }) => ({
   maxWidth: 600,
 }));
 
-const HeroButton = styled(Button)(({ theme }) => ({
-  backgroundColor: '#fff',
-  color: theme.palette.primary.main,
-  fontWeight: 600,
+const HeroButton = styled(Button)(() => ({
+  backgroundColor: '#ffffff',
+  color: '#2b2d42',
+  fontWeight: 700,
   fontSize: '0.95rem',
-  padding: '0.5rem 1.5rem',
+  padding: '0.6rem 1.6rem',
   borderRadius: 999,
-  marginBottom: theme.spacing(3),
+  textTransform: 'uppercase',
+  transition: 'all 0.3s ease',
   '&:hover': {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#e2e2e2',
+  },
+  '&.MuiButton-outlined': {
+    backgroundColor: 'transparent',
+    color: '#ffffff',
+    border: '2px solid #ffffff',
+    '&:hover': {
+      backgroundColor: 'rgba(255,255,255,0.1)',
+    },
   },
 }));
 
@@ -94,7 +103,7 @@ export const HeroSection = () => {
       Swal.close();
 
       if (resultData?.isSuccess) {
-        // Redirige si es necesario
+
       }
     } catch (error) {
       Swal.close();
@@ -180,24 +189,24 @@ export const HeroSection = () => {
       <Grid container spacing={4} alignItems="center" justifyContent="center">
         <Grid item xs={12} md={6} lg={5}>
           <HeroContent>
-            <Typography variant="h2" fontWeight={800} lineHeight={1.2} gutterBottom>
-              Tu aliado digital<br />en <span style={{ color: '#f0f0f0' }}>nutrición</span>
+            <Typography variant="h2" fontWeight={800} lineHeight={1.2} gutterBottom sx={{ color: '#ffffff' }}>
+              Tu aliado digital<br />en <span style={{ color: '#4CAF50' }}>nutrición</span>
             </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ mb: 3, color: '#ddd' }}>
               Un sistema diseñado para profesionales que buscan precisión, agilidad y mejores resultados con sus pacientes.
             </Typography>
             <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
               <Tooltip title="Probar cuenta demo" arrow>
                 <HeroButton onClick={handleLoginDemo}>
-                  PROBARLO AHORA
+                  PROBAR DEMO
                 </HeroButton>
               </Tooltip>
 
-                <a href="#contact" style={{ textDecoration: 'none' }}>
-                  <HeroButton variant="outlined">
-                    Contactanos
-                  </HeroButton>
-                </a>
+              <a href="#contact" style={{ textDecoration: 'none' }}>
+                <HeroButton variant="outlined">
+                  Contáctanos
+                </HeroButton>
+              </a>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               {features.map((f) => (
@@ -209,6 +218,7 @@ export const HeroSection = () => {
                     alignItems: 'center',
                     gap: 2,
                     p: 2,
+
                     borderRadius: 2,
                     bgcolor: activeScreen === f.id ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.08)',
                     cursor: 'pointer',
@@ -219,7 +229,7 @@ export const HeroSection = () => {
                 >
                   <Avatar sx={{ bgcolor: '#ffffff1a' }}>{f.icon}</Avatar>
                   <Box>
-                    <Typography variant="subtitle1" fontWeight={600}>
+                    <Typography variant="subtitle1" fontWeight={600} sx={{ color: '#4CAF50' }}>
                       {f.title}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#ddd' }}>

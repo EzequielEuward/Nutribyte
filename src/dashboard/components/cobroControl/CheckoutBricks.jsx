@@ -7,6 +7,15 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
+  const obtenerPlanPagoId = (plan) => {
+    const mapa = {
+      "Básico": 1,
+      "Premium": 2,
+      "Elite": 3
+    };
+    return mapa[plan] || 0;
+  };
+
   useEffect(() => {
     if (!window.MercadoPago) {
       console.error("SDK de MercadoPago no está cargado todavía.");
@@ -16,8 +25,6 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
     const mp = new window.MercadoPago("TEST-f6b14407-ffd6-4f4f-9f6a-95a5468fe83b", {
       locale: "es-AR"
     });
-
-    console.log("API_URL:", import.meta.env.VITE_API_URL);
 
     mp.bricks().create("cardPayment", "cardPaymentBrick_container", {
       initialization: {
@@ -32,24 +39,59 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
       callbacks: {
         onReady: () => {
           setLoading(false);
-          console.log("Brick listo");
         },
         onSubmit: async (formData) => {
-          const datosConPlan = {
-            ...formData,
-            plan: nombrePlan
-          };
-
           try {
+            // 1. Confirmar estado del pago con tu backend
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros/procesar-pago`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosConPlan)
+              body: JSON.stringify({ ...formData, plan: nombrePlan })
             });
 
             const result = await response.json();
 
             if (result.status === "approved") {
+              // 2. Crear usuario
+              const userPayload = {
+                rol: "Nutricionista",
+                username: persona.email,
+                userPassword: "Nutribyte1234",
+                matricula_Profesional: "",
+                especialidad: "",
+                planUsuario: nombrePlan,
+                estadoUsuario: "Activo",
+                activo: true,
+                persona: { id: personaId }
+              };
+
+              const usuarioResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/Usuarios`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userPayload)
+              });
+
+              const usuarioCreado = await usuarioResponse.json();
+              const usuarioId = usuarioCreado.id || usuarioCreado.usuarioId;
+
+              const nuevoCobro = {
+                estado: "Pendiente",
+                usuarioId,
+                metodoPago: "Otro",
+                referenciaPago: result.id,
+                periodoFacturado: new Date().toISOString().split("T")[0],
+                planPagoId: obtenerPlanPagoId(nombrePlan),
+                impuestos: 0,
+                descuento: 0
+              };
+
+              await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(nuevoCobro)
+              });
+
+              // 4. Enviar email de confirmación
               await emailjs.send("service_h4trynq", "template_eyj0jve", {
                 nombre: persona?.nombre || "No especificado",
                 apellido: persona?.apellido || "No especificado",
@@ -62,10 +104,11 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
                 estado: result.status || "No disponible"
               }, "TUV-qDnUQB0ApBLDY");
 
+              // 5. Redirigir
               navigate("/gracias", {
                 state: {
                   plan: nombrePlan,
-                  email: result.payer?.email || "No disponible",
+                  email: persona.email,
                   monto: result.transaction_amount
                 }
               });
@@ -79,7 +122,7 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
               });
             }
           } catch (error) {
-            console.error("Error al enviar al backend:", error);
+            console.error("Error al procesar el flujo completo:", error);
             Swal.fire({
               title: "Error",
               text: "Hubo un problema al procesar el pago.",

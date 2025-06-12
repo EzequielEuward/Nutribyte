@@ -23,19 +23,19 @@ const services = [
         title: 'Sistema Web Responsivo',
         description: 'Accedé al sistema desde cualquier dispositivo, en cualquier lugar. Tu panel nutricional siempre a mano.',
         icon: <WebIcon />,
-        color: '#6A3381',
+        color: '#008080',
     },
     {
         title: 'App Móvil y Escritorio',
         description: 'Ingresá desde tu celular, tablet o computadora para una experiencia ágil y adaptada a tu rutina diaria.',
         icon: <PhoneAndroidIcon />,
-        color: '#6A3381',
+        color: '#FFA500',
     },
     {
         title: 'Gestión de Pacientes y Planes',
         description: 'Administrá pacientes, planes alimenticios, consumos y turnos desde un solo lugar, de forma simple y eficiente.',
         icon: <AccountTreeIcon />,
-        color: '#6A3381',
+        color: '#AB274F',
     },
     {
         title: 'Integración con Herramientas Externas',
@@ -47,13 +47,13 @@ const services = [
         title: 'Consultoría y Soporte Técnico',
         description: 'Te acompañamos en cada etapa: desde soporte técnico hasta mejoras en el uso de la plataforma.',
         icon: <PsychologyIcon />,
-        color: '#6A3381',
+        color: '#0000FF',
     },
     {
         title: 'Diseño UX/UI centrado en el usuario',
         description: 'Pensamos en cada detalle para crear una experiencia visual clara, fluida y pensada para profesionales de la nutrición.',
         icon: <DesignServicesIcon />,
-        color: '#6A3381',
+        color: '#008000',
     },
 ];
 
@@ -145,8 +145,8 @@ export const ServicesSection = () => {
                                             position: 'absolute',
                                             width: '100%',
                                             height: '100%',
-                                            bgcolor: '#6A3381',
-                                            color: 'white',
+                                            bgcolor: service.color,
+                                            color: '#fff',
                                             borderRadius: '20px',
                                             backfaceVisibility: 'hidden',
                                             transform: 'rotateY(180deg)',
@@ -163,6 +163,7 @@ export const ServicesSection = () => {
                                             sx={{
                                                 fontSize: '1rem',
                                                 lineHeight: 1.6,
+                                                color: '#fff', // 🔥 FORZAMOS EL COLOR AQUÍ
                                             }}
                                         >
                                             {service.description}

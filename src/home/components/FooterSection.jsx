@@ -18,7 +18,7 @@ export const FooterSection = () => {
   return (
     <footer
       style={{
-        background: `linear-gradient(135deg, ${theme.palette.primary.main} 30%, ${theme.palette.secondary.main} 90%)`,
+        background: 'linear-gradient(135deg, #2b2d42 20%, #7E57C2 80%)',
         color: '#ffffff',
         padding: '2rem 0',
       }}
@@ -95,8 +95,8 @@ export const FooterSection = () => {
             <Box textAlign={isMobile ? 'center' : 'left'}>
               <Typography variant="body2">
                 Email:{' '}
-                <Link href="mailto:nutribite.software@gmail.com" color="inherit">
-                  nutribite.software@gmail.com
+                <Link href="mailto:nutribyte.software@gmail.com" color="inherit">
+                  nutribyte.software@gmail.com
                 </Link>
               </Typography>
               <Typography variant="body2">

@@ -1,0 +1,101 @@
+import {
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Avatar,
+  Container,
+  useTheme,
+} from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import { motion } from 'framer-motion';
+
+const nutritionists = [
+  {
+    id: 1,
+    name: 'Lic. Pamela Guadalupe Cabral',
+    specialty: 'Nutrición Clínica y Diabetes',
+    image: 'https://i.imgur.com/jHFZNMj.png',
+  },
+  {
+    id: 2,
+    name: 'Lic. Rocio Milagros Albarracin',
+    specialty: 'Nutrición clínica',
+    image: 'https://i.imgur.com/xnWZVob.jpeg',
+  },
+];
+
+export const NutritionistaCards = () => {
+  const theme = useTheme();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
+    >
+      <Box
+        id="nutritionists"
+        sx={{
+          py: { xs: 6, md: 12 },
+          bgcolor: theme.palette.mode === 'light' ? '#f9fafb' : 'background.paper',
+          textAlign: 'center',
+        }}
+      >
+        <Container maxWidth="md">
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            Proyecto avalado por nutricionistas
+          </Typography>
+          <Typography variant="body1" color="textSecondary" maxWidth="sm" mx="auto" mb={4}>
+            Profesionales certificadas para cuidar tu salud nutricional
+          </Typography>
+
+          <Grid container spacing={4} justifyContent="center">
+            {nutritionists.map((nutritionist) => (
+              <Grid item xs={12} sm={6} md={4} key={nutritionist.id} sx={{ display: 'flex' }}>
+                <Card
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    transition: 'transform 0.3s',
+                    '&:hover': { transform: 'scale(1.03)' },
+                  }}
+                  raised
+                >
+                  <Avatar
+                    src={nutritionist.image}
+                    alt={nutritionist.name}
+                    sx={{
+                      width: 80,
+                      height: 80,
+                      mt: 2,
+                      border: '3px solid',
+                      borderColor: 'success.light',
+                    }}
+                  />
+                  <CardContent sx={{ textAlign: 'center' }}>
+                    <Typography variant="h6" fontWeight="bold">
+                      {nutritionist.name}
+                    </Typography>
+                    <Box display="flex" justifyContent="center" alignItems="center" gap={1} mt={1}>
+                      <PersonIcon fontSize="small" color="success" />
+                      <Typography fontSize="0.85rem" fontWeight="medium" color="success.main">
+                        {nutritionist.specialty}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+    </motion.div>
+  );
+};
+
+export default NutritionistaCards;

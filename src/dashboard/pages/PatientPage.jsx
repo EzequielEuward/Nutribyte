@@ -241,7 +241,7 @@ export const PatientPage = () => {
                 onClick={handleClick}
               >
                 Importar Excel
-              </Button>
+              </Button> 
             )}
           </ImportadorPacientes>
         </Box>
@@ -251,7 +251,7 @@ export const PatientPage = () => {
           <Button
             fullWidth
             variant="contained"
-            color="primary"
+            color="success"
             startIcon={<PersonAddAltIcon />}
             disabled={deshabilitarBoton}
             onClick={() => setFormOpen(true)}

@@ -129,7 +129,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
               </IconButton>
             )}
 
-            <img
+            {/* <img
               onClick={() => navigate("/home")}
               src={isDarkMode ? LogoBlanco : LogoNegro}
               alt="Logo"
@@ -143,7 +143,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
                 transition: "opacity 0.4s ease-in-out",
               }}
               onLoad={(e) => (e.target.style.opacity = 1)}
-            />
+            /> */}
           </Box>
 
           <Box display="flex" alignItems="center" gap={1}>
@@ -246,7 +246,14 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
             <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/informacion-planes")}><ListItemIcon><InfoIcon /></ListItemIcon><ListItemText primary="Información del plan" /></ListItemButton></ListItem>
             <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/medidas-de-seguridad")}><ListItemIcon><SecurityIcon /></ListItemIcon><ListItemText primary="Medidas de seguridad" /></ListItemButton></ListItem>
             <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/configuracion")}><ListItemIcon><SettingsOutlined /></ListItemIcon><ListItemText primary="Ajustes" /></ListItemButton></ListItem>
-            <ListItem disablePadding><ListItemButton onClick={() => handleNavigation("/home/respaldo-profesional")}><ListItemIcon><Diversity1Icon /></ListItemIcon><ListItemText primary="Aval nutricional" /></ListItemButton></ListItem>
+            {username?.toLowerCase() !== "demo" && rol?.toLowerCase() !== "demo" && (
+              <ListItem disablePadding>
+                <ListItemButton onClick={() => handleNavigation("/home/respaldo-profesional")}>
+                  <ListItemIcon><Diversity1Icon /></ListItemIcon>
+                  <ListItemText primary="Aval nutricional" />
+                </ListItemButton>
+              </ListItem>
+            )}
             <ListItem disablePadding><ListItemButton onClick={handleLogout}><ListItemIcon><LogoutOutlined /></ListItemIcon><ListItemText primary="Cerrar sesión" /></ListItemButton></ListItem>
           </List>
         </Box>

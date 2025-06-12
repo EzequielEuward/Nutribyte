@@ -85,7 +85,7 @@ export const PatientTable = ({ patients, onViewAnamnesis, onViewPatient, onDelet
                       </TableSortLabel>
                     </TableCell>
                   ))}
-                  <TableCell>Genero</TableCell>
+                  <TableCell>Género</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Estado</TableCell>
                   <TableCell>Acciones</TableCell>

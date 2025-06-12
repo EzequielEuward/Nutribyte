@@ -24,7 +24,6 @@ const getChipColorEstado = (estado) => {
 
 
 const getChipColorMetodoPago = (metodo) => {
-  // Convertir a minúsculas para cubrir "Efectivo" o "efectivo"
   const metodoLower = metodo.toLowerCase();
   switch (metodoLower) {
     case 'efectivo':

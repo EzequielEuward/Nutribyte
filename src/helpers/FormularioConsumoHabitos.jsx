@@ -99,7 +99,7 @@ export const FormularioConsumoHabitos = () => {
 
   const { control, handleSubmit, reset, watch } = useForm({
     defaultValues: {
-      semana: '',
+      semana: null,
       colacionesDiarias: '',
       colacionesSemanales: '',
       bebidas: [],
@@ -143,7 +143,7 @@ export const FormularioConsumoHabitos = () => {
             typeof valor === "string" ? valor.split(", ").map(v => v.trim()) : [String(valor)];
 
           reset({
-            semana: String(existente.semana || ''),
+            semana: Number(existente.semana || 0),
             comidasDiarias: convertir(existente.comidasDiarias),
             comidasOtro: '',
             colacionesDiarias: convertir(existente.colacionesDiarias),
@@ -295,9 +295,16 @@ export const FormularioConsumoHabitos = () => {
                 render={({ field }) => (
                   <FormControl fullWidth required>
                     <InputLabel>Semana</InputLabel>
-                    <Select {...field} label="Semana">
-                      {opcionesSemana.map((op) => (
-                        <MenuItem key={op} value={op}>{`Semana ${op}`}</MenuItem>
+                    <Select
+                      {...field}
+                      label="Semana"
+                      value={field.value ?? ''}
+                      onChange={(e) => field.onChange(Number(e.target.value))} // <-- fuerza número
+                    >
+                      {[1, 2, 3, 4].map((num) => (
+                        <MenuItem key={num} value={num}>
+                          {`Semana ${num}`}
+                        </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
