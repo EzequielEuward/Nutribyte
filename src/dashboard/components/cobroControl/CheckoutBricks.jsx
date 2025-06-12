@@ -79,7 +79,7 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
                 estado: "Pago",
                 usuarioId,
                 metodoPago: "MercadoPago",
-                referenciaPago: result.id,
+                referenciaPago: String(result.id || "sin-ref"),
                 periodoFacturado: new Date().toISOString().split("T")[0],
                 planPagoId: obtenerPlanPagoId(nombrePlan),
                 impuestos: 0,
