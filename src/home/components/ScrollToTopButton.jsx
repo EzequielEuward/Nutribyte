@@ -32,12 +32,12 @@ export const ScrollToTopButton = () => {
           right: 24,
           zIndex: 1600,
           boxShadow: 3,
-          backgroundColor: isDark ? theme.palette.secondary.main : theme.palette.primary.main,
+          backgroundColor: "#8e24aa", // Violeta
           color: "#fff",
           "&:hover": {
             backgroundColor: isDark
-              ? theme.palette.secondary.dark
-              : theme.palette.primary.dark,
+              ? "#8e24aa"
+              : "#8e24aa",
           },
         }}
       >

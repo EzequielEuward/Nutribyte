@@ -33,7 +33,6 @@ const CustomNextArrow = (props) => {
                 width: 48,
                 height: 48,
                 bgcolor: 'primary.main',
-                color: 'white',
                 borderRadius: '50%',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -44,7 +43,7 @@ const CustomNextArrow = (props) => {
                 },
             }}
         >
-            <ArrowForwardIosIcon />
+            <ArrowForwardIosIcon htmlColor="white" />
         </Box>
     );
 };
@@ -64,7 +63,6 @@ const CustomPrevArrow = (props) => {
                 width: 48,
                 height: 48,
                 bgcolor: 'primary.main',
-                color: 'white',
                 borderRadius: '50%',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -75,11 +73,10 @@ const CustomPrevArrow = (props) => {
                 },
             }}
         >
-            <ArrowBackIosIcon />
+            <ArrowBackIosIcon htmlColor="white" />
         </Box>
     );
 };
-
 export const SliderSection = () => {
     const theme = useTheme();
     const sliderRef = useRef(null);
