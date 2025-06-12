@@ -81,7 +81,7 @@ export const NavBarHome = () => {
       sx={{
         backgroundColor: isScrolled
           ? "rgba(255, 255, 255, 0.01)"
-          : theme.palette.background.paper, // al inicio: blanco sólido
+          : theme.palette.background.paper,
         backdropFilter: isScrolled ? "blur(6px)" : "none",
         transition: "background-color 0.3s ease, backdrop-filter 0.3s ease",
         color: theme.palette.text.primary,
@@ -135,11 +135,11 @@ export const NavBarHome = () => {
               variant="contained"
               sx={{
                 px: 3,
-                backgroundColor: theme.palette.secondary.main,
-                color: "white",
-                transition: "background-color 0.3s ease, transform 0.2s ease",
+                backgroundColor: "#7E57C2", // tu color personalizado
+                color: "#fff",
+                fontWeight: "bold",
                 "&:hover": {
-                  backgroundColor: theme.palette.secondary.dark,
+                  backgroundColor: "#5E3DA8",
                   transform: "scale(1.05)",
                 },
                 "&:active": {
@@ -154,7 +154,7 @@ export const NavBarHome = () => {
         </Toolbar>
       </Container>
 
-      {/* DRAWER */}
+      {/* DRAWER - Mobile */}
       <Drawer
         anchor="right"
         open={mobileOpen}
@@ -167,7 +167,26 @@ export const NavBarHome = () => {
           },
         }}
       >
-        <List>
+        <List sx={{ pt: 2 }}>
+          <ListItem
+            button
+            onClick={() => {
+              handleLoginClick();
+              handleDrawerToggle();
+            }}
+            sx={{
+              backgroundColor: "#7E57C2",
+              color: "white",
+              mx: 2,
+              mb: 1,
+              borderRadius: 2,
+              "&:hover": {
+                backgroundColor: "#5E3DA8",
+              },
+            }}
+          >
+            <ListItemText primary="Iniciar sesión" primaryTypographyProps={{ fontWeight: 600 }} />
+          </ListItem>
           {menuItems.map((item) => (
             <ListItem
               button
@@ -181,9 +200,6 @@ export const NavBarHome = () => {
               <ListItemText primary={item.text} />
             </ListItem>
           ))}
-          <ListItem button onClick={handleLoginClick}>
-            <ListItemText primary="Iniciar sesión" />
-          </ListItem>
         </List>
       </Drawer>
     </AppBar>

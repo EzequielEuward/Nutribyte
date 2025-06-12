@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import emailjs from '@emailjs/browser';
+import { useDispatch } from 'react-redux';
+import { CrearUsuario } from '../../../store/user/';
 
 export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   const obtenerPlanPagoId = (plan) => {
     const mapa = {
@@ -29,6 +32,9 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
     mp.bricks().create("cardPayment", "cardPaymentBrick_container", {
       initialization: {
         amount: monto,
+        payer: {
+          email: persona?.email || ""
+        }
       },
       customization: {
         paymentMethods: {
@@ -42,17 +48,17 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
         },
         onSubmit: async (formData) => {
           try {
-            // 1. Confirmar estado del pago con tu backend
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros/procesar-pago`, {
+            // 1. Confirmar pago con tu backend
+            const pagoResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros/procesar-pago`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ ...formData, plan: nombrePlan })
             });
 
-            const result = await response.json();
+            const result = await pagoResponse.json();
 
             if (result.status === "approved") {
-              // 2. Crear usuario
+              // 2. Crear usuario con thunk
               const userPayload = {
                 rol: "Nutricionista",
                 username: persona.email,
@@ -65,19 +71,14 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
                 persona: { id: personaId }
               };
 
-              const usuarioResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/Usuarios`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userPayload)
-              });
-
-              const usuarioCreado = await usuarioResponse.json();
+              const usuarioCreado = await dispatch(CrearUsuario(userPayload)).unwrap();
               const usuarioId = usuarioCreado.id || usuarioCreado.usuarioId;
 
+              // 3. Registrar cobro
               const nuevoCobro = {
-                estado: "Pendiente",
+                estado: "Pago",
                 usuarioId,
-                metodoPago: "Otro",
+                metodoPago: "MercadoPago",
                 referenciaPago: result.id,
                 periodoFacturado: new Date().toISOString().split("T")[0],
                 planPagoId: obtenerPlanPagoId(nombrePlan),
@@ -85,13 +86,24 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
                 descuento: 0
               };
 
-              await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros`, {
+              const cobroResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/Cobros`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(nuevoCobro)
               });
 
-              // 4. Enviar email de confirmación
+              if (!cobroResponse.ok) {
+                const errorText = await cobroResponse.text();
+                console.error("❌ Error al crear el cobro:", cobroResponse.status, errorText);
+                Swal.fire({
+                  title: "Error",
+                  text: "No se pudo registrar el cobro. Revisá la consola.",
+                  icon: "error"
+                });
+                return;
+              }
+
+              // 4. Enviar mail
               await emailjs.send("service_h4trynq", "template_eyj0jve", {
                 nombre: persona?.nombre || "No especificado",
                 apellido: persona?.apellido || "No especificado",
@@ -104,14 +116,22 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
                 estado: result.status || "No disponible"
               }, "TUV-qDnUQB0ApBLDY");
 
-              // 5. Redirigir
-              navigate("/gracias", {
-                state: {
-                  plan: nombrePlan,
-                  email: persona.email,
-                  monto: result.transaction_amount
-                }
+              // 5. Confirmación visual y redirección
+              Swal.fire({
+                title: "¡Cuenta creada y pago aprobado!",
+                text: "Te hemos enviado un correo de confirmación.",
+                icon: "success",
+                confirmButtonText: "Aceptar"
+              }).then(() => {
+                navigate("/gracias", {
+                  state: {
+                    plan: nombrePlan,
+                    email: persona.email,
+                    monto: result.transaction_amount
+                  }
+                });
               });
+
             } else {
               Swal.fire({
                 title: "Pago rechazado",
@@ -121,6 +141,7 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
                 confirmButtonColor: "#d33"
               });
             }
+
           } catch (error) {
             console.error("Error al procesar el flujo completo:", error);
             Swal.fire({
@@ -138,7 +159,7 @@ export const CheckoutBricks = ({ monto, nombrePlan, personaId, persona }) => {
         },
       }
     });
-  }, [monto, nombrePlan, personaId, persona]);
+  }, [monto, nombrePlan, personaId, persona, dispatch, navigate]);
 
   return (
     <>

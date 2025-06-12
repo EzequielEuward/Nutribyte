@@ -8,7 +8,7 @@ export const GraciasPage = () => {
 
   const plan = state?.plan || "Plan desconocido";
   const email = state?.email || "Email no disponible";
-  const monto = state?.monto?.toLocaleString("es-AR", { style: "currency", currency: "ARS" }) || "N/A";
+  const monto = state?.monto?.toLocaleString("es-AR", { style: "currency", currency: "ARS" }) || "$350000";
 
   return (
     <Box
