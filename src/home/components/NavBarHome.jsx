@@ -23,6 +23,21 @@ export const NavBarHome = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isInHero, setIsInHero] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const hero = document.getElementById("hero");
+      const heroBottom = hero?.getBoundingClientRect().bottom;
+
+      // Si estamos viendo el hero (parte superior), cambiar el estado
+      setIsInHero(heroBottom > 80); // 80 es la altura del navbar
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,34 +74,40 @@ export const NavBarHome = () => {
       window.history.replaceState(null, "", window.location.pathname);
     }
   };
+  const linkStyles = (isSelected, isInHero) => {
+    const background = isSelected ? theme.palette.primary.button : "transparent";
+    const textColor = isInHero ? "#fff" : theme.palette.text.primary;
 
-  const linkStyles = (isSelected) => ({
-    color: isSelected ? theme.palette.primary.main : theme.palette.text.primary,
-    textDecoration: "none",
-    fontSize: "1rem",
-    padding: "0.5rem 1rem",
-    borderRadius: "4px",
-    backgroundColor: isSelected ? theme.palette.action.selected : "transparent",
-    transition: "background-color 0.3s ease, color 0.3s ease",
-    cursor: "pointer",
-    "&:hover": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  });
+    return {
+      color: textColor,
+      textDecoration: "none",
+      fontSize: "1.5rem",
+      padding: "0.5rem 1rem",
+      borderRadius: "4px",
+      backgroundColor: background,
+      transition: "background-color 0.3s ease, color 0.3s ease",
+      cursor: "pointer",
+      fontWeight: isSelected ? "bold" : 500,
+      "&:hover": {
+        backgroundColor: "rgba(126, 86, 193, 0.15)",
+        color: theme.palette.primary.button,
+      },
+    };
+  };
 
   return (
-    <AppBar
-      position="fixed"
-      elevation={isScrolled ? 4 : 0}
-      sx={{
-        backgroundColor: isScrolled
-          ? "rgba(255, 255, 255, 0.01)"
-          : theme.palette.background.paper,
-        backdropFilter: isScrolled ? "blur(6px)" : "none",
-        transition: "background-color 0.3s ease, backdrop-filter 0.3s ease",
-        color: theme.palette.text.primary,
-      }}
-    >
+   <AppBar
+  position="fixed"
+  elevation={isScrolled ? 4 : 0}
+  sx={{
+    backgroundColor: isInHero
+      ? "transparent"
+      : theme.palette.background.paper,
+    backdropFilter: isScrolled ? "blur(6px)" : "none",
+    transition: "background-color 0.3s ease, backdrop-filter 0.3s ease",
+    color: isInHero ? "#fff" : theme.palette.text.primary,
+  }}
+>
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: "space-between", alignItems: "center", minHeight: { xs: 64, md: 80 } }}>
           {/* LOGO */}
@@ -111,7 +132,7 @@ export const NavBarHome = () => {
                   scrollToSection(item.id);
                   setSelectedCategory(item.text);
                 }}
-                sx={linkStyles(selectedCategory === item.text)}
+                sx={linkStyles(selectedCategory === item.text, isInHero)}
               >
                 <Typography variant="body1">{item.text}</Typography>
               </Box>

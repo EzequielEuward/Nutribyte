@@ -426,11 +426,11 @@ export const ConsultaPage = () => {
           <IconButton
             onClick={() => navigate(-1)}
             sx={{
-              backgroundColor: theme.palette.primary.main,
+              backgroundColor: theme.palette.secondary.button,
               color: theme.palette.text.tertiary,
               mt: 2,
               '&:hover': {
-                backgroundColor: theme.palette.secondary.main,
+                backgroundColor: theme.palette.primary.button,
                 color: theme.palette.text.tertiary,
               },
             }}
@@ -488,7 +488,7 @@ export const ConsultaPage = () => {
             <Divider sx={{ my: 4 }} />
             <Button
               variant="contained"
-              color="secondary"
+              sx={{ mb: 2, backgroundColor: 'secondary.button', ":hover": { backgroundColor: 'primary.button' }, color: 'text.tertiary' }}
               onClick={() => {
                 formRef.current?.scrollIntoView({ behavior: 'smooth' });
               }}
@@ -510,21 +510,33 @@ export const ConsultaPage = () => {
                         sx={{
                           mb: 3,
                           '& .MuiTabs-indicator': {
-                            backgroundColor: 'secondary.main'
-                          }
+                            backgroundColor: theme => theme.palette.secondary.button,
+                          },
                         }}
                       >
                         <Tab
                           label="Consultas Médicas"
                           value="consultas"
                           icon={<MedicalInformationIcon />}
-                          sx={{ fontWeight: 600 }}
+                          sx={{
+                            fontWeight: 600,
+                            color: theme => theme.palette.secondary.button,
+                            '&.Mui-selected': {
+                              color: theme => theme.palette.secondary.button,
+                            },
+                          }}
                         />
                         <Tab
                           label="Anamnesis Nutricional"
                           value="anamnesis"
                           icon={<MonitorHeartIcon />}
-                          sx={{ fontWeight: 600 }}
+                          sx={{
+                            fontWeight: 600,
+                            color: theme => theme.palette.secondary.button,
+                            '&.Mui-selected': {
+                              color: theme => theme.palette.secondary.button,
+                            },
+                          }}
                         />
                       </Tabs>
                       {activeTab === 'consultas' ? (
@@ -556,7 +568,7 @@ export const ConsultaPage = () => {
                 <Card variant="outlined" ref={formRef}>
                   <CardHeader
                     title="Nueva Consulta Integral"
-                    titleTypographyProps={{ variant: 'h5', color: 'secondary' }}
+                    titleTypographyProps={{ variant: 'h5', color: 'text.primary' }}
                   />
                   <CardContent>
                     <FormProvider {...methods}>

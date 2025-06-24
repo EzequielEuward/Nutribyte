@@ -12,11 +12,13 @@ import {
   Tooltip,
   Slider,
   Button,
+  useTheme,
 } from "@mui/material";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import debounce from "lodash.debounce";
 
 export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
+  const theme = useTheme();
   const [nombre, setNombre] = useState("");
   const [grupo, setGrupo] = useState("");
   const [calorias, setCalorias] = useState(["", ""]);
@@ -58,13 +60,24 @@ export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
 
   const renderRangeFilter = (label, value, setValue, min, max) => (
     <Grid item xs={12} sm={6} md={4}>
-      <Typography gutterBottom>{label}</Typography>
+      <Typography gutterBottom >{label}</Typography>
       <Slider
         value={value}
         onChange={(e, newValue) => setValue(newValue)}
         valueLabelDisplay="auto"
         min={min}
         max={Math.min(max, 10000)}
+        sx={{
+          '& .MuiSlider-thumb': {
+            color: theme.palette.primary.button, // Color de la bolita
+          },
+          '& .MuiSlider-track': {
+            color: theme.palette.secondary.button, // Color de la línea llena
+          },
+          '& .MuiSlider-rail': {
+            color: theme.palette.grey[300], // Color de la línea vacía
+          },
+        }}
       />
       <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
         <TextField
@@ -143,7 +156,7 @@ export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
         <Grid item xs={12} sm={12} md={4} sx={{ textAlign: "right" }}>
           <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 1 }}>
             <Tooltip title="Aplicar filtros avanzados">
-              <Button variant="contained" color="primary" onClick={handleApplyFilters}>
+              <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.button }} onClick={handleApplyFilters}>
                 Aplicar filtros
               </Button>
             </Tooltip>
@@ -158,7 +171,7 @@ export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
 
       <Collapse in={advancedOpen}>
         <Box sx={{ mt: 2 }}>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} sx={{ padding: 2, }}>
             {renderRangeFilter("Calorías", calorias, setCalorias, 0, 1000)}
             {renderRangeFilter("Proteínas (g)", proteinas, setProteinas, 0, 50)}
             {renderRangeFilter("Carbohidratos (g)", carbohidratos, setCarbohidratos, 0, 100)}

@@ -11,7 +11,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  useTheme
 } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -21,6 +22,7 @@ import { ListarUsuarios } from "../../../store/user/thunk";
 
 export const NewCobroDialog = ({ open, onClose, handleNuevoCobro }) => {
   const [tabValue, setTabValue] = useState(0);
+  const theme = useTheme();
   const [cobro, setCobro] = useState({
     monto: "",
     estado: "pendiente",
@@ -221,11 +223,11 @@ export const NewCobroDialog = ({ open, onClose, handleNuevoCobro }) => {
       <DialogActions>
         <Button onClick={onClose} variant="outlined">Cancelar</Button>
         {tabValue === 0 ? (
-          <Button onClick={handleNext} variant="contained" endIcon={<ArrowForwardIcon />}>
+          <Button onClick={handleNext} sx={{ backgroundColor: theme.palette.secondary.button }} variant="contained" endIcon={<ArrowForwardIcon />}>
             Siguiente
           </Button>
         ) : (
-          <Button onClick={handleSave} variant="contained">
+          <Button onClick={handleSave} sx={{ backgroundColor: theme.palette.secondary.button }} variant="contained">
             Guardar Cobro
           </Button>
         )}

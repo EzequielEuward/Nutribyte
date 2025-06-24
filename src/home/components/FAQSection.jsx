@@ -52,19 +52,19 @@ export const FAQSection = () => {
                 <Accordion
                     key={index}
                     sx={{
-                        backgroundColor: theme.palette.background.paper,
+                        backgroundColor: theme.palette.primary.paper,
                         boxShadow: `0 4px 6px ${theme.palette.primary.main}`,
                         borderRadius: '8px',
                         mb: 2,
                     }}
                 >
                     <AccordionSummary
-                        expandIcon={<ExpandMore sx={{ color: theme.palette.secondary.main }} />}
+                        expandIcon={<ExpandMore sx={{ color: theme.palette.text.tertiary }} />}
                         sx={{
-                            backgroundColor: theme.palette.primary.main,
+                            backgroundColor: theme.palette.primary.secondary,
                             color: theme.palette.common.white,
                             '&:hover': {
-                                backgroundColor: theme.palette.primary.dark,
+                                backgroundColor: theme.palette.secondary.button,
                             },
                         }}
                     >

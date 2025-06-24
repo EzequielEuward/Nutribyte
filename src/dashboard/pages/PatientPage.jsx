@@ -197,11 +197,11 @@ export const PatientPage = () => {
         <IconButton
           onClick={() => navigate(-1)}
           sx={{
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: theme.palette.secondary.button,
             color: theme.palette.text.tertiary,
             mt: 2,
             "&:hover": {
-              backgroundColor: theme.palette.secondary.main,
+              backgroundColor: theme.palette.primary.button,
               color: theme.palette.text.tertiary,
             },
           }}
@@ -221,10 +221,10 @@ export const PatientPage = () => {
             startIcon={<FileDownloadIcon />}
             onClick={() => exportarPacientes(pacientes)}
             sx={{
-              borderColor: 'text.primary',
-              color: 'text.primary',
+               backgroundColor: theme.palette.secondary.button,
+              color: 'white',
               '&:hover': {
-                backgroundColor: 'action.hover',
+                  backgroundColor: theme.palette.primary.button,
                 borderColor: 'text.primary',
               },
             }}

@@ -139,7 +139,7 @@ export const DetallePlan = () => {
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=nutribyte.software@gmail.com&su=Consulta%20de%20soporte&body=Hola%20NUTRIBYTE,%0A%0ANecesito%20ayuda%20con...."
                   target="_blank"
                   rel="noopener noreferrer"
-                  sx={{ ml: { md: "auto" }, mt: { xs: 1, md: 0 } }}
+                  sx={{ backgroundColor: theme.palette.secondary.button ,ml: { md: "auto" }, mt: { xs: 1, md: 0 } }}
                 >
                   Contactar soporte
                 </Button>

@@ -2,28 +2,47 @@ import { useState } from 'react';
 import {
   Card, CardContent, CardHeader, CardActions,
   Typography, FormControlLabel, Switch, TextField,
-  Button, Box, Grid, Alert
+  Button, Box, Grid, Alert,
+  useTheme
 } from '@mui/material';
 import DashboardLayout from '../layout/DashboardLayout';
 import { useDispatch, useSelector } from 'react-redux';
 import { startGenerarQR2FA, startVerify2FA, login } from '../../store/auth/';
 import Swal from 'sweetalert2';
 
-const ConfigSwitch = ({ label, description, checked, onChange }) => (
-  <Box sx={{ marginBottom: 3 }}>
-    <FormControlLabel
-      control={<Switch checked={checked} onChange={onChange} color="primary" />}
-      label={label}
-      labelPlacement="end"
-    />
-    <Typography variant="body2" color="text.secondary" sx={{ marginLeft: 4 }}>
-      {description}
-    </Typography>
-  </Box>
-);
+const ConfigSwitch = ({ label, description, checked, onChange }) => {
+  const theme = useTheme();
+
+  return (
+    <Box sx={{ marginBottom: 3 }}>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={checked}
+            onChange={onChange}
+            sx={{
+              '& .MuiSwitch-switchBase.Mui-checked': {
+                color: theme.palette.secondary.button,
+              },
+              '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                backgroundColor: theme.palette.secondary.button,
+              }
+            }}
+          />
+        }
+        label={label}
+        labelPlacement="end"
+      />
+      <Typography variant="body2" color="text.secondary" sx={{ marginLeft: 4 }}>
+        {description}
+      </Typography>
+    </Box>
+  );
+};
 
 export const ConfigPage = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const { uid: userId, twoFactorEnabled, planUsuario } = useSelector((state) => state.auth);
   const horarioGuardado = JSON.parse(localStorage.getItem("horarioTrabajo")) || { inicio: "08:00", fin: "17:00" };
   const [config, setConfig] = useState({
@@ -284,7 +303,7 @@ export const ConfigPage = () => {
             </Grid>
           </CardContent>
           <CardActions sx={{ justifyContent: 'flex-end', paddingX: 3 }}>
-            <Button variant="contained" color="primary" onClick={handleSaveConfig}>
+            <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.button }} onClick={handleSaveConfig}>
               Guardar Configuración
             </Button>
           </CardActions>

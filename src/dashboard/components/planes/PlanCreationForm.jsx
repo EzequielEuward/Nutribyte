@@ -3,7 +3,8 @@ import { useForm, Controller } from "react-hook-form";
 import {
   Card, CardHeader, CardContent, CardActions,
   Button, Grid, TextField, FormControl, InputLabel,
-  Select, MenuItem, useTheme
+  Select, MenuItem, useTheme,
+  Tooltip
 } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import { addDays } from "date-fns";
@@ -125,7 +126,7 @@ export const PlanCreationForm = ({
                           color: theme.palette.text.primary,
                         }
                       }}
-                      >
+                    >
                       {Object.keys(alimentosPorTipo).map((plan) => (
                         <MenuItem key={plan} value={plan}>
                           {plan}
@@ -235,35 +236,35 @@ export const PlanCreationForm = ({
           </Grid>
 
           <CardActions sx={{ justifyContent: "flex-end", mt: 2, gap: 1 }}>
-            <Button
-              variant="outlined"
-              onClick={onCancel}
-              sx={{
-                color: theme.palette.text.primary,
-                borderColor: theme.palette.divider,
-                '&:hover': {
-                  backgroundColor: theme.palette.action.hover,
-                  borderColor: theme.palette.primary.main
-                }
-              }}
-            >
-              Cancelar
-            </Button>
+            <Tooltip title="Cancelar la creación del plan alimenticio">
+              <Button
+                variant="contained"
+                onClick={onCancel}
+                sx={{
+                  color: theme.palette.text.buscar,
+                  borderColor: theme.palette.estadoTurnos.cancelado,
 
-            <Button
-              type="submit"
-              variant="contained"
-              startIcon={<SaveIcon />}
-              sx={{
-                backgroundColor: theme.palette.primary.main,
-                color: '#fff',
-                '&:hover': {
-                  backgroundColor: theme.palette.secondary.main
-                }
-              }}
-            >
-              Generar Plan Alimenticio
-            </Button>
+                }}
+              >
+                Cancelar
+              </Button>
+            </Tooltip>
+            <Tooltip title="Generar el plan alimenticio con los datos ingresados">
+              <Button
+                type="submit"
+                variant="contained"
+                startIcon={<SaveIcon />}
+                sx={{
+                  backgroundColor: theme.palette.secondary.button,
+                  color: '#fff',
+                  '&:hover': {
+                    backgroundColor: theme.palette.primary.button
+                  }
+                }}
+              >
+                Generar Plan Alimenticio
+              </Button>
+            </Tooltip>
           </CardActions>
         </form>
       </CardContent>

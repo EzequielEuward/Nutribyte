@@ -12,17 +12,19 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  useTheme
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { ListarUsuarios } from "../../../store/user/";
 
 export const EditDialogCobro = ({ open, onClose, selectedCobro, handleModificarCobro }) => {
-
+  const theme = useTheme();
   const dispatch = useDispatch();
   const { users, loading: loadingUsers, error: errorUsers } = useSelector((state) => state.user);
 
   const [editTabValue, setEditTabValue] = useState(0);
+
   const [cobro, setCobro] = useState({
     monto: "",
     estado: "",
@@ -65,7 +67,7 @@ export const EditDialogCobro = ({ open, onClose, selectedCobro, handleModificarC
     const updatedCobroData = {
       ...cobro,
       cobroId: selectedCobro.cobroId,
-      fechaPago: cobro.fechaPago 
+      fechaPago: cobro.fechaPago
     };
     handleModificarCobro(updatedCobroData);
     onClose();
@@ -203,8 +205,8 @@ export const EditDialogCobro = ({ open, onClose, selectedCobro, handleModificarC
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} variant="outlined">Cancelar</Button>
-        <Button onClick={handleSaveChanges} variant="contained">Guardar Cambios</Button>
+        <Button onClick={onClose} sx={{ backgroundColor: theme.palette.secondary.button }} variant="outlined">Cancelar</Button>
+        <Button sx={{ backgroundColor: theme.palette.secondary.button }} onClick={handleSaveChanges} variant="contained">Guardar Cambios</Button>
       </DialogActions>
     </Dialog>
   );

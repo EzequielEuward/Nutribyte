@@ -32,7 +32,7 @@ export const PatientInfoCardConsulta = ({ paciente, onEdit, actionButtons }) => 
 
         action={
           <Tooltip title="Buscar otro paciente" arrow>
-            <Button variant="outlined" sx={{ color: theme.palette.text.tertiary, backgroundColor:theme.palette.primary.main }} size="small" onClick={onEdit}>
+            <Button variant="outlined" sx={{ color: theme.palette.text.tertiary, backgroundColor:theme.palette.secondary.button, ":hover": { backgroundColor: theme.palette.primary.button } }} size="small" onClick={onEdit}>
               Cambiar paciente
             </Button>
           </Tooltip>

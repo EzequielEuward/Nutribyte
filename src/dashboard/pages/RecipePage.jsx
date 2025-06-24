@@ -6,12 +6,13 @@ import { recipesMock } from "../../mock/data/mockRecipe";
 import { RecipeModal, RecipeCard } from "../components";
 import {
   Box, Typography, TextField, MenuItem,
-  Select, InputLabel, FormControl, Fab, Button
+  Select, InputLabel, FormControl, Fab, Button, useTheme,
 } from "@mui/material";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 export const RecipePage = () => {
+  const theme = useTheme();
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isChatOpen, setChatOpen] = useState(false);
   const [chatPosition, setChatPosition] = useState({ x: 0, y: 0 });
@@ -165,6 +166,8 @@ export const RecipePage = () => {
             sx={{
               position: 'fixed',
               bottom: isChatOpen ? 44 : 90,
+              backgroundColor: theme.palette.secondary.button,
+              color: theme.palette.text.buscar,
               right: isChatOpen ? 88 : 24,
               zIndex: 1300,
               boxShadow: 4,
@@ -220,10 +223,18 @@ export const RecipePage = () => {
       />
 
       <Fab
-        color="primary"
         aria-label="chat"
         onClick={handleClickChat}
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        sx={{
+          position: 'fixed',
+          bottom: 16,
+          right: 16,
+          backgroundColor: theme.palette.secondary.button,
+          '&:hover': {
+            backgroundColor: theme.palette.primary.button,
+          },
+          color: '#fff',
+        }}
       >
         <EggAltIcon />
       </Fab>

@@ -1,8 +1,8 @@
-import { Box, Table, TableHead, TableRow, TableCell, TableBody, Chip, IconButton } from '@mui/material';
+import { Box, Table, TableHead, TableRow, TableCell, TableBody, Chip, IconButton, useTheme } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 export const UserTable = ({ handleMenuOpen, users }) => {
-
+const theme = useTheme()
     const getEstadoColor = (estado) => {
         switch (estado) {
             case 'Activo':
@@ -56,8 +56,17 @@ export const UserTable = ({ handleMenuOpen, users }) => {
                                             user.rol === 'Administrador'
                                                 ? 'error'
                                                 : user.rol === 'Nutricionista'
-                                                    ? 'primary'
+                                                    ? undefined
                                                     : 'secondary'
+                                        }
+                                        sx={
+                                            user.rol === 'Nutricionista'
+                                                ? {
+                                                    backgroundColor: theme.palette.primary.button,
+                                                    color: '#fff',
+                                                    fontWeight: 500,
+                                                }
+                                                : {}
                                         }
                                     />
                                 </TableCell>

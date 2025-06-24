@@ -42,7 +42,7 @@ export const InformacionGeneralConsultaPage = ({ consultas }) => {
         <Card variant="outlined">
           <CardContent>
             <Box sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Box sx={iconStyle('primary.main')}>
+              <Box sx={iconStyle('primary.secondary')}>
                 <BarChartIcon fontSize="large" />
               </Box>
               <Typography variant="h6" >Consultas Totales Registradas</Typography>

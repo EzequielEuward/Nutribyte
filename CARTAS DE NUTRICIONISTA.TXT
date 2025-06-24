@@ -1,101 +1,45 @@
-import {
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Avatar,
-  Container,
-  useTheme,
-} from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
-import { motion } from 'framer-motion';
+Impulsos
 
-const nutritionists = [
-  {
-    id: 1,
-    name: 'Lic. Pamela Guadalupe Cabral',
-    specialty: 'Nutrición Clínica y Diabetes',
-    image: 'https://i.imgur.com/jHFZNMj.png',
-  },
-  {
-    id: 2,
-    name: 'Lic. Rocio Milagros Albarracin',
-    specialty: 'Nutrición clínica',
-    image: 'https://i.imgur.com/xnWZVob.jpeg',
-  },
-];
+//Problemas
+ -Perdida de información: esto se debe a que los registros y mediciones que se realizan a los pacientes están en cuadernos u hojas de cálculo Excel, generando una mala organización en la documentación.
+ -Tiempos muertos en consultas: no existe una estructura en la organización de los registros y documentación del paciente. Además, debemos considerar que no poseen de calculadora con las mediciones que se deben realizar por paciente.
+ -Insuficiencia de almacenamiento: la mayoría de los registros o documentos al estar registrados en papel o Excel no poseen un respaldo adecuado, ya que se usan fotos tomadas con la cámara de los teléfonos o 
+y el algún caso una copia de la planilla de Excel (que no posee la información completa del paciente).
+-Falta de seguridad: en este mercado se manipulan datos sensibles del paciente y al tenerlo en un formato de papel o planillas de Excel la probabilidad de que se encuentre vulnerados es muy alta lo que pone en un compromiso legal al profesional nutricionista e inconvenientes en el tratamiento y privacidad del paciente.
 
-export const NutritionistaCards = () => {
-  const theme = useTheme();
+Falta de seguimiento adecuado: al tener las planillas en formato papel o en planillas de Excel de un mismo paciente en distintos lugares con anotaciones independientes, 
+hace que cuando el nutricionista quiera realizar una evaluación de este de una forma dinámica donde se pueda dar una buena devolución al paciente sea muy difícil de definir 
+y mostrar ya que produce una mala trazabilidad en su seguimiento del tratamiento.
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-    >
-      <Box
-        id="nutritionists"
-        sx={{
-          py: { xs: 6, md: 12 },
-          bgcolor: theme.palette.mode === 'light' ? '#f9fafb' : 'background.paper',
-          textAlign: 'center',
-        }}
-      >
-        <Container maxWidth="md">
-          <Typography variant="h4" fontWeight="bold" gutterBottom>
-            Proyecto avalado por nutricionistas
-          </Typography>
-          <Typography variant="body1" color="textSecondary" maxWidth="sm" mx="auto" mb={4}>
-            Profesionales certificadas para cuidar tu salud nutricional
-          </Typography>
+ -Registro deficiente: al tener generalmente los registros de los pacientes en planillas de Excel o planillas de papel,
+  cuando un paciente quiere registrar un turno tiene que hacerlo esperar un tiempo para ver si está registrado como su paciente, 
+  y en el caso de que por hacerlo más rápido el nutricionista anote los datos del paciente en un papel, luego deberá buscarlo en sus planillas 
+  y ponerse nuevamente en contacto con él para una confirmación del turno. 
 
-          <Grid container spacing={4} justifyContent="center">
-            {nutritionists.map((nutritionist) => (
-              <Grid item xs={12} sm={6} md={4} key={nutritionist.id} sx={{ display: 'flex' }}>
-                <Card
-                  sx={{
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    transition: 'transform 0.3s',
-                    '&:hover': { transform: 'scale(1.03)' },
-                  }}
-                  raised
-                >
-                  <Avatar
-                    src={nutritionist.image}
-                    alt={nutritionist.name}
-                    sx={{
-                      width: 80,
-                      height: 80,
-                      mt: 2,
-                      border: '3px solid',
-                      borderColor: 'success.light',
-                    }}
-                  />
-                  <CardContent sx={{ textAlign: 'center' }}>
-                    <Typography variant="h6" fontWeight="bold">
-                      {nutritionist.name}
-                    </Typography>
-                    <Box display="flex" justifyContent="center" alignItems="center" gap={1} mt={1}>
-                      <PersonIcon fontSize="small" color="success" />
-                      <Typography fontSize="0.85rem" fontWeight="medium" color="success.main">
-                        {nutritionist.specialty}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
-    </motion.div>
-  );
-};
+ -Escasez de sistemas: al realizar nuestro relevamiento a nivel negocios del mercado, se pudo observar que a nivel privado nacional son muy pocos los sistemas y también de poco conocimiento los sistemas de información para este sector (profesionales nutricionistas) lo que limita la elección del profesional. También los que se encontraron están estandarizados a nivel general de salud o son aplicaciones más pequeñas y no cuenta con una personificación que se adapte a las necesitades del nutricionista de forma completa.
 
-export default NutritionistaCards;
+ -Desactualización de Apliciones: La falta de actualización constante de acuerdo con cómo van avanzando en el área de nutrición compromete la calidad de atención a los pacientes, llevando a una decisión poco favorable (terminar su tratamiento por falta de resultados) en el caso del paciente y por parte del nutricionista de sumar recursos (planillas externas tanto en Excel como en papel) lo que lleva a un mal seguimiento del paciente ya que va a tener una mala trazabilidad de su tratamiento.
+
+//Necesidades
+ -Centralización de Información: crear un sistema de información que permita almacenar todos los registros y mediciones de los pacientes en un solo lugar, evitando la pérdida de información y mejorando la organización.
+ -Estructura de Documentación: definir una estructura clara y estandarizada para la documentación de los pacientes, facilitando el acceso y la consulta de la información.
+ -Herramientas de Cálculo Integradas: incluir calculadoras antropométricas y herramientas de medición utilizadas en las consultas o revisiones del paciente dentro del sistema para que los nutricionistas puedan realizar cálculos necesarios de manera rápida y eficiente durante las consultas.
+-Almacenamiento Seguro y Respaldo: proporcionar un sistema de almacenamiento seguro que incluya copias de seguridad automáticas para proteger la información sensible de los pacientes.
+ -Seguridad de Datos: implementar medidas de seguridad para proteger la información sensible de los pacientes.
+ -Seguimiento Dinámico de Pacientes: desarrollar funcionalidades que permitan un seguimiento adecuado y dinámico de los pacientes, facilitando la trazabilidad de su tratamiento y mejorando la calidad de la atención.
+ 
+ -Registro Eficiente de Turnos: crear un sistema que permita a los pacientes registrar sus turnos de manera rápida y eficiente, minimizando los tiempos de espera y mejorando la experiencia del usuario.
+ -Desarrollo de Sistemas Específicos: diseñar un sistema de información adaptado específicamente a las necesidades de los nutricionistas, en lugar de utilizar soluciones estandarizadas que no aborden sus requerimientos particulares.
+ -Actualización Continua de Contenidos: establecer un mecanismo para la actualización constante de la información y las herramientas del sistema, asegurando que los nutricionistas tengan acceso a las últimas investigaciones y prácticas en el área de nutrición.
+ -Interfaz Amigable y Accesible: desarrollar una interfaz de usuario intuitiva y fácil de usar que permita a los nutricionistas interactuar con el sistema sin complicaciones.
+ -Capacitación y Soporte: proporcionar capacitación y soporte técnico a los nutricionistas para asegurar una correcta implementación y uso del sistema.
+ -Integración con Otras Herramientas: permitir la integración del sistema con otras herramientas y aplicaciones que los nutricionistas puedan estar utilizando, facilitando un flujo de trabajo más eficiente.
+ 
+//Oportunidades
+De acuerdo con lo que podemos ver como problemas y necesidades podemos ver estas oportunidades como:
+Desarrollo de un sistema de información personalizado: crear un sistema de información para profesionales nutricionistas/dietistas independientes abordando las necesidades particulares del sector.
+Versatilidad en el desarrollo del sistema de información: que este sistema esté disponible para diferentes dispositivos y sistemas operativos para una mayor integración del mercado.
+Implementar mejoras de procesos: implementar optimizaciones en las gestiones del día del nutricionista, que incluya gestión de turnos, recordatorios, el registro y seguimiento de estos, buscando optimizar tiempos muertos.
+Trazabilidad de datos y reportes: ofrecer herramientas que permita la mejor toma de decisiones para el nutricionista de acuerdo con su paciente y a su gestión de atención, con la posibilidad de generar reportes.
+Actualización continua y recopilación de feedbacks: implementar un sistema de información que permita a los usuarios sugerir mejoras y nuevas funcionalidades, y así poder ajustar el software a la necesidad del mercado. 
+Capacitación y formación continua: brindar una sólida formación del uso del sistema de información y ultimas actualizaciones de acuerdo con el campo de la nutrición, lo que aumentara la satisfacción de los usuarios.

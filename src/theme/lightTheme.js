@@ -5,11 +5,16 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#4B5942',       // Verde hoja (oscuro)
-      sidebar: '#388E3C',    // Verde carozo, sobrio para fondo de sidebar
+      main: '#4B5942',
+      secondary: '#443A69',
+      button: '#7E56C1',    
+      sidebar: '#388E3C',
+
     },
     secondary: {
-      main: '#D4AF37',       // Amarillo dorado suave, como pulpa madura
+      main: '#D4AF37',
+      secondary: '#2B2D42',
+      button: '#5D468E',       // Amarillo dorado suave, como pulpa madura
     },
     error: {
       main: red[700],        // Rojo accesible
@@ -20,9 +25,10 @@ export const lightTheme = createTheme({
       arrow: '#8D6E63',      // Marrón tipo carozo
     },
     text: {
-      primary: '#353839',
+      primary: '#000',
       secondary: '#5D4037',  // Marrón
       tertiary: '#fef9f2',   // Blanco pastel
+      buscar: '#ffffff',
     },
 
     action: {
@@ -84,7 +90,6 @@ export const lightTheme = createTheme({
         },
         input: {
           padding: '12px',
-          color: '#2e7d32',
         },
       },
     },

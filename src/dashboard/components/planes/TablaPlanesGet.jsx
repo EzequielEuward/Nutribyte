@@ -68,7 +68,7 @@ export const TablaPlanesGet = ({ onViewPlan, onDeletePlan, onEditPlan }) => {
                 <TableCell>{new Date(plan.fechaFin).toLocaleDateString()}</TableCell>
                 <TableCell>
                   <Tooltip title="Ver Plan" arrow>
-                    <IconButton onClick={() => onViewPlan(plan)} sx={{ color: theme.palette.secondary.main }}>
+                    <IconButton onClick={() => onViewPlan(plan)} sx={{ color: theme.palette.primary.button }}>
                       <RemoveRedEyeIcon />
                     </IconButton>
                   </Tooltip>

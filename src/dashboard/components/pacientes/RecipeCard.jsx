@@ -173,6 +173,7 @@ const RecipeCardComponent = ({ recipe, onOpenModal, onToggleSelect, isSelected }
             color="primary"
             sx={{
               width: { xs: "100%", sm: "auto" },
+              backgroundColor: theme.palette.secondary.button,
             }}
             onClick={() => onOpenModal(recipe)}
           >
@@ -182,9 +183,9 @@ const RecipeCardComponent = ({ recipe, onOpenModal, onToggleSelect, isSelected }
           <Button
             size="small"
             variant="outlined"
-            color="secondary"
+            color="priamary"
             onClick={handleDownloadPDF}
-            sx={{ width: { xs: "100%", sm: "auto" } }}
+            sx={{ width: { xs: "100%", sm: "auto" }, }}
           >
             Descargar PDF
           </Button>

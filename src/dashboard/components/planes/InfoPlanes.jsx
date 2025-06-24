@@ -54,9 +54,9 @@ export const InfoPlanes = ({ plan }) => {
               </Box>
             ))}
 
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+            {/* <Button variant="contained" color="primary" sx={{ mt: 2 }}>
               Más información
-            </Button>
+            </Button> */}
           </Box>
         </CardContent>
       </Card>

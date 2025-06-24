@@ -1,5 +1,13 @@
 import { useMemo } from "react";
-import { Card, CardHeader, CardContent, Grid, TextField, Button, Autocomplete } from "@mui/material";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  Grid,
+  TextField,
+  Button,
+  Autocomplete,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
 
@@ -18,6 +26,8 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
       <CardHeader
         title="Buscar Paciente"
         subheader="Ingrese el DNI del paciente para crear un nuevo plan alimenticio"
+        titleTypographyProps={{ sx: { color: theme.palette.text.primary } }}
+        subheaderTypographyProps={{ sx: { color: theme.palette.text.secondary } }}
       />
       <CardContent>
         <Grid container spacing={2} alignItems="center">
@@ -37,7 +47,7 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
               }
               inputValue={dni}
               onInputChange={(event, newInputValue) => {
-                const soloNumeros = newInputValue.replace(/\D/g, '');
+                const soloNumeros = newInputValue.replace(/\D/g, "");
                 if (soloNumeros.length <= 8) {
                   setDni(soloNumeros);
                 }
@@ -63,13 +73,16 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
                   fullWidth
                   sx={{
                     '& .MuiInputLabel-root': {
-                      color: theme.palette.text.secondary,
+                      color: theme.palette.text.primary,
                     },
                     '& .MuiInputLabel-root.Mui-focused': {
-                      color: theme.palette.text.secondary,
+                      color: theme.palette.text.primary,
                     },
                     '& .MuiOutlinedInput-root': {
                       color: theme.palette.text.primary,
+                      '& input': {
+                        color: theme.palette.text.primary,
+                      },
                       '& fieldset': {
                         borderColor: theme.palette.custom.primary,
                       },
@@ -90,7 +103,13 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
           </Grid>
           <Grid item>
             <Button
-              sx={{ color: "theme.palette.text.primary" }}
+              sx={{
+                color: theme.palette.text.buscar,
+                backgroundColor: theme.palette.secondary.button,
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.button,
+                },
+              }}
               variant="contained"
               onClick={onSearch}
               startIcon={<SearchIcon />}

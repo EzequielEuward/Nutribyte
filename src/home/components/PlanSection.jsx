@@ -25,7 +25,7 @@ export const PlanSection = () => {
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Card
                 sx={{
-                  border: index === 1 ? `2px solid ${theme.palette.primary.main}` : 'none',
+                  border: index === 1 ? `2px solid ${theme.palette.secondary.button}` : 'none',
                   borderRadius: 2,
                   height: '100%',
                   display: 'flex',
@@ -48,7 +48,7 @@ export const PlanSection = () => {
                     <ul style={{ listStyle: 'none', padding: 0 }}>
                       {plan.features.map((feature, fIndex) => (
                         <li key={fIndex} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                          <CheckIcon sx={{ color: theme.palette.primary.main, marginRight: 1 }} />
+                          <CheckIcon sx={{ color: theme.palette.primary.button, marginRight: 1 }} />
                           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
                             {feature}
                           </Typography>
@@ -60,9 +60,9 @@ export const PlanSection = () => {
                     fullWidth
                     variant="contained"
                     sx={{
-                      backgroundColor: theme.palette.primary.main,
+                      backgroundColor: theme.palette.primary.button,
                       '&:hover': {
-                        backgroundColor: theme.palette.primary.dark
+                        backgroundColor: theme.palette.secondary.button
                       },
                       marginTop: 'auto'
                     }}

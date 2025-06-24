@@ -90,7 +90,7 @@ export const ConsumoAlimentosTable = ({ alimentos, setAlimentos }) => {
           fullWidth
           startIcon={<AddIcon />}
           onClick={() => setOpenModal(true)}
-          sx={{ mt: 2, color: theme.palette.text.tertiary, backgroundColor: theme.palette.primary.main }}
+          sx={{ mt: 2, color: theme.palette.text.tertiary, backgroundColor: theme.palette.secondary.button, ":hover": { backgroundColor: theme.palette.primary.button } }}
         >
           Agregar alimento
         </Button>

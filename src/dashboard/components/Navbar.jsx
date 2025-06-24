@@ -217,7 +217,7 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
         <Box sx={{ width: 250, display: "flex", flexDirection: "column", height: "100%" }}>
           <Box
             sx={{
-              backgroundColor: theme.palette.primary.main,
+              backgroundColor: theme.palette.primary.sidebar,
               color: theme.palette.primary.contrastText,
               padding: "16px",
               textAlign: "center",

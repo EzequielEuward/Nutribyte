@@ -25,19 +25,19 @@ export const ScrollToTopButton = () => {
       <Fab
         onClick={scrollToTop}
         sx={{
-          width: 45,   // default small is 40px → ahora +5px
+          width: 45,   
           height: 45,
           position: "fixed",
           bottom: { xs: 80, sm: 24, md: 30 },
           right: 24,
           zIndex: 1600,
           boxShadow: 3,
-          backgroundColor: isDark ? theme.palette.secondary.main : theme.palette.primary.main,
+          backgroundColor: isDark ? theme.palette.secondary.main : theme.palette.primary.button,
           color: "#fff",
           "&:hover": {
             backgroundColor: isDark
               ? theme.palette.secondary.dark
-              : theme.palette.primary.dark,
+              : theme.palette.secondary.button,
           },
         }}
       >

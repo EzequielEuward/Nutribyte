@@ -117,7 +117,7 @@ export const PlanActivoCard = ({ planUsuario = "", fechaRenovacion, onCambiarPla
                     {(planUsuario?.toLowerCase() === "elite" || planUsuario?.toLowerCase() === "premium") && (
                         <Button
                             variant="contained"
-                            color="secondary"
+                            sx={{backgroundColor: theme.palette.secondary.button, ":hover": { backgroundColor: theme.palette.primary.button }}}
                             onClick={() => {
                                 setAccion("Cambiar");
                                 setOpenDialog(true);

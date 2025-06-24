@@ -82,7 +82,18 @@ export const PlanSummaryPage = () => {
         {/* Botón de descarga arriba */}
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
           <Tooltip title="Volver">
-            <IconButton sx={{ backgroundColor: theme.palette.background.arrow }} onClick={() => navigate(-1)} color="primary">
+            <IconButton
+              onClick={() => navigate(-1)}
+              sx={{
+                backgroundColor: theme.palette.secondary.button,
+                color: theme.palette.text.tertiary,
+                mt: 2,
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.button,
+                  color: theme.palette.text.tertiary,
+                },
+              }}
+            >
               <ArrowBackIcon />
             </IconButton>
           </Tooltip>
@@ -92,7 +103,7 @@ export const PlanSummaryPage = () => {
             variant="contained"
             startIcon={<DownloadIcon />}
             onClick={handleDownload}
-            color="primary"
+            sx={{ backgroundColor: theme.palette.secondary.button }}
           >
             Descargar Plan Completo
           </Button>
@@ -102,7 +113,7 @@ export const PlanSummaryPage = () => {
         <Box ref={resumenRef} sx={{ backgroundColor: '#fff', color: '#000' }}>
           <PlanSummaryStep plan={plan} paciente={paciente} />
           <Grid>
-            <PlanResumenStats plan={plan} /> {/* 🔥 nuevo componente aquí */}
+            <PlanResumenStats plan={plan} /> 
           </Grid>
           <Divider sx={{ mt: 4 }} />
           <PlanChart alimentos={plan.alimentos || []} />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Container, Button, Card, CardHeader, CardContent, MenuItem, Typography, Menu, Tabs, Tab, } from '@mui/material';
+import { Box, Container, Button, Card, CardHeader, CardContent, MenuItem, Typography, Menu, Tabs, Tab, useTheme, } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -22,6 +22,7 @@ function TabPanel(props) {
 }
 
 export const ControlDeUsuario = () => {
+    const theme = useTheme();
     const dispatch = useDispatch();
     const { users, loading, error } = useSelector((state) => state.user);
 
@@ -105,8 +106,7 @@ export const ControlDeUsuario = () => {
         handleMenuClose();
     };
 
-    const handleAddUser = (newUserData) => {
-
+    const handleAddUser = async (newUserData) => {
         const formattedUserData = {
             rol: newUserData.rol,
             username: newUserData.username,
@@ -128,8 +128,24 @@ export const ControlDeUsuario = () => {
             }
         };
 
-        dispatch(CrearUsuario(formattedUserData));
-        setNewUserDialogOpen(false);
+        try {
+            await dispatch(CrearUsuario(formattedUserData)).unwrap();
+            await dispatch(ListarUsuarios());
+            Swal.fire({
+                title: 'Usuario creado',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+            });
+            setNewUserDialogOpen(false);
+        } catch (error) {
+            console.error("Error creando usuario:", error);
+            Swal.fire({
+                title: 'Error',
+                text: error.message || 'No se pudo crear el usuario',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        }
     };
 
     const handleModificarUsuario = (userId, updatedUserData) => {
@@ -154,6 +170,8 @@ export const ControlDeUsuario = () => {
 
     // Filtrado de usuarios según searchTerm, rol y estado
     const filteredUsers = users.filter((user) => {
+        if (!user.persona) return false; // 🔐 Previene errores
+
         const lowerSearch = searchTerm.toLowerCase();
         const searchMatch =
             user.username.toLowerCase().includes(lowerSearch) ||
@@ -161,12 +179,13 @@ export const ControlDeUsuario = () => {
             user.persona.apellido.toLowerCase().includes(lowerSearch) ||
             user.persona.email.toLowerCase().includes(lowerSearch) ||
             user.persona.dni.toString().includes(lowerSearch);
-            
+
         const roleMatch = roleFilter === 'todos' || user.rol === roleFilter;
         const statusMatch =
             statusFilter === 'todos' ||
             (statusFilter === 'activo' && user.activo) ||
             (statusFilter === 'inactivo' && !user.activo);
+
         return searchMatch && roleMatch && statusMatch;
     });
 
@@ -184,6 +203,7 @@ export const ControlDeUsuario = () => {
                         action={
                             <Button
                                 variant="contained"
+                                sx={{ backgroundColor: theme.palette.secondary.button }}
                                 startIcon={<PersonAddIcon />}
                                 onClick={() => setNewUserDialogOpen(true)}
                             >

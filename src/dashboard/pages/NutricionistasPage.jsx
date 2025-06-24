@@ -97,15 +97,17 @@ export const NutritionistasPage = () => {
                                                 label={n.matricula}
                                                 sx={{
                                                     mt: 1,
-                                                    bgcolor: 'success.lighter',
-                                                    color: 'success.dark',
+                                                    bgcolor: theme.palette.mode === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark,
+                                                    color: theme.palette.getContrastText(
+                                                        theme.palette.mode === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+                                                    ),
                                                     fontSize: '0.75rem',
                                                 }}
                                             />
                                             <Divider sx={{ my: 2, width: '80%' }} />
                                             <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
-                                                <Person fontSize="small" color="success" />
-                                                <Typography fontSize="0.85rem" fontWeight="medium" color="success.main">
+                                                <Person fontSize="small" sx={{ color: theme.palette.text.secondary }} />
+                                                <Typography fontSize="0.85rem" fontWeight="medium" color="text.secondary">
                                                     {n.especialidad}
                                                 </Typography>
                                             </Box>

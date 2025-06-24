@@ -67,7 +67,7 @@ export const FormularioNuevoConsumo = ({ onSubmit }) => {
 
           <Grid item xs={12}>
             <Box sx={{ mt: 2 }}>
-              <Button type="submit" variant="contained" color="primary">
+              <Button type="submit" variant="contained" sx={{ backgroundColor: theme.palette.secondary.button, ":hover": { backgroundColor: theme.palette.primary.button } }}>
                 Guardar Consumo
               </Button>
             </Box>

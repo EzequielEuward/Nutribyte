@@ -32,7 +32,7 @@ const CustomNextArrow = (props) => {
                 zIndex: 1,
                 width: 48,
                 height: 48,
-                bgcolor: 'primary.main',
+                bgcolor: 'primary.button',
                 color: 'white',
                 borderRadius: '50%',
                 alignItems: 'center',
@@ -40,7 +40,7 @@ const CustomNextArrow = (props) => {
                 cursor: 'pointer',
                 boxShadow: 3,
                 '&:hover': {
-                    bgcolor: 'primary.dark',
+                    bgcolor: 'secondary.button',
                 },
             }}
         >
@@ -63,7 +63,7 @@ const CustomPrevArrow = (props) => {
                 zIndex: 1,
                 width: 48,
                 height: 48,
-                bgcolor: 'primary.main',
+                bgcolor: 'primary.button',
                 color: 'white',
                 borderRadius: '50%',
                 alignItems: 'center',
@@ -71,7 +71,7 @@ const CustomPrevArrow = (props) => {
                 cursor: 'pointer',
                 boxShadow: 3,
                 '&:hover': {
-                    bgcolor: 'primary.dark',
+                    bgcolor: 'secondary.button',
                 },
             }}
         >

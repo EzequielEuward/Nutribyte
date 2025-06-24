@@ -10,7 +10,8 @@ import {
   IconButton,
   Typography,
   Collapse,
-  Box
+  Box,
+  useTheme
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Swal from 'sweetalert2';
 
 export const LoginPage = () => {
+  const theme = useTheme();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [codigo2FA, setCodigo2FA] = useState('');
@@ -33,7 +35,7 @@ export const LoginPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const isExceptionUser = (user, pass) =>
     (user === 'Admin' || user === 'Administradora') && pass === 'admin';
 
@@ -170,6 +172,7 @@ export const LoginPage = () => {
               type={showPassword ? 'text' : 'password'}
               fullWidth
               margin="normal"
+              sx={{color: theme.palette.text.primary}}
               required
               value={password}
               onChange={handlePasswordChange}
@@ -221,8 +224,15 @@ export const LoginPage = () => {
               type="submit"
               variant="contained"
               fullWidth
-              sx={{ mt: 3 }}
               disabled={isLoading}
+              sx={{
+                mt: 3,
+                backgroundColor: theme.palette.secondary.button,
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.button, 
+                },
+              }}
+            
             >
               {isLoading ? (
                 <CircularProgress size={24} sx={{ color: 'white' }} />

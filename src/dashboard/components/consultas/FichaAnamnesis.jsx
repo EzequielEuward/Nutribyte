@@ -91,7 +91,13 @@ export const FichaAnamnesis = ({
             <Button
               onClick={handleEditAnamnesis}
               variant="contained"
-              color="primary"
+              sx={{
+                backgroundColor: (theme) => theme.palette.secondary.button,
+                color: (theme) => theme.palette.text.buscar,
+                '&:hover': {
+                  backgroundColor: (theme) => theme.palette.primary.button,
+                },
+              }}
             >
               Editar Anamnesis
             </Button>

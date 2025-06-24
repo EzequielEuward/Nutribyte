@@ -63,9 +63,9 @@ export const FoodTable = ({ alimentos }) => {
           <TableBody>
             {(rowsPerPage > 0
               ? alimentos.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
               : alimentos
             ).map((row) => (
               <TableRow key={row.idAlimento}>
@@ -125,18 +125,34 @@ export const FoodTable = ({ alimentos }) => {
     </Box>
   );
 };
-
-// Función para asignar colores a los grupos
 const getGroupColor = (group) => {
   const colors = {
-    Frutas: "#4caf50", 
-    Verduras: "#ff9800", 
-    Cereales: "#2196f3", 
-    Lácteos: "#9c27b0", 
-    Carnes: "#f44336",
+    "verduras": "#2e7d32", // verde oscuro
+    "Legumbres, cereales, papa, choclo, batata, pan y pastas": "#ef6c00", // naranja fuerte
+    "Leche y postres de leche": "#0288d1", // azul medio
+    "Yogures": "#8e24aa", // púrpura oscuro
+    "Quesos": "#f9a825", // amarillo fuerte
+    "Carnes": "#c62828", // rojo intenso
+    "Huevos": "#f57c00", // naranja quemado
+    "pescados y mariscos": "#00838f", // turquesa profundo
+    "Aceites": "#fbc02d", // dorado fuerte
+    "Grasas": "#6d4c41", // marrón oscuro
+    "Snacks salados": "#4e342e", // marrón intenso
+    "Aderezos": "#795548", // marrón clásico
+    "Azúcares, mermeladas y dulces": "rgb(163, 111, 14)", // ámbar oscuro
+    "Golosinas y chocolates": "#6d1b7b", // violeta chocolate
+    "Caldos y sopas industriales": "#ff7043", // naranja rojizo
+    "Postres industriales y helados": "#00897b", // verde azulado
+    "Sales": "#607d8b", // azul grisáceo fuerte
+    "Frutas secas y semillas": "#388e3c", // verde bosque
+    "Bebidas con azucares": "#c2185b", // rosa fuerte actualizado
+    "bebidas sin azucares": "#6a1b9a", // violeta fuerte
+    "Postres industriales": "#e53935", // rojo carmesí
+    "Frutas": "#43a047", // verde vivo
+    "Todos": "#90a4ae", // gris neutro
   };
 
-  return colors[group] || "#607d8b";
+  return colors[group] || "#cfd8dc"; // gris muy claro por defecto
 };
 
 export default FoodTable;

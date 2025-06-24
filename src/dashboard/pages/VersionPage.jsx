@@ -135,9 +135,10 @@ export const VersionPage = () => {
                                 onClick={handleUpdateVersion}
                                 sx={{
                                     color: "white",
-                                    borderColor: theme.palette.primary.main,
+                                    backgroundColor: theme.palette.secondary.button,
+                                    borderColor: theme.palette.primary.button,
                                     '&:hover': {
-                                        backgroundColor: theme.palette.secondary.main,
+                                        backgroundColor: theme.palette.primary.button,
                                         borderColor: theme.palette.primary.dark,
                                     },
                                 }}

@@ -219,6 +219,7 @@ export const CalculadoraAntropometricaPage = () => {
                   <Button
                     variant="contained"
                     size="large"
+                    sx={{ backgroundColor: theme.palette.secondary.button }}
                     onClick={() => {
                       let peso = parseFloat(datos.pesoActual.toString().replace(',', '.'));
                       let altura = parseFloat(datos.talla.toString().replace(',', '.'));
@@ -228,7 +229,7 @@ export const CalculadoraAntropometricaPage = () => {
                         return;
                       }
 
-                      if (altura > 10) altura = altura / 100; 
+                      if (altura > 10) altura = altura / 100;
 
                       const imc = Math.round((peso / (altura * altura)) * 100) / 100;
                       const imcIdealMin = Math.round(18.5 * altura * altura * 100) / 100;
@@ -252,7 +253,7 @@ export const CalculadoraAntropometricaPage = () => {
                 <Typography variant="h6" gutterBottom color="primary" sx={{ color: theme.palette.text.primary }} >Calorías por Objetivo</Typography>
                 <TextField label="Peso Actual (kg)" name="pesoActual" fullWidth value={datos.pesoActual} onChange={handleChange} inputProps={{ maxLength: 4 }} />
                 <Box textAlign="center" mt={3}>
-                  <Button variant="contained" size="large" onClick={() => {
+                  <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.button }} size="large" onClick={() => {
                     const peso = parseFloat(datos.pesoActual);
                     if (!peso) return;
                     setResultado({
@@ -281,7 +282,7 @@ export const CalculadoraAntropometricaPage = () => {
                   </Grid>
                 </Grid>
                 <Box textAlign="center" mt={3}>
-                  <Button variant="contained" size="large" onClick={() => {
+                  <Button variant="contained" size="large" sx={{ backgroundColor: theme.palette.secondary.button }} onClick={() => {
                     const suma4 = ["pliegueTriceps", "pliegueSubescapular", "pliegueBiceps", "pliegueSupraespinal"]
                       .map(key => parseFloat(datos[key]) || 0)
                       .reduce((a, b) => a + b, 0);
@@ -309,7 +310,7 @@ export const CalculadoraAntropometricaPage = () => {
                   </Grid>
                 </Grid>
                 <Box textAlign="center" mt={3}>
-                  <Button variant="contained" size="large" onClick={() => {
+                  <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.button }} size="large" onClick={() => {
                     const cintura = parseFloat(datos.circCintura);
                     const cadera = parseFloat(datos.circCadera);
                     const cinturaCadera = cintura / cadera;

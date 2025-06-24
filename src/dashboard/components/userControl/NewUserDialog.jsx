@@ -1,11 +1,13 @@
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions, Button, Tabs, Tab, Grid, TextField, FormControl, InputLabel, Select, MenuItem
+  Dialog, DialogTitle, DialogContent, DialogActions, Button, Tabs, Tab, Grid, TextField, FormControl, InputLabel, Select, MenuItem,
+  useTheme
 } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from "react";
 
 export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
+  const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
   const [persona, setPersona] = useState({
     dni: "",
@@ -25,6 +27,7 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
     especialidad: "",
     activo: true,
     planUsuario: "",
+    estadoUsuario: "Activo",
   });
 
   const handleChangePersona = (e) => {
@@ -50,7 +53,10 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
   const handleSave = () => {
     const newUserData = {
       ...usuario,
-      persona: { ...persona }
+      persona: {
+        ...persona,
+        dni: Number(persona.dni)
+      }
     };
     handleAddUser(newUserData);
   };
@@ -170,15 +176,20 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
               />
 
               {/* Campos nuevos corregidos */}
-              <TextField
-                fullWidth
-                label="Plan del Usuario"
-                name="planUsuario"
-                required
-                value={usuario.planUsuario}
-                onChange={handleChangeUsuario}
-                sx={{ mt: 2 }}
-              />
+              <Grid item xs={12}>
+                <FormControl fullWidth required sx={{ mt: 2 }}>
+                  <InputLabel>Plan del Usuario</InputLabel>
+                  <Select
+                    name="planUsuario"
+                    value={usuario.planUsuario}
+                    onChange={handleChangeUsuario}
+                  >
+                    <MenuItem value="Básico">Básico</MenuItem>
+                    <MenuItem value="Premium">Premium</MenuItem>
+                    <MenuItem value="Elite">Elite</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth>
@@ -195,7 +206,7 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 </Select>
               </FormControl>
             </Grid>
-            
+
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel>Rol</InputLabel>
@@ -236,11 +247,11 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
       <DialogActions>
         <Button onClick={onClose} variant="outlined">Cancelar</Button>
         {tabValue === 0 ? (
-          <Button onClick={handleNext} variant="contained" endIcon={<ArrowForwardIcon />}>
+          <Button onClick={handleNext} sx={{ backgroundColor: theme.palette.secondary.button }} variant="contained" endIcon={<ArrowForwardIcon />}>
             Siguiente
           </Button>
         ) : (
-          <Button onClick={handleSave} variant="contained">
+          <Button onClick={handleSave} sx={{ backgroundColor: theme.palette.secondary.button }} variant="contained">
             Guardar Usuario
           </Button>
         )}

@@ -226,9 +226,12 @@ export const FoodSearchModal = ({
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 2 }}>
+        <Tooltip title="Selecciona los alimentos que deseas agregar" arrow>
         <Button onClick={onClose} variant="contained" color="error">
           Cancelar
         </Button>
+        </Tooltip>
+        <Tooltip title="Agrega los alimentos seleccionados al plan" arrow>
         <Button
           variant="contained"
           onClick={() => {
@@ -236,9 +239,15 @@ export const FoodSearchModal = ({
             setSeleccionados({});
             onClose();
           }}
+          sx={{
+            backgroundColor: theme.palette.secondary.button,
+            '&:hover': { backgroundColor: theme.palette.primary.button },
+            color: theme.palette.text.buscar,
+          }}
         >
           Agregar seleccionados
         </Button>
+        </Tooltip>
       </DialogActions>
     </Dialog>
   );

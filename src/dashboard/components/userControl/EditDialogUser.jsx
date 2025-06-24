@@ -12,11 +12,14 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  useTheme
 } from "@mui/material";
 
 export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsuario }) => {
   const [editTabValue, setEditTabValue] = useState(0);
+  const [passwordError, setPasswordError] = useState(false);
+  const theme = useTheme();
 
   const [persona, setPersona] = useState({
     dni: "",
@@ -72,9 +75,13 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
     setPersona((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Se actualiza el handler para rol: si se selecciona "Administrador", se fuerza especialidad y matrícula
   const handleUsuarioChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "userPassword") {
+      setPasswordError(value.length > 0 && value.length < 6);
+    }
+
     if (name === "rol") {
       setUsuario((prev) => {
         const newState = { ...prev, rol: value };
@@ -215,6 +222,8 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
                     value={usuario.userPassword}
                     onChange={handleUsuarioChange}
                     placeholder="Dejar en blanco para mantener"
+                    error={passwordError}
+                    helperText={passwordError ? "La contraseña debe tener al menos 6 caracteres" : ""}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -310,7 +319,12 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant="outlined">Cancelar</Button>
-        <Button onClick={handleSaveChanges} variant="contained">
+        <Button
+          onClick={handleSaveChanges}
+          sx={{ backgroundColor: theme.palette.secondary.button }}
+          variant="contained"
+          disabled={passwordError}
+        >
           Guardar Cambios
         </Button>
       </DialogActions>

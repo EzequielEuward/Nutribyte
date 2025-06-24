@@ -34,7 +34,7 @@ export const CrearUsuario = createAsyncThunk(
   'user/CrearUsuario',
   async (userData, { rejectWithValue }) => {
     try {
-      console.log("Datos enviados al backend:", userData);
+  
 
       const payload = {
         ...userData,
@@ -42,26 +42,18 @@ export const CrearUsuario = createAsyncThunk(
       };
 
       const response = await axios.post(API_USUARIO, payload);
-
-      console.log("Respuesta exitosa del backend:", response.data);
       return response.data;
     } catch (error) {
       if (error.response) {
-        console.error("Error en la respuesta del servidor:", {
-          status: error.response.status,
-          data: error.response.data
-        });
         return rejectWithValue({
           message: error.response.data.message || 'Error creando usuario',
           status: error.response.status
         });
       } else if (error.request) {
-        console.error("Error de conexión:", error.request);
         return rejectWithValue({
           message: 'No se recibió respuesta del servidor'
         });
       } else {
-        console.error("Error en configuración de la solicitud:", error.message);
         return rejectWithValue({
           message: `Error de configuración: ${error.message}`
         });
@@ -74,28 +66,23 @@ export const ModificarUsuario = createAsyncThunk(
   'user/ModificarUsuario',
   async ({ userId, userData }, { rejectWithValue }) => {
     try {
-      console.log('Enviando datos de modificación:', userData);
 
       const response = await axios.put(`${API_USUARIO}/${userId}`, {
         ...userData,
         estadoUsuario: userData.estadoUsuario || 'Activo'
       });
 
-      console.log('Respuesta exitosa:', response.data);
       return response.data;
 
     } catch (error) {
       if (error.response) {
-        console.error('Error en la respuesta:', error.response.data);
         return rejectWithValue({
           status: error.response.status,
           message: error.response.data.message || 'Error modificando usuario'
         });
       } else if (error.request) {
-        console.error('Error de conexión:', error.request);
         return rejectWithValue({ message: 'Error de conexión con el servidor' });
       } else {
-        console.error('Error general:', error.message);
         return rejectWithValue({ message: error.message });
       }
     }
@@ -106,10 +93,8 @@ export const ToggleUserStatus = createAsyncThunk(
   'user/ToggleUserStatus',
   async (user, { rejectWithValue }) => {
     try {
-      // Construir el payload completo de usuario, igual que en ModificarUsuario,
-      // pero sin incluir el objeto 'persona'. Se deja solo el idPersona.
       const updatedUserData = {
-        idUsuario: user.idUsuario,  // Debe coincidir con el ID en la URL
+        idUsuario: user.idUsuario,
         rol: user.rol,
         username: user.username,
         userPassword: user.userPassword,
@@ -141,7 +126,6 @@ export const ToggleUserStatus = createAsyncThunk(
     }
   }
 );
-
 
 
 export const EliminarUsuario = createAsyncThunk(

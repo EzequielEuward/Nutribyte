@@ -7,7 +7,8 @@ import {
   CardHeader,
   CardContent,
   Menu,
-  MenuItem
+  MenuItem,
+  useTheme
 } from '@mui/material';
 import PaymentIcon from '@mui/icons-material/Payment';
 import EditIcon from '@mui/icons-material/Edit';
@@ -40,6 +41,7 @@ function TabPanel(props) {
 
 export const ControlDeCobro = () => {
   // Estados locales para controlar la UI
+  const theme = useTheme();
   const [globalTab, setGlobalTab] = useState(1);
   const [selectedCobro, setSelectedCobro] = useState(null);
 
@@ -162,6 +164,7 @@ export const ControlDeCobro = () => {
             action={
               <Button
                 variant="contained"
+                 sx={{backgroundColor: theme.palette.secondary.button}} 
                 startIcon={<PaymentIcon />}
                 onClick={openNewCobro}
               >

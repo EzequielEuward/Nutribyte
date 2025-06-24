@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import Swal from 'sweetalert2';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, useTheme } from '@mui/material';
 
 export const ContactFormSection = ({ onFormValidityChange }) => {
+    const theme = useTheme();
     const [apellido, setApellido] = useState("");
     const [nombre, setNombre] = useState("");
     const [email, setEmail] = useState("");
@@ -208,7 +209,18 @@ export const ContactFormSection = ({ onFormValidityChange }) => {
                         }}
                         onBlur={(e) => validateField("mensaje", e.target.value)}
                     />
-                    <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                        sx={{
+                            mt: 2,
+                            backgroundColor: theme.palette.secondary.button,
+                            '&:hover': {
+                                backgroundColor: theme.palette.primary.button, 
+                            },
+                        }}
+                    >
                         Enviar mensaje
                     </Button>
                 </form>

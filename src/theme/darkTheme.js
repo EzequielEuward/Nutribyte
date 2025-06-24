@@ -6,9 +6,12 @@ export const darkTheme = createTheme({
     mode: 'dark',
     primary: {
       main: '#262254',
+      secondary: '#3f3f6b',
+      button: '#7E56C1',
     },
     secondary: {
       main: '#543884',
+      button: '#5D468E',
     },
     error: {
       main: red.A400,
@@ -24,6 +27,7 @@ export const darkTheme = createTheme({
       primary: '#ffffff',
       secondary: '#b0b0b0',
       tertiary: '#f7f7f7',
+      buscar: '#ffffff',
     },
     hover: {
       primary: '#333',

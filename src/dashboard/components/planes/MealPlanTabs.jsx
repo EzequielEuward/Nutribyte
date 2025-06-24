@@ -81,9 +81,11 @@ export const MealPlanTabs = ({ alimentos, setAlimentos, alimentosSugeridos }) =>
           fullWidth
           startIcon={<AddIcon />}
           onClick={handleOpenModal}
-          sx={{ mt: 2 , color: theme.palette.text.primary, borderColor: theme.palette.primary.main,  '&:hover': {
-                  backgroundColor: theme.palette.secondary.main
-                } }}
+          sx={{
+            mt: 2, color: theme.palette.text.buscar, backgroundColor: theme.palette.secondary.button, borderColor: theme.palette.primary.button, '&:hover': {
+              backgroundColor: theme.palette.primary.button
+            }
+          }}
         >
           Agregar alimento
         </Button>

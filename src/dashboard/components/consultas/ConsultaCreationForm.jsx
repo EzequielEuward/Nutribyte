@@ -14,6 +14,7 @@ import {
   Tooltip,
   Menu,
   IconButton,
+  useTheme,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useForm, Controller, useFormContext } from 'react-hook-form';
@@ -25,6 +26,9 @@ import Swal from "sweetalert2";
 export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
 
   const { control, handleSubmit, formState: { errors } } = useFormContext();
+  const theme = useTheme();
+
+
 
   const handleValidatedSubmit = (data) => {
     const tieneAnamnesis = Object.entries(data).some(
@@ -85,7 +89,7 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
       {/* Sección Consulta */}
       <Card variant="outlined" sx={{ mb: 4 }}>
         <CardContent>
-          <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', mb: 2 }}>
+          <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', mb: 2 }}>
             Datos de la Consulta
           </Typography>
           <Grid container spacing={3}>
@@ -101,6 +105,28 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                     label="Fecha de Consulta"
                     type="datetime-local"
                     InputLabelProps={{ shrink: true }}
+                    sx={{
+                      '& input, & textarea, & .MuiSelect-select': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&:hover fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: theme.palette.text.primary,
+                      },
+                    }}
                   />
                 )}
               />
@@ -118,8 +144,30 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                     fullWidth
                     label="Tipo de Consulta"
                     select
+                    sx={{
+                      '& input, & textarea, & .MuiSelect-select': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&:hover fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: theme.palette.text.primary,
+                      },
+                    }}
                   >
-                    <MenuItem value="Primera">Primera consulta</MenuItem>
+                    <MenuItem value="Primera" sx={{ color: 'text.primary' }}>Primera consulta</MenuItem>
                     <MenuItem value="Seguimiento">Seguimiento</MenuItem>
                     <MenuItem value="Revision">Revisión</MenuItem>
                     <MenuItem value="Problema especifico">Problema específico</MenuItem>
@@ -144,6 +192,28 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                     inputProps={{ maxLength: 180 }}
                     error={!!errors.motivoVisita}
                     helperText={errors.motivoVisita ? "Máximo 180 caracteres" : ""}
+                    sx={{
+                      '& input, & textarea, & .MuiSelect-select': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&:hover fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: theme.palette.text.primary,
+                      },
+                    }}
                   />
                 )}
               />
@@ -155,6 +225,7 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                 name="diagnostico"
                 control={control}
                 defaultValue=""
+
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -164,6 +235,28 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                     multiline
                     rows={3}
                     helperText={errors.diagnostico ? "Máximo 150 caracteres" : ""}
+                    sx={{
+                      '& input, & textarea, & .MuiSelect-select': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&:hover fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: theme.palette.text.primary,
+                      },
+                    }}
                   />
                 )}
               />
@@ -182,6 +275,28 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                     label="Antecedentes"
                     multiline
                     rows={3}
+                    sx={{
+                      '& input, & textarea, & .MuiSelect-select': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&:hover fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: theme.palette.text.primary,
+                      },
+                    }}
                     inputProps={{ maxLength: 200 }}
                     helperText={
                       paciente?.historiaClinica ? (
@@ -189,6 +304,7 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                           <Button
                             size="small"
                             onClick={() => field.onChange(paciente.historiaClinica)}
+                            sx={{ color: theme.palette.secondary.button }}
                           >
                             Usar historial de antecedentes del paciente
                           </Button>
@@ -234,6 +350,28 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                         inputProps={{ maxLength: 200 }}
                         multiline
                         rows={3}
+                        sx={{
+                          '& input, & textarea, & .MuiSelect-select': {
+                            color: theme.palette.text.primary,
+                          },
+                          '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                              borderColor: theme.palette.text.primary,
+                            },
+                            '&:hover fieldset': {
+                              borderColor: theme.palette.text.primary,
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: theme.palette.text.primary,
+                            },
+                          },
+                          '& .MuiInputLabel-root': {
+                            color: theme.palette.text.primary,
+                          },
+                          '& .MuiInputLabel-root.Mui-focused': {
+                            color: theme.palette.text.primary,
+                          },
+                        }}
                         InputProps={{
                           endAdornment: (
                             <Tooltip title="Agregar opciones predefinidas" arrow>
@@ -272,6 +410,28 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                     label="Observaciones"
                     multiline
                     rows={3}
+                    sx={{
+                      '& input, & textarea, & .MuiSelect-select': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&:hover fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: theme.palette.text.primary,
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: theme.palette.text.primary,
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: theme.palette.text.primary,
+                      },
+                    }}
                   />
                 )}
               />
@@ -284,10 +444,10 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography variant="h6" sx={{ color: 'primary.main' }}>
+            <Typography variant="h6" sx={{ color: 'text.primary' }}>
               Mediciones Corporales (Anamnesis)
             </Typography>
-            <Typography variant="body2" sx={{ color: 'primary.main' }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Campo opcional
             </Typography>
           </Box>
@@ -352,6 +512,28 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                             title: 'Formato requerido: hasta 3 enteros y hasta 3 decimales. Ej: 123.456'
                           }
                         }}
+                        sx={{
+                          '& input, & textarea, & .MuiSelect-select': {
+                            color: theme.palette.text.primary,
+                          },
+                          '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                              borderColor: theme.palette.text.primary,
+                            },
+                            '&:hover fieldset': {
+                              borderColor: theme.palette.text.primary,
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: theme.palette.text.primary,
+                            },
+                          },
+                          '& .MuiInputLabel-root': {
+                            color: theme.palette.text.primary,
+                          },
+                          '& .MuiInputLabel-root.Mui-focused': {
+                            color: theme.palette.text.primary,
+                          },
+                        }}
                       />
                     );
                   }}
@@ -405,6 +587,28 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
                             title: 'Hasta 3 enteros y 3 decimales. Ej: 123.456'
                           }
                         }}
+                        sx={{
+                          '& input, & textarea, & .MuiSelect-select': {
+                            color: theme.palette.text.primary,
+                          },
+                          '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                              borderColor: theme.palette.text.primary,
+                            },
+                            '&:hover fieldset': {
+                              borderColor: theme.palette.text.primary,
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: theme.palette.text.primary,
+                            },
+                          },
+                          '& .MuiInputLabel-root': {
+                            color: theme.palette.text.primary,
+                          },
+                          '& .MuiInputLabel-root.Mui-focused': {
+                            color: theme.palette.text.primary,
+                          },
+                        }}
                       />
                     );
                   }}
@@ -416,7 +620,7 @@ export const ConsultaCreationForm = ({ onSubmit, paciente }) => {
       </Accordion>
 
 
-      <Button type="submit" variant="contained" color="secondary" sx={{ mt: 3 }}>
+      <Button type="submit" variant="contained" color="secondary" sx={{ mt: 3 , backgroundColor: theme.palette.secondary.button, color: theme.palette.text.buscar }}>
         Guardar Consulta Completa
       </Button>
     </Box>
