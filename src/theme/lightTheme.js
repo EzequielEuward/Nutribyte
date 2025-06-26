@@ -7,7 +7,7 @@ export const lightTheme = createTheme({
     primary: {
       main: '#4B5942',
       secondary: '#443A69',
-      button: '#7E56C1',    
+      button: '#7E56C1',
       sidebar: '#388E3C',
 
     },
@@ -60,7 +60,7 @@ export const lightTheme = createTheme({
     },
     estadoTurnos: {
       agendado: { background: '#1976d2', text: '#fff' },
-      ocupado: { background: '#f57c00', text: '#fff' },
+      disponible: { background: '#009688', text: '#fff' },
       completado: { background: '#2e7d32', text: '#fff' },
       reprogramado: { background: '#6d4c41', text: '#fff' },
       cancelado: { background: '#d32f2f', text: '#fff' },
@@ -77,7 +77,7 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: '#ffffff',
-          borderRadius: 8,
+          borderRadius: 8,  
           border: '1px solid #C8E6C9',
           '&:hover': {
             borderColor: '#81C784',

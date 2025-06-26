@@ -8,7 +8,8 @@ import {
   TextField,
   Autocomplete,
   MenuItem,
-  Grid
+  Grid,
+  useTheme
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect } from "react";
@@ -21,6 +22,7 @@ import { es } from 'date-fns/locale';
 
 export const TurnoModal = ({ open, onClose, handleSave, pacientes, formValues, handleDelete }) => {
   const now = new Date();
+  const theme = useTheme();
 
   const {
     register,
@@ -187,10 +189,9 @@ export const TurnoModal = ({ open, onClose, handleSave, pacientes, formValues, h
                     {...field}
                   >
                     <MenuItem value={ESTADO.AGENDADO}>Agendado</MenuItem>
-                    <MenuItem value={ESTADO.OCUPADO}>Ocupado</MenuItem>
+                    <MenuItem value={ESTADO.DISPONIBLE}>Disponible</MenuItem>
                     <MenuItem value={ESTADO.COMPLETADO}>Completado</MenuItem>
                     <MenuItem value={ESTADO.CANCELADO}>Cancelado</MenuItem>
-                    <MenuItem value={ESTADO.REPROGRAMADO}>Reprogramado</MenuItem>
                   </TextField>
                 )}
               />
@@ -205,8 +206,8 @@ export const TurnoModal = ({ open, onClose, handleSave, pacientes, formValues, h
             Eliminar
           </Button>
         )}
-        <Button onClick={onClose} color="secondary">Cancelar</Button>
-        <Button onClick={handleSubmit(onSubmit)} variant="contained" color="primary">
+        <Button onClick={onClose} color="error">Cancelar</Button>
+        <Button onClick={handleSubmit(onSubmit)} variant="contained" sx={{backgroundColor: theme.palette.secondary.button}}>
           Guardar
         </Button>
       </DialogActions>

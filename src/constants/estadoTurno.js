@@ -3,6 +3,7 @@ export const estadoTurno = {
   OCUPADO: "ocupado",
   COMPLETADO: "completado",
   CANCELADO: "cancelado",
+  DISPONIBLE: "disponible",
   REPROGRAMADO: "reprogramado",
   //CONFIRMADO: "confirmado",
   // NO_ASISTIO: "no_asistio",

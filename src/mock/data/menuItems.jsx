@@ -48,7 +48,7 @@ export const menuItems = [
     link: "/home/progreso",
     submenus: [
       { text: "Calorías Consumidas", link: "/home/progreso/calorias-consumidas" },
-      { text: "Metricas", link: "/home/progreso/historial-peso" },
+      { text: "Metricas", link: "/home/progreso/metricas" },
     ],
   },
   {

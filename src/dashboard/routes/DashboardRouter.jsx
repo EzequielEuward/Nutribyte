@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import {
   DashboardPage, PatientPage, FoodPage, ProfilePage,
   CalendarPage, ConsultaPage, PlanesPage, RecipePage,
-  ConfigPage, HistorialPeso, ConsumoPage, VersionPage,
+  ConfigPage, MetricasPage, ConsumoPage, VersionPage,
   ControlDeSistemaPage, PlanSummaryPage, SeguridadMedidas,
   DetallePlan, ReportesPage, CalculadoraAntropometricaPage,
   PagosAndSuscripcionesPage, CobrosParticularesPage, NutritionistasPage
@@ -36,7 +36,7 @@ export const DashboardRouter = () => {
       <Route path="planes/resumen-plan" element={<PlanSummaryPage />} />
 
       {/* 📊 Módulo Progreso */}
-      <Route path="progreso/historial-peso" element={<HistorialPeso />} />
+      <Route path="progreso/metricas" element={<MetricasPage />} />
       <Route path="progreso/calorias-consumidas" element={<ConsumoPage />} />
 
       {/* 📅 Turnos */}

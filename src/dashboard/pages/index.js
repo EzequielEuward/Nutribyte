@@ -25,7 +25,7 @@ export * from './PlanSummaryPage';
 export * from './CalendarPage';
 
 // Progreso
-export * from './HistorialPeso';
+export * from './MetricasPage';
 export * from './ConsumoPage';
 
 // Sistema

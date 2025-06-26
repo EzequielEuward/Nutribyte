@@ -9,7 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import Swal from "sweetalert2";
 import { DataGrid } from "@mui/x-data-grid";
 
-const estadosDisponibles = ["agendado", "ocupado", "completado", "reprogramado", "cancelado"];
+const estadosDisponibles = ["agendado", "completado", "disponible", "cancelado"];
 
 export const CalendarTable = ({ turnos, handleEstadoChange }) => {
   const theme = useTheme();

@@ -205,7 +205,7 @@ export const EditDialogCobro = ({ open, onClose, selectedCobro, handleModificarC
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} sx={{ backgroundColor: theme.palette.secondary.button }} variant="outlined">Cancelar</Button>
+        <Button onClick={onClose}   color="error" variant="contained">Cancelar</Button>
         <Button sx={{ backgroundColor: theme.palette.secondary.button }} onClick={handleSaveChanges} variant="contained">Guardar Cambios</Button>
       </DialogActions>
     </Dialog>

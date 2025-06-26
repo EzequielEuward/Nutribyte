@@ -1,8 +1,9 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, useTheme } from "@mui/material";
 import { useMemo, useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
+  const theme = useTheme();
   const [dniRepetido, setDniRepetido] = useState(false);
   const [formData, setFormData] = useState({
     dni: "",
@@ -39,8 +40,14 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
 
     let newValue = value;
 
-    if (["nombre", "apellido", "historialClinico"].includes(name)) {
+    const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
+
+    if (name === "historialClinico") {
       if (!soloLetrasYNumeros.test(value)) return;
+    }
+
+    if (["nombre", "apellido"].includes(name)) {
+      if (!soloLetras.test(value)) return;
     }
 
     if (name === "dni") {
@@ -242,7 +249,13 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
               Cancelar
             </Button>
             <Button
-              color="primary"
+              sx={{
+                backgroundColor: theme.palette.primary.button,
+                color: theme.palette.text.buscar,
+                "&:hover": {
+                  backgroundColor: theme.palette.secondary.button,
+                },
+              }}
               onClick={handleSaveClick}
               disabled={!isFormValid}
             >
