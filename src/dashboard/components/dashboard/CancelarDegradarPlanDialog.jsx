@@ -1,6 +1,7 @@
 import {
     Dialog, DialogTitle, DialogContent, DialogActions,
-    TextField, Button, Typography, MenuItem, FormControl, InputLabel, Select
+    TextField, Button, Typography, MenuItem, FormControl, InputLabel, Select,
+    useTheme
 } from '@mui/material';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
@@ -25,6 +26,7 @@ const CancelarDegradarPlanDialog = ({
     const [motivoSeleccionado, setMotivoSeleccionado] = useState('');
     const [motivoExtra, setMotivoExtra] = useState('');
     const [loading, setLoading] = useState(false);
+    const theme = useTheme();
 
     const handleEnviar = async () => {
         setLoading(true);
@@ -100,7 +102,7 @@ const CancelarDegradarPlanDialog = ({
                     label="Motivo adicional (opcional)"
                     variant="outlined"
                     value={motivoExtra}
-                    inputProps={{ maxLength: 150 }}
+                    inputProps={{ maxLength: 100 }}
                     onChange={(e) => setMotivoExtra(e.target.value)}
                     margin="normal"
                 />
@@ -112,6 +114,7 @@ const CancelarDegradarPlanDialog = ({
                     onClick={handleEnviar}
                     disabled={!motivoSeleccionado || loading}
                     variant="contained"
+                   sx={{backgroundColor: theme.palette.secondary.button, ":hover": { backgroundColor: theme.palette.primary.button }}}
                     color="primary"
                 >
                     Enviar

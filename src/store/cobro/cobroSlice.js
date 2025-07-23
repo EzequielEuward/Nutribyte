@@ -70,6 +70,7 @@ export const cobroSlice = createSlice({
       .addCase(listarCobrosPorUsuario.fulfilled, (state, action) => {
         state.loading = false;
         state.cobrosUsuario = action.payload;
+        state.cobros = action.payload; // <- para que también se llene cobros
       })
       .addCase(listarCobrosPorUsuario.rejected, (state, action) => {
         state.loading = false;

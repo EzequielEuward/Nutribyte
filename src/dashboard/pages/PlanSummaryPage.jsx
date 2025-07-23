@@ -105,7 +105,7 @@ export const PlanSummaryPage = () => {
             onClick={handleDownload}
             sx={{ backgroundColor: theme.palette.secondary.button }}
           >
-            Descargar Plan Completo
+            Descargar Plan Completod
           </Button>
         </Stack>
 

@@ -72,7 +72,7 @@ export const CobroTable = ({ handleMenuOpen, cobros = [] }) => {
                   <Chip label={cobro.estado} color={getChipColorEstado(cobro.estado)} />
                 </TableCell>
                 <TableCell>{cobro.usuario?.username || "Desconocido"}</TableCell>
-                <TableCell>{cobro.usuario.persona.apellido}</TableCell>
+                <TableCell>{cobro.usuario?.persona.apellido || "Desconnocido"}</TableCell>
                 <TableCell>
                   {cobro.usuario && cobro.usuario.persona
                     ? `${cobro.usuario.persona.nombre} `

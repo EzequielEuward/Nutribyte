@@ -1,31 +1,26 @@
 import { Box, List, ListItem, Paper, Stack, Typography } from "@mui/material";
 
 export const TablaComidaSummary = ({ plan }) => {
-
   const comidas = plan?.alimentos?.reduce((acc, alimento) => {
     const comida = acc.find(c => c.tipoComida === alimento.tipoComida);
+    const grasas = `${alimento.grasasTotales}g`;
+
+    const alimentoInfo = {
+      nombre: alimento.nombre,
+      cantidad: `${alimento.gramos}g`,
+      macros: {
+        proteinas: `${alimento.proteinas}g`,
+        carbohidratos: `${alimento.carbohidratos}g`,
+        grasas: grasas
+      }
+    };
+
     if (comida) {
-      comida.alimentos.push({
-        nombre: alimento.nombre,
-        cantidad: `${alimento.gramos}g`,
-        macros: {
-          proteinas: `${alimento.proteinas}g`,
-          carbohidratos: `${alimento.carbohidratos}g`,
-          grasas: `${alimento.grasas}g`
-        }
-      });
+      comida.alimentos.push(alimentoInfo);
     } else {
       acc.push({
         nombre: alimento.tipoComida,
-        alimentos: [{
-          nombre: alimento.nombre,
-          cantidad: `${alimento.gramos}g`,
-          macros: {
-            proteinas: `${alimento.proteinas}g`,
-            carbohidratos: `${alimento.carbohidratos}g`,
-            grasas: `${alimento.grasas}g`
-          }
-        }]
+        alimentos: [alimentoInfo]
       });
     }
     return acc;
@@ -40,7 +35,6 @@ export const TablaComidaSummary = ({ plan }) => {
         color: '#000',
         p: 2,
         borderRadius: 2,
-        // Esto asegura que herede los estilos sin el theme oscuro
         '& *': {
           color: '#000 !important',
         },

@@ -4,6 +4,7 @@ import {
     Box, Card, CardHeader, CardContent, Typography, Button, TextField, InputAdornment,
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
     IconButton, Menu, MenuItem, Divider, Chip,
+    useTheme,
 } from "@mui/material";
 import {
     Download as DownloadIcon,
@@ -21,13 +22,14 @@ import * as XLSX from "xlsx";
 export const PagosAndSuscripcionesPage = () => {
     const dispatch = useDispatch();
     const { uid, idUsuario, planUsuario } = useSelector((state) => state.auth);
-    const { cobros, loading } = useSelector((state) => state.cobro);
+const { cobrosUsuario: cobros, loading } = useSelector((state) => state.cobro);
 
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredPagos, setFilteredPagos] = useState([]);
     const [filterAnchorEl, setFilterAnchorEl] = useState(null);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     const [menuPagoId, setMenuPagoId] = useState(null);
+    const theme = useTheme();
 
     useEffect(() => {
         if (idUsuario) {
@@ -242,7 +244,7 @@ export const PagosAndSuscripcionesPage = () => {
                                 </Typography>
                                 <Typography color="text.secondary">Próximo cobro: 15 de noviembre, 2023</Typography>
                                 <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
-                                    <Button variant="outlined" onClick={handleQuieroCambiarPlan}>Quiero cambiar de plan</Button>
+                                    <Button variant="contained" sx={{backgroundColor: theme.palette.secondary.button}} onClick={handleQuieroCambiarPlan}>Quiero cambiar de plan</Button>
                                     <Button variant="outlined" color="error" onClick={handleCancelarSuscripcion}>
                                         Cancelar suscripción
                                     </Button>
