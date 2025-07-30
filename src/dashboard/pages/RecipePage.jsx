@@ -136,7 +136,17 @@ export const RecipePage = () => {
       </Box>
 
       {/* Filtros */}
-      <Box sx={{ display: "flex", gap: 2, alignItems: "center", p: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          alignItems: "center",
+          p: 2,
+          mt: 4,
+          mb:2,
+          height: 40
+        }}
+      >
         <TextField
           label="Buscar por nombre"
           variant="outlined"
@@ -145,12 +155,20 @@ export const RecipePage = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{ width: 200 }}
         />
-        <FormControl variant="outlined" size="small" sx={{ width: 200 }}>
+        <FormControl variant="outlined" size="small" sx={{ width: 200,  }}>
           <InputLabel>Tipo de plan</InputLabel>
           <Select
             value={selectedPlan}
             onChange={(e) => setSelectedPlan(e.target.value)}
             label="Tipo de plan"
+            sx={{ height: "100%" }}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  maxHeight: 350,
+                },
+              },
+            }}
           >
             <MenuItem value="">Todos</MenuItem>
             {plans.map((plan) => (

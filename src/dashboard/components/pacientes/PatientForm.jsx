@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, useTheme } from "@mui/material";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import Swal from "sweetalert2";
 
 export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
@@ -16,6 +16,9 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
     historialClinico: "",
     estadoPaciente: "Registrado"
   });
+  const [fechaNacimientoError, setFechaNacimientoError] = useState("");
+  const [nombreError, setNombreError] = useState("");
+  const [apellidoError, setApellidoError] = useState("");
 
   const isFormValid = useMemo(() => {
     const { dni, nombre, apellido, email, telefono, historialClinico, sexo, fechaNacimiento } = formData;
@@ -28,19 +31,26 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
       historialClinico &&
       sexo &&
       fechaNacimiento &&
-      !dniRepetido
+      !dniRepetido &&
+      !fechaNacimientoError
     );
-  }, [formData, dniRepetido]);
+  }, [formData, dniRepetido, fechaNacimientoError]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     const soloLetrasYNumeros = /^[a-zA-Z0-9\s]*$/;
     const soloNumeros = /^[0-9]*$/;
+    const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
 
     let newValue = value;
 
-    const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
+    const capitalizar = (texto) =>
+      texto
+        .toLowerCase()
+        .split(" ")
+        .map((palabra) => palabra.charAt(0).toUpperCase() + palabra.slice(1))
+        .join(" ");
 
     if (name === "historialClinico") {
       if (!soloLetrasYNumeros.test(value)) return;
@@ -48,6 +58,16 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
 
     if (["nombre", "apellido"].includes(name)) {
       if (!soloLetras.test(value)) return;
+      newValue = capitalizar(value);
+
+      // Validación de longitud mínima
+      if (newValue.trim().length < 3) {
+        if (name === "nombre") setNombreError("El nombre debe tener al menos 3 caracteres.");
+        if (name === "apellido") setApellidoError("El apellido debe tener al menos 3 caracteres.");
+      } else {
+        if (name === "nombre") setNombreError("");
+        if (name === "apellido") setApellidoError("");
+      }
     }
 
     if (name === "dni") {
@@ -66,13 +86,37 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
       ...prevData,
       [name]: newValue,
     }));
+
+    if (name === "fechaNacimiento") {
+      const hoy = new Date();
+      const fechaIngresada = new Date(value);
+      const edadEnAnios = hoy.getFullYear() - fechaIngresada.getFullYear();
+      const diferenciaMilisegundos = hoy - fechaIngresada;
+      const diferenciaDias = diferenciaMilisegundos / (1000 * 60 * 60 * 24);
+
+      if (
+        isNaN(fechaIngresada.getTime()) ||
+        diferenciaDias < 1 ||
+        edadEnAnios < 6 ||
+        edadEnAnios > 150
+      ) {
+        setFechaNacimientoError("Debe tener más de 6 años de edad para registrar este paciente.");
+      } else {
+        setFechaNacimientoError("");
+      }
+    }
   };
+
 
   const handleSaveClick = () => {
     const { dni, nombre, apellido } = formData;
 
     if (!dni || !nombre || !apellido) {
       Swal.fire("Campos incompletos", "Por favor completá DNI, nombre y apellido", "warning");
+      return;
+    }
+    if (fechaNacimientoError) {
+      Swal.fire("Fecha inválida", fechaNacimientoError, "warning");
       return;
     }
 
@@ -102,7 +146,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       <DialogTitle>Registrar Nuevo Paciente</DialogTitle>
       <DialogContent sx={{ mt: 1 }}>
-        <form> {/* Sin onSubmit */}
+        <form>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
             <div style={{ flex: "1 1 calc(50% - 16px)", marginTop: "5px" }}>
 
@@ -138,7 +182,9 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 onChange={handleChange}
                 fullWidth
                 required
-                inputProps={{ maxLength: 60 }}
+                inputProps={{ minLength: 3, maxLength: 50 }}
+                error={!!apellidoError}
+                helperText={apellidoError || "Debe tener al menos 3 caracteres"}
               />
             </div>
 
@@ -150,7 +196,9 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                 onChange={handleChange}
                 fullWidth
                 required
-                inputProps={{ maxLength: 60 }}
+                inputProps={{ minLength: 3, maxLength: 50 }}
+                error={!!nombreError}
+                helperText={nombreError || "Debe tener al menos 3 caracteres"}
               />
             </div>
 
@@ -168,6 +216,8 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                   max: maxDate
                 }}
                 InputLabelProps={{ shrink: true }}
+                error={!!fechaNacimientoError}
+                helperText={fechaNacimientoError}
               />
             </div>
 
@@ -200,10 +250,19 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
             </div>
 
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>
+
               <TextField
-                select
                 label="Estado del Paciente"
                 name="estadoPaciente"
+                value="Registrado"
+                disabled
+                fullWidth
+              />
+              {/* Descomentar si no anda */}
+              {/* <TextField
+                select
+                label="Estado del Paciente"
+                name="estadoPaciente" 
                 value={formData.estadoPaciente}
                 onChange={handleChange}
                 fullWidth
@@ -214,7 +273,7 @@ export const PatientForm = ({ open, onClose, onSubmit, pacientes = [] }) => {
                     {estado}
                   </MenuItem>
                 ))}
-              </TextField>
+              </TextField> */}
             </div>
 
             <div style={{ flex: "1 1 calc(50% - 16px)" }}>

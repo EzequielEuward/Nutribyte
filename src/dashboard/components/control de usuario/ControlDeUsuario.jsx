@@ -167,10 +167,8 @@ export const ControlDeUsuario = () => {
             });
     };
 
-
-    // Filtrado de usuarios según searchTerm, rol y estado
     const filteredUsers = users.filter((user) => {
-        if (!user.persona) return false; // 🔐 Previene errores
+        if (!user.persona) return false; 
 
         const lowerSearch = searchTerm.toLowerCase();
         const searchMatch =
@@ -190,11 +188,8 @@ export const ControlDeUsuario = () => {
     });
 
     return (
-
         <Container >
 
-
-            {/* Panel para Control de Usuarios */}
             <TabPanel value={globalTab} index={0}>
                 <Card >
                     <CardHeader

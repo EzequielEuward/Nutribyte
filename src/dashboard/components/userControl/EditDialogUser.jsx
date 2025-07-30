@@ -59,11 +59,11 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
       setUsuario({
         rol: selectedUser.rol || "",
         username: selectedUser.username || "",
-        // La contraseña se deja vacía para indicar que no se va a modificar a menos que se llene
         userPassword: "",
         matricula_Profesional: selectedUser.matricula_Profesional || "",
         especialidad: selectedUser.especialidad || "",
         activo: selectedUser.activo,
+        estadoUsuario: selectedUser.estadoUsuario || "Activo",
         planUsuario: selectedUser.planUsuario || "",
         fotoUsuario: selectedUser.fotoUsuario || ""
       });
@@ -105,15 +105,40 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
     }
     const updatedUserData = {
       idUsuario: selectedUser.idUsuario,
-      idPersona: persona.idPersona, // Se envía el idPersona a nivel raíz
+      idPersona: persona.idPersona,
       ...usuarioToSend,
       activo: Boolean(usuarioToSend.activo),
-      persona: { ...persona } // Contiene también idPersona
+      persona: { ...persona }
     };
 
     handleModificarUsuario(selectedUser.idUsuario, updatedUserData);
     onClose();
   };
+
+  const isFormValid = () => {
+    const camposPersona = [
+      persona.fechaNacimiento,
+      persona.sexoBiologico,
+      persona.email,
+      persona.telefono
+    ];
+
+    const camposUsuario = [
+      usuario.username,
+      usuario.userPassword,
+      usuario.planUsuario,
+      usuario.estadoUsuario,
+      usuario.matricula_Profesional,
+      usuario.especialidad
+    ];
+
+    const camposLlenos = [...camposPersona, ...camposUsuario].every(val => val?.toString().trim() !== "");
+
+    const passwordOk = usuario.userPassword.length >= 6;
+
+    return camposLlenos && passwordOk;
+  };
+
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -128,13 +153,16 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
 
             {editTabValue === 0 && (
               <Grid container spacing={2} sx={{ mt: 2 }}>
+
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
-                    label="Nombre"
-                    name="nombre"
-                    value={persona.nombre}
+                    label="DNI"
+                    name="dni"
+                    type="number"
+                    value={persona.dni}
                     onChange={handlePersonaChange}
+                    disabled
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -144,16 +172,17 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
                     name="apellido"
                     value={persona.apellido}
                     onChange={handlePersonaChange}
+
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
-                    label="DNI"
-                    name="dni"
-                    type="number"
-                    value={persona.dni}
+                    label="Nombre"
+                    name="nombre"
+                    value={persona.nombre}
                     onChange={handlePersonaChange}
+
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -223,11 +252,15 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
                     onChange={handleUsuarioChange}
                     placeholder="Dejar en blanco para mantener"
                     error={passwordError}
-                    helperText={passwordError ? "La contraseña debe tener al menos 6 caracteres" : ""}
+                    helperText={
+                      passwordError
+                        ? "La contraseña debe tener al menos 6 caracteres"
+                        : "⚠️ ¡No olvides ingresar una nueva contraseña para este usuario!"
+                    }
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <FormControl fullWidth>
+                  <FormControl fullWidth disabled>
                     <InputLabel>Rol</InputLabel>
                     <Select
                       name="rol"
@@ -264,7 +297,7 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <TextField
                     label="URL de Foto (opcional)"
                     name="fotoUsuario"
@@ -273,7 +306,7 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
                     fullWidth
                     margin="normal"
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
@@ -319,14 +352,25 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant="outlined">Cancelar</Button>
-        <Button
-          onClick={handleSaveChanges}
-          sx={{ backgroundColor: theme.palette.secondary.button }}
-          variant="contained"
-          disabled={passwordError}
-        >
-          Guardar Cambios
-        </Button>
+
+        {editTabValue === 0 ? (
+          <Button
+            onClick={() => setEditTabValue(1)}
+            variant="contained"
+            sx={{ backgroundColor: theme.palette.secondary.button }}
+          >
+            Siguiente
+          </Button>
+        ) : (
+          <Button
+            onClick={handleSaveChanges}
+            variant="contained"
+            sx={{ backgroundColor: theme.palette.secondary.button }}
+            disabled={!isFormValid()}
+          >
+            Guardar Cambios
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

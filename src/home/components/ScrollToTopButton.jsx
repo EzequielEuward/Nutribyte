@@ -25,7 +25,7 @@ export const ScrollToTopButton = () => {
       <Fab
         onClick={scrollToTop}
         sx={{
-          width: 45,   
+          width: 45,
           height: 45,
           position: "fixed",
           bottom: { xs: 80, sm: 24, md: 30 },

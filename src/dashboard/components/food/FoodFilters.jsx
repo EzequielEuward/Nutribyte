@@ -1,4 +1,3 @@
-// ✅ FoodFilters.jsx reconstruido
 import { useState, useEffect, useMemo } from "react";
 import {
   Paper,
@@ -13,24 +12,29 @@ import {
   Slider,
   Button,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import debounce from "lodash.debounce";
 
 export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
   const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm")); // <600px
+  const isMedium = useMediaQuery(theme.breakpoints.between("sm", "md")); // 600-900px
+
   const [nombre, setNombre] = useState("");
   const [grupo, setGrupo] = useState("");
-  const [calorias, setCalorias] = useState(["", ""]);
-  const [proteinas, setProteinas] = useState(["", ""]);
-  const [carbohidratos, setCarbohidratos] = useState(["", ""]);
-  const [azucares, setAzucares] = useState(["", ""]);
-  const [grasasTotales, setGrasasTotales] = useState(["", ""]);
-  const [grasasSaturadas, setGrasasSaturadas] = useState([0, ""]);
-  const [grasasInsaturadas, setGrasasInsaturadas] = useState(["", ""]);
-  const [fibraDietetica, setFibraDietetica] = useState(["", ""]);
-  const [sodio, setSodio] = useState(["", ""]);
-  const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [calorias, setCalorias] = useState([0, 1000]);
+  const [proteinas, setProteinas] = useState([0, 1000]);
+  const [carbohidratos, setCarbohidratos] = useState([0, 1000]);
+  const [azucares, setAzucares] = useState([0, 1000]);
+  const [grasasTotales, setGrasasTotales] = useState([0, 1000]);
+  const [grasasSaturadas, setGrasasSaturadas] = useState([0, 1000]);
+  const [grasasInsaturadas, setGrasasInsaturadas] = useState([0, 1000]);
+  const [fibraDietetica, setFibraDietetica] = useState([0, 1000]);
+  const [sodio, setSodio] = useState([0, 1000]);
+
+const [advancedOpen, setAdvancedOpen] = useState(false);
 
   const debouncedNombreChange = useMemo(
     () =>
@@ -60,7 +64,7 @@ export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
 
   const renderRangeFilter = (label, value, setValue, min, max) => (
     <Grid item xs={12} sm={6} md={4}>
-      <Typography gutterBottom >{label}</Typography>
+      <Typography gutterBottom>{label}</Typography>
       <Slider
         value={value}
         onChange={(e, newValue) => setValue(newValue)}
@@ -68,18 +72,25 @@ export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
         min={min}
         max={Math.min(max, 10000)}
         sx={{
-          '& .MuiSlider-thumb': {
-            color: theme.palette.primary.button, // Color de la bolita
+          "& .MuiSlider-thumb": {
+            color: theme.palette.primary.button,
           },
-          '& .MuiSlider-track': {
-            color: theme.palette.secondary.button, // Color de la línea llena
+          "& .MuiSlider-track": {
+            color: theme.palette.secondary.button,
           },
-          '& .MuiSlider-rail': {
-            color: theme.palette.grey[300], // Color de la línea vacía
+          "& .MuiSlider-rail": {
+            color: theme.palette.grey[300],
           },
         }}
       />
-      <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          mt: 1,
+          flexDirection: isSmall ? "column" : "row", // vertical en móvil para no apretar inputs
+        }}
+      >
         <TextField
           label="Min"
           type="number"
@@ -120,10 +131,10 @@ export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
     </Grid>
   );
 
-
   return (
     <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
       <Grid container spacing={2} alignItems="center">
+        {/* Nombre */}
         <Grid item xs={12} sm={6} md={4}>
           <TextField
             fullWidth
@@ -136,6 +147,8 @@ export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
             variant="outlined"
           />
         </Grid>
+
+        {/* Grupo Alimenticio */}
         <Grid item xs={12} sm={6} md={4}>
           <TextField
             select
@@ -153,25 +166,45 @@ export const FoodFilters = ({ onFilterChange, gruposDisponibles = [] }) => {
             ))}
           </TextField>
         </Grid>
-        <Grid item xs={12} sm={12} md={4} sx={{ textAlign: "right" }}>
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 1 }}>
-            <Tooltip title="Aplicar filtros avanzados">
-              <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.button }} onClick={handleApplyFilters}>
-                Aplicar filtros
-              </Button>
-            </Tooltip>
-            <Tooltip title="Mostrar/Ocultar filtros avanzados">
-              <IconButton onClick={() => setAdvancedOpen(!advancedOpen)}>
-                {advancedOpen ? <ExpandLess /> : <ExpandMore />}
-              </IconButton>
-            </Tooltip>
-          </Box>
+
+        {/* Botones */}
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={4}
+          sx={{
+            textAlign: isSmall ? "center" : "right",
+            display: "flex",
+            justifyContent: isSmall ? "center" : "flex-end",
+            alignItems: "center",
+            gap: 1,
+            mt: isSmall ? 2 : 0,
+          }}
+        >
+          <Tooltip title="Aplicar filtros avanzados">
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: theme.palette.secondary.button }}
+              onClick={handleApplyFilters}
+              size={isSmall ? "small" : "medium"}
+            >
+              Aplicar filtros
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Mostrar/Ocultar filtros avanzados">
+            <IconButton onClick={() => setAdvancedOpen(!advancedOpen)}>
+              {advancedOpen ? <ExpandLess /> : <ExpandMore />}
+            </IconButton>
+          </Tooltip>
         </Grid>
       </Grid>
 
+      {/* Filtros avanzados */}
       <Collapse in={advancedOpen}>
         <Box sx={{ mt: 2 }}>
-          <Grid container spacing={3} sx={{ padding: 2, }}>
+          <Grid container spacing={3} sx={{ padding: isSmall ? 1 : 2 }}>
             {renderRangeFilter("Calorías", calorias, setCalorias, 0, 1000)}
             {renderRangeFilter("Proteínas (g)", proteinas, setProteinas, 0, 50)}
             {renderRangeFilter("Carbohidratos (g)", carbohidratos, setCarbohidratos, 0, 100)}

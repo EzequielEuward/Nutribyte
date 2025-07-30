@@ -104,6 +104,8 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
 
   const { horasPasadas, horasTotales } = useWorkClock(horarioTrabajo.inicio, horarioTrabajo.fin);
 
+//Validaciones para que el usuario demo no toque nada de la configuración
+  const esDemo = rol?.toLowerCase() === "demo";
   return (
     <AppBar
       position="fixed"
@@ -166,10 +168,11 @@ export const Navbar = ({ drawerWidth = 240, username, rol }) => {
             )}
 
             {/* 🔐 Alerta visual de 2FA */}
-            {!twoFactorEnabled && (
+            {!esDemo && !twoFactorEnabled && (
               <Tooltip title="Asegurate de activar doble factor para mejor visibildad y mayor seguridad" >
                 <Box
                   onClick={() => navigate("/home/configuracion")}
+                  disable={esDemo}
                   sx={{
                     backgroundColor: "#f44336",
                     color: "white",

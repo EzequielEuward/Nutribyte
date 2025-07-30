@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, Grid, Chip } from '@mui/material';
+import { Box, Paper, Typography, Grid, Chip, Tooltip } from '@mui/material';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import CategoryIcon from '@mui/icons-material/Category';
@@ -6,13 +6,10 @@ import CategoryIcon from '@mui/icons-material/Category';
 export const PlanResumenStats = ({ plan }) => {
   const alimentos = plan.alimentos || [];
 
-  // 1. Cantidad total de alimentos
   const cantidadAlimentos = alimentos.length;
-
-  // 2. Total de calorías
   const totalCalorias = alimentos.reduce((acc, a) => acc + (a.calorias || 0), 0);
+  const promedioCalorias = cantidadAlimentos > 0 ? Math.round(totalCalorias / cantidadAlimentos) : 0;
 
-  // 3. Grupo alimenticio con más presencia
   const grupoFrecuente = (() => {
     const conteo = {};
     alimentos.forEach((a) => {
@@ -23,7 +20,6 @@ export const PlanResumenStats = ({ plan }) => {
     return maxGrupo ? { nombre: maxGrupo[0], cantidad: maxGrupo[1] } : null;
   })();
 
-  // Colores por grupo (puede expandirse)
   const grupoColors = {
     frutas: 'warning',
     verduras: 'success',
@@ -54,8 +50,8 @@ export const PlanResumenStats = ({ plan }) => {
           <Box display="flex" alignItems="center" gap={2}>
             <WhatshotIcon color="error" />
             <Box>
-              <Typography variant="subtitle2">Calorías Totales</Typography>
-              <Typography variant="h6">{totalCalorias}</Typography>
+              <Typography variant="subtitle2">Promedio de Calorías</Typography>
+              <Typography variant="h6">{promedioCalorias}</Typography>
             </Box>
           </Box>
         </Grid>
@@ -63,14 +59,23 @@ export const PlanResumenStats = ({ plan }) => {
         <Grid item xs={12} md={4}>
           <Box display="flex" alignItems="center" gap={2}>
             <CategoryIcon color="secondary" />
-            <Box>
+            <Box sx={{ maxWidth: '100%' }}>
               <Typography variant="subtitle2">Grupo Mayoritario</Typography>
               {grupoFrecuente && (
-                <Chip
-                  label={`${grupoFrecuente.nombre} (${grupoFrecuente.cantidad})`}
-                  color={grupoColors[grupoFrecuente.nombre] || 'default'}
-                  sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}
-                />
+                <Tooltip title={`${grupoFrecuente.nombre} (${grupoFrecuente.cantidad})`} arrow>
+                  <Chip
+                    label={`${grupoFrecuente.nombre} (${grupoFrecuente.cantidad})`}
+                    color={grupoColors[grupoFrecuente.nombre] || 'default'}
+                    sx={{
+                      fontWeight: 'bold',
+                      fontSize: '0.85rem',
+                      maxWidth: 200,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  />
+                </Tooltip>
               )}
             </Box>
           </Box>

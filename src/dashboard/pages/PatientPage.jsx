@@ -41,7 +41,7 @@ export const PatientPage = () => {
   const { isLoading, error, pacientes, pacienteSeleccionado } = useSelector(
     (state) => state.patients
   );
-  const { planUsuario, persona, username } = useSelector((state) => state.auth);
+  const { planUsuario, persona, username, rol } = useSelector((state) => state.auth);
 
   const [formOpen, setFormOpen] = useState(false);
   const [showAnamnesis, setShowAnamnesis] = useState(false);
@@ -49,7 +49,7 @@ export const PatientPage = () => {
 
   const plan = username?.toLowerCase();
   const esBasico = plan === "basico";
-  const esDemo = plan === "demo";
+  const esDemo = rol?.toLowerCase() === "demo";
   const superaLimiteBasico = esBasico && pacientes.length >= 15;
   const deshabilitarBoton = esDemo || superaLimiteBasico;
 
@@ -220,6 +220,7 @@ export const PatientPage = () => {
             variant="outlined"
             startIcon={<FileDownloadIcon />}
             onClick={() => exportarPacientes(pacientes)}
+            disabled={esDemo}
             sx={{
                backgroundColor: theme.palette.secondary.button,
               color: 'white',
@@ -239,6 +240,7 @@ export const PatientPage = () => {
                 color="success"
                 startIcon={<UploadFileIcon />}
                 onClick={handleClick}
+                disabled={esDemo}
               >
                 Importar Excel
               </Button> 
@@ -275,6 +277,7 @@ export const PatientPage = () => {
               onClose={() => setFormOpen(false)}
               onSubmit={handleCreatePatient}
               pacientes={pacientes}
+            
             />
 
             <PatientTable

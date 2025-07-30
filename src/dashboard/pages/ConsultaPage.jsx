@@ -309,7 +309,7 @@ export const ConsultaPage = () => {
         fecha: fechaAnamnesis
       };
     } else {
-      payload.anamnesis = null; // O simplemente no agregarla según tu backend
+      payload.anamnesis = null; 
     }
 
     dispatch(crearConsulta(payload))

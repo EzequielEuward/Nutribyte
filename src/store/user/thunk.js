@@ -100,6 +100,7 @@ export const ToggleUserStatus = createAsyncThunk(
         userPassword: user.userPassword,
         matricula_Profesional: user.matricula_Profesional,
         especialidad: user.especialidad,
+        estadoUsuario: !user.activo ? 'Activo' : 'Inactivo', 
         planUsuario: user.planUsuario,
         fotoUsuario: user.fotoUsuario,
         activo: !user.activo,

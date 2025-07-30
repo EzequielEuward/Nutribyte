@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { startGenerarQR2FA, startVerify2FA, login } from '../../store/auth/';
 import Swal from 'sweetalert2';
 
-const ConfigSwitch = ({ label, description, checked, onChange }) => {
+const ConfigSwitch = ({ label, description, checked, onChange, disabled }) => {
   const theme = useTheme();
 
   return (
@@ -20,6 +20,7 @@ const ConfigSwitch = ({ label, description, checked, onChange }) => {
           <Switch
             checked={checked}
             onChange={onChange}
+            disabled={disabled}
             sx={{
               '& .MuiSwitch-switchBase.Mui-checked': {
                 color: theme.palette.secondary.button,
@@ -43,7 +44,7 @@ const ConfigSwitch = ({ label, description, checked, onChange }) => {
 export const ConfigPage = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const { uid: userId, twoFactorEnabled, planUsuario } = useSelector((state) => state.auth);
+  const { uid: userId, twoFactorEnabled, planUsuario, rol } = useSelector((state) => state.auth);
   const horarioGuardado = JSON.parse(localStorage.getItem("horarioTrabajo")) || { inicio: "08:00", fin: "17:00" };
   const [config, setConfig] = useState({
     seguimientoAgua: true,
@@ -155,6 +156,8 @@ export const ConfigPage = () => {
       });
     }
   };
+//Validaciones para que el usuario demo no toque nada de la configuración
+  const esDemo = rol?.toLowerCase() === "demo";
 
 
   return (
@@ -183,12 +186,14 @@ export const ConfigPage = () => {
               description="Habilita el reloj pomodoro para visualizar las horas faltantes"
               checked={config.seguimientoProgreso}
               onChange={() => handleSwitchChange('seguimientoProgreso')}
+              disabled={esDemo}
             />
             <ConfigSwitch
               label="Mensaje Motivacional"
               description="Activa/desactiva el mensaje diario para tus pacientes"
               checked={config.mensajeMotivacionalActivo}
               onChange={() => handleSwitchChange('mensajeMotivacionalActivo')}
+              disabled={esDemo}
             />
 
             <Grid container spacing={2} sx={{ marginTop: 3 }}>
@@ -197,6 +202,7 @@ export const ConfigPage = () => {
                   label="Hora Inicio"
                   type="time"
                   value={config.horarioTrabajo.inicio}
+                  disabled={esDemo}
                   onChange={(e) =>
                     setConfig((prevConfig) => ({
                       ...prevConfig,
@@ -215,6 +221,7 @@ export const ConfigPage = () => {
                   label="Hora Fin"
                   type="time"
                   value={config.horarioTrabajo.fin}
+                  disabled={esDemo}
                   onChange={(e) =>
                     setConfig((prevConfig) => ({
                       ...prevConfig,
@@ -233,18 +240,19 @@ export const ConfigPage = () => {
                   label="Mensaje de Bienvenida"
                   multiline
                   rows={3}
+                  disabled={esDemo}
                   value={config.mensajeBienvenida}
                   onChange={(e) => handleInputChange('mensajeBienvenida', e.target.value)}
                   fullWidth
                 />
                 <Box sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}>
-                  <Button variant="outlined" onClick={handleGuardarMensajeBienvenida}>
+                  <Button variant="outlined"  disabled={esDemo} onClick={handleGuardarMensajeBienvenida}>
                     Guardar texto
                   </Button>
                 </Box>
               </Grid>
 
-              {planUsuario?.toLowerCase() !== "demo" && (
+              {rol?.toLowerCase() !== "demo" && (
                 <>
                   <Grid item xs={12}>
                     {twoFactorEnabled ? (
@@ -282,6 +290,7 @@ export const ConfigPage = () => {
                       <Button
                         variant="contained"
                         color="primary"
+                        
                         fullWidth
                         sx={{ mt: 2 }}
                         onClick={handleVerificar2FA}
@@ -303,7 +312,7 @@ export const ConfigPage = () => {
             </Grid>
           </CardContent>
           <CardActions sx={{ justifyContent: 'flex-end', paddingX: 3 }}>
-            <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.button }} onClick={handleSaveConfig}>
+            <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.button }} disabled={esDemo} onClick={handleSaveConfig}>
               Guardar Configuración
             </Button>
           </CardActions>

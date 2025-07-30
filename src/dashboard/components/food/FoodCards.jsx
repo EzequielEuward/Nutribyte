@@ -6,6 +6,7 @@ import {
   CardHeader,
   Typography,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import { FixedSizeGrid as Grid } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -65,9 +66,22 @@ export const FoodCards = ({ alimentos }) => {
             }
           />
           <CardContent sx={{ p: 2 }}>
-            <Typography variant="h6" sx={{ fontWeight: "bold", fontSize: "1.1rem" }}>
-              {food.nombre}
-            </Typography>
+            <Tooltip title={food.nombre} placement="top">
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1.1rem",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  maxWidth: "100%",
+                  display: "block",
+                }}
+              >
+                {food.nombre}
+              </Typography>
+            </Tooltip>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
               {food.calorias} kcal
             </Typography>

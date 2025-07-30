@@ -200,23 +200,23 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
             <Grid container spacing={2} sx={{ mb: 2 }}>
               <Grid item xs={12} sm={4}>
                 <TextField
-                  label="Filtrar por Fecha"
-                  type="date"
-                  size="small"
-                  fullWidth
-                  value={dateFilter}
-                  onChange={(e) => setDateFilter(e.target.value)}
-                  InputLabelProps={{ shrink: true }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
                   label="Filtrar por DNI"
                   type="text"
                   size="small"
                   fullWidth
                   value={dniFilter}
                   onChange={(e) => setDniFilter(e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  label="Filtrar por Fecha"
+                  type="date"
+                  size="small"
+                  fullWidth
+                  value={dateFilter}
+                  onChange={(e) => setDateFilter(e.target.value)}
                   InputLabelProps={{ shrink: true }}
                 />
               </Grid>

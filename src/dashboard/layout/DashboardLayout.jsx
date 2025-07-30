@@ -13,18 +13,24 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
   const fechaCreacion = userData?.fechaCreacion ? new Date(userData.fechaCreacion) : null;
   const hoy = new Date();
   const diasDesdeCreacion = fechaCreacion ? Math.floor((hoy - fechaCreacion) / (1000 * 60 * 60 * 24)) : 0;
-  const tiempoExcedido = planUsuario?.toLowerCase() !== "demo" && !twoFactorEnabled && diasDesdeCreacion >= 3;
+  const tiempoExcedido = rol?.toLowerCase() !== "demo" && !twoFactorEnabled && diasDesdeCreacion >= 3;
+  const esDemo = rol?.toLowerCase() === "demo";
+
+  // const opacidad =
+  //   !twoFactorEnabled && !tiempoExcedido
+  //     ? Math.min(0.6 + diasDesdeCreacion * 0.1, 0.9)
+  //     : 1;
 
   const opacidad =
-    !twoFactorEnabled && !tiempoExcedido
-      ? Math.min(0.6 + diasDesdeCreacion * 0.1, 0.9)
-      : 1;
+    esDemo || twoFactorEnabled || tiempoExcedido
+      ? 1
+      : Math.min(0.6 + diasDesdeCreacion * 0.1, 0.9);
 
   return (
     <AppTheme>
-      <Box sx={{ display: 'flex', overflowX: 'hidden', overFlowY:'hidden',}} className='animate__animated animate__fadeIn animate__faster'  >
+      <Box sx={{ display: 'flex', overflowX: 'hidden', overFlowY: 'hidden', }} className='animate__animated animate__fadeIn animate__faster'  >
 
-        <Navbar drawerWidth={drawerWidth} username={username} rol={rol}  />
+        <Navbar drawerWidth={drawerWidth} username={username} rol={rol} />
         <Sidebar drawerWidth={drawerWidth} username={username} rol={rol} planUsuario={planUsuario} />
 
         <Box

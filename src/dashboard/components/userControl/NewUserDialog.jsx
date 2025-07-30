@@ -5,10 +5,12 @@ import {
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from "react";
+import { differenceInYears, parseISO } from 'date-fns';
 
 export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
+  const [passwordError, setPasswordError] = useState(false);
   const [persona, setPersona] = useState({
     dni: "",
     apellido: "",
@@ -36,6 +38,9 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
 
   const handleChangeUsuario = (e) => {
     const { name, value } = e.target;
+    if (name === "userPassword") {
+      setPasswordError(value.length > 0 && value.length < 6);
+    }
     if (name === "rol") {
       setUsuario((prev) => ({
         ...prev,
@@ -64,6 +69,26 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
   const handleNext = () => setTabValue(1);
   const handleBack = () => setTabValue(0);
 
+  const isAdult = () => {
+    if (!persona.fechaNacimiento) return false;
+    try {
+      return differenceInYears(new Date(), parseISO(persona.fechaNacimiento)) >= 18;
+    } catch {
+      return false;
+    }
+  };
+
+  const isFormComplete = () => {
+    const personaValues = Object.values(persona);
+    const usuarioValues = Object.values(usuario).filter((_, i) => i !== 5);
+
+    return (
+      personaValues.every(Boolean) &&
+      usuarioValues.every(Boolean) &&
+      isAdult() &&
+      usuario.userPassword.length >= 6
+    );
+  };
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>Agregar Nuevo Usuario</DialogTitle>
@@ -77,10 +102,17 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
             <Grid item xs={6}>
               <TextField
                 fullWidth
-                label="Nombre"
-                name="nombre"
-                value={persona.nombre}
-                onChange={handleChangePersona}
+                label="DNI"
+                name="dni"
+                type="text"
+                inputProps={{ maxLength: 8 }}
+                value={persona.dni}
+                onChange={(e) => {
+                  const onlyNums = e.target.value.replace(/\D/g, "");
+                  if (onlyNums.length <= 8) {
+                    setPersona({ ...persona, dni: onlyNums });
+                  }
+                }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -88,6 +120,7 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 fullWidth
                 label="Apellido"
                 name="apellido"
+                inputProps={{ maxLength: 30 }}
                 value={persona.apellido}
                 onChange={handleChangePersona}
               />
@@ -95,10 +128,10 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
             <Grid item xs={6}>
               <TextField
                 fullWidth
-                label="DNI"
-                name="dni"
-                type="number"
-                value={persona.dni}
+                label="Nombre"
+                name="nombre"
+                inputProps={{ maxLength: 30 }}
+                value={persona.nombre}
                 onChange={handleChangePersona}
               />
             </Grid>
@@ -111,11 +144,15 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 InputLabelProps={{ shrink: true }}
                 value={persona.fechaNacimiento}
                 onChange={handleChangePersona}
+                error={persona.fechaNacimiento && !isAdult()}
+                helperText={
+                  persona.fechaNacimiento && !isAdult() ? "Debe tener al menos 18 años" : ""
+                }
               />
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel>Genero</InputLabel>
+                <InputLabel>Género</InputLabel>
                 <Select
                   name="sexoBiologico"
                   value={persona.sexoBiologico}
@@ -147,6 +184,7 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
             </Grid>
           </Grid>
         )}
+
         {tabValue === 1 && (
           <Grid container spacing={2} sx={{ mt: 2 }}>
             <Grid item xs={12}>
@@ -154,7 +192,6 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 Volver
               </Button>
             </Grid>
-
             <Grid item xs={6}>
               <TextField
                 fullWidth
@@ -164,7 +201,6 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 onChange={handleChangeUsuario}
               />
             </Grid>
-
             <Grid item xs={6}>
               <TextField
                 fullWidth
@@ -173,9 +209,10 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 type="password"
                 value={usuario.userPassword}
                 onChange={handleChangeUsuario}
-              />
 
-              {/* Campos nuevos corregidos */}
+                error={passwordError}
+                helperText={passwordError ? "La contraseña debe tener al menos 6 caracteres" : ""}
+              />
               <Grid item xs={12}>
                 <FormControl fullWidth required sx={{ mt: 2 }}>
                   <InputLabel>Plan del Usuario</InputLabel>
@@ -206,7 +243,6 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 </Select>
               </FormControl>
             </Grid>
-
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel>Rol</InputLabel>
@@ -220,7 +256,6 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 </Select>
               </FormControl>
             </Grid>
-
             <Grid item xs={6}>
               <TextField
                 fullWidth
@@ -231,7 +266,6 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 disabled={usuario.rol === "Administrador"}
               />
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -244,14 +278,28 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
           </Grid>
         )}
       </DialogContent>
+
       <DialogActions>
         <Button onClick={onClose} variant="outlined">Cancelar</Button>
         {tabValue === 0 ? (
-          <Button onClick={handleNext} sx={{ backgroundColor: theme.palette.secondary.button }} variant="contained" endIcon={<ArrowForwardIcon />}>
+          <Button
+            onClick={handleNext}
+            variant="contained"
+            endIcon={<ArrowForwardIcon />}
+            sx={{ backgroundColor: theme.palette.secondary.button }}
+            disabled={
+              !persona.dni || !persona.apellido || !persona.nombre || !persona.fechaNacimiento || !isAdult()
+            }
+          >
             Siguiente
           </Button>
         ) : (
-          <Button onClick={handleSave} sx={{ backgroundColor: theme.palette.secondary.button }} variant="contained">
+          <Button
+            onClick={handleSave}
+            variant="contained"
+            sx={{ backgroundColor: theme.palette.secondary.button }}
+            disabled={!isFormComplete()}
+          >
             Guardar Usuario
           </Button>
         )}

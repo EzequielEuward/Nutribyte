@@ -7,6 +7,7 @@ import {
   isValid,
   addMinutes,
   startOfWeek,
+  startOfDay,
   getDay
 } from "date-fns";
 import { es } from "date-fns/locale";
@@ -104,7 +105,7 @@ export const CalendarPage = () => {
       const clickedDate = slotOrEvent.start || slotOrEvent;
 
       // 🛑 Bloquear fechas pasadas
-      if (isValid(clickedDate) && clickedDate < now) {
+      if (isValid(clickedDate) && startOfDay(clickedDate) < startOfDay(now)) {
         Swal.fire("Fecha inválida", "No se puede asignar un turno en el pasado.", "warning");
         return;
       }
@@ -264,7 +265,7 @@ export const CalendarPage = () => {
         await dispatch(crearTurno(turnoData)).unwrap();
         Swal.fire("Éxito", "Turno creado correctamente.", "success");
       }
-      
+
 
       handleCloseModal();
       dispatch(listarTurnos());
@@ -425,13 +426,20 @@ export const CalendarPage = () => {
                   const day = date.getDay();
                   const isWeekend = day === 0 || day === 6;
 
-                  return isWeekend
-                    ? {
+                  const todayStart = startOfDay(new Date());
+                  const dateStart = startOfDay(date);
+
+                  const isPastDay = dateStart < todayStart;
+
+                  if (isWeekend || isPastDay) {
+                    return {
                       style: {
                         backgroundColor: isDarkMode ? "#2a2a2a" : "#d6d6d6",
                       },
-                    }
-                    : {};
+                    };
+                  }
+
+                  return {};
                 }}
                 views={isMobile ? { month: true } : { month: true, week: true, day: true }}
                 messages={messages}
@@ -462,7 +470,6 @@ export const CalendarPage = () => {
 
         </Box>
 
-        {/* Tabla de Turnos */}
         <Box sx={{ width: "100%" }}>
           <CalendarTable turnos={turnos} handleEstadoChange={handleEstadoChange} />
         </Box>

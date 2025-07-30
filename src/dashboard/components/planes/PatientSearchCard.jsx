@@ -25,7 +25,7 @@ export const PatientSearchCard = ({ dni, setDni, onSearch, pacientesList = [] })
     <Card sx={{ maxWidth: 700, mx: "auto", mb: 2, mt: 2 }}>
       <CardHeader
         title="Buscar Paciente"
-        subheader="Ingrese el DNI del paciente para crear un nuevo plan alimenticio"
+        subheader="Ingrese el DNI del paciente"
         titleTypographyProps={{ sx: { color: theme.palette.text.primary } }}
         subheaderTypographyProps={{ sx: { color: theme.palette.text.secondary } }}
       />
