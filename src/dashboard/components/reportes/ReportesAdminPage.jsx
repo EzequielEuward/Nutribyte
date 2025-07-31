@@ -74,26 +74,56 @@ export const ReportesAdminPage = () => {
 
     return (
         <DashboardLayout>
-            <Tooltip title="Volver">
-                <IconButton
-                    onClick={() => navigate(-1)}
-                    sx={{
-                        backgroundColor: theme.palette.secondary.button,
-                        color: theme.palette.text.tertiary,
-                        "&:hover": {
-                            backgroundColor: theme.palette.primary.button,
-                            color: theme.palette.text.tertiary,
-                        },
-                    }}
-                >
-                    <ArrowBackIcon />
-                </IconButton>
-            </Tooltip>
-            <Box sx={{ p: 3 }}>
-                <Typography variant="h4">Reportes Administrativos</Typography>
+             <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 3,
+          position: "relative",
+        }}
+      >
+        <Tooltip title="Volver">
+          <IconButton
+            onClick={() => navigate(-1)}
+            sx={{
+              backgroundColor: theme.palette.secondary.button,
+              color: theme.palette.text.tertiary,
+              "&:hover": {
+                backgroundColor: theme.palette.primary.button,
+                color: theme.palette.text.tertiary,
+              },
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            justifyContent: "center",
+            position: "static",
+            pointerEvents: "none",
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{
+              textAlign: "center",
+              fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
+              pointerEvents: "auto",
+            }}
+          >
+            Reportes Administrativos
+          </Typography>
+        </Box>
+      </Box>
+
                 <Typography variant="subtitle1" color="text.secondary">
-                    Visualiza estadísticas del sistema y actividad de usuarios
                 </Typography>
+                    Visualiza estadísticas del sistema y actividad de usuarios
 
                 <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ mb: 2 }}>
                     <Tab label="Usuarios Registrados" />
@@ -203,7 +233,9 @@ export const ReportesAdminPage = () => {
                         </CardContent>
                     </Card>
                 )}
-            </Box>
+            
         </DashboardLayout>
     );
 };
+
+export default ReportesAdminPage;

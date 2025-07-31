@@ -264,10 +264,21 @@ export const PlanesPage = () => {
   return (
     <DashboardLayout>
       <Container maxWidth="xl">
+             <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center", // Centrar el título
+          mb: 3,
+          position: "relative",
+        }}
+      >
         <Tooltip title="Volver">
-          <IconButton 
+          <IconButton
             onClick={() => navigate(-1)}
             sx={{
+              position: "absolute",
+              left: 0,
               backgroundColor: theme.palette.secondary.button,
               color: theme.palette.text.tertiary,
               "&:hover": {
@@ -279,9 +290,18 @@ export const PlanesPage = () => {
             <ArrowBackIcon />
           </IconButton>
         </Tooltip>
-        <Typography variant="h3" sx={{ mt: 2, color: "theme.palette.text.primary" }}>
+
+        <Typography
+          variant="h3"
+          sx={{
+            textAlign: "center",
+            fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
+          }}
+        >
           Gestión de Planes Alimenticios
         </Typography>
+      </Box>
+
 
         {step === "busqueda" && (
           <>

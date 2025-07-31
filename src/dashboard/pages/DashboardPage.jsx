@@ -83,15 +83,18 @@ export const DashboardPage = () => {
 
   return (
     <DashboardLayout>
-      <Typography variant="h4" sx={{ mt: 2 }}>
+      <Typography
+        variant="h3"
+        sx={{ textAlign: "center" }}
+      >
         {mensajeBienvenida}
-      </Typography>
+      </Typography> 
       <Box p={2}>
         <StatsCards totalPacientes={totalPacientesActivos} turnosHoy={turnosHoy} rol={rol} totalUsuarios={usuarios.length} />
 
         <Box display="grid" gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr" }} gap={2} mt={1}>
           <PendingAppointments turnos={turnosHoyFiltrados} />
-          <RecentAppointments turnos={turnosConPaciente} /> {/* Pasar turnos con pacientes como prop */}
+          <RecentAppointments turnos={turnosConPaciente} />
         </Box>
 
         <QuickAccess onRecordatorio={handleAbrirRecordatorio} />

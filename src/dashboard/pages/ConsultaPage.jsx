@@ -422,25 +422,52 @@ export const ConsultaPage = () => {
   return (
     <DashboardLayout>
       <Container maxWidth="xl">
-        <Tooltip title="Volver">
-          <IconButton
-            onClick={() => navigate(-1)}
-            sx={{
-              backgroundColor: theme.palette.secondary.button,
-              color: theme.palette.text.tertiary,
-              mt: 2,
-              '&:hover': {
-                backgroundColor: theme.palette.primary.button,
+         <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: 3,
+            position: "relative",
+          }}
+        >
+          <Tooltip title="Volver">
+            <IconButton
+              onClick={() => navigate(-1)}
+              sx={{
+                backgroundColor: theme.palette.secondary.button,
                 color: theme.palette.text.tertiary,
-              },
+                "&:hover": {
+                  backgroundColor: theme.palette.primary.button,
+                  color: theme.palette.text.tertiary,
+                },
+              }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: { xs: "center", md: "flex-start" },
+              position: { md: "absolute" },
+              left: { md: "50%" },
+              transform: { md: "translateX(-50%)" },
             }}
           >
-            <ArrowBackIcon />
-          </IconButton>
-        </Tooltip>
-        <Typography variant="h3" sx={{ mt: 2, color: "text.primary" }}>
-          Gestión de Consultas
-        </Typography>
+            <Typography
+              variant="h3"
+              sx={{
+                textAlign: "center",
+                fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
+              }}
+            >
+              Gestión de Consultas
+            </Typography>
+          </Box>
+        </Box>
 
         {step === "busqueda" && (
           <>

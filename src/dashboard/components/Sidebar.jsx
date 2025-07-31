@@ -35,13 +35,13 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isNotebook = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-  
+
   // Ajustamos el ancho del sidebar según el dispositivo
-  const currentDrawerWidth = 
-    isMobile ? 200 : 
-    isTablet ? 220 : 
-    isNotebook ? 220 : 
-    drawerWidth;
+  const currentDrawerWidth =
+    isMobile ? '100%' :
+      isTablet ? 220 :
+        isNotebook ? 220 :
+          drawerWidth;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -78,8 +78,8 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
   const drawerContent = (
     <Box
       sx={{
-        width: currentDrawerWidth,
-        maxWidth: currentDrawerWidth,
+        width: isMobile ? '100%' : currentDrawerWidth,
+        maxWidth: isMobile ? '100%' : currentDrawerWidth,
         height: '100%',
         backgroundColor: theme.palette.primary.sidebar,
         color: drawerTextColor,
@@ -112,7 +112,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
           src={logo}
           alt="Logo"
           sx={{
-            height: isMobile ? 40 : isNotebook ? 50 : 90,
+            height: isMobile ? 70 : isNotebook ? 50 : 90, 
             width: 'auto',
             maxWidth: '100%',
             display: 'block',
@@ -120,8 +120,8 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
             mb: 1,
           }}
         />
-        <Typography 
-          variant="subtitle2" 
+        <Typography
+          variant="subtitle2"
           sx={{
             fontWeight: 'bold',
             textAlign: 'center',
@@ -130,12 +130,12 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             color: drawerTextColor,
-            fontSize: isNotebook ? '0.9rem' : '1rem',
+            fontSize: isMobile ? '1.2rem' : isNotebook ? '0.9rem' : '1rem', 
           }}>
           {username}
         </Typography>
-        <Typography 
-          variant="caption" 
+        <Typography
+          variant="caption"
           sx={{
             textAlign: 'center',
             display: 'block',
@@ -148,9 +148,9 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
       </Box>
 
       {/* Lista de elementos del menú */}
-      <Box sx={{ 
-        flexGrow: 1, 
-        overflowY: 'auto', 
+      <Box sx={{
+        flexGrow: 1,
+        overflowY: 'auto',
         overflowX: 'hidden',
         '&::-webkit-scrollbar': {
           width: '6px',
@@ -160,9 +160,9 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
           borderRadius: '3px',
         },
       }}>
-        <List 
-          sx={{ 
-            backgroundColor: theme.palette.primary.sidebar, 
+        <List
+          sx={{
+            backgroundColor: theme.palette.primary.sidebar,
             py: 0,
             width: '100%',
             overflow: 'hidden',
@@ -170,9 +170,9 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
         >
           {filteredMenuItems.map((menu, index) => (
             <React.Fragment key={index}>
-              <ListItem 
-                disablePadding 
-                sx={{ 
+              <ListItem
+                disablePadding
+                sx={{
                   display: 'block',
                   width: '100%',
                   overflow: 'hidden',
@@ -198,7 +198,7 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
                     }
                   }}
                 >
-                  <ListItemIcon sx={{ 
+                  <ListItemIcon sx={{
                     color: drawerTextColor,
                     minWidth: 'auto',
                     mr: isNotebook ? 1.5 : 2,
@@ -207,17 +207,17 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
                   </ListItemIcon>
                   <ListItemText
                     primary={menu.text}
-                    primaryTypographyProps={{ 
-                      style: { 
+                    primaryTypographyProps={{
+                      style: {
                         color: drawerTextColor,
                         fontSize: isNotebook ? '0.85rem' : '0.9rem',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         maxWidth: '100%',
-                      } 
+                      }
                     }}
-                    sx={{ 
+                    sx={{
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
@@ -233,10 +233,10 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
 
               {menu.submenus && (
                 <Collapse in={openMenus[menu.text]} timeout="auto" unmountOnExit>
-                  <List 
-                    component="div" 
-                    disablePadding 
-                    sx={{ 
+                  <List
+                    component="div"
+                    disablePadding
+                    sx={{
                       backgroundColor: theme.palette.primary.sidebar,
                       width: '100%',
                       overflow: 'hidden',
@@ -260,16 +260,16 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
                         </ListItemIcon>
                         <ListItemText
                           primary={submenu.text}
-                          primaryTypographyProps={{ 
-                            style: { 
+                          primaryTypographyProps={{
+                            style: {
                               color: drawerTextColor,
                               fontSize: isNotebook ? '0.8rem' : '0.85rem',
                               whiteSpace: 'nowrap',
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
-                            } 
+                            }
                           }}
-                          sx={{ 
+                          sx={{
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
@@ -319,17 +319,16 @@ export const Sidebar = ({ drawerWidth = 280, username, rol, planUsuario }) => {
       {/* Drawer temporal para móviles */}
       <Drawer
         variant="temporary"
+        anchor="left"
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: 'block', sm: 'none' },
-          overflow: 'hidden',
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
-            width: drawerWidth,
+            width: '75%',
             backgroundColor: theme.palette.primary.sidebar,
-            overflow: 'hidden',
           },
         }}
       >

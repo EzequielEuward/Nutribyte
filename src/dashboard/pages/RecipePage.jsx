@@ -135,23 +135,42 @@ export const RecipePage = () => {
 
   return (
     <DashboardLayout>
-      <Tooltip title="Volver">
-        <IconButton
-          onClick={() => navigate(-1)}
-          sx={{
-            backgroundColor: theme.palette.secondary.button,
-            color: theme.palette.text.tertiary,
-            "&:hover": {
-              backgroundColor: theme.palette.primary.button,
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center", // Centrar el título
+          mb: 3,
+          position: "relative",
+        }}
+      >
+        <Tooltip title="Volver">
+          <IconButton
+            onClick={() => navigate(-1)}
+            sx={{
+              position: "absolute",
+              left: 0,
+              backgroundColor: theme.palette.secondary.button,
               color: theme.palette.text.tertiary,
-            },
+              "&:hover": {
+                backgroundColor: theme.palette.primary.button,
+                color: theme.palette.text.tertiary,
+              },
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Typography
+          variant="h3"
+          sx={{
+            textAlign: "center",
+            fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
           }}
         >
-          <ArrowBackIcon />
-        </IconButton>
-      </Tooltip>
-      <Box sx={{ textAlign: "left", ml: 3, mt: 2 }}>
-        <Typography variant="h4">Recetas | Platos</Typography>
+          Recetas | Platos
+        </Typography>
       </Box>
 
       {/* Filtros */}

@@ -17,12 +17,12 @@ export const PatientsSummary = ({ pacientes }) => {
   // Filtrar pacientes por categoría de edad
   const niños = pacientes.filter(paciente => {
     const edad = new Date().getFullYear() - new Date(paciente.persona.fechaNacimiento).getFullYear();
-    return edad >= 0 && edad <= 6;
+    return edad >= 6 && edad <= 11;
   });
 
   const adolescentes = pacientes.filter(paciente => {
     const edad = new Date().getFullYear() - new Date(paciente.persona.fechaNacimiento).getFullYear();
-    return edad >= 7 && edad <= 18;
+    return edad >= 12 && edad <= 18;
   });
 
   const adultos = pacientes.filter(paciente => {
@@ -49,7 +49,7 @@ export const PatientsSummary = ({ pacientes }) => {
         {/* NIÑOS */}
         <Box display="flex" flexDirection="column" gap={1} sx={{ mb: 2, p: 2, borderRadius: 2 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: "bold", color: theme.palette.text.primary }}>
-            NIÑOS (0 a 6 AÑOS)
+            NIÑOS (6 a 11 AÑOS)
           </Typography>
           <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
             {niños.length}
@@ -73,7 +73,7 @@ export const PatientsSummary = ({ pacientes }) => {
         {/* ADOLESCENTES */}
         <Box display="flex" flexDirection="column" gap={1} sx={{ mb: 2, p: 2, borderRadius: 2 }}>
           <Typography variant="subtitle1" sx={{ fontWeight: "bold", color: theme.palette.text.primary }}>
-            ADOLESCENTES (7 a 18 AÑOS)
+            ADOLESCENTES (12 a 18 AÑOS)
           </Typography>
           <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
             {adolescentes.length}

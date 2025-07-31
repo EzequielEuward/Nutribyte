@@ -193,28 +193,56 @@ export const PatientPage = () => {
 
   return (
     <DashboardLayout>
-      <Tooltip title="Volver">
-        <IconButton
-          onClick={() => navigate(-1)}
-          sx={{
-            backgroundColor: theme.palette.secondary.button,
-            color: theme.palette.text.tertiary,
-            mt: 2,
-            "&:hover": {
-              backgroundColor: theme.palette.primary.button,
-              color: theme.palette.text.tertiary,
-            },
-          }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-      </Tooltip>
 
       <Box sx={{ padding: "16px" }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Gestión de Pacientes
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: 3,
+            position: "relative",
+          }}
+        >
+          <Tooltip title="Volver">
+            <IconButton
+              onClick={() => navigate(-1)}
+              sx={{
+                backgroundColor: theme.palette.secondary.button,
+                color: theme.palette.text.tertiary,
+                "&:hover": {
+                  backgroundColor: theme.palette.primary.button,
+                  color: theme.palette.text.tertiary,
+                },
+              }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          </Tooltip>
 
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: { xs: "center", md: "flex-start" },
+              position: { md: "absolute" },
+              left: { md: "50%" },
+              transform: { md: "translateX(-50%)" },
+            }}
+          >
+            <Typography
+              variant="h3"
+              sx={{
+                textAlign: "center",
+                fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
+              }}
+            >
+              Gestión de Pacientes
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Botones a la derecha */}
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mb: 3 }}>
           <Button
             variant="outlined"
@@ -222,10 +250,10 @@ export const PatientPage = () => {
             onClick={() => exportarPacientes(pacientes)}
             disabled={esDemo}
             sx={{
-               backgroundColor: theme.palette.secondary.button,
+              backgroundColor: theme.palette.secondary.button,
               color: 'white',
               '&:hover': {
-                  backgroundColor: theme.palette.primary.button,
+                backgroundColor: theme.palette.primary.button,
                 borderColor: 'text.primary',
               },
             }}
@@ -243,7 +271,7 @@ export const PatientPage = () => {
                 disabled={esDemo}
               >
                 Importar Excel
-              </Button> 
+              </Button>
             )}
           </ImportadorPacientes>
         </Box>
@@ -277,7 +305,7 @@ export const PatientPage = () => {
               onClose={() => setFormOpen(false)}
               onSubmit={handleCreatePatient}
               pacientes={pacientes}
-            
+
             />
 
             <PatientTable
@@ -302,7 +330,7 @@ export const PatientPage = () => {
           </>
         )}
       </Box>
-    </DashboardLayout>
+    </DashboardLayout >
   );
 };
 

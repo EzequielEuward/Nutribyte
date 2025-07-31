@@ -193,25 +193,51 @@ export const ConsumoPage = () => {
     return (
         <DashboardLayout>
             <Container maxWidth="xl">
-                <Tooltip title="Volver">
-                    <IconButton
-                        onClick={() => navigate(-1)}
-                        sx={{
-                            backgroundColor: theme.palette.secondary.button,
-                            color: theme.palette.text.tertiary,
-                            mt: 2,
-                            "&:hover": {
-                                backgroundColor: theme.palette.primary.button,
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        position: "relative",
+                        mb: 3,
+                    }}
+                >
+                    <Tooltip title="Volver">
+                        <IconButton
+                            onClick={() => navigate(-1)}
+                            sx={{
+                                position: "absolute",
+                                left: 0,
+                                backgroundColor: theme.palette.secondary.button,
                                 color: theme.palette.text.tertiary,
-                            },
+                                "&:hover": {
+                                    backgroundColor: theme.palette.primary.button,
+                                    color: theme.palette.text.tertiary,
+                                },
+                                zIndex: 1,
+                            }}
+                        >
+                            <ArrowBackIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Typography
+                        variant="h3"
+                        sx={{
+                            textAlign: "center",
+                            fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
+                            // Dejo espacio a la izquierda para el icono en móvil y pequeño para escritorio
+                            paddingLeft: { xs: "48px", md: 0 }, // 48px igual al ancho aproximado del IconButton
+                            // opcional: paddingRight para balancear visualmente
+                            paddingRight: { xs: "48px", md: 0 },
+                            width: { xs: "100%", md: "auto" },
+                            boxSizing: "border-box",
                         }}
                     >
-                        <ArrowBackIcon />
-                    </IconButton>
-                </Tooltip>
-                <Typography variant="h3" sx={{ mt: 2, color: theme.palette.text.primary, mb: 2 }}>
-                    Seguimiento Nutricional
-                </Typography>
+                        Seguimiento Nutricional
+                    </Typography>
+                </Box>
+
 
                 {step === "busqueda" && (
                     <>

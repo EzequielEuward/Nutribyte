@@ -14,15 +14,15 @@ export const AboutSection = () => {
     {
       name: "Ezequiel Euward",
       role: "Desarrollador",
-      text: "Enfocado en diseño y optimización de recursos de la aplicación.",
+      text: "Enfocado en diseño y optimización de recursos y rendimiento de la aplicación. ",
       github: "https://github.com/EzequielEuward",
       linkedin: "https://www.linkedin.com/in/ezequiel-euward/",
       img: DeveloperEzeImage,
     },
     {
       name: "Melina Vasquez",
-      role: "Analista QA & testing y bases de datos.",
-      text: "Verifica que el producta cumpla con estandares y requisitos.",
+      role: "Analista QA & testing y base de datos.",
+      text: "Verifica que el producto cumpla con estandares y requisitos.",
       github: "https://github.com/Melina-Vasquez",
       linkedin: "https://www.linkedin.com/in/vasquezmelina/",
       img: DeveloperMeliImage,
@@ -43,7 +43,7 @@ export const AboutSection = () => {
       github: "https://github.com/LeoEuw",
       linkedin: "https://www.linkedin.com/in/leoeuw/",
       img: DeveloperAlejoImage,
-    },  
+    },
     {
       name: "Agustin Lopez",
       role: "Proyect Management",
@@ -52,12 +52,12 @@ export const AboutSection = () => {
       linkedin: "https://www.linkedin.com/in/leoeuw/",
 
       img: DeveloperAgusImage,
-      
+
     }
   ];
 
   return (
-    <Box id="about" py={{ xs: 6, md: 12}} textAlign="center">
+    <Box id="about" py={{ xs: 6, md: 12 }} textAlign="center">
       <Container maxWidth="md">
         <Typography variant="h4" component="h2" fontWeight="bold" gutterBottom>
           Acerca de los desarrolladores
@@ -67,13 +67,17 @@ export const AboutSection = () => {
         </Typography>
         <Grid container spacing={4} justifyContent="center">
           {developers.map((dev, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid item xs={12} md={4} key={index} sx={{ display: 'flex' }}>
               <Card
                 sx={{
                   maxWidth: 345,
                   mx: "auto",
                   transition: "transform 0.3s",
-                  '&:hover': { transform: "scale(1.05)" }
+                  '&:hover': { transform: "scale(1.05)" },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flex: 1,
+                  minHeight: 350 
                 }}
                 raised
               >
@@ -82,7 +86,7 @@ export const AboutSection = () => {
                   alt={dev.name}
                   sx={{ width: 100, height: 100, mx: "auto", mt: 2 }}
                 />
-                <CardContent>
+                <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" fontWeight="bold">{dev.name}</Typography>
                   <Typography color="textSecondary"><strong>{dev.role}</strong></Typography>
                   <hr />

@@ -69,56 +69,73 @@ export const FoodPage = () => {
 
   return (
     <DashboardLayout>
-      
-      <Tooltip title="Volver">
-        <IconButton
-          onClick={() => navigate(-1)}
-          sx={{
-            backgroundColor: theme.palette.secondary.button,
-            color: theme.palette.text.tertiary,
-            "&:hover": {
-              backgroundColor: theme.palette.primary.button,
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center", // Centrar el título
+          mb: 3,
+          position: "relative",
+        }}
+      >
+        <Tooltip title="Volver">
+          <IconButton
+            onClick={() => navigate(-1)}
+            sx={{
+              position: "absolute",
+              left: 0,
+              backgroundColor: theme.palette.secondary.button,
               color: theme.palette.text.tertiary,
-            },
+              "&:hover": {
+                backgroundColor: theme.palette.primary.button,
+                color: theme.palette.text.tertiary,
+              },
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Typography
+          variant="h3"
+          sx={{
+            textAlign: "center",
+            fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
           }}
         >
-          <ArrowBackIcon />
-        </IconButton>
-      </Tooltip>
-      <Box sx={{ p: 2 }}>
-        
-        <Typography variant="h4" component="h1" gutterBottom>
-          Alimentos
+          Alimentos para Asesoria Nutricional
         </Typography>
-
-        <FoodFilters
-          onFilterChange={handleFilterChange}
-          gruposDisponibles={gruposAlimenticios}
-        />
-
-        <ToggleButtonGroup
-          value={view}
-          exclusive
-          onChange={handleViewChange}
-          sx={{ mb: 2 }}
-        >
-          <ToggleButton value="table">Tabla</ToggleButton>
-          <ToggleButton value="cards">Tarjetas</ToggleButton>
-        </ToggleButtonGroup>
-
-        {loading && <p>Cargando...</p>}
-        {error && <p>Error: {error}</p>}
-        {filteredAlimentos.length > 0 ? (
-          view === "table" ? (
-            <FoodTable alimentos={filteredAlimentos} />
-          ) : (
-            <FoodCards alimentos={filteredAlimentos} />
-          )
-        ) : (
-          <p>No hay alimentos disponibles.</p>
-        )}
       </Box>
-    </DashboardLayout>
+
+      <FoodFilters
+        onFilterChange={handleFilterChange}
+        gruposDisponibles={gruposAlimenticios}
+      />
+
+      <ToggleButtonGroup
+        value={view}
+        exclusive
+        onChange={handleViewChange}
+        sx={{ mb: 2 }}
+      >
+        <ToggleButton value="table">Tabla</ToggleButton>
+        <ToggleButton value="cards">Tarjetas</ToggleButton>
+      </ToggleButtonGroup>
+
+      {loading && <p>Cargando...</p>}
+      {error && <p>Error: {error}</p>}
+      {filteredAlimentos.length > 0 ? (
+        view === "table" ? (
+          <FoodTable alimentos={filteredAlimentos} />
+        ) : (
+          <FoodCards alimentos={filteredAlimentos} />
+        )
+      ) : (
+        <p>No hay alimentos disponibles.</p>
+      )}
+
+    </DashboardLayout >
   );
 };
 

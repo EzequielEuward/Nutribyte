@@ -63,61 +63,90 @@ export const ReportesUsuarioPage = () => {
 
   return (
     <DashboardLayout>
-      <Tooltip title="Volver">
-        <IconButton
-          onClick={() => navigate(-1)}
-          sx={{
-            backgroundColor: theme.palette.secondary.button,
-            color: theme.palette.text.tertiary,
-            "&:hover": {
-              backgroundColor: theme.palette.primary.button,
+   
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 3,
+          position: "relative",
+        }}
+      >
+        <Tooltip title="Volver">
+          <IconButton
+            onClick={() => navigate(-1)}
+            sx={{
+              backgroundColor: theme.palette.secondary.button,
               color: theme.palette.text.tertiary,
-            },
+              "&:hover": {
+                backgroundColor: theme.palette.primary.button,
+                color: theme.palette.text.tertiary,
+              },
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            justifyContent: "center",
+            position: "static",
+            pointerEvents: "none",
           }}
         >
-          <ArrowBackIcon />
-        </IconButton>
-      </Tooltip>
-      <Box sx={{ p: 3 }}>
-        <Typography variant="h4">Reportes</Typography>
-        <Typography variant="subtitle1" color="text.secondary">
-          Visualiza estadísticas del seguimiento nutricional
-        </Typography>
-
-        <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ mb: 2 }}>
-          <Tab label="Turnos" />
-          <Tab label="Pacientes" />
-        </Tabs>
-
-        {tabIndex === 0 && (
-          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-            <Box sx={{ flex: 1, minWidth: 320 }}>
-              <DistribucionTurnosMensualChart />
-            </Box>
-            <Box sx={{ flex: 1, minWidth: 320 }}>
-              <ComparacionTurnosMesChart />
-            </Box>
-            <Box sx={{ width: "100%" }}>
-              <TurnosResumenChart data={turnosData} />
-            </Box>
-          </Box>
-        )}
-
-        {tabIndex === 1 && (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-            <Box sx={{ flex: 1, minWidth: 320 }}>
-              <Card>
-                <CardHeader title="Pacientes" subheader="Últimos 3 meses" />
-                <PatientsSummary pacientes={pacientesActivos} />
-              </Card>
-            </Box>
-            <Box sx={{ flex: 1, minWidth: 320 }}>
-              <PacientesPorSexoChart />
-            </Box>
-          </Box>
-        )}
-
+          <Typography
+            variant="h3"
+            sx={{
+              textAlign: "center",
+              fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
+              pointerEvents: "auto",
+            }}
+          >
+            Visualiza estadísticas del seguimiento nutricional
+          </Typography>
+        </Box>
       </Box>
+
+
+
+      <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ mb: 2 }}>
+        <Tab label="Turnos" />
+        <Tab label="Pacientes" />
+      </Tabs>
+
+      {tabIndex === 0 && (
+        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+          <Box sx={{ flex: 1, minWidth: 320 }}>
+            <DistribucionTurnosMensualChart />
+          </Box>
+          <Box sx={{ flex: 1, minWidth: 320 }}>
+            <ComparacionTurnosMesChart />
+          </Box>
+          <Box sx={{ width: "100%" }}>
+            <TurnosResumenChart data={turnosData} />
+          </Box>
+        </Box>
+      )}
+
+      {tabIndex === 1 && (
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+          <Box sx={{ flex: 1, minWidth: 320 }}>
+            <Card>
+              <CardHeader title="Pacientes" subheader="Últimos 3 meses" />
+              <PatientsSummary pacientes={pacientesActivos} />
+            </Card>
+          </Box>
+          <Box sx={{ flex: 1, minWidth: 320 }}>
+            <PacientesPorSexoChart />
+          </Box>
+        </Box>
+      )}
+
+      
     </DashboardLayout>
   );
 };

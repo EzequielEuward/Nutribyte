@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
 
-const drawerWidth = 260;
+const drawerWidth = 280;
 
 export const DashboardLayout = ({ children }) => {
   const { username, rol, planUsuario, twoFactorEnabled } = useSelector((state) => state.auth);
@@ -23,7 +23,7 @@ export const DashboardLayout = ({ children }) => {
   const isNotebook = useMediaQuery(theme.breakpoints.between('md', 'lg'));
 
   const currentDrawerWidth =
-    isMobile ? 200 :
+    isMobile ? 220 :
       isTablet ? 220 :
         isNotebook ? 220 :
           drawerWidth;

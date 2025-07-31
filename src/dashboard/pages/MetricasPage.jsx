@@ -183,21 +183,49 @@ export const MetricasPage = () => {
 
   return (
     <DashboardLayout>
-      <Tooltip title="Volver">
-        <IconButton
-          onClick={() => navigate(-1)}
-          sx={{
-            backgroundColor: theme.palette.secondary.button,
-            color: theme.palette.text.tertiary,
-            "&:hover": {
-              backgroundColor: theme.palette.primary.button,
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+          mb: 3,
+        }}
+      >
+        <Tooltip title="Volver">
+          <IconButton
+            onClick={() => navigate(-1)}
+            sx={{
+              position: "absolute",
+              left: 0,
+              backgroundColor: theme.palette.secondary.button,
               color: theme.palette.text.tertiary,
-            },
+              "&:hover": {
+                backgroundColor: theme.palette.primary.button,
+                color: theme.palette.text.tertiary,
+              },
+              zIndex: 1,
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Typography
+          variant="h3"
+          sx={{
+            textAlign: "center",
+            fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
+            paddingLeft: { xs: "48px", md: 0 },
+            paddingRight: { xs: "48px", md: 0 },
+            width: { xs: "100%", md: "auto" },
+            boxSizing: "border-box",
           }}
         >
-          <ArrowBackIcon />
-        </IconButton>
-      </Tooltip>
+          Metricas
+        </Typography>
+      </Box>
+
       {step === "busqueda" && (
         <>
           <Box sx={{ mt: 2 }}>

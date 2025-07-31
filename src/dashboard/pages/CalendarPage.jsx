@@ -368,38 +368,49 @@ export const CalendarPage = () => {
 
     <DashboardLayout isMobile={isMobile}>
 
-      <Tooltip title="Volver">
-        <IconButton
-          onClick={() => navigate(-1)}
-          sx={{
-            backgroundColor: theme.palette.secondary.button,
-            color: theme.palette.text.tertiary,
-            "&:hover": {
-              backgroundColor: theme.palette.primary.button,
-              color: theme.palette.text.tertiary,
-            },
-          }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-      </Tooltip>
+       <Box
+  sx={{
+    position: "relative", // Necesario para que el título se centre con absolute
+    display: "flex",
+    alignItems: "center",
+    mb: 3,
+    height: "48px",
+  }}
+>
+  {/* Botón volver siempre a la izquierda */}
+  <Tooltip title="Volver">
+    <IconButton
+      onClick={() => navigate(-1)}
+      sx={{
+        backgroundColor: theme.palette.secondary.button,
+        color: theme.palette.text.tertiary,
+        "&:hover": {
+          backgroundColor: theme.palette.primary.button,
+          color: theme.palette.text.tertiary,
+        },
+        zIndex: 2,
+      }}
+    >
+      <ArrowBackIcon />
+    </IconButton>
+  </Tooltip>
 
-      <Typography
-        variant="h5"
-        sx={{
-          fontSize: { xs: "1.3rem", sm: "1.7rem", md: "2.2rem" },
-          fontWeight: "bold",
-          textAlign: { xs: "center", sm: "left" },
-          my: { xs: 0, sm: 3 },
+  <Typography
+    variant="h3"
+    sx={{
+      position: { xs: "static", md: "absolute" },
+      left: { md: "50%" },
+      transform: { md: "translateX(-50%)" },
+      textAlign: { xs: "center", md: "center" },
+      width: { xs: "100%", md: "auto" },
+      fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
+    }}
+  >
+    Gestión de Turnos
+  </Typography>
+</Box>
 
-        }}
-      >
-        Calendario de Turnos
-      </Typography>
 
-
-
-      {/* Contenedor principal que organiza los elementos */}
       <Box
         sx={{
           width: "100%",
