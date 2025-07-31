@@ -3,15 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { FoodTable, FoodCards, FoodFilters } from "../components";
 import { DashboardLayout } from "../layout/DashboardLayout";
 import { listarAlimentos } from "../../store/food/thunk";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
-  Box, // <- importado para el padding
+  Box,
+  Tooltip,
+  IconButton,
+  useTheme,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export const FoodPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const theme = useTheme();
   const { alimentos, loading, error } = useSelector((state) => state.alimentos);
 
   const [view, setView] = useState("table");
@@ -62,7 +69,24 @@ export const FoodPage = () => {
 
   return (
     <DashboardLayout>
+      
+      <Tooltip title="Volver">
+        <IconButton
+          onClick={() => navigate(-1)}
+          sx={{
+            backgroundColor: theme.palette.secondary.button,
+            color: theme.palette.text.tertiary,
+            "&:hover": {
+              backgroundColor: theme.palette.primary.button,
+              color: theme.palette.text.tertiary,
+            },
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
       <Box sx={{ p: 2 }}>
+        
         <Typography variant="h4" component="h1" gutterBottom>
           Alimentos
         </Typography>

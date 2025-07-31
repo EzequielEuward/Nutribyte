@@ -12,8 +12,9 @@ import {
 } from "date-fns";
 import { es } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { Box, CircularProgress, Typography, Tooltip, useMediaQuery } from "@mui/material";
+import { Box, CircularProgress, Typography, Tooltip, useMediaQuery, IconButton } from "@mui/material";
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import {
   listarTurnos,
@@ -27,6 +28,8 @@ import { listarPacientes } from "../../store/patient";
 import { TurnoModal, CalendarTable } from "../components/calendario/";
 import Swal from "sweetalert2";
 import { estadoTurno } from '../../constants/estadoTurno'
+import { useNavigate } from "react-router-dom";
+
 
 const locales = { es };
 const localizer = dateFnsLocalizer({
@@ -55,6 +58,7 @@ export const CalendarPage = () => {
   const { uid } = useSelector((state) => state.auth);
   const isDarkMode = useSelector((state) => state.ui.isDarkMode);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { turnos, loading } = useSelector((state) => state.turnos);
   const { pacientes } = useSelector((state) => state.patients);
   const theme = useTheme();
@@ -363,6 +367,23 @@ export const CalendarPage = () => {
   return (
 
     <DashboardLayout isMobile={isMobile}>
+
+      <Tooltip title="Volver">
+        <IconButton
+          onClick={() => navigate(-1)}
+          sx={{
+            backgroundColor: theme.palette.secondary.button,
+            color: theme.palette.text.tertiary,
+            "&:hover": {
+              backgroundColor: theme.palette.primary.button,
+              color: theme.palette.text.tertiary,
+            },
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
+
       <Typography
         variant="h5"
         sx={{
@@ -370,10 +391,13 @@ export const CalendarPage = () => {
           fontWeight: "bold",
           textAlign: { xs: "center", sm: "left" },
           my: { xs: 0, sm: 3 },
+
         }}
       >
         Calendario de Turnos
       </Typography>
+
+
 
       {/* Contenedor principal que organiza los elementos */}
       <Box

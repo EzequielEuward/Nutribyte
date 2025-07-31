@@ -1,14 +1,21 @@
 import { useState } from "react";
 import {
-  Tabs, Tab, Box, Typography, Card, CardContent, CardHeader
+  Tabs, Tab, Box, Typography, Card, CardContent, CardHeader,
+  Tooltip,
+  IconButton,
+  useTheme
 } from "@mui/material";
 import DashboardLayout from "../../layout/DashboardLayout";
 import { TurnosResumenChart, DistribucionTurnosMensualChart, ComparacionTurnosMesChart, PacientesPorSexoChart } from "../../components/reportes";
 import { useSelector } from "react-redux";
 import { differenceInMonths } from "date-fns";
 import { PatientsSummary } from "../dashboard";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from "react-router-dom";
 
 export const ReportesUsuarioPage = () => {
+  const theme = useTheme();
+  const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
   const turnos = useSelector((state) => state.turnos.turnos || []);
   const pacientes = useSelector((state) => state.patients.pacientes);
@@ -56,6 +63,21 @@ export const ReportesUsuarioPage = () => {
 
   return (
     <DashboardLayout>
+      <Tooltip title="Volver">
+        <IconButton
+          onClick={() => navigate(-1)}
+          sx={{
+            backgroundColor: theme.palette.secondary.button,
+            color: theme.palette.text.tertiary,
+            "&:hover": {
+              backgroundColor: theme.palette.primary.button,
+              color: theme.palette.text.tertiary,
+            },
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
       <Box sx={{ p: 3 }}>
         <Typography variant="h4">Reportes</Typography>
         <Typography variant="subtitle1" color="text.secondary">

@@ -1,6 +1,7 @@
 import { Box, Toolbar, Typography } from '@mui/material';
 import { Sidebar, Navbar, TopLeftActionButton } from '../components';
 import { AppTheme } from '../../theme';
+import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
 
@@ -15,6 +16,12 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
   const diasDesdeCreacion = fechaCreacion ? Math.floor((hoy - fechaCreacion) / (1000 * 60 * 60 * 24)) : 0;
   const tiempoExcedido = rol?.toLowerCase() !== "demo" && !twoFactorEnabled && diasDesdeCreacion >= 3;
   const esDemo = rol?.toLowerCase() === "demo";
+
+  const location = useLocation();
+  const enConfigPage = location.pathname.includes('/home/configuracion');
+
+
+  const mostrarBloqueo = tiempoExcedido && !enConfigPage;
 
   // const opacidad =
   //   !twoFactorEnabled && !tiempoExcedido
@@ -43,13 +50,13 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
             padding: 1,
             position: 'relative',
             opacity: opacidad,
-            pointerEvents: tiempoExcedido ? 'none' : 'auto',
+           pointerEvents: mostrarBloqueo && !enConfigPage ? 'none' : 'auto',
           }}
         >
           <Toolbar />
 
 
-          {tiempoExcedido && (
+          {mostrarBloqueo && (
             <Box
               sx={{
                 position: 'absolute',
@@ -81,9 +88,8 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
             </Box>
           )}
 
-          {!tiempoExcedido && children}
+          {!mostrarBloqueo && children}
         </Box>
-        {/* <TopLeftActionButton /> */}
       </Box>
     </AppTheme>
   );

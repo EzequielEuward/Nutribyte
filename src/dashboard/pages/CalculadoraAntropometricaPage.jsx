@@ -10,11 +10,16 @@ import {
   CardContent,
   Tab, Tabs,
   CardHeader,
+  Tooltip,
+  IconButton,
 } from '@mui/material';
 import DashboardLayout from '../layout/DashboardLayout';
 import { useTheme } from '@mui/material/styles';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
 
 export const CalculadoraAntropometricaPage = () => {
+  const navigate = useNavigate();
   const [datos, setDatos] = useState({
     sexo: '',
     pesoActual: '',
@@ -127,7 +132,23 @@ export const CalculadoraAntropometricaPage = () => {
 
   return (
     <DashboardLayout>
+      <Tooltip title="Volver">
+        <IconButton
+          onClick={() => navigate(-1)}
+          sx={{
+            backgroundColor: theme.palette.secondary.button,
+            color: theme.palette.text.tertiary,
+            "&:hover": {
+              backgroundColor: theme.palette.primary.button,
+              color: theme.palette.text.tertiary,
+            },
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
       <Box sx={{ p: { xs: 2, md: 4 } }}>
+
         <Typography variant="h4" gutterBottom color="primary" sx={{ color: theme.palette.text.primary }} >
           Calculadora Antropométrica
         </Typography>

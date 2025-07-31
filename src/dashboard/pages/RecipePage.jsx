@@ -2,17 +2,22 @@ import { useCallback, useMemo, useState } from "react";
 import { DashboardLayout } from "../layout/DashboardLayout";
 import { ChatInterface } from '../components/food/';
 import EggAltIcon from '@mui/icons-material/EggAlt';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { recipesMock } from "../../mock/data/mockRecipe";
 import { RecipeModal, RecipeCard } from "../components";
 import {
   Box, Typography, TextField, MenuItem,
   Select, InputLabel, FormControl, Fab, Button, useTheme,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { useNavigate } from "react-router-dom";
 
 export const RecipePage = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isChatOpen, setChatOpen] = useState(false);
   const [chatPosition, setChatPosition] = useState({ x: 0, y: 0 });
@@ -123,7 +128,6 @@ export const RecipePage = () => {
       }
     }
 
-    // ✅ Desmarca todas las recetas después de guardar
     pdf.save('recetas_seleccionadas.pdf');
     setSelectedRecipesIds([]);
   };
@@ -131,6 +135,21 @@ export const RecipePage = () => {
 
   return (
     <DashboardLayout>
+      <Tooltip title="Volver">
+        <IconButton
+          onClick={() => navigate(-1)}
+          sx={{
+            backgroundColor: theme.palette.secondary.button,
+            color: theme.palette.text.tertiary,
+            "&:hover": {
+              backgroundColor: theme.palette.primary.button,
+              color: theme.palette.text.tertiary,
+            },
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
       <Box sx={{ textAlign: "left", ml: 3, mt: 2 }}>
         <Typography variant="h4">Recetas | Platos</Typography>
       </Box>
@@ -143,7 +162,7 @@ export const RecipePage = () => {
           alignItems: "center",
           p: 2,
           mt: 4,
-          mb:2,
+          mb: 2,
           height: 40
         }}
       >
@@ -155,7 +174,7 @@ export const RecipePage = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{ width: 200 }}
         />
-        <FormControl variant="outlined" size="small" sx={{ width: 200,  }}>
+        <FormControl variant="outlined" size="small" sx={{ width: 200, }}>
           <InputLabel>Tipo de plan</InputLabel>
           <Select
             value={selectedPlan}

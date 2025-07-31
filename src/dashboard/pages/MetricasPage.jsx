@@ -1,7 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import {
   Box, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, Divider
+  TextField, Divider,
+  Tooltip,
+  IconButton,
+  useTheme
 } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { SaveAlt as ExportIcon } from '@mui/icons-material';
@@ -11,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { PatientSearchCard } from '../components/planes';
 import { useDispatch, useSelector } from 'react-redux';
 import { listarPacientes } from '../../store/patient';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { listarConsumosConHabitos, buscarPacientePorDni } from '../../store/consumo';
 import { obtenerUltimoPlanPorPaciente } from '../../store/plans';
 import Swal from 'sweetalert2';
@@ -20,6 +24,7 @@ import ChartLineMacronutrientes from '../components/metricas/ChartLineMacronutri
 export const MetricasPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const pacientesList = useSelector(state => state.patients.pacientes || []);
   const [dni, setDni] = useState('');
@@ -178,6 +183,21 @@ export const MetricasPage = () => {
 
   return (
     <DashboardLayout>
+      <Tooltip title="Volver">
+        <IconButton
+          onClick={() => navigate(-1)}
+          sx={{
+            backgroundColor: theme.palette.secondary.button,
+            color: theme.palette.text.tertiary,
+            "&:hover": {
+              backgroundColor: theme.palette.primary.button,
+              color: theme.palette.text.tertiary,
+            },
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
       {step === "busqueda" && (
         <>
           <Box sx={{ mt: 2 }}>

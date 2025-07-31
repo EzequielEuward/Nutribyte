@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Typography, Box, Grid, Divider, Card, CardContent } from "@mui/material";
+import { Container, Typography, Box, Grid, Divider, Card, CardContent, Tooltip, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import {
@@ -16,6 +16,7 @@ import { buscarPacientePorDni, crearPlanAlimenticio, eliminarPlanAlimenticio, ed
 import { listarPacientes } from "../../store/patient";
 import { listarAlimentos } from "../../store/food";
 import { differenceInYears, addDays } from "date-fns";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Swal from 'sweetalert2';
 import ConsejosRapidos from "../components/consultas/ConsejosRapidos";
 import { useTheme } from '@mui/material/styles';
@@ -164,7 +165,7 @@ export const PlanesPage = () => {
           title: 'Plan creado con éxito',
           text: 'El plan alimenticio ha sido guardado correctamente.',
           confirmButtonText: 'Ver resumen',
-        }).then(() => { 
+        }).then(() => {
           setPlanType("Plan Estándar");
           setFechaInicio("");
           setFechaFin("");
@@ -263,6 +264,21 @@ export const PlanesPage = () => {
   return (
     <DashboardLayout>
       <Container maxWidth="xl">
+        <Tooltip title="Volver">
+          <IconButton 
+            onClick={() => navigate(-1)}
+            sx={{
+              backgroundColor: theme.palette.secondary.button,
+              color: theme.palette.text.tertiary,
+              "&:hover": {
+                backgroundColor: theme.palette.primary.button,
+                color: theme.palette.text.tertiary,
+              },
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
         <Typography variant="h3" sx={{ mt: 2, color: "theme.palette.text.primary" }}>
           Gestión de Planes Alimenticios
         </Typography>

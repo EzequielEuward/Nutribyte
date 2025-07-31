@@ -5,6 +5,7 @@ import {
   Button, Box, Grid, Alert,
   useTheme
 } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import DashboardLayout from '../layout/DashboardLayout';
 import { useDispatch, useSelector } from 'react-redux';
 import { startGenerarQR2FA, startVerify2FA, login } from '../../store/auth/';
@@ -12,6 +13,7 @@ import Swal from 'sweetalert2';
 
 const ConfigSwitch = ({ label, description, checked, onChange, disabled }) => {
   const theme = useTheme();
+
 
   return (
     <Box sx={{ marginBottom: 3 }}>
@@ -46,6 +48,10 @@ export const ConfigPage = () => {
   const theme = useTheme();
   const { uid: userId, twoFactorEnabled, planUsuario, rol } = useSelector((state) => state.auth);
   const horarioGuardado = JSON.parse(localStorage.getItem("horarioTrabajo")) || { inicio: "08:00", fin: "17:00" };
+  const location = useLocation();
+  const enConfigPage = location.pathname === "/home/configuracion";
+
+
   const [config, setConfig] = useState({
     seguimientoAgua: true,
     mensajeBienvenida: localStorage.getItem('mensajeBienvenida') || '¡Bienvenido a tu plan de nutrición personalizado!',
@@ -156,7 +162,7 @@ export const ConfigPage = () => {
       });
     }
   };
-//Validaciones para que el usuario demo no toque nada de la configuración
+  //Validaciones para que el usuario demo no toque nada de la configuración
   const esDemo = rol?.toLowerCase() === "demo";
 
 
@@ -246,7 +252,7 @@ export const ConfigPage = () => {
                   fullWidth
                 />
                 <Box sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}>
-                  <Button variant="outlined"  disabled={esDemo} onClick={handleGuardarMensajeBienvenida}>
+                  <Button variant="outlined" disabled={esDemo} onClick={handleGuardarMensajeBienvenida}>
                     Guardar texto
                   </Button>
                 </Box>
@@ -258,13 +264,28 @@ export const ConfigPage = () => {
                     {twoFactorEnabled ? (
                       <Alert severity="success">Ya tienes activado el doble factor de autenticación.</Alert>
                     ) : (
-                      <Button
-                        variant="contained"
-                        onClick={handleActivar2FA}
-                        sx={{ width: 300, height: 80, backgroundColor: "primary", justifyContent: "center" }}
-                      >
-                        Activar autenticación 2FA
-                      </Button>
+                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Button
+                          variant="contained"
+                          onClick={handleActivar2FA}
+                          sx={{
+                            width: 300,
+                            height: 80,
+                            zIndex: 99999,
+                            position: 'relative',
+                            fontSize: '1.1rem',
+                            fontWeight: 'bold',
+                            color: '#fff',
+                            backgroundColor: '#d32f2f', // rojo fuerte
+                            boxShadow: '0 0 20px rgba(211, 47, 47, 0.7)',
+                            '&:hover': {
+                              backgroundColor: '#b71c1c',
+                            },
+                          }}
+                        >
+                          Activar autenticación 2FA
+                        </Button>
+                      </Box>
                     )}
                   </Grid>
 
@@ -290,7 +311,7 @@ export const ConfigPage = () => {
                       <Button
                         variant="contained"
                         color="primary"
-                        
+
                         fullWidth
                         sx={{ mt: 2 }}
                         onClick={handleVerificar2FA}

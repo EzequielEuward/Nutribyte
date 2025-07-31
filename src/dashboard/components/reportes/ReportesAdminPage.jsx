@@ -2,13 +2,17 @@ import { useState, useEffect } from "react";
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useDispatch, useSelector } from "react-redux";
-import { Tabs, Tab, Box, Typography, Card, CardContent, Grid } from "@mui/material";
+import { Tabs, Tab, Box, Typography, Card, CardContent, Grid, Tooltip, IconButton, useTheme } from "@mui/material";
 import DashboardLayout from "../../layout/DashboardLayout";
 import { UsuariosNuevosChart, KPIsUsuarios, UsuariosPorRolChart, PlanesMasUsadosChart } from "./";
 import { ListarUsuarios } from "../../../store/user/thunk";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from "react-router-dom";
 
 export const ReportesAdminPage = () => {
     const dispatch = useDispatch();
+    const theme = useTheme();
+    const navigate = useNavigate();
     const [tabIndex, setTabIndex] = useState(0);
     const usuarios = useSelector((state) => state.user.users || []);
 
@@ -70,6 +74,21 @@ export const ReportesAdminPage = () => {
 
     return (
         <DashboardLayout>
+            <Tooltip title="Volver">
+                <IconButton
+                    onClick={() => navigate(-1)}
+                    sx={{
+                        backgroundColor: theme.palette.secondary.button,
+                        color: theme.palette.text.tertiary,
+                        "&:hover": {
+                            backgroundColor: theme.palette.primary.button,
+                            color: theme.palette.text.tertiary,
+                        },
+                    }}
+                >
+                    <ArrowBackIcon />
+                </IconButton>
+            </Tooltip>
             <Box sx={{ p: 3 }}>
                 <Typography variant="h4">Reportes Administrativos</Typography>
                 <Typography variant="subtitle1" color="text.secondary">
