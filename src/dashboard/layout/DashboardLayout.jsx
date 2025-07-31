@@ -1,13 +1,13 @@
-import { Box, Toolbar, Typography } from '@mui/material';
+import { Box, Toolbar, Typography, useTheme } from '@mui/material';
 import { Sidebar, Navbar, TopLeftActionButton } from '../components';
 import { AppTheme } from '../../theme';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
 
-const drawerWidth = 280;
+const drawerWidth = 260;
 
-export const DashboardLayout = ({ children, isMobile = false }) => {
+export const DashboardLayout = ({ children }) => {
   const { username, rol, planUsuario, twoFactorEnabled } = useSelector((state) => state.auth);
 
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -16,6 +16,17 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
   const diasDesdeCreacion = fechaCreacion ? Math.floor((hoy - fechaCreacion) / (1000 * 60 * 60 * 24)) : 0;
   const tiempoExcedido = rol?.toLowerCase() !== "demo" && !twoFactorEnabled && diasDesdeCreacion >= 3;
   const esDemo = rol?.toLowerCase() === "demo";
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isNotebook = useMediaQuery(theme.breakpoints.between('md', 'lg'));
+
+  const currentDrawerWidth =
+    isMobile ? 200 :
+      isTablet ? 220 :
+        isNotebook ? 220 :
+          drawerWidth;
 
   const location = useLocation();
   const enConfigPage = location.pathname.includes('/home/configuracion');
@@ -44,13 +55,24 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
           component='main'
           sx={{
             flexGrow: 1,
-            width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` },
-            marginLeft: { sm: `${drawerWidth}px` },
+            width: {
+              xs: '100%',
+              sm: `calc(100% - ${currentDrawerWidth}px)`
+            },
+            marginLeft: {
+              xs: 0,
+              sm: `${currentDrawerWidth}px`
+            },
             paddingTop: { xs: 2, sm: 4 },
             padding: 1,
             position: 'relative',
             opacity: opacidad,
-           pointerEvents: mostrarBloqueo && !enConfigPage ? 'none' : 'auto',
+            pointerEvents: mostrarBloqueo && !enConfigPage ? 'none' : 'auto',
+            overflow: 'hidden',
+            transition: theme.transitions.create(['margin', 'width'], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
           }}
         >
           <Toolbar />
@@ -65,7 +87,7 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
                 width: '100%',
                 height: '100%',
                 bgcolor: 'rgba(0,0,0,0.85)',
-                zIndex: 9999,
+                zIndex: 8888,
                 pointerEvents: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
@@ -90,6 +112,7 @@ export const DashboardLayout = ({ children, isMobile = false }) => {
 
           {!mostrarBloqueo && children}
         </Box>
+
       </Box>
     </AppTheme>
   );

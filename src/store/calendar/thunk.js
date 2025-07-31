@@ -16,7 +16,6 @@ export const listarTurnos = createAsyncThunk(
       
       const response = await axios.get(`${API_TURNOS}/Usuario/${auth.uid}`);
 
-      // Optimizar la obtención de pacientes
       const turnosConPacientes = await Promise.all(
         response.data.map(async (turno) => ({
           ...turno,
@@ -31,7 +30,7 @@ export const listarTurnos = createAsyncThunk(
   }
 );
 
-// Función helper para obtener paciente
+// Función helper 
 const obtenerPaciente = async (idPaciente) => {
   try {
     const response = await axios.get(`${API_PACIENTES}/${idPaciente}`);
@@ -76,15 +75,11 @@ export const crearTurno = createAsyncThunk(
         estado: "agendado"
       };
 
-      console.log("📤 Enviando turno:", payload);
-
       const response = await axios.post(
         `${API_TURNOS}`,
         payload,
         { headers: { 'Content-Type': 'application/json' } }
       );
-
-      console.log("✅ Turno creado:", response.data);
 
       return response.data;
 
@@ -100,15 +95,13 @@ export const crearTurno = createAsyncThunk(
   }
 );
 
-
 export const obtenerTurnoPorId = createAsyncThunk(
   "turnos/obtenerTurnoPorId",
-  async ({ idTurno, idUsuario }, { rejectWithValue }) => { // Recibir ambos IDs
+  async ({ idTurno, idUsuario }, { rejectWithValue }) => { 
     try {
-      const response = await axios.get(`${API_TURNOS}/${idUsuario}/${idTurno}`); // Endpoint actualizado
+      const response = await axios.get(`${API_TURNOS}/${idUsuario}/${idTurno}`); 
       const turno = response.data;
 
-      // Si la API ya incluye los datos del paciente, no necesitas esta petición
       if (!turno.paciente) {
         const pacienteResponse = await axios.get(`${API_PACIENTES}/${turno.idPaciente}`);
         turno.paciente = pacienteResponse.data.persona;
@@ -132,7 +125,6 @@ export const eliminarTurno = createAsyncThunk(
       const turnoExistente = getState().turnos.turnos.find(t => t.idTurno === idTurno);
       if (!turnoExistente) return rejectWithValue("Turno no encontrado");
 
-      // Payload con los campos mínimos para actualizar el estado
       const payload = {
         ...turnoExistente,
         estado: "cancelado",
@@ -142,7 +134,6 @@ export const eliminarTurno = createAsyncThunk(
 
       const response = await axios.put(`${API_TURNOS}/${auth.uid}/${idTurno}`, payload);
 
-      // Si la respuesta no incluye el idTurno o la entidad completa, aseguramos devolverlo
       if (!response.data || !response.data.idTurno) {
         return { ...turnoExistente, estado: "cancelado" };
       }
@@ -153,7 +144,6 @@ export const eliminarTurno = createAsyncThunk(
     }
   }
 );
-
 
 
 export const modificarTurno = createAsyncThunk(

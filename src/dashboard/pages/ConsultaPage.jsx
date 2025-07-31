@@ -587,7 +587,6 @@ export const ConsultaPage = () => {
         )}
 
         {isLoading && <Typography>Cargando...</Typography>}
-        {error && <Typography color="error">{error}</Typography>}
 
         {isEditModalOpen && (
           <ConsultaEditModal open={isEditModalOpen} consulta={selectedConsulta} onClose={() => setIsEditModalOpen(false)} onSave={handleUpdateConsulta} isLoading={isLoading} />
