@@ -309,7 +309,7 @@ export const ConsultaPage = () => {
         fecha: fechaAnamnesis
       };
     } else {
-      payload.anamnesis = null; 
+      payload.anamnesis = null;
     }
 
     dispatch(crearConsulta(payload))
@@ -422,13 +422,10 @@ export const ConsultaPage = () => {
   return (
     <DashboardLayout>
       <Container maxWidth="xl">
-         <Box
+        <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            mb: 3,
             position: "relative",
+            mb: 3,
           }}
         >
           <Tooltip title="Volver">
@@ -437,6 +434,10 @@ export const ConsultaPage = () => {
               sx={{
                 backgroundColor: theme.palette.secondary.button,
                 color: theme.palette.text.tertiary,
+                position: "absolute",
+                left: 0,
+                top: "50%",
+                transform: "translateY(-50%)",
                 "&:hover": {
                   backgroundColor: theme.palette.primary.button,
                   color: theme.palette.text.tertiary,
@@ -447,26 +448,15 @@ export const ConsultaPage = () => {
             </IconButton>
           </Tooltip>
 
-          <Box
+          <Typography
+            variant="h3"
             sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: { xs: "center", md: "flex-start" },
-              position: { md: "absolute" },
-              left: { md: "50%" },
-              transform: { md: "translateX(-50%)" },
+              textAlign: "center",
+              fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
             }}
           >
-            <Typography
-              variant="h3"
-              sx={{
-                textAlign: "center",
-                fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
-              }}
-            >
-              Gestión de Consultas
-            </Typography>
-          </Box>
+            Gestión de Consultas
+          </Typography>
         </Box>
 
         {step === "busqueda" && (

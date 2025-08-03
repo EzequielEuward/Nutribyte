@@ -197,13 +197,14 @@ export const PatientPage = () => {
       <Box sx={{ padding: "16px" }}>
         <Box
           sx={{
+            position: "relative",
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
             mb: 3,
-            position: "relative",
+            height: "48px",
           }}
         >
+          {/* Botón volver siempre a la izquierda */}
           <Tooltip title="Volver">
             <IconButton
               onClick={() => navigate(-1)}
@@ -214,32 +215,26 @@ export const PatientPage = () => {
                   backgroundColor: theme.palette.primary.button,
                   color: theme.palette.text.tertiary,
                 },
+                zIndex: 2,
               }}
             >
               <ArrowBackIcon />
             </IconButton>
           </Tooltip>
 
-          <Box
+          <Typography
+            variant="h3"
             sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: { xs: "center", md: "flex-start" },
-              position: { md: "absolute" },
+              position: { xs: "static", md: "absolute" },
               left: { md: "50%" },
               transform: { md: "translateX(-50%)" },
+              textAlign: { xs: "center", md: "center" },
+              width: { xs: "100%", md: "auto" },
+              fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
             }}
           >
-            <Typography
-              variant="h3"
-              sx={{
-                textAlign: "center",
-                fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
-              }}
-            >
-              Gestión de Pacientes
-            </Typography>
-          </Box>
+            Gestión de Pacientes
+          </Typography>
         </Box>
 
         {/* Botones a la derecha */}

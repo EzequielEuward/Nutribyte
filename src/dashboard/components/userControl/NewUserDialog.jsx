@@ -39,7 +39,7 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
   const handleChangeUsuario = (e) => {
     const { name, value } = e.target;
     if (name === "userPassword") {
-      setPasswordError(value.length > 0 && value.length < 6);
+      setPasswordError(value.length > 0 && value.length < 8);
     }
     if (name === "rol") {
       setUsuario((prev) => ({
@@ -86,7 +86,7 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
       personaValues.every(Boolean) &&
       usuarioValues.every(Boolean) &&
       isAdult() &&
-      usuario.userPassword.length >= 6
+      usuario.userPassword.length >= 8
     );
   };
   return (
@@ -211,7 +211,7 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                 onChange={handleChangeUsuario}
 
                 error={passwordError}
-                helperText={passwordError ? "La contraseña debe tener al menos 6 caracteres" : ""}
+                helperText={passwordError ? "La contraseña debe tener al menos 8 caracteres" : ""}
               />
               <Grid item xs={12}>
                 <FormControl fullWidth required sx={{ mt: 2 }}>

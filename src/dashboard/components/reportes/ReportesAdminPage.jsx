@@ -55,6 +55,14 @@ export const ReportesAdminPage = () => {
         }, {})
     ).map(([plan, cantidad]) => ({ plan, cantidad }));
 
+    const dataEspecialidades = Object.entries(
+    usuarios.reduce((acc, u) => {
+      const esp = u.especialidad || "Sin Especialidad";
+      acc[esp] = (acc[esp] || 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
     const usuariosPorMes = usuarios.reduce((acc, usuario) => {
         const fecha = new Date(usuario.ultimaMod);
         const mes = format(fecha, 'MMMM', { locale: es }); // ejemplo: "mayo"
@@ -74,166 +82,167 @@ export const ReportesAdminPage = () => {
 
     return (
         <DashboardLayout>
-             <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          mb: 3,
-          position: "relative",
-        }}
-      >
-        <Tooltip title="Volver">
-          <IconButton
-            onClick={() => navigate(-1)}
-            sx={{
-              backgroundColor: theme.palette.secondary.button,
-              color: theme.palette.text.tertiary,
-              "&:hover": {
-                backgroundColor: theme.palette.primary.button,
-                color: theme.palette.text.tertiary,
-              },
-            }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        </Tooltip>
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    mb: 3,
+                    position: "relative",
+                }}
+            >
+                <Tooltip title="Volver">
+                    <IconButton
+                        onClick={() => navigate(-1)}
+                        sx={{
+                            backgroundColor: theme.palette.secondary.button,
+                            color: theme.palette.text.tertiary,
+                            "&:hover": {
+                                backgroundColor: theme.palette.primary.button,
+                                color: theme.palette.text.tertiary,
+                            },
+                        }}
+                    >
+                        <ArrowBackIcon />
+                    </IconButton>
+                </Tooltip>
 
-        <Box
-          sx={{
-            flexGrow: 1,
-            display: "flex",
-            justifyContent: "center",
-            position: "static",
-            pointerEvents: "none",
-          }}
-        >
-          <Typography
-            variant="h3"
-            sx={{
-              textAlign: "center",
-              fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
-              pointerEvents: "auto",
-            }}
-          >
-            Reportes Administrativos
-          </Typography>
-        </Box>
-      </Box>
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        position: "static",
+                        pointerEvents: "none",
+                    }}
+                >
+                    <Typography
+                        variant="h3"
+                        sx={{
+                            textAlign: "center",
+                            fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
+                            pointerEvents: "auto",
+                        }}
+                    >
+                        Reportes Administrativos
+                    </Typography>
+                </Box>
+            </Box>
 
-                <Typography variant="subtitle1" color="text.secondary">
-                </Typography>
-                    Visualiza estadísticas del sistema y actividad de usuarios
+            <Typography variant="subtitle1" color="text.secondary">
+            </Typography>
+            Visualiza estadísticas del sistema y actividad de usuarios
 
-                <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ mb: 2 }}>
-                    <Tab label="Usuarios Registrados" />
-                    <Tab label="En construcción" />
-                    <Tab label="Seguimiento de Leads" />
-                    <Tab label="Estado del Hosting" />
-                </Tabs>
+            <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ mb: 2 }}>
+                <Tab label="Usuarios Registrados" />
+                <Tab label="En construcción" />
+                <Tab label="Seguimiento de Leads" />
+                <Tab label="Estado del Hosting" />
+            </Tabs>
 
-                {tabIndex === 0 && (
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={4}>
-                            <KPIsUsuarios data={kpiData} />
-                        </Grid>
-
-                        <Grid item xs={12} md={8}>
-                            <UsuariosNuevosChart labels={chartLabels} data={chartData} />
-                        </Grid>
-
-
-                        <Grid item xs={12} md={6}>
-                            <UsuariosPorRolChart data={dataRoles} />
-                        </Grid>
-
-                        <Grid item xs={12} md={6}>
-                            <PlanesMasUsadosChart data={dataPlanes} />
-                        </Grid>
+            {tabIndex === 0 && (
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={4}>
+                        <KPIsUsuarios data={kpiData} />
                     </Grid>
-                )}
-                {tabIndex === 2 && (
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Seguimiento de Leads</Typography>
-                            <Typography variant="body1" sx={{ mb: 2 }}>
-                                Visualizá las métricas de tráfico, visitas, sesiones o eventos desde Google Analytics.
-                            </Typography>
-                            <a
-                                href="https://analytics.google.com/analytics/web/?authuser=2#/p488851617/reports/intelligenthome?params=_u..nav%3Dmaui"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <button style={{
-                                    backgroundColor: '#1976d2',
-                                    color: 'white',
-                                    padding: '10px 20px',
-                                    border: 'none',
-                                    borderRadius: '6px',
-                                    cursor: 'pointer',
-                                    fontWeight: 'bold'
-                                }}>
-                                    Abrir Google Analytics
-                                </button>
-                            </a>
-                        </CardContent>
-                    </Card>
-                )}
-                {tabIndex === 3 && (
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Estado del Hosting</Typography>
-                            <Typography variant="body2" sx={{ mb: 2 }}>
-                                Desde aquí podés acceder rápidamente al panel de administración del hosting tanto del frontend como del backend.
-                            </Typography>
 
-                            {/* Netlify */}
-                            <Typography variant="subtitle2" sx={{ mt: 2 }}>
-                                🌐 Frontend: Netlify
-                            </Typography>
-                            <a
-                                href="https://app.netlify.com/projects/sintaccapp/overview"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <button style={{
-                                    backgroundColor: '#00ad9f',
-                                    color: 'white',
-                                    padding: '8px 16px',
-                                    marginTop: 8,
-                                    border: 'none',
-                                    borderRadius: 6,
-                                    cursor: 'pointer'
-                                }}>
-                                    Ir al panel de Netlify
-                                </button>
-                            </a>
+                    <Grid item xs={12} md={6}>
 
-                            {/* Azure */}
-                            <Typography variant="subtitle2" sx={{ mt: 4 }}>
-                                ☁️ Backend: Azure App Service
-                            </Typography>
-                            <a
-                                href="https://portal.azure.com/?Microsoft_Azure_Education_correlationId=fd23b25c-df1c-4e7f-a565-e5a2f98cf22c&Microsoft_Azure_Education_newA4E=true&Microsoft_Azure_Education_asoSubGuid=d8977ddc-93a1-4285-b9be-acf9c091f2f3#@Sintacc2025hotmail.onmicrosoft.com/resource/subscriptions/d8977ddc-93a1-4285-b9be-acf9c091f2f3/resourceGroups/Grupo_Tesis/providers/Microsoft.Sql/servers/sintacc/databases/SINTACC_Az/overview"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <button style={{
-                                    backgroundColor: '#007FFF',
-                                    color: 'white',
-                                    padding: '8px 16px',
-                                    marginTop: 8,
-                                    border: 'none',
-                                    borderRadius: 6,
-                                    cursor: 'pointer'
-                                }}>
-                                    Ir al portal de Azure
-                                </button>
-                            </a>
-                        </CardContent>
-                    </Card>
-                )}
-            
+                        <UsuariosNuevosChart labels={chartLabels} data={chartData} />
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        <PlanesMasUsadosChart data={dataPlanes} />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <UsuariosPorRolChart data={dataEspecialidades}  />
+                    </Grid>
+
+
+                </Grid>
+            )}
+            {tabIndex === 2 && (
+                <Card>
+                    <CardContent>
+                        <Typography variant="h6">Seguimiento de Leads</Typography>
+                        <Typography variant="body1" sx={{ mb: 2 }}>
+                            Visualizá las métricas de tráfico, visitas, sesiones o eventos desde Google Analytics.
+                        </Typography>
+                        <a
+                            href="https://analytics.google.com/analytics/web/?authuser=2#/p488851617/reports/intelligenthome?params=_u..nav%3Dmaui"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <button style={{
+                                backgroundColor: '#1976d2',
+                                color: 'white',
+                                padding: '10px 20px',
+                                border: 'none',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                fontWeight: 'bold'
+                            }}>
+                                Abrir Google Analytics
+                            </button>
+                        </a>
+                    </CardContent>
+                </Card>
+            )}
+            {tabIndex === 3 && (
+                <Card>
+                    <CardContent>
+                        <Typography variant="h6">Estado del Hosting</Typography>
+                        <Typography variant="body2" sx={{ mb: 2 }}>
+                            Desde aquí podés acceder rápidamente al panel de administración del hosting tanto del frontend como del backend.
+                        </Typography>
+
+                        {/* Netlify */}
+                        <Typography variant="subtitle2" sx={{ mt: 2 }}>
+                            🌐 Frontend: Netlify
+                        </Typography>
+                        <a
+                            href="https://app.netlify.com/projects/sintaccapp/overview"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <button style={{
+                                backgroundColor: '#00ad9f',
+                                color: 'white',
+                                padding: '8px 16px',
+                                marginTop: 8,
+                                border: 'none',
+                                borderRadius: 6,
+                                cursor: 'pointer'
+                            }}>
+                                Ir al panel de Netlify
+                            </button>
+                        </a>
+
+                        {/* Azure */}
+                        <Typography variant="subtitle2" sx={{ mt: 4 }}>
+                            ☁️ Backend: Azure App Service
+                        </Typography>
+                        <a
+                            href="https://portal.azure.com/?Microsoft_Azure_Education_correlationId=fd23b25c-df1c-4e7f-a565-e5a2f98cf22c&Microsoft_Azure_Education_newA4E=true&Microsoft_Azure_Education_asoSubGuid=d8977ddc-93a1-4285-b9be-acf9c091f2f3#@Sintacc2025hotmail.onmicrosoft.com/resource/subscriptions/d8977ddc-93a1-4285-b9be-acf9c091f2f3/resourceGroups/Grupo_Tesis/providers/Microsoft.Sql/servers/sintacc/databases/SINTACC_Az/overview"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <button style={{
+                                backgroundColor: '#007FFF',
+                                color: 'white',
+                                padding: '8px 16px',
+                                marginTop: 8,
+                                border: 'none',
+                                borderRadius: 6,
+                                cursor: 'pointer'
+                            }}>
+                                Ir al portal de Azure
+                            </button>
+                        </a>
+                    </CardContent>
+                </Card>
+            )}
+
         </DashboardLayout>
     );
 };

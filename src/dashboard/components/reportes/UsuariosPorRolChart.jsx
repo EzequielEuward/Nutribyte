@@ -4,18 +4,20 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const UsuariosPorRolChart = ({ data }) => {
-  const total = data.reduce((acc, item) => acc + item.value, 0);
+export const UsuariosPorRolChart = ({ data, title = "Distribución de Usuarios por Especialidad" }) => {
+  const labels = data.map(d => d.name);
+  const values = data.map(d => d.value);
+  const total = values.reduce((acc, v) => acc + v, 0);
 
   const chartData = {
-    labels: data.map((d) => d.name),
+    labels,
     datasets: [
       {
         label: 'Usuarios',
-        data: data.map((d) => d.value),
+        data: values,
         backgroundColor: [
           '#1976d2', '#00C49F', '#FFBB28', '#FF8042',
-          '#AF7AC5', '#5DADE2', '#F5B041', '#45B39D' // colores extra
+          '#AF7AC5', '#5DADE2', '#F5B041', '#45B39D'
         ],
         borderWidth: 1,
       },
@@ -47,12 +49,13 @@ export const UsuariosPorRolChart = ({ data }) => {
 
   return (
     <Card>
-      <CardHeader title="Distribución de Usuarios por Rol" />
+      <CardHeader title={title} />
       <CardContent sx={{ height: 450 }}>
         <Pie data={chartData} options={options} />
       </CardContent>
     </Card>
   );
 };
+
 
 export default UsuariosPorRolChart;

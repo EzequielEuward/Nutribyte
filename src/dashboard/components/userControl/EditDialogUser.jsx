@@ -290,10 +290,10 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
                       value={usuario.planUsuario}
                       onChange={handleUsuarioChange}
                     >
-                      <MenuItem value="Basica">Basica</MenuItem>
+                      <MenuItem value="Basico">Basica</MenuItem>
                       <MenuItem value="Premium">Premium</MenuItem>
                       <MenuItem value="Elite">Elite</MenuItem>
-                      <MenuItem value="demo">Demo</MenuItem>
+                      {/* <MenuItem value="demo">Demo</MenuItem> */}
                     </Select>
                   </FormControl>
                 </Grid>

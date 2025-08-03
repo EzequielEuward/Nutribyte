@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useTheme } from '@mui/material/styles';
+import { Card, Typography } from '@mui/material';
 
 ChartJS.register(
     CategoryScale,
@@ -54,7 +55,12 @@ export const UsuariosNuevosChart = ({ labels, data }) => {
 
     return (
         <div style={{ height: 300 }}>
+            <Card>
+            <Typography variant="h4" gutterBottom sx={{textAlign: 'center'}}>
+                Nuevos Usuarios
+            </Typography>
             <Line data={chartData} options={options} />
+            </Card>
         </div>
     );
 };

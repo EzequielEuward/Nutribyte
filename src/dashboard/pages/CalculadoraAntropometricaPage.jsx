@@ -162,8 +162,8 @@ export const CalculadoraAntropometricaPage = () => {
             flexGrow: 1,
             display: "flex",
             justifyContent: "center",
-            position: "static", // elimina absolute
-            pointerEvents: "none", // para que el Box no capture clicks
+            position: "static", 
+            pointerEvents: "none", 
           }}
         >
           <Typography
@@ -171,7 +171,7 @@ export const CalculadoraAntropometricaPage = () => {
             sx={{
               textAlign: "center",
               fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" },
-              pointerEvents: "auto", // para permitir clicks en texto (opcional)
+              pointerEvents: "auto", 
             }}
           >
             Calculadora Antropométrica
