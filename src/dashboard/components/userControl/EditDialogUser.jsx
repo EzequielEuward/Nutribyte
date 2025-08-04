@@ -79,7 +79,7 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
     const { name, value } = e.target;
 
     if (name === "userPassword") {
-      setPasswordError(value.length > 0 && value.length < 6);
+      setPasswordError(value.length > 0 && value.length < 8);
     }
 
     if (name === "rol") {
@@ -134,7 +134,7 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
 
     const camposLlenos = [...camposPersona, ...camposUsuario].every(val => val?.toString().trim() !== "");
 
-    const passwordOk = usuario.userPassword.length >= 6;
+    const passwordOk = usuario.userPassword.length >= 8;
 
     return camposLlenos && passwordOk;
   };
@@ -254,7 +254,7 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
                     error={passwordError}
                     helperText={
                       passwordError
-                        ? "La contraseña debe tener al menos 6 caracteres"
+                        ? "La contraseña debe tener al menos 8 caracteres"
                         : "⚠️ ¡No olvides ingresar una nueva contraseña para este usuario!"
                     }
                   />
@@ -314,7 +314,7 @@ export const EditDialogUser = ({ open, onClose, selectedUser, handleModificarUsu
                     name="matricula_Profesional"
                     value={usuario.matricula_Profesional}
                     onChange={handleUsuarioChange}
-                    disabled={usuario.rol === "Administrador"}
+                  
                   />
                 </Grid>
                 <Grid item xs={6}>

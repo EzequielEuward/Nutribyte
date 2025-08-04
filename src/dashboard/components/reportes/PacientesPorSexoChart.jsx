@@ -48,8 +48,8 @@ export const PacientesPorSexoChart = () => {
   return (
     <Card>
       <CardHeader
-        title="Distribución por Sexo"
-        subheader="Pacientes activos clasificados por sexo"
+        title="Distribución por Genero"
+        subheader="Pacientes activos clasificados por genero"
       />
       <CardContent>
         <Box sx={{ height: 300 }}>
