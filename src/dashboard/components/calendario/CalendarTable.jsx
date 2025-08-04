@@ -90,9 +90,23 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
   return (
     <Box sx={{ p: 2 }}>
 
-      <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }} >
-        Tabla de turnos
-      </Typography>
+      <Box
+        sx={{
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          mb: 3,
+          height: "48px",
+          textAlign: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography
+          variant="h4"
+        >
+          Tabla de Turnos
+        </Typography>
+      </Box>
 
 
       {isMobile ? (
@@ -178,7 +192,7 @@ export const CalendarTable = ({ turnos, handleEstadoChange }) => {
       ) : (
         <Paper
           sx={{
-            height: 500,
+          
             width: '100%',
             borderRadius: 3,
             border: isMobile

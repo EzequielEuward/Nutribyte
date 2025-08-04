@@ -8,6 +8,8 @@ import { UsuariosNuevosChart, KPIsUsuarios, UsuariosPorRolChart, PlanesMasUsados
 import { ListarUsuarios } from "../../../store/user/thunk";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
+import ConstructionIcon from '@mui/icons-material/Construction';
+import { keyframes } from '@mui/system';
 
 export const ReportesAdminPage = () => {
     const dispatch = useDispatch();
@@ -56,16 +58,16 @@ export const ReportesAdminPage = () => {
     ).map(([plan, cantidad]) => ({ plan, cantidad }));
 
     const dataEspecialidades = Object.entries(
-    usuarios.reduce((acc, u) => {
-      const esp = u.especialidad || "Sin Especialidad";
-      acc[esp] = (acc[esp] || 0) + 1;
-      return acc;
-    }, {})
-  ).map(([name, value]) => ({ name, value }));
+        usuarios.reduce((acc, u) => {
+            const esp = u.especialidad || "Sin Especialidad";
+            acc[esp] = (acc[esp] || 0) + 1;
+            return acc;
+        }, {})
+    ).map(([name, value]) => ({ name, value }));
 
     const usuariosPorMes = usuarios.reduce((acc, usuario) => {
         const fecha = new Date(usuario.ultimaMod);
-        const mes = format(fecha, 'MMMM', { locale: es }); // ejemplo: "mayo"
+        const mes = format(fecha, 'MMMM', { locale: es });
         acc[mes] = (acc[mes] || 0) + 1;
         return acc;
     }, {});
@@ -80,6 +82,15 @@ export const ReportesAdminPage = () => {
     const chartLabels = mesesOrdenados.filter(mes => usuariosPorMes[mes]);
     const chartData = chartLabels.map(mes => usuariosPorMes[mes]);
 
+    const spin = keyframes`
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    `;
+
+    const pulse = keyframes`
+        0% { opacity: 0.8; transform: scale(1); }
+        100% { opacity: 1; transform: scale(1.05); }
+    `;
     return (
         <DashboardLayout>
             <Box
@@ -135,9 +146,9 @@ export const ReportesAdminPage = () => {
 
             <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ mb: 2 }}>
                 <Tab label="Usuarios Registrados" />
-                <Tab label="En construcción" />
                 <Tab label="Seguimiento de Leads" />
                 <Tab label="Estado del Hosting" />
+                <Tab label="En construcción" />
             </Tabs>
 
             {tabIndex === 0 && (
@@ -155,13 +166,13 @@ export const ReportesAdminPage = () => {
                         <PlanesMasUsadosChart data={dataPlanes} />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <UsuariosPorRolChart data={dataEspecialidades}  />
+                        <UsuariosPorRolChart data={dataEspecialidades} />
                     </Grid>
 
 
                 </Grid>
             )}
-            {tabIndex === 2 && (
+            {tabIndex === 1 && (
                 <Card>
                     <CardContent>
                         <Typography variant="h6">Seguimiento de Leads</Typography>
@@ -188,7 +199,7 @@ export const ReportesAdminPage = () => {
                     </CardContent>
                 </Card>
             )}
-            {tabIndex === 3 && (
+            {tabIndex === 2 && (
                 <Card>
                     <CardContent>
                         <Typography variant="h6">Estado del Hosting</Typography>
@@ -201,7 +212,7 @@ export const ReportesAdminPage = () => {
                             🌐 Frontend: Netlify
                         </Typography>
                         <a
-                            href="https://app.netlify.com/projects/sintaccapp/overview"
+                            href="https://app.netlify.com/projects/nutribyte/overview"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -239,6 +250,45 @@ export const ReportesAdminPage = () => {
                                 Ir al portal de Azure
                             </button>
                         </a>
+                    </CardContent>
+                </Card>
+            )}
+            {tabIndex === 3 && (
+                <Card>
+                    <CardContent sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: '300px',
+                        textAlign: 'center'
+                    }}>
+                        <ConstructionIcon sx={{
+                            fontSize: 80,
+                            color: theme.palette.warning.main,
+                            animation: `${spin} 2s linear infinite`,
+                            filter: 'drop-shadow(0 0 8px rgba(255, 165, 0, 0.8))',
+                            '&:hover': {
+                                color: theme.palette.error.main,
+                                filter: 'drop-shadow(0 0 12px rgba(255, 0, 0, 1))'
+                            },
+                            transition: 'all 0.3s ease'
+                        }} />
+
+                        <Typography variant="h4" sx={{
+                            mt: 3,
+                            fontWeight: 'bold',
+                            background: `linear-gradient(45deg, ${theme.palette.warning.main}, ${theme.palette.error.main})`,
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            animation: `${pulse} 3s infinite alternate`
+                        }}>
+                            ¡En construcción!
+                        </Typography>
+
+                        <Typography variant="body1" sx={{ mt: 2, maxWidth: '500px' }}>
+                            Estamos trabajando en esta sección. ¡Vuelve pronto para descubrir nuevas funcionalidades!
+                        </Typography>
                     </CardContent>
                 </Card>
             )}

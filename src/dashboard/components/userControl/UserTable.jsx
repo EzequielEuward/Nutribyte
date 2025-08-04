@@ -31,6 +31,8 @@ export const UserTable = ({ handleMenuOpen, users }) => {
     }
   };
 
+  const usuariosOcultos = ['TesterNutricionista', 'LeoEuwTest', 'demo'];
+
   return (
     <Box sx={{ overflowX: 'auto', width: '100%' }}>
       <Table size="small" sx={{ minWidth: 800 }}>
@@ -56,52 +58,54 @@ export const UserTable = ({ handleMenuOpen, users }) => {
               </TableCell>
             </TableRow>
           ) : (
-            users.map((user) => (
-              <TableRow key={user.idUsuario} hover>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>{user.persona.apellido}</TableCell>
-                <TableCell>{user.persona.nombre}</TableCell>
-                {/* <TableCell>
+            users
+              .filter((user) => !usuariosOcultos.includes(user.username))
+              .map((user) => (
+                <TableRow key={user.idUsuario} hover>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.persona.apellido}</TableCell>
+                  <TableCell>{user.persona.nombre}</TableCell>
+                  {/* <TableCell>
                   <Tooltip title={user.persona.email}>
                     <Typography noWrap>{user.persona.email}</Typography>
                   </Tooltip>
                 </TableCell> */}
-                <TableCell>
-                  <Chip
-                    label={user.rol}
-                    color={
-                      user.rol === 'Administrador'
-                        ? 'error'
-                        : user.rol === 'Nutricionista'
-                        ? undefined
-                        : 'secondary'
-                    }
-                    sx={
-                      user.rol === 'Nutricionista'
-                        ? {
+                  <TableCell>
+                    <Chip
+                      label={user.rol}
+                      color={
+                        user.rol === 'Administrador'
+                          ? 'error'
+                          : user.rol === 'Nutricionista'
+                            ? undefined
+                            : 'secondary'
+                      }
+                      sx={
+                        user.rol === 'Nutricionista'
+                          ? {
                             backgroundColor: theme.palette.primary.button,
                             color: '#fff',
                             fontWeight: 500,
                           }
-                        : {}
-                    }
-                  />
-                </TableCell>
-                <TableCell>{user.matricula_Profesional}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={user.estadoUsuario}
-                    color={getEstadoColor(user.estadoUsuario)}
-                  />
-                </TableCell>
-                <TableCell>{user.planUsuario}</TableCell>
-                <TableCell align="center">
-                  <IconButton onClick={(e) => handleMenuOpen(e, user)}>
-                    <MoreHorizIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))
+                          : {}
+                      }
+                    />
+                  </TableCell>
+                  <TableCell>{user.matricula_Profesional}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={user.estadoUsuario}
+                      color={getEstadoColor(user.estadoUsuario)}
+                    />
+                  </TableCell>
+                  <TableCell>{user.planUsuario}</TableCell>
+                  <TableCell align="center">
+                    <IconButton onClick={(e) => handleMenuOpen(e, user)}>
+                      <MoreHorizIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
           )}
         </TableBody>
       </Table>

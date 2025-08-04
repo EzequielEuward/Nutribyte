@@ -20,34 +20,40 @@ export const RecentAppointments = ({ turnos }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-
   const hoy = new Date();
   const haceDosSemanas = new Date();
   haceDosSemanas.setDate(hoy.getDate() - 14);
 
-  const turnosFiltrados = turnos.filter(turno => {
+  const turnosFiltrados = turnos.filter((turno) => {
     const fechaTurno = new Date(turno.fechaInicio);
     return fechaTurno >= haceDosSemanas && fechaTurno <= hoy;
   });
 
   const formatearFecha = (fechaStr) => {
     const fecha = new Date(fechaStr);
-    return fecha.toLocaleDateString('es-AR'); // dd/mm/yyyy
+    return fecha.toLocaleDateString("es-AR");
   };
 
   const formatearHora = (fechaStr) => {
     const fecha = new Date(fechaStr);
-    return fecha.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+    return fecha.toLocaleTimeString("es-AR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
   };
 
   const getColorByEstado = (estado) => {
     const key = estado.toLowerCase();
-    const base = theme.palette.estadoTurnos[key] || { background: '#ccc' };
+    const base = theme.palette.estadoTurnos[key] || {
+      background: "#ccc",
+      text: "#fff",
+    };
     return {
       backgroundColor: base.background,
+      color: base.text,
     };
   };
-
 
   return (
     <Card variant="outlined">
@@ -68,7 +74,6 @@ export const RecentAppointments = ({ turnos }) => {
             No tenés ningún turno reciente.
           </Typography>
         ) : isMobile ? (
-          // Vista móvil
           <Box display="flex" flexDirection="column" gap={2}>
             {turnosFiltrados.map((turno) => (
               <Box
@@ -93,10 +98,12 @@ export const RecentAppointments = ({ turnos }) => {
                   Hora: {formatearHora(turno.fechaInicio)}
                 </Typography>
                 <Chip
-                   label={turno.estado.charAt(0).toUpperCase() + turno.estado.slice(1).toLowerCase()}
+                  label={
+                    turno.estado.charAt(0).toUpperCase() +
+                    turno.estado.slice(1).toLowerCase()
+                  }
                   sx={{
                     ...getColorByEstado(turno.estado),
-                    color: theme.palette.text.tertiary,
                     fontWeight: "bold",
                     borderRadius: 2,
                   }}
@@ -105,55 +112,71 @@ export const RecentAppointments = ({ turnos }) => {
             ))}
           </Box>
         ) : (
-          // Vista escritorio
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-                      Paciente
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-                      Fecha
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-                      Hora
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
-                      Estado
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {turnosFiltrados.map((turno) => (
-                  <TableRow key={turno.idTurno}>
-                    <TableCell>{turno.paciente}</TableCell>
-                    <TableCell>{formatearFecha(turno.fechaInicio)}</TableCell>
-                    <TableCell>{formatearHora(turno.fechaInicio)}</TableCell>
+          <Box
+            sx={{
+              maxHeight: 400,
+              overflowY: "auto",
+              "&::-webkit-scrollbar": { width: 8 },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: theme.palette.primary.main,
+                borderRadius: 10,
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: theme.palette.background.paper,
+              },
+            }}
+          >
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
                     <TableCell>
-                      <Chip
-                        label={turno.estado.charAt(0).toUpperCase() + turno.estado.slice(1).toLowerCase()}
-                        sx={{
-                          ...getColorByEstado(turno.estado),
-                          color: theme.palette.text.tertiary,
-                          fontWeight: "bold",
-                          borderRadius: 2,
-                        }}
-                      />
+                      <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+                        Paciente
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+                        Fecha
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+                        Hora
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
+                        Estado
+                      </Typography>
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {turnosFiltrados.map((turno) => (
+                    <TableRow key={turno.idTurno}>
+                      <TableCell>{turno.paciente}</TableCell>
+                      <TableCell>{formatearFecha(turno.fechaInicio)}</TableCell>
+                      <TableCell>{formatearHora(turno.fechaInicio)}</TableCell>
+                      <TableCell>
+                        <Chip
+                          label={
+                            turno.estado.charAt(0).toUpperCase() +
+                            turno.estado.slice(1).toLowerCase()
+                          }
+                          sx={{
+                            ...getColorByEstado(turno.estado),
+                            fontWeight: "bold",
+                            borderRadius: 2,
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
         )}
       </CardContent>
     </Card>

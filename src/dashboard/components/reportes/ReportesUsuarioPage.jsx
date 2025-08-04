@@ -106,7 +106,7 @@ export const ReportesUsuarioPage = () => {
               pointerEvents: "auto",
             }}
           >
-            Visualiza estadísticas del seguimiento nutricional
+            Seguimiento Nutricional: Análisis Estadístico y Gestión Administrativa
           </Typography>
         </Box>
       </Box>

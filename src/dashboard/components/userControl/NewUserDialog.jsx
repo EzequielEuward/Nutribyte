@@ -221,7 +221,7 @@ export const NewUserDialog = ({ open, onClose, handleAddUser }) => {
                     value={usuario.planUsuario}
                     onChange={handleChangeUsuario}
                   >
-                    <MenuItem value="Básico">Básico</MenuItem>
+                    <MenuItem value="Basico">Básico</MenuItem>
                     <MenuItem value="Premium">Premium</MenuItem>
                     <MenuItem value="Elite">Elite</MenuItem>
                   </Select>

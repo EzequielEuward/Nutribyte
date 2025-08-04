@@ -16,7 +16,10 @@ const getTypeStyles = (type, theme) => {
     Seguimiento: theme.palette.appointmentTypes.followUp,
     Control: theme.palette.appointmentTypes.control,
   };
-  return typesMap[type] || {};
+  return typesMap[type] || {
+    background: "#e0e0e0",
+    text: "#000",
+  };
 };
 
 export const PendingAppointments = ({ turnos }) => {
@@ -91,8 +94,9 @@ export const PendingAppointments = ({ turnos }) => {
                       })}
                       variant="outlined"
                       sx={{
-                        color: theme.palette.text.secondary,
+                        color: theme.palette.text.primary,
                         borderColor: theme.palette.text.secondary,
+                        fontWeight: 500,
                       }}
                     />
                     <Typography variant="body1" sx={{ fontWeight: "medium" }}>

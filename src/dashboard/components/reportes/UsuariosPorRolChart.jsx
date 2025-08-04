@@ -4,9 +4,18 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const UsuariosPorRolChart = ({ data, title = "Distribución de Usuarios por Especialidad" }) => {
-  const labels = data.map(d => d.name);
-  const values = data.map(d => d.value);
+// Lista de especialidades que NO querés mostrar
+const especialidadesOcultas = ['Programacion', 'Programador', 'Sistema', 'tester', 'demo', 'Tecnologia'];
+
+export const UsuariosPorRolChart = ({
+  data,
+  title = "Distribución de Usuarios por Especialidad",
+}) => {
+  // Filtramos las especialidades no deseadas
+  const dataFiltrada = data.filter(d => !especialidadesOcultas.includes(d.name));
+
+  const labels = dataFiltrada.map(d => d.name);
+  const values = dataFiltrada.map(d => d.value);
   const total = values.reduce((acc, v) => acc + v, 0);
 
   const chartData = {
@@ -17,7 +26,8 @@ export const UsuariosPorRolChart = ({ data, title = "Distribución de Usuarios p
         data: values,
         backgroundColor: [
           '#1976d2', '#00C49F', '#FFBB28', '#FF8042',
-          '#AF7AC5', '#5DADE2', '#F5B041', '#45B39D'
+          '#AF7AC5', '#5DADE2', '#F5B041', '#45B39D',
+          '#A3E4D7', '#F1948A', '#C39BD3', '#85C1E9'
         ],
         borderWidth: 1,
       },
@@ -56,6 +66,5 @@ export const UsuariosPorRolChart = ({ data, title = "Distribución de Usuarios p
     </Card>
   );
 };
-
 
 export default UsuariosPorRolChart;
