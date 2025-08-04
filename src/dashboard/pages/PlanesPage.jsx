@@ -164,7 +164,7 @@ export const PlanesPage = () => {
           icon: 'success',
           title: 'Plan creado con éxito',
           text: 'El plan alimenticio ha sido guardado correctamente.',
-          confirmButtonText: 'Ver resumen',
+          confirmButtonText: 'Confirmar',
         }).then(() => {
           setPlanType("Plan Estándar");
           setFechaInicio("");
