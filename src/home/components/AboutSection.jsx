@@ -35,25 +35,6 @@ export const AboutSection = () => {
       linkedin: "https://www.linkedin.com/in/leoeuw/",
       img: DeveloperLeoImage,
     },
-
-    {
-      name: "Alejo Bagasin",
-      role: "Analista funcional",
-      text: "Encargado de recopilar información.",
-      github: "https://github.com/LeoEuw",
-      linkedin: "https://www.linkedin.com/in/leoeuw/",
-      img: DeveloperAlejoImage,
-    },
-    {
-      name: "Agustin Lopez",
-      role: "Proyect Management",
-      text: "Encargado de gestionar el proyecto.",
-      github: "https://github.com/LeoEuw",
-      linkedin: "https://www.linkedin.com/in/leoeuw/",
-
-      img: DeveloperAgusImage,
-
-    }
   ];
 
   return (
